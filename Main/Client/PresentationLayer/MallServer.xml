@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+This file specifies the source & catalog
+for the connection string
+-->
+<mallserver>
+  <!--
+  <ipServer>172.16.18.206</ipServer>
+  -->
+  <ipServer>192.168.1.115</ipServer>
+  <portServer>20145</portServer>
+  <pingTime>15000</pingTime>
+</mallserver>

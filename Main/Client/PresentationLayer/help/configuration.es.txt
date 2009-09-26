@@ -1,0 +1,1 @@
+﻿Seleccione la opción Configuración del servidor para modificar el IP del servidor del Mall o la opción Configuración de Cuenta para modificar el nombre de usuario y contraseña del cliente que utilizara la aplicación. Advertencia: La inserción de datos inválidos impedirá la correcta ejecución de la aplicación.

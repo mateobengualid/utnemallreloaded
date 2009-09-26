@@ -1,0 +1,13 @@
+﻿<UserControl
+	x:Uid="UserControl_1" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:UtnEmall.ServerManager="clr-namespace:UtnEmall.ServerManager"
+	x:Class="UtnEmall.ServerManager.StoreManager"
+	Width="640" Height="480">
+
+	<Grid x:Uid="Grid_1">
+		<Image x:Uid="Image_1" HorizontalAlignment="Right" Margin="200,0,0,100" Width="Auto" Source="imgs\store_mono.png" Stretch="Fill"/>
+		<Label x:Uid="Label_1" HorizontalAlignment="Left" Margin="8,8,0,0" VerticalAlignment="Top" Width="292" Height="37" Content="{x:Static UtnEmall.ServerManager:UIResources.ManageStores}" FontSize="20"/>
+		<UtnEmall.ServerManager:ItemList x:Uid="list" Margin="8,45,8,8" x:Name="list" Width="Auto" Height="Auto"/>
+	</Grid>
+</UserControl>

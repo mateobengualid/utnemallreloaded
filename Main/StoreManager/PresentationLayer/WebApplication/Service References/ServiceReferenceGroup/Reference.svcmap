@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="f7665539-d732-40bc-9444-1d331f49f33e" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://cpu14:8081/Group" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Group1.disco" MetadataType="Disco" ID="923a923a-a9d5-4dfc-becf-4f91b59f2297" SourceId="1" SourceUrl="http://cpu14:8081/Group?disco" />
+    <MetadataFile FileName="Group4.xsd" MetadataType="Schema" ID="c8875445-2855-48ff-b125-cb28a31c48cf" SourceId="1" SourceUrl="http://cpu14:8081/Group?xsd=xsd0" />
+    <MetadataFile FileName="Group41.xsd" MetadataType="Schema" ID="4b38e1a4-e0c0-42ad-8b56-ebf7e3274362" SourceId="1" SourceUrl="http://cpu14:8081/Group?xsd=xsd1" />
+    <MetadataFile FileName="Group42.xsd" MetadataType="Schema" ID="6eedd05e-9789-419b-a0bd-4948f29235b1" SourceId="1" SourceUrl="http://cpu14:8081/Group?xsd=xsd3" />
+    <MetadataFile FileName="Group43.xsd" MetadataType="Schema" ID="a4bbddb2-f2f6-4637-b23d-8905ecbfb57e" SourceId="1" SourceUrl="http://cpu14:8081/Group?xsd=xsd2" />
+    <MetadataFile FileName="Group1.wsdl" MetadataType="Wsdl" ID="6cd6a032-fa52-4d5d-b9cf-b1b884826f80" SourceId="1" SourceUrl="http://cpu14:8081/Group?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

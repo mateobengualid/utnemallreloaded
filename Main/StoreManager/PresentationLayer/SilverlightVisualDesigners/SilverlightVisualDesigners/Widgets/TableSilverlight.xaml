@@ -1,0 +1,14 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/client/2007"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="SilverlightVisualDesigners.TableSilverlight">
+
+	<Grid x:Name="LayoutRoot" Background="Transparent"  Width="115" Height="52" >
+		<Canvas x:Name="canvasWidget" HorizontalAlignment="Left" Background="Transparent" Margin="0,0,0,0" VerticalAlignment="Top" Height="52">
+		    <Rectangle x:Uid="rectangle" x:Name="rectangle" Width="100" Height="52" Fill="#FFBCC8D8" Stroke="#FFFFFFFF" StrokeThickness="2" RadiusX="3.4" RadiusY="3.4"/>
+			<Rectangle Fill="#FF75C5F0" StrokeThickness="2" RadiusX="1.882" RadiusY="1.882" Width="95" Height="22.583" Canvas.Left="2.198" Canvas.Top="2.195"/>
+			<TextBlock x:Uid="textBlockTableName" Width="95" Height="36.3" Canvas.Left="2.198" Text="&lt;No Name&gt;" TextWrapping="Wrap" x:Name="textBlockTableName" TextAlignment="Center" Foreground="#FF515151" Canvas.Top="4.387"/>
+			
+		</Canvas>
+	</Grid>
+</UserControl>

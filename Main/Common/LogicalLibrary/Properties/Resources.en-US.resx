@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DataSourceCantBeTarget" xml:space="preserve">
+    <value>A data source can't be a target form.</value>
+  </data>
+  <data name="DataSourceError" xml:space="preserve">
+    <value>Data source error</value>
+  </data>
+  <data name="DataStorageError" xml:space="preserve">
+    <value>Data storage error</value>
+  </data>
+  <data name="DifferentContext" xml:space="preserve">
+    <value>You can't set a different context to this form.</value>
+  </data>
+  <data name="DuplicatedRelation" xml:space="preserve">
+    <value>A relation between those tables already exist.</value>
+  </data>
+  <data name="DuplicatedRelationForm" xml:space="preserve">
+    <value>A relation between those connection points already exist.</value>
+  </data>
+  <data name="FieldError" xml:space="preserve">
+    <value>Field error</value>
+  </data>
+  <data name="FirstLetterError" xml:space="preserve">
+    <value>The first character must be a letter.</value>
+  </data>
+  <data name="FormError" xml:space="preserve">
+    <value>Form error</value>
+  </data>
+  <data name="FormOutputConnection" xml:space="preserve">
+    <value>A form can't have more than one output.</value>
+  </data>
+  <data name="InputDataConnections" xml:space="preserve">
+    <value>The input form already has the two required connections.</value>
+  </data>
+  <data name="InputFormHasOtherForm" xml:space="preserve">
+    <value>The input form already has a target form.</value>
+  </data>
+  <data name="InputFormHasStorage" xml:space="preserve">
+    <value>The input form already has a storage.</value>
+  </data>
+  <data name="InputFormNoEdited" xml:space="preserve">
+    <value>Edit the input form.</value>
+  </data>
+  <data name="InvalidConnectionDirection" xml:space="preserve">
+    <value>Connection direction is not valid</value>
+  </data>
+  <data name="NameLessThanThreeLetters" xml:space="preserve">
+    <value>Text names must have more than two letters.</value>
+  </data>
+  <data name="NameWithSpecialCharacters" xml:space="preserve">
+    <value>Text names can't have special characters.</value>
+  </data>
+  <data name="NoConnectionInputForm" xml:space="preserve">
+    <value>First, set a connection for this input form.</value>
+  </data>
+  <data name="NoConnectionStorage" xml:space="preserve">
+    <value>A storage can't have a connection.</value>
+  </data>
+  <data name="NoDataContext" xml:space="preserve">
+    <value>The data context is not defined.</value>
+  </data>
+  <data name="NoDataSourceConnection" xml:space="preserve">
+    <value>Connect a form with a data source.</value>
+  </data>
+  <data name="NoDataSourceToInputForm" xml:space="preserve">
+    <value>Is not possible to connect a data source with an "Enter Single Data" form.</value>
+  </data>
+  <data name="NoFieldName" xml:space="preserve">
+    <value>Set a name for the fields of the table:</value>
+  </data>
+  <data name="NoFieldsForTable" xml:space="preserve">
+    <value>Add at least one field for the table.</value>
+  </data>
+  <data name="NoInputContextListForm" xml:space="preserve">
+    <value>Set a connection with data for the list form</value>
+  </data>
+  <data name="NoInputContextShowForm" xml:space="preserve">
+    <value>Set a connection with data for the show form</value>
+  </data>
+  <data name="NoInputToStorage" xml:space="preserve">
+    <value>Connect an input form with the storage</value>
+  </data>
+  <data name="NoMenuOptionItem" xml:space="preserve">
+    <value>Please create an option for the menu</value>
+  </data>
+  <data name="NoMenuOptionItemTarget" xml:space="preserve">
+    <value>Some menu items haven't got connections in the menu form</value>
+  </data>
+  <data name="NoNameForTable" xml:space="preserve">
+    <value>Set a name for this table.</value>
+  </data>
+  <data name="NoOutputContext" xml:space="preserve">
+    <value>Configure an output data for the form</value>
+  </data>
+  <data name="NoOutputContextListForm" xml:space="preserve">
+    <value>Configure an output data for the list form</value>
+  </data>
+  <data name="NoOutputContextShowForm" xml:space="preserve">
+    <value>Configure an output data for the show form</value>
+  </data>
+  <data name="NoStorageForInputForm" xml:space="preserve">
+    <value>Set a storage for the input form</value>
+  </data>
+  <data name="PreviousFormToDataStorage" xml:space="preserve">
+    <value>You only can connect an input form with a data storage.</value>
+  </data>
+  <data name="PreviousFormToInputForm" xml:space="preserve">
+    <value>It is not possible to connect a data source with an "Enter Single Data Form".</value>
+  </data>
+  <data name="PreviousFormToListForm" xml:space="preserve">
+    <value>It is not possible to connect an "Enter Single Data" form or a "Show Data" form with a list form.</value>
+  </data>
+  <data name="PreviousFormToShowForm" xml:space="preserve">
+    <value>Is not possible connect a data source or another "Show Data" form with a "Show Data" form.</value>
+  </data>
+  <data name="SameConnectionPointType" xml:space="preserve">
+    <value>Select an output and an input connection point to make a connection.</value>
+  </data>
+  <data name="SameFormForConnection" xml:space="preserve">
+    <value>Select two different forms to make a connection.</value>
+  </data>
+  <data name="TableError" xml:space="preserve">
+    <value>Table error</value>
+  </data>
+  <data name="TitleRepited" xml:space="preserve">
+    <value>The title is repeated:</value>
+  </data>
+</root>

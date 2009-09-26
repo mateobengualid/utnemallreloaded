@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="6d824c94-07cd-4404-b49b-ee2cb8569095" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://cpu13:8081/StatisticsAnalyzer" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="StatisticsAnalyzer.xsd" MetadataType="Schema" ID="28b6e14c-b065-4434-a0f2-6b2d8bc23157" SourceId="1" SourceUrl="http://cpu13:8081/StatisticsAnalyzer?xsd=xsd0" />
+    <MetadataFile FileName="StatisticsAnalyzer.wsdl" MetadataType="Wsdl" ID="03dc45d3-d6ff-4e70-a15f-b4f59555a8d9" SourceId="1" SourceUrl="http://cpu13:8081/StatisticsAnalyzer?wsdl" />
+    <MetadataFile FileName="StatisticsAnalyzer1.xsd" MetadataType="Schema" ID="22882492-390c-46dc-b11a-41606a7a1866" SourceId="1" SourceUrl="http://cpu13:8081/StatisticsAnalyzer?xsd=xsd1" />
+    <MetadataFile FileName="StatisticsAnalyzer.disco" MetadataType="Disco" ID="f0d92e6a-cefa-4b27-8422-1cc59c8e7fbd" SourceId="1" SourceUrl="http://cpu13:8081/StatisticsAnalyzer?disco" />
+    <MetadataFile FileName="StatisticsAnalyzer2.xsd" MetadataType="Schema" ID="3cbd3c7d-877f-49e3-b92a-09940d834d4e" SourceId="1" SourceUrl="http://cpu13:8081/StatisticsAnalyzer?xsd=xsd3" />
+    <MetadataFile FileName="StatisticsAnalyzer3.xsd" MetadataType="Schema" ID="bfcba7a2-55ae-4b03-b05e-45da91305cdd" SourceId="1" SourceUrl="http://cpu13:8081/StatisticsAnalyzer?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,59 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resources="clr-namespace:SilverlightVisualDesigners.EditControls"
+	mc:Ignorable="d" x:Class="SilverlightVisualDesigners.EditTableControl"
+	d:DesignWidth="640" d:DesignHeight="480" Width="428" Height="368">
+    
+    <UserControl.Resources>
+        <resources:EditTableControl x:Name="Resources"/>
+    </UserControl.Resources>
+    
+	<Border Height="Auto" Width="400" BorderBrush="#FF5B738B" BorderThickness="3,3,3,3">
+	<Grid x:Name="LayoutRoot" Width="400" >
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="0*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+        <Grid.Background>
+            <ImageBrush ImageSource="imgs/background.jpg"/>
+        </Grid.Background>
+		<Rectangle HorizontalAlignment="Stretch" Margin="0,0,8,0" VerticalAlignment="Stretch" RadiusY="0" RadiusX="0" Opacity="0.75" Grid.Column="1" />
+		<Rectangle Height="20.8" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Top" Fill="#FF5B6D7E" RadiusX="0" RadiusY="0" d:LayoutOverrides="Height" Grid.Column="1"/>
+		<TextBlock Height="20.8" Margin="0,0,8,0" VerticalAlignment="Top" Text="{Binding textBlock_TitleBar, Source={StaticResource Resources}}" TextWrapping="Wrap" Foreground="#FFFFFFFF" TextAlignment="Center" d:LayoutOverrides="Height" Grid.Column="1"/>
+		<Border Margin="8.2,41.7,21.8,41.3" Padding="10,10,10,10" BorderThickness="2,2,2,2" BorderBrush="#FF5B6D7E" Grid.Column="1">
+			<Grid Margin="0,0,0,0">
+				<TextBlock Height="18.4" Width="36.8" Text="{Binding textBlock_Title, Source={StaticResource Resources}}" TextWrapping="Wrap" d:LayoutOverrides="Width, Height" HorizontalAlignment="Left" Margin="7.6,0,0,0" VerticalAlignment="Top"/>
+				<TextBox Height="23" TextWrapping="Wrap" d:LayoutOverrides="HorizontalAlignment" x:Name="textBoxName" Margin="61.8,0,152.2,0" VerticalAlignment="Top" LostFocus="textBoxName_LostFocus" TabIndex="1"/>
+				<Button Width="60" Content="{Binding button_Add, Source={StaticResource Resources}}" x:Name="buttonAddField" Height="20" HorizontalAlignment="Left" Margin="62.2,0,0,0" VerticalAlignment="Bottom" Click="buttonAddField_Click" TabIndex="5"/>
+				<Button Content="{Binding button_Remove, Source={StaticResource Resources}}" x:Name="buttonRemoveField" Height="20" Margin="143.6,0,142.4,0" VerticalAlignment="Bottom" d:LayoutOverrides="HorizontalAlignment" Click="buttonRemoveField_Click" Width="60" TabIndex="6"/>
+				<ListBox Width="136" x:Name="listBoxFields" HorizontalAlignment="Right" d:LayoutOverrides="Margin"/>
+				<Border Margin="0,26.715,142.4,36.6" BorderThickness="2,2,2,2" BorderBrush="#FF5B6D7E">
+					<Grid Width="200">
+						<TextBlock Width="49.6" Text="{Binding textBlock_Name, Source={StaticResource Resources}}" TextWrapping="Wrap" d:LayoutOverrides="Width" Height="20" HorizontalAlignment="Left" Margin="7.6,26,0,0" VerticalAlignment="Top"/>
+						<TextBlock Height="23.2" Width="49.6" Text="{Binding textBlock_Type, Source={StaticResource Resources}}" TextWrapping="Wrap" d:LayoutOverrides="Width, Height" HorizontalAlignment="Left" Margin="7.6,59,0,0" VerticalAlignment="Top"/>
+						<TextBox Height="23" Text="" TextWrapping="Wrap" x:Name="textBoxFieldName" Margin="58,26.315,8,0" VerticalAlignment="Top" d:LayoutOverrides="HorizontalAlignment" LostFocus="textBoxFieldName_LostFocus" TabIndex="2"/>
+						<CheckBox Height="17.8" Content="{Binding check_isStorage, Source={StaticResource Resources}}" d:LayoutOverrides="HorizontalAlignment, Height" x:Name="checkIsStorage" Margin="57.9,0,8,19.685" VerticalAlignment="Bottom" Foreground="#FF000000" Unchecked="checkIsStorage_Unchecked" Checked="checkIsStorage_Checked" TabIndex="4"/>
+						<Rectangle Height="15" RadiusX="0" RadiusY="0" Fill="#FF5B6D7E" Stroke="{x:Null}" d:LayoutOverrides="HorizontalAlignment, Margin" RenderTransformOrigin="0.5,0.5" StrokeThickness="1" Stretch="Fill" StrokeDashOffset="0" VerticalAlignment="Top">
+							<Rectangle.RenderTransform>
+								<TransformGroup>
+									<ScaleTransform ScaleY="-1"/>
+									<SkewTransform/>
+									<RotateTransform/>
+									<TranslateTransform/>
+								</TransformGroup>
+							</Rectangle.RenderTransform>
+						</Rectangle>
+						<TextBlock Height="15" Text="{Binding textBlock_SubTitleFields, Source={StaticResource Resources}}" TextWrapping="Wrap" Foreground="#FFFFFFFF" FontSize="10" TextAlignment="Center" Margin="2,0,0,0" VerticalAlignment="Top"/>
+						<ListBox Height="83" Margin="58,59.315,8,45.685" VerticalAlignment="Stretch" x:Name="listBoxFieldType" TabIndex="3"/>
+					</Grid>
+				</Border>
+			</Grid>
+		</Border>
+		<Button Height="20" HorizontalAlignment="Right" Margin="0,0,108,8" VerticalAlignment="Bottom" Content="{Binding button_Ok, Source={StaticResource Resources}}" x:Name="buttonOk" Width="60" Click="buttonOk_Click" TabIndex="7" Grid.Column="1"/>
+		<Button Height="20" HorizontalAlignment="Right" Margin="0,0,22.2,8" VerticalAlignment="Bottom" Width="60" Content="{Binding button_Cancel, Source={StaticResource Resources}}" x:Name="buttonCancel" Click="buttonCancel_Click" TabIndex="8" Grid.Column="1"/>
+	</Grid>
+	</Border>
+</UserControl>

@@ -1,0 +1,113 @@
+import "Microsoft", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "System", "platform=DotNET", "ns=DotNET", "assemblyfilename=C:\\Program Files\\Reference Assemblies\\Microsoft\\Framework\\v3.0\\System.ServiceModel.dll";
+import "Janus", "platform=DotNET", "ns=DotNET", "assemblyfilename=C:\\Users\\Alexis\\Desktop\\Janus\\Source\\Main\\Server\\Core\\bin\\Debug\\BaseDesktop.dll";
+import "Janus", "platform=DotNET", "ns=DotNET", "assemblyfilename=C:\\Users\\Alexis\\Desktop\\Janus\\Source\\Main\\Server\\Core\\bin\\Debug\\Store2Infrastructure.dll";
+
+using DotNET::System;
+using DotNET::System::IO;
+using DotNET::System::Collections;
+using DotNET::System::Collections::Generic;
+using System::Collections::Generic;
+using DotNET::Janus::Store2;
+using DotNET::Janus::Store2::EntityModel;
+using DotNET::Janus::Server::EntityModel;
+using Janus::Utils;
+
+namespace Sample{	
+	CustomServiceServer::New{
+		ServiceName = LibraryTest2;
+		StoreID = 2;
+		ServiceDescription = "A test service for a library.";
+		Relations{
+			Relation{
+				Source = "MainMenu";
+				Option = "Author";
+				Target = "Authors";
+			};
+			Relation{
+				Source = "Authors";
+				Target = "Books";
+			};
+			Relation{
+				Source = "Author";
+				Target = "Authors";
+			};
+		};
+		DataSources{
+			DataSource{
+				Name = Author;
+			};
+		};
+		Forms{
+			// Formulario de menu inicio
+			Form{
+				Type = "Menu";
+				Name = MainMenu;
+				FieldsTemplate{
+					FieldTemplate{
+						FieldName = "Author";
+						MenuText = "Books by Authors";
+					};
+				};
+			};
+			// Formulario par alistar autores
+			Form{
+				Type = "List";
+				Name = Authors;
+				InputTable = AuthorEntity;
+				OutputTable = BooksEntity;
+				IsOutputARegister = false;
+				IsInputARegister = false;
+				FieldsTemplate{
+					FieldTemplate{
+						FieldName = "LastName";
+						MenuText = "LastName";
+						Bold = true;
+						FontSize = 10;
+						X = 0.1;
+						Y = 0.2;
+					};
+					FieldTemplate{
+						FieldName = "FirstName";
+						MenuText = "FirstName";
+						Bold = true;
+						FontSize = 10;
+						X = 0.5;
+						Y = 0.2;
+					};
+				};
+			};
+			// Formulario para mostrar libros x autor
+			Form{
+				Type = "List";
+				Name = Books;
+				InputTable = BooksEntity;
+				OutputTable = BooksEntity;
+				IsOutputARegister = true;
+				IsInputARegister = false;				
+				FieldsTemplate{
+					FieldTemplate{
+						FieldName = "Name";
+						MenuText = "Title";
+						Bold = true;
+						FontSize = 10;
+						X = 0.1;
+						Y = 0.2;
+					};
+					FieldTemplate{
+						FieldName = "Description";
+						MenuText = "Description";
+						Bold = true;
+						FontSize = 10;
+						X = 0.1;
+						Y = 0.6;
+					};
+				};
+			};
+
+		};
+	};
+
+}
+

@@ -1,0 +1,43 @@
+﻿<Canvas 
+	x:Uid="canvas" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	
+	Focusable="False" OpacityMask="{x:Null}" x:Name="canvas"
+	
+	Width="90.4" Height="66.255" Background="{x:Null}" RenderTransformOrigin="0.5,0.5">
+	<Canvas.Resources>
+		<Storyboard x:Uid="Storyboard_1" x:Key="OnMouseEnter1">
+			<DoubleAnimationUsingKeyFrames x:Uid="DoubleAnimationUsingKeyFrames_1" BeginTime="00:00:00" Storyboard.TargetName="{x:Null}" Storyboard.TargetProperty="(UIElement.BitmapEffect).(OuterGlowBitmapEffect.GlowSize)">
+				<SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_1" KeyTime="00:00:00.3000000" Value="10"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Uid="Storyboard_2" x:Key="OnMouseLeave">
+			<DoubleAnimationUsingKeyFrames x:Uid="DoubleAnimationUsingKeyFrames_4" BeginTime="00:00:00" Storyboard.TargetName="{x:Null}" Storyboard.TargetProperty="(UIElement.BitmapEffect).(OuterGlowBitmapEffect.GlowSize)">
+				<SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_4" KeyTime="00:00:00" Value="10"/>
+				<SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_5" KeyTime="00:00:00.3000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+	</Canvas.Resources>
+	<Canvas.BitmapEffect>
+		<OuterGlowBitmapEffect x:Uid="OuterGlowBitmapEffect_1" GlowColor="#FFFFFFFF" GlowSize="1"/>
+	</Canvas.BitmapEffect>
+	<Canvas.RenderTransform>
+		<TransformGroup x:Uid="TransformGroup_1">
+			<ScaleTransform x:Uid="ScaleTransform_1" ScaleX="1" ScaleY="1"/>
+			<SkewTransform x:Uid="SkewTransform_1" AngleX="0" AngleY="0"/>
+			<RotateTransform x:Uid="RotateTransform_1" Angle="0"/>
+			<TranslateTransform x:Uid="TranslateTransform_1" X="0" Y="0"/>
+		</TransformGroup>
+	</Canvas.RenderTransform>
+	<Canvas.Triggers>
+		<EventTrigger x:Uid="EventTrigger_1" RoutedEvent="Mouse.MouseEnter">
+			<BeginStoryboard x:Uid="BeginStoryboard_1" Storyboard="{StaticResource OnMouseEnter1}"/>
+		</EventTrigger>
+		<EventTrigger x:Uid="EventTrigger_2" RoutedEvent="Mouse.MouseLeave">
+			<BeginStoryboard x:Uid="OnMouseLeave_BeginStoryboard" x:Name="OnMouseLeave_BeginStoryboard" Storyboard="{StaticResource OnMouseLeave}"/>
+		</EventTrigger>
+	</Canvas.Triggers>
+	<Rectangle x:Uid="rectangle" x:Name="rectangle" Width="90.4" Height="66" Fill="#FFBCC8D8" Stroke="#FFFFFFFF" StrokeThickness="2" RadiusX="3.4" RadiusY="3.4"/>
+	<Rectangle x:Uid="Rectangle_1" Fill="#FF75C5F0" StrokeThickness="2" RadiusX="1.882" RadiusY="1.882" Width="86" Height="22.583" Canvas.Left="2.198" Canvas.Top="2.195"/>
+	<TextBlock x:Uid="textBlockTableName" Width="86" Height="36.3" Canvas.Left="2.198" Text="&lt;No Name&gt;" TextWrapping="Wrap" x:Name="textBlockTableName" TextAlignment="Center" Foreground="#FF515151"/>
+</Canvas>

@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CommunicationException" xml:space="preserve">
+    <value>El proceso falló, conexión cerrada</value>
+  </data>
+  <data name="ConfirmServiceInstallationTitle" xml:space="preserve">
+    <value>Instalar Servicio</value>
+  </data>
+  <data name="ConfirmServiceUninstall" xml:space="preserve">
+    <value>¿Eliminar Servicio?</value>
+  </data>
+  <data name="ConnectionStateSuccess" xml:space="preserve">
+    <value>Conectado</value>
+  </data>
+  <data name="DeviceInfoNotFoundError" xml:space="preserve">
+    <value>Su dispositivo no fue encontrado</value>
+  </data>
+  <data name="DeviceNotFoundError" xml:space="preserve">
+    <value>Información de dispositivo no encontrada</value>
+  </data>
+  <data name="DeviceProfileFormMACError" xml:space="preserve">
+    <value>Dirección MAC no puede estar vacía</value>
+  </data>
+  <data name="DeviceProfileFormModelError" xml:space="preserve">
+    <value>Dispositivo no puede estar vacío</value>
+  </data>
+  <data name="DeviceProfileFormTypeError" xml:space="preserve">
+    <value>El tipo no puede estar vacío</value>
+  </data>
+  <data name="DeviceProfileFormVersionError" xml:space="preserve">
+    <value>La versión no puede estar vacía</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ImageNotFoundError" xml:space="preserve">
+    <value>No se pudo encontrar imágenes para mostrar</value>
+  </data>
+  <data name="InvalidHostAddressError" xml:space="preserve">
+    <value>Dirección de host invalida</value>
+  </data>
+  <data name="LoginPermissionError" xml:space="preserve">
+    <value>No tiene permisos suficientes</value>
+  </data>
+  <data name="ProfileFormAddressError" xml:space="preserve">
+    <value>La dirección no puede estar vacía</value>
+  </data>
+  <data name="ProfileFormFirstNameError" xml:space="preserve">
+    <value>El nombre no puede estar vacío</value>
+  </data>
+  <data name="ProfileFormPhoneError" xml:space="preserve">
+    <value>El telefono no puede estar vacío</value>
+  </data>
+  <data name="ProfileFormSurnameError" xml:space="preserve">
+    <value>El apellido no puede estar vacío</value>
+  </data>
+  <data name="SaveCustomerSuccess" xml:space="preserve">
+    <value>Cliente guardado exitósamente</value>
+  </data>
+  <data name="SaveMallSuccess" xml:space="preserve">
+    <value>Configuración general guardada con éxito</value>
+  </data>
+  <data name="ServiceInstallationError" xml:space="preserve">
+    <value>Error mientras se instalaba el servicio</value>
+  </data>
+  <data name="ServiceInstallationSuccess" xml:space="preserve">
+    <value>¿Desea Instalar el Servicio?</value>
+  </data>
+  <data name="ServiceRemoved" xml:space="preserve">
+    <value>Servicio eliminado</value>
+  </data>
+  <data name="ServiceRemoveError" xml:space="preserve">
+    <value>No se puede eliminar el servicio, por favor intente nuevamente más tarde</value>
+  </data>
+  <data name="ServiceUninstallTitle" xml:space="preserve">
+    <value>Eliminar servicio</value>
+  </data>
+  <data name="SuccessTitle" xml:space="preserve">
+    <value>Éxito</value>
+  </data>
+  <data name="TargetInvocationExceptionMessage" xml:space="preserve">
+    <value>El proceso falló, conexión cerrada</value>
+  </data>
+  <data name="CustomerNullArgument" xml:space="preserve">
+    <value>customer no puede ser nulo</value>
+  </data>
+  <data name="FileNameNullArgument" xml:space="preserve">
+    <value>El nombre de archivo no puede ser nulo</value>
+  </data>
+  <data name="HelpNullArgument" xml:space="preserve">
+    <value>Ayuda no puede ser vacío o nulo</value>
+  </data>
+  <data name="IpNullArgument" xml:space="preserve">
+    <value>IpServer no puede ser nulo</value>
+  </data>
+  <data name="UtnEmallProject" xml:space="preserve">
+    <value>Proyecto UtnEmall</value>
+  </data>
+  <data name="LoginFailedPasswordIncorrect" xml:space="preserve">
+    <value>Contraseña incorrecta</value>
+  </data>
+  <data name="LoginFailedUserIncorrect" xml:space="preserve">
+    <value>Usuario incorrecto</value>
+  </data>
+  <data name="PingNullArgument" xml:space="preserve">
+    <value>Tiempo de ping no puede ser nulo</value>
+  </data>
+  <data name="PortNullArgument" xml:space="preserve">
+    <value>El puerto no puede ser nulo</value>
+  </data>
+  <data name="UserNameEmpty" xml:space="preserve">
+    <value>El nombre de usuario y contraseña no pueden estar vacíos</value>
+  </data>
+  <data name="OfflineMessage" xml:space="preserve">
+    <value>No Conectado</value>
+  </data>
+  <data name="OnlineMessage" xml:space="preserve">
+    <value>Conectado</value>
+  </data>
+  <data name="FileIOError" xml:space="preserve">
+    <value>No se pudo completar la operación</value>
+  </data>
+  <data name="ApplicationHelp" xml:space="preserve">
+    <value>application.es</value>
+  </data>
+  <data name="ConfigurationHelp" xml:space="preserve">
+    <value>configuration.es</value>
+  </data>
+  <data name="PerfilHelp" xml:space="preserve">
+    <value>perfilEs</value>
+  </data>
+  <data name="ServiceHelp" xml:space="preserve">
+    <value>services.es</value>
+  </data>
+  <data name="ServerNotFoundHelp" xml:space="preserve">
+    <value>serverNotFound.es</value>
+  </data>
+</root>

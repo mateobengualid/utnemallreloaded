@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A7081E55-9370-4237-AECE-9A8C6664CE27}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataModel</RootNamespace>
+    <AssemblyName>DataModel</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>DataModelKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CategoryDataAccess.cs" />
+    <Compile Include="ComponentDataAccess.cs" />
+    <Compile Include="ConnectionPointDataAccess.cs" />
+    <Compile Include="ConnectionWidgetDataAccess.cs" />
+    <Compile Include="CustomerDataAccess.cs" />
+    <Compile Include="CustomerServiceDataDataAccess.cs" />
+    <Compile Include="DataModelDataAccess.cs" />
+    <Compile Include="DeviceProfileDataAccess.cs" />
+    <Compile Include="FieldDataAccess.cs" />
+    <Compile Include="GroupDataAccess.cs" />
+    <Compile Include="MallDataAccess.cs" />
+    <Compile Include="PermissionDataAccess.cs" />
+    <Compile Include="PreferenceDataAccess.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterAssociationCategoriesDataAccess.cs" />
+    <Compile Include="RegisterAssociationDataAccess.cs" />
+    <Compile Include="RelationDataAccess.cs" />
+    <Compile Include="ServiceCategoryDataAccess.cs" />
+    <Compile Include="ServiceDataAccess.cs" />
+    <Compile Include="StoreCategoryDataAccess.cs" />
+    <Compile Include="StoreDataAccess.cs" />
+    <Compile Include="TableDataAccess.cs" />
+    <Compile Include="UserActionClientDataDataAccess.cs" />
+    <Compile Include="UserActionDataAccess.cs" />
+    <Compile Include="UserDataAccess.cs" />
+    <Compile Include="UserGroupDataAccess.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\BaseDesktop\BaseDesktop.csproj">
+      <Project>{BD074624-7847-458C-ACA0-E1707E7E68C0}</Project>
+      <Name>BaseDesktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EntityModel\EntityModel.csproj">
+      <Project>{2B6FB7B8-4944-4650-A06A-7BAD336251A7}</Project>
+      <Name>EntityModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="CustomDictionary.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DataModelKey.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

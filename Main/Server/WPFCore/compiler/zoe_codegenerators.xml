@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ZOECodeGenerators>
+  <ZOECodeGenerator name="NET1CodeGenerator_Beta" interfaceFileName="OutputModules\lib_zoe_outmod_cs.dll" isDynamic="true"></ZOECodeGenerator>
+  <ZOECodeGenerator name="JavaCodeGenerator_Beta" interfaceFileName="OutputModules\lib_zoe_outmod_java.dll" isDynamic="true"></ZOECodeGenerator>
+  <ZOECodeGenerator name="DPP1CodeGenerator_Beta" interfaceFileName="OutputModules\lib_zoe_outmod_dpp.dll" isDynamic="true"></ZOECodeGenerator>
+</ZOECodeGenerators>

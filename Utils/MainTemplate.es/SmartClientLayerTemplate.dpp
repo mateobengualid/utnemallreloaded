@@ -1,0 +1,468 @@
+import "Microsoft", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+using DotNET::System;
+using DotNET::System::IO;
+using DotNET::System::Collections;
+using DotNET::LayerD::CodeDOM;
+using DotNET::LayerD::ZOECompiler;
+
+namespace UtnEmall::Utils{
+	public factory class SCLGenerator{
+		static string^ _entityTypesNamespace;
+		static string^ _serviceNamespace;
+		static string^ _originalClassName;
+		static string^ _originalClassName2;
+
+		static XplNamespace^ _sourceNamespace;
+		static XplClass^ _clase;
+	public:
+		static exp void SetNamespace(iname void salNamespace, bool isCustomService)
+		{
+			// If the namespace was set already, then ignore the creation, this
+			// was due to repeated calls to this function.
+			if(_sourceNamespace==null)
+			{	
+				// Construct the namespace based on the identifier.
+				_sourceNamespace = (XplNamespace^)writecode{
+					namespace $salNamespace{
+					}
+				}.Children().FirstNode();
+				// Insert a new namespace and a class to know if the client is connected.
+				context.CurrentDocumentBody.Children().InsertAtEnd(_sourceNamespace);
+
+			}
+
+			return null;
+		}
+
+		static exp void GenerateAccessFacades(string^ _serviceNamespace, string^ _entityTypesNamespace){
+			return GenerateAccessFacades(_serviceNamespace, _entityTypesNamespace, false);
+		}
+
+		static exp void GenerateAccessFacades(string^ _serviceNamespace, string^ _entityTypesNamespace, bool isCustomService){
+			_serviceNamespace = _serviceNamespace;
+			_entityTypesNamespace = _entityTypesNamespace;
+			// Set the current class name
+			string^ currentClassName = context.CurrentClass.get_name();			
+			if(currentClassName[0]=='I')
+				_originalClassName = currentClassName.Substring(1);
+			else
+				_originalClassName = currentClassName;
+				
+			// Full string name to use for static layer
+			_originalClassName2 = "UtnEmall.Client.Entity." + _originalClassName;
+			
+			_clase = null;
+			// Iterate through class members, if it is a method, then process it.
+			for(XplNode^ member in context.CurrentClass.Children()){
+				if((member.get_TypeName()=="XplFunction") &&
+					(((XplFunction^)member).get_name()!="GenerateWSProxy") &&
+					(((XplFunction^)member).get_name()!="GenerateAccessFacades"))
+				{
+					GenerateFacade((XplFunction^)member, isCustomService);
+				}
+			}
+
+			_sourceNamespace.Children().InsertAtEnd(_clase);
+			return null;
+		}
+	private:
+		static void GenerateFacade(XplFunction^ function, bool isCustomService)
+		{
+			XplIName^ className = new XplIName(_originalClassName + "Smart");
+			// Establish the local business clients.						
+			XplIName^ localClientType = new XplIName(_originalClassName);			
+			if(isCustomService)
+			{
+				localClientType = new XplIName(_originalClassName + "Local");
+			}
+
+			// Establish the WS clients.
+			XplIName^ wsClientType = new XplIName(_originalClassName + "Client");
+
+			// Establish the entity type. (for non customer services only)
+			XplIName^ entityType = new XplIName(_originalClassName + "Entity");
+						
+			// Establish the values for the functions.
+			XplIName^ functionName = new XplIName(function.get_name());
+			XplType^ functionReturnType = (XplType^)function.get_ReturnType().Clone();
+			XplParameters^ functionParameters = (XplParameters^)function.get_Parameters().Clone();
+			
+			// Establish the generic function for the clients.
+			XplExpression^ remoteFunctionCall = writecode(Remote.$functionName());
+			XplExpression^ localFunctionCall = writecode(Local.$functionName());
+			// If the function is static change the call
+			if( function.get_storage() == XplVarstorage_enum::STATIC || function.get_storage() == XplVarstorage_enum::STATIC_EXTERN )
+			{
+				remoteFunctionCall = writecode( $wsClientType::$functionName() );
+				localFunctionCall = writecode( $localClientType::$functionName() );
+			}
+			
+			XplFunctioncall^ remoteFC = (XplFunctioncall^)remoteFunctionCall.get_Content();
+			XplFunctioncall^ localFC = (XplFunctioncall^)localFunctionCall.get_Content();
+			// Establish the function name for the data synchronization.
+			XplIName^ synchFunctionName = new XplIName("Get"+_originalClassName+"Where");
+
+			// Insert all the arguments in the two functions.
+			for(XplParameter^ param in function.get_Parameters().Children())
+			{
+				XplIName^ paramName = new XplIName( param.get_name() );
+				// Add all parameters to remote business layer
+				remoteFC.get_args().Children().InsertAtEnd( writecode($paramName) );
+				// Do not add session parameter to local business layer calls
+				if(param.get_name() != "session")
+				{
+					localFC.get_args().Children().InsertAtEnd( writecode($paramName) );
+				}
+			}
+
+			// The type for the list of entities (non customer services)
+			XplIName^ entityClientList = new XplIName("ListOf" + _originalClassName);
+			// Type of List Of LastSyncEntity 
+			XplIName^ LastSyncList = new XplIName("ListOfLastSyncEntity");
+			
+			if(_clase == null && !isCustomService)
+			{
+				// Common class body for non customer services smart client layer
+				_clase = writecode{
+					public class $className{
+					private: 
+						$localClientType^ _local;
+						$wsClientType^ _remote;
+						static DotNET::UtnEmall::Client::EntityModel::LastSyncEntity^ _lastSync;
+
+						$localClientType^ property Local
+						{
+							get
+							{
+								if(_local == null)
+								{
+									_local = new $localClientType();
+								}
+								return _local;
+							}
+						}
+
+						$wsClientType^ property Remote
+						{
+							get
+							{
+								if(_remote == null)
+								{
+									_remote = new $wsClientType(
+										DotNET::UtnEmall::Client::SmartClientLayer::Connection::ServerBinding, 
+										new EndpointAddress(DotNET::UtnEmall::Client::SmartClientLayer::Connection::ServerUri.AbsoluteUri + $_originalClassName)
+									);
+								}
+								return _remote;
+							}
+						}
+
+						static DotNET::UtnEmall::Client::EntityModel::LastSyncEntity^ property LastSync
+						{
+							get
+							{
+								if(_lastSync == null)
+								{
+									DotNET::UtnEmall::Client::DataModel::LastSyncDataAccess^ lastSyncDataAccess = new DotNET::UtnEmall::Client::DataModel::LastSyncDataAccess();
+									$LastSyncList^ results = lastSyncDataAccess.LoadWhere(DotNET::UtnEmall::Client::EntityModel::LastSyncEntity::DBEntityName, $_originalClassName2, false, DotNET::UtnEmall::Client::DataModel::OperatorType::Equal);
+
+									if(results.Count > 0)
+									{
+										_lastSync = results[0];
+									}
+									else
+									{
+										_lastSync = new DotNET::UtnEmall::Client::EntityModel::LastSyncEntity();
+										_lastSync.EntityName = $_originalClassName2;
+										_lastSync.LastTimestamp = DotNET::UtnEmall::Client::SmartClientLayer::Connection::MinDate;
+									}
+								}
+
+								return _lastSync;
+							}
+
+							set
+							{
+								_lastSync.LastTimestamp = value.LastTimestamp;
+								_lastSync.EntityName = value.EntityName;
+								DotNET::UtnEmall::Client::DataModel::LastSyncDataAccess^ lastSyncDataAccess = new DotNET::UtnEmall::Client::DataModel::LastSyncDataAccess();
+								lastSyncDataAccess.Save(_lastSync);
+							}
+						}
+
+					public:
+						void CheckIsSynchronized()
+						{
+							// if we didn't synchronized since the last disconnection
+							if($className::LastSync.LastTimestamp <= Connection::LastTimeDisconnected)
+							{
+								// get the remote entities that are not saved on the device
+								$entityClientList^ remoteUpdates = Remote.$synchFunctionName($entityType::DBTimestamp , $className::LastSync.LastTimestamp , false, DotNET::UtnEmall::Client::DataModel::OperatorType::Greater, Connection::Session);
+
+								// save the remote entities on the device
+								for($entityType^ remoteEntity in remoteUpdates)
+								{
+									Local.Save(remoteEntity);
+								}
+
+								DotNET::UtnEmall::Client::EntityModel::LastSyncEntity^ now = new DotNET::UtnEmall::Client::EntityModel::LastSyncEntity();
+								now.LastTimestamp = DateTime::Now;
+								now.EntityName = $_originalClassName2;
+								$className::LastSync = now;
+							}
+						}
+					}
+				};
+			}
+			else if(_clase == null && isCustomService)
+			{
+				_clase = writecode{
+					public class $className{
+					private: 
+						$localClientType^ _local;
+						$wsClientType^ _remote;						
+						static Hashtable^ lastSyncs = new Hashtable();
+
+						$localClientType^ property Local
+						{
+							get
+							{
+								if(_local == null)
+								{
+									_local = new $localClientType();
+								}
+								return _local;
+							}
+						}
+						$wsClientType^ property Remote
+						{
+							get
+							{
+								if(_remote == null)
+								{
+									_remote = new $wsClientType(
+										DotNET::UtnEmall::Client::SmartClientLayer::Connection::ServerBinding, 
+										new EndpointAddress(DotNET::UtnEmall::Client::SmartClientLayer::Connection::ServerUri.AbsoluteUri + $_originalClassName)
+									);
+								}
+								return _remote;
+							}
+						}
+
+						static DotNET::UtnEmall::Client::EntityModel::LastSyncEntity^ GetLastSynchronizationOf(string^ entityTypeName){
+							if(lastSyncs[entityTypeName]==null){
+								// Search the last sync date for the current Entity
+								DotNET::UtnEmall::Client::DataModel::LastSyncDataAccess^ lastSyncDataAccess = new DotNET::UtnEmall::Client::DataModel::LastSyncDataAccess();
+								$LastSyncList^ results = lastSyncDataAccess.LoadWhere(DotNET::UtnEmall::Client::EntityModel::LastSyncEntity::DBEntityName, entityTypeName, false, DotNET::UtnEmall::Client::DataModel::OperatorType::Equal);
+								DotNET::UtnEmall::Client::EntityModel::LastSyncEntity^ lastSync;
+
+								if(results.Count > 0)
+								{
+									lastSync = results[0];
+								}
+								else
+								{
+									lastSync = new DotNET::UtnEmall::Client::EntityModel::LastSyncEntity();
+									lastSync.EntityName = entityTypeName;
+									lastSync.LastTimestamp = DotNET::UtnEmall::Client::SmartClientLayer::Connection::MinDate;
+								}
+								// Add the sync date to the current hashtable
+								lastSyncs.Add(entityTypeName, lastSync);
+							}
+							return (DotNET::UtnEmall::Client::EntityModel::LastSyncEntity^)lastSyncs[entityTypeName];
+						}
+					}
+				};
+			}
+
+			XplFunction^ facadeFunction = null;
+			
+			if(!isCustomService){
+				// Generate the skeleton for the switch method.
+				facadeFunction = (XplFunction^)writecode{%
+					public:
+						$functionReturnType $functionName()
+						{
+							UtnEmall::Utils::List::NewCollection($entityClientList , gettype($entityType^));
+							UtnEmall::Utils::List::NewCollection($LastSyncList , gettype(DotNET::UtnEmall::Client::EntityModel::LastSyncEntity^));							
+							$functionReturnType result;
+							// if we are connected
+							if(Connection::IsConnected)
+							{
+								CheckIsSynchronized();
+								result = $remoteFunctionCall;
+							}
+							else
+							{
+								result = $localFunctionCall;
+							}
+							return result;
+						}
+				%}.Children().FirstNode();
+			}
+			else{
+				XplIName^ syncEntityFunc = null;
+				XplIName^ remoteEntityType = null;
+				XplIName^ entityDAType = null;
+				
+				// Generate the checkSync function from Entity
+				if(functionReturnType.get_dt()!=null)
+				{
+					// WARNING : Asumo que el nombre del tipo de retorno comienza con "CollectionOf ... Entity"
+					string^ entityTypeString = functionReturnType.get_dt().get_typename().Substring(12);
+					// Name for the function that will check these entities
+					string^ syncFuncName = "Check" + entityTypeString;
+					// Name for the data access class of the entity type to check
+					string^ entityDA = entityTypeString.Substring(0, entityTypeString.Length - 6) + "DataAccess";
+										
+					// Initialize inames 
+					remoteEntityType = new XplIName(entityTypeString);
+					syncEntityFunc = new XplIName(syncFuncName);
+					entityDAType = new XplIName(entityDA);
+					
+					// Full string to use on LastSync table to identify this entity type
+					// Don't move this line upper :-) 
+					entityTypeString = ((XplNamespace^)function.get_Parent().get_Parent()).get_name().Replace("::",".") + "." + entityTypeString;
+
+					bool exists = false;
+					// Search for the Check function
+					for(XplNode^ node in _clase.Children())
+					{	
+						if(node is XplFunction)
+						{	
+							XplFunction^ nodeFunc = (XplFunction^)node;
+							if(nodeFunc.get_name() == syncEntityFunc.Identifier)
+							{
+								exists = true;
+							}
+						}
+					}
+					
+					if(!exists)
+					{
+						// Create function to check for certain entity type
+						_clase.Children().InsertAtEnd(
+							writecode{%
+							private:
+							void $syncEntityFunc($functionReturnType entities)
+							{
+								// Check if each entity is up-to-date
+								// If it isn't, then save it locally
+								DotNET::UtnEmall::Client::EntityModel::LastSyncEntity^ lastSync = $className::GetLastSynchronizationOf( $entityTypeString );
+								$entityDAType^ dataAccess = new $entityDAType();
+
+								for($remoteEntityType^ remoteEntity in entities)
+								{
+									if(remoteEntity.Timestamp > lastSync.LastTimestamp)
+									{
+										if(remoteEntity.Deleted)
+										{
+											// Delete the entity from mobile database.
+											dataAccess.Delete(remoteEntity, null);
+										}
+										else
+										{
+											// Save the new or modified entity locally
+											dataAccess.Save(remoteEntity);
+										}
+									}
+									else{
+										$remoteEntityType^ tempEntity = dataAccess.Load(remoteEntity.Id, false);
+										if(tempEntity.Id == 0 || tempEntity.Timestamp < remoteEntity.Timestamp)
+										{
+											// Save the new or modified entity locally
+											dataAccess.Save(remoteEntity);
+										}
+									}
+								}
+
+								// Save the new last sync time
+								lastSync.LastTimestamp = DateTime::Now;
+
+								// Assign the new sync info and save
+								DotNET::UtnEmall::Client::DataModel::LastSyncDataAccess^ lastSyncDataAccess = new DotNET::UtnEmall::Client::DataModel::LastSyncDataAccess();
+								lastSyncDataAccess.Save(lastSync);
+							}
+						%}.Children());
+					}
+
+					//   the skeleton for the switch method.
+					facadeFunction = (XplFunction^)writecode{%
+						public:
+							$functionReturnType $functionName()
+							{
+								UtnEmall::Utils::List::NewCollection($LastSyncList , gettype(DotNET::UtnEmall::Client::EntityModel::LastSyncEntity^));
+								$functionReturnType result;
+								// if we are connected
+								if(Connection::IsConnected)
+								{
+									result = $remoteFunctionCall;
+									$syncEntityFunc(result);
+								}
+								else
+								{
+									result = $localFunctionCall;
+								}
+								return result;
+							}
+					%}.Children().FirstNode();
+				}
+				
+				// Special case for Save functions
+				if(functionReturnType.get_typename() == "$BOOLEAN$")
+				{
+					facadeFunction = (XplFunction^)writecode{%
+						public:
+							$functionReturnType $functionName()
+							{
+								if(Connection::IsConnected)
+								{
+									return $remoteFunctionCall;
+								}
+								return false;
+							}
+					%}.Children().FirstNode();
+				}
+			}
+			
+			// Insert the try-catch to smart client functions
+			ApplyTryCatch(facadeFunction);
+
+			if(facadeFunction != null){
+				Console::WriteLine("Funcion "+ facadeFunction.get_name());
+				// Insert the function inside the smart client class
+				_clase.Children().InsertAtEnd(facadeFunction);
+				// Insert the parameters inside function declaration
+				facadeFunction.set_Parameters(functionParameters);
+			}
+			
+		}
+		
+	private:
+		static void ApplyTryCatch(XplFunction^ facadeFunction){
+			if(facadeFunction == null) return;
+			
+			XplFunctionBody^ mainBody = facadeFunction.get_FunctionBody();
+			if(mainBody == null) return;
+			
+			facadeFunction.set_FunctionBody(
+				writecode{
+					try{
+						$mainBody;
+					}
+					catch(DotNET::UtnEmall::Client::DataModel::UtnEmallDataAccessException^ dataAccessError){
+						throw new DotNET::UtnEmall::Client::SmartClientLayer::UtnEmallSmartLayerException(dataAccessError.Message, dataAccessError);
+					}
+					catch(DotNET::UtnEmall::Client::BusinessLogic::UtnEmallBusinessLogicException^ businessLogicError){
+						throw new DotNET::UtnEmall::Client::SmartClientLayer::UtnEmallSmartLayerException(businessLogicError.Message, businessLogicError);
+					}
+					catch(DotNET::System::ServiceModel::CommunicationException^ communicationError){
+						throw new DotNET::UtnEmall::Client::SmartClientLayer::UtnEmallSmartLayerException(communicationError.Message, communicationError);
+					}
+				}
+			);
+		}
+	}
+}
+

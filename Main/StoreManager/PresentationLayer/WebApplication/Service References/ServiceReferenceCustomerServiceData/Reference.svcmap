@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d26ea76f-30d9-43d4-b2d9-e64344c6d7ca" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8081/CustomerServiceData" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CustomerServiceData.xsd" MetadataType="Schema" ID="2b78a770-8cde-43e9-bda7-e66a8bd30fce" SourceId="1" SourceUrl="http://cpu14:8081/CustomerServiceData?xsd=xsd0" />
+    <MetadataFile FileName="CustomerServiceData.disco" MetadataType="Disco" ID="8436c4fe-35d6-4ef7-af0f-85460b909073" SourceId="1" SourceUrl="http://cpu14:8081/CustomerServiceData?disco" />
+    <MetadataFile FileName="CustomerServiceData1.xsd" MetadataType="Schema" ID="f03dfadc-d5da-49dc-ab87-592d063c2cdc" SourceId="1" SourceUrl="http://cpu14:8081/CustomerServiceData?xsd=xsd1" />
+    <MetadataFile FileName="CustomerServiceData.wsdl" MetadataType="Wsdl" ID="e040b0d2-300e-43ae-bc9b-b55c43eedb9e" SourceId="1" SourceUrl="http://cpu14:8081/CustomerServiceData?wsdl" />
+    <MetadataFile FileName="CustomerServiceData2.xsd" MetadataType="Schema" ID="0863c4bf-025f-428e-be15-3031e0d86c6d" SourceId="1" SourceUrl="http://cpu14:8081/CustomerServiceData?xsd=xsd2" />
+    <MetadataFile FileName="CustomerServiceData3.xsd" MetadataType="Schema" ID="0546648f-9ffb-4a03-81e4-b72b95818803" SourceId="1" SourceUrl="http://cpu14:8081/CustomerServiceData?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

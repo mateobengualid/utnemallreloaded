@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://cpu12:8081/Group?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" />
+  <xs:import schemaLocation="http://cpu12:8081/Group?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/UtnEmall.Server.Base" />
+  <xs:element name="Save">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="groupEntity" nillable="true" type="q1:GroupEntity" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="SaveResult" nillable="true" type="q2:GroupEntity" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Delete">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="groupEntity" nillable="true" type="q3:GroupEntity" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="DeleteResult" nillable="true" type="q4:GroupEntity" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGroup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:int" />
+        <xs:element minOccurs="0" name="loadRelation" type="xs:boolean" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGroupResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="GetGroupResult" nillable="true" type="q5:GroupEntity" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllGroup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="loadRelation" type="xs:boolean" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllGroupResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="GetAllGroupResult" nillable="true" type="q6:ArrayOfGroupEntity" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGroupWhere">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="propertyName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="expValue" nillable="true" type="xs:anyType" />
+        <xs:element minOccurs="0" name="loadRelation" type="xs:boolean" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/UtnEmall.Server.Base" minOccurs="0" name="operatorType" type="q7:OperatorType" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGroupWhereResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="GetGroupWhereResult" nillable="true" type="q8:ArrayOfGroupEntity" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGroupWhereEqual">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="propertyName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="expValue" nillable="true" type="xs:anyType" />
+        <xs:element minOccurs="0" name="loadRelation" type="xs:boolean" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGroupWhereEqualResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="GetGroupWhereEqualResult" nillable="true" type="q9:ArrayOfGroupEntity" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Validate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="group" nillable="true" type="q10:GroupEntity" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ValidateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ValidateResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

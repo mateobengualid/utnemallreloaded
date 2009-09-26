@@ -1,0 +1,35 @@
+import "Microsoft", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "LayerD.CodeDOM", "platform=DotNET", "ns=DotNET", "assembly=lib_layerd_xpl_codedom_net";
+import "LayerD.ZOECompiler", "platform=DotNET", "ns=DotNET", "assembly=lib_zoec_core";
+using DotNET::System;
+using DotNET::System::IO;
+using DotNET::System::Collections;
+using DotNET::LayerD::CodeDOM;
+using DotNET::LayerD::ZOECompiler;
+using Microsoft::Tools::ServiceModel;
+using Janus::Utils;
+
+namespace Sample{
+
+	class NewRequest{
+	}
+	class NewResponse{
+	}
+	interface ICustomer{
+	}
+
+	CFClientBase::New(CFClientBaseICustomer, gettype(ICustomer));
+
+	public class CustomerClient inherits CFClientBaseICustomer implements ICustomer
+	{
+	public:
+		void Hola(){
+
+			CFClientBase::MakeInvoke(CFClientBaseICustomer, gettype(NewRequest), gettype(NewResponse));
+
+	        NewResponse retVal = this.Invoke(new CFInvokeInfo(), new NewRequest());
+		}
+	}
+}
+

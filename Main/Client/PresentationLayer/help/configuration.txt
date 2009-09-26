@@ -1,0 +1,1 @@
+﻿Select the Mall Configuration option to modify the mall server's IP, or the Customer Configuration option to modify the user name and password of the customer who uses the application. WARNING: Modifying this data can result in no longer being able to run the application.

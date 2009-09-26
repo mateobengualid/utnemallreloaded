@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="043a6d06-26c9-4524-8e6b-b991e4f82664" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8081/Category" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Category1.wsdl" MetadataType="Wsdl" ID="08849ec3-539c-4f73-b06f-944ae4a54c8f" SourceId="1" SourceUrl="http://cpu14:8081/Category?wsdl" />
+    <MetadataFile FileName="Category1.disco" MetadataType="Disco" ID="0a1a796a-1f51-4d0a-8495-b392ab027a17" SourceId="1" SourceUrl="http://cpu14:8081/Category?disco" />
+    <MetadataFile FileName="Category4.xsd" MetadataType="Schema" ID="30fd9a22-464a-41ee-9c26-5730ff4f1912" SourceId="1" SourceUrl="http://cpu14:8081/Category?xsd=xsd3" />
+    <MetadataFile FileName="Category41.xsd" MetadataType="Schema" ID="44a3637e-f376-4a8a-96ef-ed42e8d45dcc" SourceId="1" SourceUrl="http://cpu14:8081/Category?xsd=xsd0" />
+    <MetadataFile FileName="Category42.xsd" MetadataType="Schema" ID="9f807b0a-1e68-4975-af79-17b80d0bf350" SourceId="1" SourceUrl="http://cpu14:8081/Category?xsd=xsd1" />
+    <MetadataFile FileName="Category43.xsd" MetadataType="Schema" ID="6234e845-4ba1-401d-9e7f-bb35fdb0943c" SourceId="1" SourceUrl="http://cpu14:8081/Category?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

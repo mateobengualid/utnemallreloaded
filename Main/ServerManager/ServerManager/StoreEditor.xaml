@@ -1,0 +1,33 @@
+﻿<UserControl
+	x:Uid="UserControl_1" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:UtnEmall.ServerManager="clr-namespace:UtnEmall.ServerManager"
+	x:Class="UtnEmall.ServerManager.StoreEditor"
+	Width="640" Height="480">
+
+	<Grid x:Uid="Grid_1">
+		<Image x:Uid="Image_1" HorizontalAlignment="Right" Margin="200,0,0,100" Width="Auto" Source="imgs\store_mono.png" Stretch="Fill"/>
+		<Label x:Uid="Title" HorizontalAlignment="Left" Margin="8,8,0,0" VerticalAlignment="Top" Width="292" Height="37" Content="{x:Static UtnEmall.ServerManager:UIResources.AddStore}" FontSize="20" x:Name="Title"/>
+		<Button x:Uid="bOK" Margin="0,0,121,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.OK}" x:Name="bOK" HorizontalAlignment="Right" Width="100" Click="OnOkClicked"/>
+		<Button x:Uid="bCancel" Margin="0,0,8,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Cancel}" x:Name="bCancel" HorizontalAlignment="Right" Width="100" Click="OnCancelClicked"/>
+		<UniformGrid x:Uid="UniformGrid_1" Margin="8,49,0,0" Columns="2" Rows="8" HorizontalAlignment="Left" Width="364" Height="230" VerticalAlignment="Top">
+			<Label x:Uid="Label_1" Width="154" Height="35" Content="{x:Static UtnEmall.ServerManager:UIResources.Name}" FontSize="16" Foreground="#FF444444"/>
+			<TextBox x:Uid="TxtName" Width="175" Height="25" Text="" TextWrapping="Wrap" x:Name="TxtName" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
+			<Label x:Uid="Label_2" Width="154" Height="35" Content="{x:Static UtnEmall.ServerManager:UIResources.Phone}" FontSize="16" Foreground="#FF444444"/>
+			<TextBox x:Uid="TxtPhone" Height="25" Text="" TextWrapping="Wrap" Width="175" x:Name="TxtPhone" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
+			<Label x:Uid="Label_3" Width="154" Height="35" Content="{x:Static UtnEmall.ServerManager:UIResources.ContactName}" FontSize="16" Foreground="#FF444444"/>
+			<TextBox x:Uid="TxtContact" Height="25" Text="" TextWrapping="Wrap" Width="175" x:Name="TxtContact" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
+			<Label x:Uid="Label_4" Width="154" Content="{x:Static UtnEmall.ServerManager:UIResources.Website}" FontSize="16" Foreground="#FF444444" Height="35"/>
+			<TextBox x:Uid="TxtWebsite" Text="" TextWrapping="Wrap" Width="175" Height="25" x:Name="TxtWebsite" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
+			<Label x:Uid="Label_5" Width="154" Content="{x:Static UtnEmall.ServerManager:UIResources.Email}" FontSize="16" Foreground="#FF444444" Height="35"/>
+			<TextBox x:Uid="TxtEmail" Text="" TextWrapping="Wrap" Width="175" Height="25" x:Name="TxtEmail" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
+			<Label x:Uid="Label_6" Width="154" Content="{x:Static UtnEmall.ServerManager:UIResources.StoreNumber}" FontSize="16" Foreground="#FF444444" Height="35"/>
+			<TextBox x:Uid="TxtNumber" Text="" TextWrapping="Wrap" Height="25" Width="175" x:Name="TxtNumber" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
+			<Label x:Uid="Label_7" Width="150" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.InternalPhone}" Foreground="#FF444444" FontSize="16"/>
+			<TextBox x:Uid="TxtInternalPhone" Width="175" Height="25" Text="" TextWrapping="Wrap" Background="#33FFFFFF" x:Name="TxtInternalPhone"/>
+			<Label x:Uid="Label_8" Width="150" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Owner}" Foreground="#FF444444" FontSize="16"/>
+			<TextBox x:Uid="TxtOwner" Width="175" Height="25" Text="" TextWrapping="Wrap" Background="#33FFFFFF" x:Name="TxtOwner"/>
+		</UniformGrid>
+		<Button x:Uid="bCategories" Margin="0,0,235,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Categories}" x:Name="bCategories" Click="OnCategoriesClicked" Width="100" HorizontalAlignment="Right"/>
+	</Grid>
+</UserControl>

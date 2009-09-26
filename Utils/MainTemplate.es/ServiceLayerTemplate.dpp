@@ -1,0 +1,428 @@
+import "Microsoft", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+//import "System.ServiceModel", "platform=DotNET", "ns=DotNET", "assemblyfilename=C:\\Program files\\Reference Assemblies\\Microsoft\\Framework\\v3.0\\System.ServiceModel.dll";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "LayerD.CodeDOM", "platform=DotNET", "ns=DotNET", "assembly=lib_layerd_xpl_codedom_net";
+import "LayerD.ZOECompiler", "platform=DotNET", "ns=DotNET", "assembly=lib_zoec_core";
+using DotNET::System;
+using DotNET::System::IO;
+using DotNET::System::Collections;
+using DotNET::LayerD::CodeDOM;
+using DotNET::LayerD::ZOECompiler;
+
+namespace UtnEmall::Utils{
+	public factory class SALGenerator{
+		static string^ EntityTypesNamespace;
+		static string^ ServiceNamespace;
+	public:
+		static exp void GenerateWSProxy(string^ serviceNamespace, string^ entityTypesNamespace){	
+			ServiceNamespace = serviceNamespace;
+			EntityTypesNamespace = entityTypesNamespace;
+
+	        XplClass^ clase = context.CurrentClass;
+
+            // Create a request and response for every request and response.
+			// Iterate through class members, they are all methods
+			for(XplNode^ member in clase.Children()){
+				if(member.get_TypeName()=="XplFunction")
+				{	
+					CreateRequestFunction((XplFunction^)member);
+					CreateResponseFunction((XplFunction^)member);
+				}
+			}
+
+			//Change the original class name IBAR to IBARContract		            
+			//clase.set_name(clase.get_name()+"Contract");
+			
+            // Create the Client
+            CreateClient();
+
+			return null;
+		}
+	private:
+		static void CreateRequestFunction(XplFunction^ function)
+		{
+			// Define the request name
+			XplIName^ requestName = new XplIName( GetRequestName(function) );
+			
+			bool exists = false;
+			for(XplNode^ node in context.CurrentNamespace.Children())
+			{	
+				if(node is XplClass)
+				{	
+					XplClass^ nodeFunc = (XplClass^)node;
+					if(nodeFunc.get_name() == requestName.Identifier)
+					{
+						exists = true;
+					}
+				}
+			}
+
+			if(!exists)
+			{
+				// Add the request attribute
+				string^ attribute = "System.Xml.Serialization.XmlRootAttribute(ElementName=\""+ function.get_name() + "\", Namespace=\"" + ServiceNamespace + "\"), System.CodeDom.Compiler.GeneratedCodeAttribute(\"LayerD Proxy Generator\", \"1.0.0.0\")";
+				context.CurrentNamespace.Children().InsertAtEnd(
+					writecode( Zoe::Attribute::Add($attribute) )
+				);
+
+				// Generate the skeleton for the request class
+				XplClass^ request= writecode{
+					public class $requestName{ 
+					public: 
+						$requestName() { }
+					} 
+				};
+
+				context.CurrentNamespace.Children().InsertAtEnd(request);
+
+				// Add the set of fields for the request class based on parameters
+				int order = 0;
+				for(XplParameter^ member in function.get_Parameters().Children())
+				{
+					// Declare a set of important values
+					string^ orderStr = order.ToString();
+					string^ strVar = null;
+
+					if(IsNullableType(member.get_type())){
+						strVar = "System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace=\"" + ServiceNamespace + "\", Order="+ orderStr +")";
+					}
+					else{
+						strVar = "System.Xml.Serialization.XmlElementAttribute(Namespace=\"" + ServiceNamespace + "\", Order="+ orderStr +")";
+					}
+
+					XplIName^ parameterName = new XplIName(member.get_name());
+					XplType^ parameterType = (XplType^)member.get_type().Clone();
+	                
+					// Prepare the field
+					XplField^ field = (XplField^)writecode{%
+						public:
+							$parameterType $parameterName;
+					%}.Children().FirstNode();
+
+					if(IsArrayType(member.get_type())){
+						//Insert the attribute for ArrayItems
+						strVar = "System.Xml.Serialization.XmlArrayItem(Namespace = \"" + EntityTypesNamespace + "\")";
+						request.Children().InsertAtEnd( writecode(
+							Zoe::Attribute::Add($strVar)
+						) );
+						//Change the attribute for field becouse it's an array
+						strVar = "System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Namespace=\"" + ServiceNamespace + "\", Order="+ orderStr +")";
+					}
+					// Insert the attribute of the field
+					request.Children().InsertAtEnd( writecode(
+						Zoe::Attribute::Add($strVar)
+					) );
+
+					// Insert the field
+					request.Children().InsertAtEnd(field);
+
+					order++;
+				}
+
+				// In case there was no parameters
+				if(order!=0)
+				{
+					// Create the full constructor
+					// Create the block of assignments
+					XplFunctionBody^ constructorBlock = new XplFunctionBody();
+					for(XplParameter^ member in function.get_Parameters().Children())
+					{
+						XplIName^ fieldName = new XplIName(member.get_name());
+						constructorBlock.Children().InsertAtEnd(
+							writecode(
+								this.$fieldName = $fieldName
+							)
+						);
+					}
+
+					// Create the constructor skeleton
+					XplFunction^ fullConstructor = (XplFunction^)writecode{%
+						public:
+							$requestName() { $constructorBlock; }
+					%}.Children().FirstNode();
+
+					// Copy the parameters
+					fullConstructor.set_Parameters((XplParameters^)function.get_Parameters().Clone());
+
+					// Add the constructor with all the parameters
+					request.Children().InsertAtEnd(fullConstructor);
+				}
+			}
+		}
+		static bool IsArrayType(XplType^ zoeType){
+			// If it isn't a derived type it isn't a valid array type
+			if(zoeType.get_dt()==null)
+				return zoeType.get_isarray();
+			// If it is a derived type it must be a pointer to ListOf... or ArrayList
+			return 
+				zoeType.get_dt().get_typename().IndexOf("List")>=0 || 
+				zoeType.get_dt().get_typename().IndexOf("Collection")>=0 || 
+				zoeType.get_dt().get_typename().IndexOf("ArrayList")>=0 ||
+				zoeType.get_dt().get_isarray();
+		}
+		static bool IsNullableType(XplType^ zoeType){
+			if(zoeType.get_ispointer()) return true;
+			else return false;
+		}
+		static string^ GetResponseName(XplFunction^ function){
+			return ((XplClass^)function.get_Parent()).get_name()+function.get_name()+"Response";
+		}
+		static string^ GetRequestName(XplFunction^ function){
+			return ((XplClass^)function.get_Parent()).get_name()+function.get_name()+"Request";
+		}
+
+		static void CreateResponseFunction(XplFunction^ function)
+		{
+			// Define the response name
+			XplIName^ responseName = new XplIName( GetResponseName(function) );
+
+			bool exists = false;
+			for(XplNode^ node in context.CurrentNamespace.Children())
+			{	
+				if(node is XplClass)
+				{	
+					XplClass^ nodeFunc = (XplClass^)node;
+					if(nodeFunc.get_name() == responseName.Identifier)
+					{
+						exists = true;
+					}
+				}
+			}
+
+			if(!exists)
+			{
+				// Add the request attribute
+				string^ attribute = "System.Xml.Serialization.XmlRootAttribute(ElementName=\""+ function.get_name() + "Response\", Namespace=\"" + ServiceNamespace + "\"), System.CodeDom.Compiler.GeneratedCodeAttribute(\"LayerD Proxy Generator\", \"1.0.0.0\")";
+				context.CurrentNamespace.Children().InsertAtEnd(
+					writecode( Zoe::Attribute::Add($attribute) )
+				);
+
+				// Generate the skeleton for the response class            
+				XplClass^ response= writecode{
+					public class $responseName{ 
+					public: 
+						$responseName() { }
+					}
+				};
+
+				context.CurrentNamespace.Children().InsertAtEnd(response);
+
+				// Add the set of fields for the response class based on return type
+				if(function.get_ReturnType().get_typename() != NativeTypes::Void)
+				{
+					// Declare a set of important values
+					string^ strVar = null;
+					if(IsNullableType(function.get_ReturnType()))
+						strVar = "System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Namespace=\"" + ServiceNamespace + "\", Order=0)";
+					else
+						strVar = "System.Xml.Serialization.XmlElementAttribute(Namespace=\"" + ServiceNamespace + "\", Order=0)";
+
+					XplIName^ returnName = new XplIName(function.get_name()+"Result");
+					XplType^ returnType = (XplType^)function.get_ReturnType().Clone();
+	                
+					// Prepare the field
+					XplField^ field = (XplField^)writecode{%                                    
+						public:
+							$returnType $returnName;
+					%}.Children().FirstNode();
+
+					if(IsArrayType(function.get_ReturnType())){
+						//Insert the attribute for ArrayItems
+						strVar = "System.Xml.Serialization.XmlArrayItem(Namespace = \"" + EntityTypesNamespace + "\")";
+						response.Children().InsertAtEnd( writecode(
+							Zoe::Attribute::Add($strVar)
+						) );
+						//Change the attribute for field becouse it's an array
+						strVar = "System.Xml.Serialization.XmlArrayAttribute(IsNullable=true, Namespace=\"" + ServiceNamespace + "\", Order=0)";
+					}
+					// Insert the attribute of the field
+					response.Children().InsertAtEnd( writecode(
+						Zoe::Attribute::Add($strVar)
+					) );
+
+					// Insert the field
+					response.Children().InsertAtEnd(field);
+
+					// Create the full constructor   
+					XplFunction^ constructor = (XplFunction^) writecode{%
+							public:
+								$responseName($returnType $returnName)
+								{
+									this.$returnName = $returnName;
+								}
+						%}.Children().FirstNode();
+
+					// Add the constructor
+					response.Children().InsertAtEnd(constructor);
+				}
+			}
+		}
+
+        static void CreateClient()
+        {
+            // Construct the contract and client name IBAR and BARClient
+            // Declare all the necessary nodes
+            string^ contractNameString = context.CurrentClass.get_name();
+            XplType^ currentClass = new XplType();
+            currentClass.set_typename(context.CurrentClass.get_TypeName());
+            XplType^ contractName = new XplType();
+            contractName.set_typename(contractNameString);
+            XplIName^ clientName = null;
+			if(contractNameString[0]=='I'){
+				clientName = new XplIName( contractNameString.Substring(1,contractNameString.Length-1) + "Client");
+			}
+			else{
+				clientName = new XplIName( contractNameString + "Client");
+			}
+            XplType^ genericClassType = new XplType();            
+            genericClassType.set_typename("CFClientBase"+contractNameString);
+            XplIName^ genericClassIName = new XplIName("CFClientBase"+contractNameString);
+
+			string^ serviceEndpointStr = "http://utnEmallserver/"+contractNameString;
+
+            // Create a stub for the client            
+            XplClass^ client = writecode{
+                    public class $clientName inherits _genericClassType implements _contractName
+                    {                        
+                        static EndpointAddress^ EndpointAddress = new EndpointAddress($serviceEndpointStr);
+                    public:
+                        $clientName() : this(CreateDefaultBinding(), EndpointAddress) { }
+
+						$clientName(DotNET::System::ServiceModel::Channels::Binding^ binding, EndpointAddress^ remoteAddress) :
+                            base(binding, remoteAddress)
+                        {
+                        }
+
+                        static Channels::Binding^ CreateDefaultBinding()
+                        {                                    
+                            Channels::CustomBinding^ binding = new Channels::CustomBinding();
+							binding.Elements.AddRange(new BindingElement^[] = { 
+								new DotNET::System::ServiceModel::Channels::TextMessageEncodingBindingElement(MessageVersion::Soap11, DotNET::System::Text::Encoding::UTF8),
+								new DotNET::System::ServiceModel::Channels::HttpTransportBindingElement() 
+							} );
+                            return binding;
+                        }
+                    }
+            };
+                        
+            // Add the generic header and the Client class
+            context.CurrentNamespace.Children().InsertAtEnd(
+				writecode(  
+					UtnEmall::Utils::CFClientBase::New($genericClassIName, gettype($contractName)) 
+				)
+            );
+            context.CurrentNamespace.Children().InsertAtEnd(client);
+
+            //Esto es por un error en writecode :P
+            //Alguna vez dijo aca: contractName.Identifier 
+            ((XplInherit^)client.FindNode("/@XplInherit")).set_name(genericClassIName.Identifier);
+            ((XplImplement^)client.FindNode("/@XplImplement")).set_name(contractName.get_typename());
+
+			XplNode^ lastDocummentation = null;
+			// Iterate through class members, they are all methods
+		    for(XplNode^ member in context.CurrentClass.Children()){
+				if(member.get_TypeName()=="XplDocumentation"){
+					// Backup the comment
+					lastDocummentation = member;
+				}
+			    else if(member.get_TypeName()=="XplFunction")
+			    {
+                    // Define useful strings
+                    string^ functionName = ((XplFunction^)member).get_name();
+                    string^ methodResponseString = GetResponseName( (XplFunction^)member );
+
+                    // Define useful nodes for the client
+                    XplIName^ methodName = new XplIName(functionName);
+                    XplType^ methodRequest = new XplType();
+                    methodRequest.set_typename( GetRequestName( (XplFunction^)member ) );
+				    XplType^ methodResponse = new XplType();
+                    methodResponse.set_typename( methodResponseString );
+
+					string^ actionAddress = ServiceNamespace + contractNameString + "/" + functionName;
+					string^ replyAddress =  actionAddress + "Response";
+
+                    XplFunction^ func = (XplFunction^)writecode 
+                    {%
+                    private:
+                        $methodResponse^ $methodName($methodRequest^ request)
+                        {
+                            CFInvokeInfo^ info = new CFInvokeInfo();
+                            info.Action = $actionAddress;
+                            info.RequestIsWrapped = true;
+                            info.ReplyAction = $replyAddress;
+                            info.ResponseIsWrapped = true;
+                            
+                            CFClientBase::MakeInvoke($genericClassIName, gettype($methodRequest), gettype($methodResponse) );
+                            $methodResponse^ retVal = this.Invoke(info, request);
+
+                            return retVal;
+                        }
+                    %}.Children().FirstNode();
+
+                    client.Children().InsertAtEnd(func);
+                    
+                    // Define some nodes for the following method
+                    XplType^ methodReturnType = new XplType();
+                    XplFunction^ functionMember = (XplFunction^)member;
+                    methodReturnType = functionMember.get_ReturnType();
+                    XplIName^ methodRequestName = new XplIName(functionName);
+                    XplIName^ methodResult = new XplIName(functionName + "Result");
+
+					if(methodReturnType.get_typename()==NativeTypes::Void){
+						// Create the method skeleton
+						func = (XplFunction^)writecode 
+						{%
+						public:
+							$methodReturnType $methodName()
+							{
+								$methodRequest^ request = new $methodRequest();
+								$methodResponse^ response = this.$methodRequestName(request);
+								return;
+							}
+						%}.Children().FirstNode();
+					}
+					else{
+						// Create the method skeleton
+						func = (XplFunction^)writecode 
+						{%
+						public:
+							$methodReturnType $methodName()
+							{
+								$methodRequest^ request = new $methodRequest();
+								$methodResponse^ response = this.$methodRequestName(request);
+								return response.$methodResult;
+							}
+						%}.Children().FirstNode();
+					}
+					
+                    if(functionMember.get_Parameters().Children().GetLength()>0){ 
+                        XplInitializerList^ initList = XplNewExpression::new_init();
+                        ((XplNewExpression^)func.FindNode("/new")).set_init(initList);
+
+                        initList.Children().InsertAtEnd( XplInitializerList::new_list());
+                        initList = (XplInitializerList^)initList.Children().FirstNode();
+
+                        for(XplParameter^ param in functionMember.get_Parameters().Children()){
+                            XplIName^ paramName = new XplIName(param.get_name());
+                            initList.Children().InsertAtEnd(
+                                writecode( $paramName )
+                            );
+                        }
+                    }
+                    //XplInitializerList
+                    // Copy the parameters into the method and into method request (its first child)
+                    XplParameters^ methodParameters = (XplParameters^)functionMember.get_Parameters().Clone();
+                    func.set_Parameters(methodParameters);
+					// Insert the comment if exists
+					if(lastDocummentation!=null){
+						client.Children().InsertAtEnd(lastDocummentation);
+						lastDocummentation = null;
+					}
+					// Insert the function inside the class
+					client.Children().InsertAtEnd(func);
+                }
+		    }              
+        }
+	}	
+}
+

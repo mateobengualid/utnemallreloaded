@@ -1,0 +1,2 @@
+﻿El servidor no fue encontrado y no existe un cliente almacenado en la base de datos local. Al menos uno de estos requisitos
+debe estar disponible para iniciar la aplicación.

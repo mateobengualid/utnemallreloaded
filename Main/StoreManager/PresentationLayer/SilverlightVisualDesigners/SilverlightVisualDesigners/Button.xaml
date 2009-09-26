@@ -1,0 +1,64 @@
+﻿<UserControl
+	x:Uid="UserControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="SilverlightVisualDesigners.CustomButton"
+	d:DesignWidth="180" d:DesignHeight="40">
+
+
+    <UserControl.Resources>
+        <Storyboard x:Name="OnMouseEnter_Animation">
+            <ColorAnimationUsingKeyFrames x:Uid="ColorAnimationUsingKeyFrames_1" BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="Top" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame x:Uid="SplineColorKeyFrame_1" KeyTime="00:00:00" Value="#FFE3E3E3"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames x:Uid="ColorAnimationUsingKeyFrames_2" BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="Bottom" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame x:Uid="SplineColorKeyFrame_2" KeyTime="00:00:00" Value="#FFC6C6C6"/>
+            </ColorAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="Icon" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1.2"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="Icon" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1.2"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="Label" Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="00:00:00" Value="#FF000000"/>
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="OnMouseLeave_Animation">
+            <ColorAnimationUsingKeyFrames x:Uid="ColorAnimationUsingKeyFrames_3" BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="Top" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame x:Uid="SplineColorKeyFrame_3" KeyTime="00:00:00" Value="#FF54626F"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames x:Uid="ColorAnimationUsingKeyFrames_4" BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="Bottom" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame x:Uid="SplineColorKeyFrame_4" KeyTime="00:00:00" Value="#FF5B6976"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="Label" Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="00:00:00" Value="#FFFFFFFF"/>
+            </ColorAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="Icon" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="Icon" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+
+    <Grid x:Uid="LayoutRoot" x:Name="LayoutRoot">
+		<Rectangle x:Uid="Top" Fill="#FF54626F" Margin="0,0,0,19" x:Name="Top" d:LayoutOverrides="VerticalAlignment"/>
+		<Rectangle x:Uid="rectangle" Fill="#FF5B6976" Margin="0,20,0,0" VerticalAlignment="Stretch" x:Name="Bottom"/>
+		<TextBlock x:Uid="Label" Margin="0,8,50,8" Text="" TextWrapping="Wrap" x:Name="Label" TextAlignment="Right" Foreground="#FFFFFFFF" FontSize="14"/>
+		<Image x:Uid="Icon" HorizontalAlignment="Right" Margin="0,6,8,6" Width="28" Source="empty.png" Stretch="Fill" x:Name="Icon" Height="28" RenderTransformOrigin="0.5,0.5">
+			<Image.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform ScaleX="1" ScaleY="1"/>
+					<SkewTransform AngleX="0" AngleY="0"/>
+					<RotateTransform Angle="0"/>
+					<TranslateTransform X="0" Y="0"/>
+				</TransformGroup>
+			</Image.RenderTransform>
+		</Image>
+		<Rectangle x:Uid="Cover" Fill="#00ADADAD" x:Name="Cover" MouseEnter="Cover_MouseEnter" MouseLeave="Cover_MouseLeave" MouseLeftButtonUp="OnClicked"/>
+	</Grid>
+</UserControl>

@@ -1,0 +1,51 @@
+<UserControl x:Class="SilverlightVisualDesigners.ServiceDesignerSilverlight"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vd="clr-namespace:SilverlightVisualDesigners"
+
+    mc:Ignorable="d" Loaded="UserControl_Loaded" Height="Auto" Width="Auto">
+
+    <UserControl.Resources>
+        <vd:ServiceDesignerSilverlightResources x:Name="Resources"/>
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush ImageSource="imgs/background.jpg" Opacity="5"/>
+        </Grid.Background>
+        <StackPanel Grid.Row = "0" Grid.Column = "0" x:Name="MenuStack" HorizontalAlignment="Left" Margin="0,2,0,0" Width="190" Opacity="4" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Height="1200">
+        	<StackPanel.Background>
+        		<LinearGradientBrush EndPoint="-0.00499999988824129,0.291000008583069" StartPoint="1.0110000371933,0.289000004529953" SpreadMethod="Reflect">        			<GradientStop Color="#FF9EB3C8" Offset="1"/>
+        			<GradientStop Color="#FFE3F2FF"/>
+        		</LinearGradientBrush>
+        	</StackPanel.Background>
+            <StackPanel.RenderTransform>											
+            	<TransformGroup>
+            		<ScaleTransform ScaleX="1"/>
+            		<SkewTransform/>
+            		<RotateTransform/>
+            		<TranslateTransform/>
+            	</TransformGroup>
+            </StackPanel.RenderTransform>
+            <vd:CustomButton x:Name="buttonList" Margin="0,0,0,5" Image="imgs/list.png" Clicked="buttonList_Clicked"/>
+            <vd:CustomButton x:Name="buttonDisplayData" Margin="0,0,0,5" Image="imgs/showdata.png" Clicked="buttonDisplayData_Clicked"/>
+            <vd:CustomButton x:Name="buttonMenu" Margin="0,0,0,5" Image="imgs/menu.png" Clicked="buttonMenu_Clicked"/>
+            <vd:CustomButton x:Name="buttonDataInput" Margin="0,0,0,5" Image="imgs/input.png" Clicked="buttonDataInput_Clicked"/>
+            <vd:CustomButton x:Name="buttonConnection" Margin="0,15,0,5" Image="imgs/connection.png" Clicked="buttonConnection_Clicked"/>
+            
+            <TextBlock Height="20" Width="150" Text="{Binding textBlock_StartForm, Source={StaticResource Resources}}" TextWrapping="Wrap" Foreground="#FF000000" FontSize="14" Margin="0,0,0,0"/>
+            <ListBox Height="65" Width="150" x:Name="listBoxStartWidget" Margin="0,0,0,5" MaxHeight="95"/>
+            <TextBlock Height="20" Width="150" Text="{Binding textBlock_DataSources, Source={StaticResource Resources}}" TextWrapping="Wrap" Foreground="#FF000000" TextAlignment="Left" Margin="0,0,0,0" FontSize="14" />
+        	<ListBox Height="100" Width="150" x:Name="listDataModels" Margin="0,0,0,10"/>
+        	
+            <vd:CustomButton x:Name="buttonAdd" Margin="0,0,0,5" Clicked="buttonAdd_Clicked"/>
+            <vd:CustomButton x:Name="buttonSave" Margin="0,15,0,5" Clicked="buttonSave_Clicked" Image="imgs/model_save.png"/>
+            <vd:CustomButton x:Name="buttonCancel" Margin="0,0,0,0" Clicked="buttonCancel_Clicked"/>
+		</StackPanel>
+        <ScrollViewer Grid.Row = "0" Grid.Column = "2" Height="Auto" Width="Auto" Margin="190,0,0,0" BorderBrush="#00A4A4A4">
+            <vd:DragAndDropCanvas Width="Auto" Height="Auto" Background="Transparent" x:Name="canvasDraw" MouseMove="canvasDraw_MouseMove"/>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -1,0 +1,2208 @@
+/*
+*	Mobile Client Form Generator
+*
+*	UtnEmall Project - 2008
+*/
+import "Microsoft", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+using Zoe;
+using DotNET::System;
+using DotNET::System::IO;
+using DotNET::System::Collections;
+using DotNET::LayerD::CodeDOM;
+using DotNET::LayerD::ZOECompiler;
+using DotNET::LayerD::ZoeCompiler;
+using DotNET::LayerD::CodeDOM;
+using DotNET::System::Collections::Generic;
+using Zoe::Tools;
+
+namespace UtnEmall::Utils
+{
+	/**
+	*	CLASE GENERADORA de Forms Visuales - ModelMobile
+	*
+	*	Clase factory para la construcción de interfaces Mobile
+	*
+	*/
+	public factory class ModelMobile
+	{
+
+	public:
+		static int storeID;
+		static CustomerServiceData^ storeService;
+
+		static XplNode^ New(block serviceData){
+			MyInterpreter^ interpreter = new MyInterpreter();
+			CustomerServiceData^ data = interpreter.ProcessCustomerServiceData(serviceData);
+
+			context.CurrentNamespace.Children().InsertAtEnd(
+				GenerateProxy(data)
+				);
+
+			//Insertar llamada para creacion de capa de negocios duplicada localmente
+			//para usar cuando no estamos en linea
+			context.CurrentNamespace.Children().InsertAtEnd(
+				writecode(
+					UtnEmall::Utils::CustomServiceServer::New(true){
+							$serviceData;
+					}
+				)
+			);
+
+			return Generate(data);
+		}
+
+		// Define las clase Form (y Designer) para cada pantalla del modelo.
+		static XplNode^ Generate(CustomerServiceData^ service)
+		{
+			storeID = service.StoreID;
+			storeService = service;
+
+			for(int i=0; i<service.Forms.Count; i++)
+			{
+				UtnEmall::Utils::Form^ form = (UtnEmall::Utils::Form^)service.Forms[i];
+				CheckNumericRanges(&form);
+				PreProcessFieldTemplates(&form);
+			}
+
+			foreach(UtnEmall::Utils::Form^ form in service.Forms){
+				XplClass^ clase = GetDefaultClass(form, service);
+				context.CurrentNamespace.Children().InsertAtEnd(clase);
+			}
+
+			return null;
+		}
+
+		static XplClass^ GetDefaultClass(UtnEmall::Utils::Form^ form,
+								UtnEmall::Utils::CustomerServiceData^ service)
+		{
+			XplClass^ clase = null;
+			XplIName^ formName = form.Name;
+			XplFunctionBody^ formCodeBlock = GenerateInitializeComponent(form);
+
+			string^ backButtonText = "Back";
+			if(form.StartForm)
+			{
+				backButtonText = "Exit";
+			}
+
+			string^ title = form.Title;
+			string^ sFormName = formName.Identifier;
+			int serviceID = service.ServiceID;
+			int idComponent = form.IdComponent;
+
+			XplExpression^ isStartForm = writecode(false);
+
+			if(form.StartForm){
+				isStartForm = writecode(true);
+			}
+
+			clase = writecode{
+				public class $formName inherits public DotNET::UtnEmall::Client::PresentationLayer::BaseForm
+				{
+					private:
+						IContainer^ components = null;
+						MainMenu^ mainMenu;
+						MenuItem^ backMenu;
+						MenuItem^ acceptMenu;
+						DotNET::UtnEmall::Client::PresentationLayer::DataEntity^ localDataEntity;
+						// This item is for statistic information
+						zoe::lang::DateTime formStart;
+						PictureBox^ header;
+						Label^ title;
+
+						void backMenu_Click(object^ sender, EventArgs^ e)
+						{
+							// this.backMenu.remove_Click(new DotNET::System::EventHandler(&this.backMenu_Click));
+							// this.acceptMenu.remove_Click(new DotNET::System::EventHandler(&this.acceptMenu_Click));
+							this.Close();
+						}
+
+						void acceptMenu_Click(object^ sender, EventArgs^ e)
+						{
+							// Same function as Enter key
+							Form_KeyDown(null, new KeyEventArgs(Keys::Enter));
+						}
+
+						void Form_Closing(object^ sender, DotNET::System::ComponentModel::CancelEventArgs^ e)
+						{
+							// Run statistics operations
+							zoe::lang::DateTime stop = zoe::lang::DateTime::Now;
+
+							DotNET::UtnEmall::Client::EntityModel::UserActionClientDataEntity^ userAction =
+									new DotNET::UtnEmall::Client::EntityModel::UserActionClientDataEntity();
+							DotNET::UtnEmall::Client::BusinessLogic::UserActionClientData^ userActionDataAccess =
+									new DotNET::UtnEmall::Client::BusinessLogic::UserActionClientData();
+
+							// Fill statistical data
+							userAction.ActionType = DotNET::System::Convert::ToInt32(
+								DotNET::UtnEmall::Client::PresentationLayer::StatisticsActionType::FormConsumption);
+							userAction.Start = formStart;
+							userAction.Stop = stop;
+							userAction.IdComponent = $idComponent;
+							userAction.IdService = $serviceID;
+
+							// Save the current statistic
+							userActionDataAccess.Save(userAction);
+						}
+					protected:
+
+					public:
+						static bool property IsStartForm{
+							get{
+								return $isStartForm;
+							}
+						}
+						$formName(){
+							InitializeComponent();
+						}
+						$formName(DotNET::UtnEmall::Client::PresentationLayer::BaseForm^ form): base(form)
+						{
+							InitializeComponent();
+						}
+
+						void InitializeComponent(){
+							this.localDataEntity = new DotNET::UtnEmall::Client::PresentationLayer::DataEntity();
+							// Statistic usage data
+							this.formStart = zoe::lang::DateTime::Now;
+
+							this.mainMenu = new MainMenu();
+							this.backMenu = new MenuItem();
+							this.acceptMenu = new MenuItem();
+
+							this.SuspendLayout();
+							//
+							// mainMenu1
+							//
+							this.mainMenu.MenuItems.Add(this.backMenu);
+							this.mainMenu.MenuItems.Add(this.acceptMenu);
+							//
+							// backMenu
+							//
+							this.backMenu.Text = $backButtonText;
+							this.backMenu.add_Click(new DotNET::System::EventHandler(&this.backMenu_Click));
+							//
+							// acceptMenu
+							//
+							this.acceptMenu.Text = "Accept";
+							this.acceptMenu.add_Click(new DotNET::System::EventHandler(&this.acceptMenu_Click));
+							//
+							// General Form properties
+							//
+							this.WindowState = FormWindowState::Normal;
+							this.AutoScaleMode = AutoScaleMode::Dpi;
+							this.AutoScroll = true;
+
+							this.KeyPreview = true;
+							this.Menu = this.mainMenu;
+							this.Name = $sFormName;
+							this.Text = $title;
+							this.add_KeyDown(new KeyEventHandler(&this.Form_KeyDown));
+							this.add_Closing(new DotNET::System::ComponentModel::CancelEventHandler(&this.Form_Closing));
+
+							this.header = new PictureBox();
+							this.header.Top = 0;
+							this.header.Image = new Bitmap(DotNET::UtnEmall::Client::PresentationLayer::Utilities::AppPath + "images\\\\\\header.png");
+
+							Font^ titleFont = new Font("Tahoma", 12, FontStyle::Bold);
+							this.title = new Label();
+							this.title.BackColor = Color::FromArgb(((int)(((byte)(120)))), ((int)(((byte)(137)))), ((int)(((byte)(145)))));
+							this.title.ForeColor = Color::White;
+							this.title.Font = titleFont;
+							this.title.Name = "title";
+							this.title.Text = $title;
+
+							int height = Screen::PrimaryScreen.WorkingArea.Height;
+							int width = Screen::PrimaryScreen.WorkingArea.Width;
+							//int headerHeight = (int)(width / 5.4);
+							int headerHeight = (int)(width / 3.4);
+							//int stepBase = (int)(height / 11.0);
+							int stepBase = (int)(height / 8.0);
+							int step = headerHeight;
+
+							//this.Height = height;
+							//this.Width = width;
+
+							this.title.Left = 0;
+							this.title.Width = width;
+							this.title.Top = headerHeight/3;
+
+							this.header.Width = width;
+							this.header.Height = headerHeight;
+
+							this.Controls.Add(this.title);
+							this.Controls.Add(this.header);
+
+							//$isStartForm;
+
+							$formCodeBlock;
+							this.ResumeLayout(false);
+						}
+				}
+			};
+
+			GenerateDeclarationsBlock(form, clase);
+			GenerateLoadingDataFunctions(form, clase, service);
+			GenerateAcceptEvent(form, service.Relations, clase, service);
+
+			return clase;
+		}
+
+		//Generates all the form specific declarations and controls
+		static void GenerateDeclarationsBlock(UtnEmall::Utils::Form^ form, XplClass^ clase){
+			XplClassMembersList^ declarations = new XplClassMembersList();
+
+			//En el caso de ser un Form de Menu
+			if(form.Type == "List" || form.Type == "Menu"){
+				XplIName^ listClassName = form.ListClassName;
+
+				declarations = writecode{%
+					private:
+						DotNET::UtnEmall::Client::UserControls::ListUserControl^ contentListView;
+				%};
+
+				// Custom item class (for a custom list)
+				GenerateCustomListClass(listClassName, form);
+			}
+
+			//Formulario tipo ShowData
+			if(form.Type == "Enter"){
+				XplIName^ fieldName = new XplIName(form.EnterDataFieldName);
+				XplType^ controlType = form.EnterDataControlType;
+
+				//Determinar el tipo de retorno
+				declarations = writecode{%
+					private:
+					PictureBox^ formIcon;
+					$controlType^ $fieldName;
+					Label^ lblDescription;
+					DotNET::System::Globalization::CultureInfo^ culture;
+				%};
+			}
+
+			//Formulario tipo ShowData
+			if(form.Type == "Show")
+			{
+				ArrayList^ templates = form.FieldsTemplate;
+				for(FieldTemplate^ field in templates)
+				{
+					XplIName^ fieldType = new XplIName("Label");
+					XplIName^ fieldName = field.FieldMemberName;
+					XplIName^ propertyName = field.PropertyName;
+
+					if(field.Type == "Image")
+					{
+						fieldType = new XplIName("PictureBox");
+					}
+
+					declarations.Children().InsertAtEnd(
+						writecode{%
+							private:
+							$fieldType^ $fieldName;
+							public:
+							$fieldType^ property $propertyName
+							{
+								set
+								{
+									this.$fieldName = value;
+								}
+								get
+								{
+									return this.$fieldName;
+								}
+							}
+						%}.Children()
+					);
+				}
+			}
+
+			clase.Children().InsertAtEnd(declarations.Children());
+		}
+
+		//Genera el método InitializeComponent para cada formulario
+		//Su responsabilidad es establecer la disposición de cada uno
+		//de los componentes visuales
+		static XplFunctionBody^ GenerateInitializeComponent(UtnEmall::Utils::Form^ form){
+			XplFunctionBody^ formBlockCode = null;
+
+			// En el caso de ser un Menu
+			if(form.Type == "List" || form.Type == "Menu"){
+				formBlockCode = writecode{
+					this.contentListView = new DotNET::UtnEmall::Client::UserControls::ListUserControl(this);
+					this.contentListView.AutoScroll = true;
+					this.contentListView.Width = width;
+					this.contentListView.Height = DotNET::UtnEmall::Client::PresentationLayer::Utilities::VisibleScreenSize.Height - headerHeight;
+					//this.contentListView.Height = height - headerHeight - 26;
+					this.contentListView.SelectedItemColor = Color::FromArgb(192, 224, 255);
+					this.contentListView.Top = header.Bottom;
+					this.Controls.Add(this.contentListView);
+					LoadItems();
+				};
+			}
+
+			//Formulario tipo EnterData
+			if(form.Type == "Enter"){
+				string^ sFieldName = form.EnterDataFieldName;
+				string^ sDescription = form.EnterDataDescription;
+				XplIName^ fieldName = new XplIName(sFieldName);
+				XplType^ controlType = form.EnterDataControlType;
+
+				// Set the textbox align accordig to the datatype
+				XplExpression^ textAlign = writecode( this.$fieldName.TextAlign = HorizontalAlignment::Right );
+				XplExpression^ multiLine = writecode( this.$fieldName.Multiline = true );
+				XplExpression^ checkBoxMessage = writecode( this.$fieldName.Text = "" );
+
+				switch(form.EnterDataValueType)
+				{
+					case 2:
+						textAlign = writecode(this.$fieldName.TextAlign = HorizontalAlignment::Right);
+						break;
+					case 4:
+						checkBoxMessage = writecode( this.$fieldName.Text = "Yes / No" );
+						textAlign = writecode(this.$fieldName.Checked = false);
+						multiLine = writecode(this.$fieldName.Checked = false);
+						break;
+					default:
+						textAlign = writecode(this.$fieldName.TextAlign = HorizontalAlignment::Left);
+						break;
+				}
+
+				formBlockCode = writecode{
+					int labelSize = width / 4;
+
+					this.formIcon = new PictureBox();
+					this.formIcon.Image = new Bitmap(DotNET::UtnEmall::Client::PresentationLayer::Utilities::AppPath + "images\\\\\\ico_services.png");
+					this.formIcon.Width = 20;
+					this.formIcon.Height = 20;
+					this.formIcon.Top = header.Bottom + 10;
+					this.formIcon.Left = (labelSize/2) - this.formIcon.Width;
+					this.formIcon.SizeMode = PictureBoxSizeMode::StretchImage;
+					this.Controls.Add(formIcon);
+
+					Point descriptionLocation = new Point(labelSize/2, formIcon.Top);
+					Size descriptionSize = new Size(labelSize*2, (height-headerHeight)/2);
+
+					this.$fieldName = new $controlType();
+					this.lblDescription = new Label();
+
+					//
+					// lblDescription
+					//
+					this.lblDescription.Location = descriptionLocation;
+					this.lblDescription.Size = descriptionSize;
+					this.lblDescription.Name = "lblDescription";
+					this.lblDescription.Text = $sDescription;
+					this.lblDescription.TextAlign = ContentAlignment::TopCenter;
+					Font^ labelFont = new Font("Tahoma", 12, FontStyle::Bold);
+					this.lblDescription.Font = labelFont;
+					this.lblDescription.Width = width - formIcon.Right;
+
+					Point location = new Point(labelSize, lblDescription.Bottom);
+					//Size size = new Size(labelSize*2, (height-headerHeight)/3);
+					Size size = new Size(labelSize*2, this.$fieldName.Height);
+					//
+					// tbxData
+					//
+					this.$fieldName.Location = location;
+					this.$fieldName.Size = size;
+					this.$fieldName.Name = $sFieldName;
+					this.$fieldName.TabIndex = 3;
+					this.$fieldName.Font = labelFont;
+					$multiLine;
+					$textAlign;
+					$checkBoxMessage;
+
+					this.culture = new DotNET::System::Globalization::CultureInfo( "fr-FR" );
+					//
+					// EnterSingleData
+					//
+					//this.BackColor = DotNET::System::Drawing::Color::Peru;
+					this.Controls.Add($fieldName);
+					this.Controls.Add(lblDescription);
+					this.Name = "EnterSingleData";
+					LoadItems();
+				};
+			}
+
+			//Formulario tipo ShowData
+			if(form.Type == "Show"){
+				formBlockCode = new XplFunctionBody();
+				// Saca el contenido desde los templates
+				ArrayList^ templates = form.FieldsTemplate;
+				for(FieldTemplate^ field in templates){
+					if(field.Type == "Image")
+					{
+						formBlockCode.Children().InsertAtEnd( GetImageField(field, true, null, true) );
+					}
+					else
+					{
+						formBlockCode.Children().InsertAtEnd( GetLabelField(field, true, null, true) );
+					}
+				}
+
+				formBlockCode.Children().InsertAtEnd(
+					writecode( LoadItems() )
+				);
+			}
+
+			// Retorno el mètodo generado
+			return formBlockCode;
+		}
+
+		// Generates specific loading data functions
+		static void GenerateLoadingDataFunctions(
+						UtnEmall::Utils::Form^ form,
+						XplClass^ clase,
+						CustomerServiceData^ service
+						){
+
+			XplClassMembersList^ declarations = null;
+			XplIName^ serviceName = new XplIName( service.ServiceName.Identifier + "Smart" );
+			int storeID = service.StoreID;
+
+			// En el caso de ser un Form de Lista o Menu
+			if(form.Type == "List"){
+				XplType^ entityType = new XplType();
+				entityType.set_typename("DotNET::UtnEmall::Store"+storeID+"::EntityModel::"+form.InputTable.Identifier);
+
+				//WS Method name to call
+				XplFunctionBody^ sourceCondition;
+				// indica si carga por WS(true) o por form fuente (false)
+				bool loadFromWS = false;
+				sourceCondition = new XplFunctionBody();
+				string^ source="";
+				string^ target="";
+				//bool founded = false;
+
+				DataSource^ ds = GetDataSourceFor(form);
+				if( ds != null)
+				{
+					loadFromWS = true;
+					source = ds.Name.Identifier;
+					target = form.Name.Identifier;
+				}
+
+				// Este for busca en las relaciones de entrada si tienen datasource
+				//for(UtnEmall::Utils::Relation relation in service.Relations){
+				//	if(relation.Target == form.Name.Identifier && !founded){
+				//		source = relation.Source;
+				//		target = relation.Target;
+
+				//		// Check if it is a DataSource
+				//		for(DataSource^ ds in service.DataSources)
+				//		{
+				//			if(ds.Name.Identifier == relation.Source)
+				//			{
+				//				loadFromWS = true;
+				//				founded = true;
+				//				break;
+				//			}
+				//		}
+				//		// Check if it is a Form with a source data
+				//		for(Form^ sourceForm in service.Forms){
+				//			if(sourceForm.Name.Identifier == relation.Source &&
+				//				sourceForm.OutputTable.Identifier != null)
+				//			{
+				//				loadFromWS = false;
+				//				founded = true;
+				//				break;
+				//			}
+				//		}
+				//	}//if
+				//}//for
+
+				// If there are generated data in the parent form, use it
+				//sourceCondition = writecode{
+				//	// Check if the data to show is comming from the source form
+				//	if (SourceForm != null && SourceForm.NextDataEntity != null)
+				//	{
+				//		localDataEntity = SourceForm.NextDataEntity;
+				//	}
+				//};
+
+				
+				if(loadFromWS){
+					string^ mName = "Get"+source+"List"+"For"+target;
+					XplIName^ methodName = new XplIName(mName);
+					int serviceID = service.ServiceID;
+
+					XplIName^ arrayListIName = new XplIName("CollectionOf" + form.InputTable.Identifier);
+					XplIName^ entityTypeName = new XplIName(form.InputTable.Identifier);
+
+					sourceCondition.Children().InsertAtEnd( CallRemoteService(false,
+						serviceName,
+						serviceID,
+						writecode( localDataEntity.IEntityList = new ArrayList( serviceClass.$methodName("") ) ),
+						arrayListIName,
+						entityTypeName) );
+				}
+
+				// Set the items to show in the custom list
+				XplFunctionBody^ initBlock = new XplFunctionBody();
+				XplIName^ listClassName = form.ListClassName;
+				ArrayList^ templates = form.FieldsTemplate;
+				for(FieldTemplate^ field in templates)
+				{
+					XplIName^ entityFieldName = new XplIName(field.FieldName);
+					XplIName^ propertyName = field.PropertyName;
+
+					if(field.Type == "Image")
+					{
+						initBlock.Children().InsertAtEnd(writecode{
+							listItem.$propertyName.Image = DotNET::UtnEmall::Client::PresentationLayer::Utilities::String64ToImage((($entityType^)entity).$entityFieldName.ToString());
+							listItem.$propertyName.SizeMode = PictureBoxSizeMode::StretchImage;
+							listItem.Entity = entity;
+						});
+					}
+					else
+					{
+						initBlock.Children().InsertAtEnd(writecode{
+							string^ text = (($entityType^)entity).$entityFieldName.ToString();
+							listItem.$propertyName.Text = text;
+							listItem.Entity = entity;
+							listItem.$propertyName.Width = Graphics.MeasureString(text, listItem.$propertyName.Font).ToSize().Width+2;
+						});
+					}
+				}
+
+				declarations = writecode{%
+					private:
+					// Load all items to show in the listView
+					void LoadItems()
+					{
+							try{
+								// Check if the data to show is comming from the source form
+								if (SourceForm != null && SourceForm.NextDataEntity != null)
+								{
+									localDataEntity = SourceForm.NextDataEntity;
+								}
+								else
+								{
+									$sourceCondition;
+								}
+
+							// Add the items to the custom list
+							if(localDataEntity.IsList){
+								for (DotNET::UtnEmall::Client::EntityModel::IEntity^ entity in localDataEntity.IEntityList)
+								{
+									if (entity != null && !(($entityType^)entity).Deleted)
+									{
+										$listClassName^ listItem = new $listClassName(this);
+										$initBlock;
+										contentListView.AddItem(listItem);
+									}
+								}
+							}
+						}catch(Exception error){
+							ShowErrorMessage(error.Message, "Excecution Error");
+						}
+					}
+				%};
+			}
+
+			//En el caso de ser un Form de Menu
+			if(form.Type == "Menu"){
+
+				XplFunctionBody^ formBlockCode = new XplFunctionBody();
+				XplIName^ listClassName = form.ListClassName;
+				XplIName^ fieldName = new XplIName("_");
+				XplIName^ propertyName = new XplIName("_");;
+				int i = 0;
+
+				for(FieldTemplate^ field in form.FieldsTemplate){
+					string^ menuText = field.MenuText;
+					string^ menuFieldName = field.FieldName;
+					XplIName^ menuFieldIName = new XplIName(menuFieldName);
+
+					if(i==0)
+					{
+						fieldName = field.FieldMemberName;
+						propertyName = field.PropertyName;
+					}
+
+					formBlockCode.Children().InsertAtEnd(writecode{
+						$listClassName^ listItem = new $listClassName(this);
+						listItem.$propertyName.Text = $menuText;
+						listItem.Tag = $menuFieldName;
+						contentListView.AddItem(listItem);
+					});
+
+					i++;
+				}
+
+				declarations = writecode{%
+					private:
+					// Load all items to show in the listView
+					void LoadItems()
+					{
+						try{
+							if (SourceForm != null && SourceForm.NextDataEntity != null)
+							{
+								// Assign to the local DotNET::UtnEmall::Client::PresentationLayer::DataEntity the previously created Data Entity
+								localDataEntity = SourceForm.NextDataEntity;
+							}
+							$formBlockCode;
+						}catch(Exception error){
+							ShowErrorMessage(error.Message, DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(2));
+						}
+					}
+				%};
+			}
+
+			//Formulario tipo ShowData
+			if(form.Type == "Show"){
+				XplIName^ entityType = new XplIName(form.InputTable.Identifier);
+
+				//WS Method name to call
+				XplFunctionBody^ sourceCondition = null;
+
+				sourceCondition = writecode{
+					if (SourceForm != null && SourceForm.NextDataEntity != null)
+					{
+						// Assign to the local DotNET::UtnEmall::Client::PresentationLayer::DataEntity the previously created Data Entity
+						localDataEntity = SourceForm.NextDataEntity;
+					}
+				};
+
+				// Saca el contenido desde los templates
+				ArrayList^ templates = form.FieldsTemplate;
+
+				for(FieldTemplate^ field in templates){
+					XplIName^ fieldDataName = new XplIName(field.FieldName);
+					XplIName^ dataType = new XplIName(form.InputTable.Identifier);
+
+					if(field.Type == "Image"){
+						XplExpression^ imgXp = writecode(DotNET::UtnEmall::Client::PresentationLayer::Utilities::String64ToImage((($dataType^)localDataEntity.IEntityList[0]).$fieldDataName.ToString()));
+						sourceCondition.Children().InsertAtEnd( GetImageField(field, false, imgXp, true) );
+					}else{
+						XplExpression^ textExp = writecode((($dataType^)localDataEntity.IEntityList[0]).$fieldDataName.ToString());
+						sourceCondition.Children().InsertAtEnd( GetLabelField(field, false, textExp, true) );
+					}
+				}
+
+				//Determinar el tipo de retorno
+				declarations = writecode{%
+					private:
+					// Load all items to show in the listView
+					void LoadItems()
+					{
+						try{
+							$sourceCondition;
+						}catch(Exception error){
+							ShowErrorMessage(error.Message, DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(2));
+						}
+					}
+				%};
+			}
+
+			if(form.Type == "Enter"){
+				declarations = writecode{%
+					private:
+					// Load all items to show in the listView
+					void LoadItems()
+					{
+						try{
+							if (SourceForm != null && SourceForm.NextDataEntity != null)
+							{
+								// Assign to the local DotNET::UtnEmall::Client::PresentationLayer::DataEntity the previously created Data Entity
+								localDataEntity = SourceForm.NextDataEntity;
+							}
+						}catch(Exception error){
+							ShowErrorMessage(error.Message, DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(2));
+						}
+					}
+				%};
+			}
+
+			clase.Children().InsertAtEnd(
+				declarations.Children()
+				);
+
+		}
+		//**********************************
+		//Creates the accept option event
+		//**********************************
+		static void GenerateAcceptEvent(
+									UtnEmall::Utils::Form^ form,
+									ArrayList^ relations,
+									XplClass^ clase,
+									CustomerServiceData^ service
+									){
+
+			XplClassMembersList^ declarations = null;
+			XplFunctionBody^ formBlockCode = new XplFunctionBody();
+			XplIName^ serviceName = new XplIName(service.ServiceName.Identifier+"Smart");
+			int idTable = form.IdInputTable;
+			int serviceID = service.ServiceID;
+			int idComponent = form.IdComponent;
+
+			//En el caso de ser un Form de menu
+			if(form.Type == "Menu")
+			{
+				//Recorrer todas las relaciones
+				for(UtnEmall::Utils::Relation relation in relations)
+				{
+					string^ source = relation.Source;
+
+					if(source.Trim() == form.Name.Identifier.Trim())
+					{
+						//Va a generar una serie de ifs
+						//dependiendo de la opciòn seleccionada
+						//option es igual al nombre del campo
+						string^ option = relation.Option;
+						string^ target = relation.Target;
+						XplType^ targetType = new XplType();
+						targetType.set_typename(target);
+
+						// Search for the IdComponent
+						for(UtnEmall::Utils::FieldTemplate ft in form.FieldsTemplate)
+						{
+							if(ft.FieldName == option)
+							{
+								idComponent = ft.IdComponent;
+							}
+						}
+
+						// Generar la salida de datos apropiada, dependiendo de
+						// la opcion seleccionada
+						XplFunctionBody^ getMenuData = new XplFunctionBody();
+						XplIName^ listClassName = form.ListClassName;
+
+						if(form.InputTable.Identifier!=null)
+						{
+							// Si tiene un InputTable, alguna opción debería tener
+							// un OutputTable. Buscar la opcion seleccionada
+							string^ datasource = "";
+							bool found = false;
+							for(FieldTemplate field in form.FieldsTemplate)
+							{
+								if((field.FieldName == option))
+								{
+									//Si la entrada del menu es la entrada del próximo form
+									if(form.InputTable.Identifier == field.OutputTable.Identifier)
+									{
+										Console::WriteLine("Menu-->Formulario sin llamada a servicio");
+										getMenuData.Children().InsertAtEnd(
+											writecode{
+												this.NextDataEntity = this.localDataEntity;
+											}
+										);
+										break;
+									}
+									else if(field.OutputTable.Identifier == null){
+										getMenuData.Children().InsertAtEnd(
+											writecode{
+												this.NextDataEntity = null;
+											}
+										);
+									}
+									else
+									{
+										string^ mName = "Get"+field.OutputTable.Identifier+"List"+
+														"From"+form.Name.Identifier+
+														"For"+target;
+										XplIName^ methodName = new XplIName(mName);
+										XplIName^ arrayListIName = new XplIName("CollectionOf" + form.InputTable.Identifier);
+										XplIName^ entityTypeName = new XplIName(form.InputTable.Identifier);
+										
+										Console::WriteLine("Menu-->Formulario con llamada a servicio " + mName);
+										getMenuData.Children().InsertAtEnd(
+											CallRemoteService(true,
+															serviceName,
+															serviceID,
+															writecode( this.NextDataEntity.IEntityList = new ArrayList( serviceClass.$methodName(((DotNET::UtnEmall::Client::EntityModel::IEntity^)localDataEntity.IEntityList[0]).Id, "") ) ),
+															arrayListIName,
+															entityTypeName) );
+
+										break;
+									}
+								}//if
+							}//for
+						}
+
+						formBlockCode.Children().InsertAtEnd(
+						writecode{
+							if($option == (($listClassName^)contentListView.SelectedItem).Tag.ToString()){
+
+								$getMenuData;
+								// Save statistics information
+								zoe::lang::DateTime startMenuUsage = zoe::lang::DateTime::Now;
+
+								DotNET::UtnEmall::Client::EntityModel::UserActionClientDataEntity^ userActionMenu =
+										new DotNET::UtnEmall::Client::EntityModel::UserActionClientDataEntity();
+								DotNET::UtnEmall::Client::BusinessLogic::UserActionClientData^ userActionMenuDataAccess =
+										new DotNET::UtnEmall::Client::BusinessLogic::UserActionClientData();
+
+								// Fill statistical data
+								userActionMenu.ActionType = DotNET::System::Convert::ToInt32(
+									DotNET::UtnEmall::Client::PresentationLayer::StatisticsActionType::MenuItemSelection);
+								userActionMenu.Start = startMenuUsage;
+								userActionMenu.Stop = startMenuUsage;
+								userActionMenu.IdService = $serviceID;
+								userActionMenu.IdComponent = $idComponent;
+								// Save the current statistic
+								userActionMenuDataAccess.Save(userActionMenu);
+
+								// Show the next form
+								DotNET::UtnEmall::Client::PresentationLayer::BaseForm^ target = new $targetType(this);
+								target.Owner = this;
+								target.ShowDialog();
+							}
+						});
+					}
+				}
+			}//if "Menu"
+
+			//En el caso de ser un Form de Lista
+			if(form.Type == "List")
+			{
+				// Recorrer todas las relaciones
+				for(UtnEmall::Utils::Relation relation in relations){
+					string^ source = relation.Source;
+
+					if(source.Trim() == form.Name.Identifier.Trim()){
+						string^ option = relation.Option;
+						string^ target = relation.Target;
+						XplIName^ listClassName = form.ListClassName;
+						XplType^ targetType = new XplType();
+						targetType.set_typename(target);
+
+						XplFunctionBody^ nextFormCall = XplFunctionBody::new_bk();
+						
+						nextFormCall.Children().InsertAtEnd(
+							writecode{
+							// Save statistics information
+							zoe::lang::DateTime startItemSelection = zoe::lang::DateTime::Now;
+
+							DotNET::UtnEmall::Client::EntityModel::UserActionClientDataEntity^ userActionItemSelection =
+									new DotNET::UtnEmall::Client::EntityModel::UserActionClientDataEntity();
+							DotNET::UtnEmall::Client::BusinessLogic::UserActionClientData^ userActionDataAccessItem =
+									new DotNET::UtnEmall::Client::BusinessLogic::UserActionClientData();
+
+							// Fill statistical data
+							userActionItemSelection.ActionType = DotNET::System::Convert::ToInt32(
+								DotNET::UtnEmall::Client::PresentationLayer::StatisticsActionType::ListItemSelection);
+							userActionItemSelection.Start = startItemSelection;
+							userActionItemSelection.Stop = startItemSelection;
+							userActionItemSelection.IdService = $serviceID;
+							userActionItemSelection.IdTable = $idTable;
+							userActionItemSelection.IdComponent = $idComponent;
+							userActionItemSelection.IdRegister = (($listClassName^)contentListView.SelectedItem).Entity.Id;
+
+							// Save the current statistic
+							userActionDataAccessItem.Save(userActionItemSelection);
+
+							DotNET::UtnEmall::Client::PresentationLayer::BaseForm^ target = new $targetType(this);
+							target.Owner = this;
+							target.ShowDialog();
+						});
+
+						// WS Method name to call
+						if(form.OutputTable == null)
+						{
+							formBlockCode.Children().InsertAtEnd(
+								writecode{
+									if(contentListView.SelectedIndex != -1){
+										int selectedId = (($listClassName^)contentListView.SelectedItem).Entity.Id;
+										this.NextDataEntity = new DotNET::UtnEmall::Client::PresentationLayer::DataEntity();
+										this.NextDataEntity.IEntityList = new ArrayList();
+										this.NextDataEntity.IEntityList.Add((($listClassName^)contentListView.SelectedItem).Entity);
+
+										$nextFormCall;
+									}
+								}
+							);
+						}
+						else
+						{
+							string^ mName = "Get"+form.OutputTable.Identifier+"List"+
+											"From"+form.Name.Identifier+
+											"For"+target;
+							XplIName^ methodName = new XplIName(mName);
+							XplIName^ arrayListIName = new XplIName("CollectionOf" + form.OutputTable.Identifier);
+							XplIName^ entityTypeName = form.OutputTable;
+
+							if(!(form.InputTable.Identifier == form.OutputTable.Identifier))
+							{
+								Console::WriteLine("List-->Formulario con llamada a servicio");
+								formBlockCode.Children().InsertAtEnd(
+									CallRemoteService(true,
+													serviceName,
+													serviceID,
+													writecode( this.NextDataEntity.IEntityList = new ArrayList(serviceClass.$methodName((($listClassName^)contentListView.SelectedItem).Entity.Id, "")) ),
+													arrayListIName,
+													entityTypeName) );
+
+								formBlockCode.Children().InsertAtEnd(
+									writecode{
+										int k = 0;
+										$nextFormCall;
+								});
+							}
+							else{
+								Console::WriteLine("List-->Formulario sin llamada a servicio");
+								formBlockCode.Children().InsertAtEnd(
+									writecode{
+										if((contentListView.SelectedIndex != -1)){
+											int selectedId = (($listClassName^)contentListView.SelectedItem).Entity.Id;
+											this.NextDataEntity = new DotNET::UtnEmall::Client::PresentationLayer::DataEntity();
+											this.NextDataEntity.IEntityList = new ArrayList();
+											this.NextDataEntity.IEntityList.Add((($listClassName^)contentListView.SelectedItem).Entity);
+
+											$nextFormCall;
+										}
+									}
+								);
+							}
+						}
+					}
+				}
+			}
+
+			if(form.Type == "Show"){
+				//Recorrer todas las relaciones
+				for(UtnEmall::Utils::Relation relation in relations){
+					string^ source = relation.Source;
+
+					if(source.Trim() == form.Name.Identifier.Trim()){
+						string^ option = relation.Option;
+						string^ target = relation.Target;
+						XplType^ targetType = new XplType();
+						targetType.set_typename(target);
+
+						if(form.InputTable.Identifier == form.OutputTable.Identifier){
+							formBlockCode.Children().InsertAtEnd(
+								writecode{
+									// Pass the information for the next form
+									NextDataEntity = new DotNET::UtnEmall::Client::PresentationLayer::DataEntity();
+									NextDataEntity.IEntityList = localDataEntity.IEntityList;
+
+									// Call the next Form
+									DotNET::UtnEmall::Client::PresentationLayer::BaseForm^ target = new $targetType(this);
+									target.Owner = this;
+									target.ShowDialog();
+								}
+							);
+						}//if
+					}
+				}
+			}//if "List"
+
+			//En el caso de formulario de input data, se debería
+			//llamar al servicio web para pasar el dato ingresado
+			if(form.Type == "Enter")
+			{
+				XplIName^ functionName = new XplIName("");
+				for(Relation rel in service.Relations)
+				{
+					if(rel.Source == form.Name.Identifier)
+					{
+						for(DataSource dataStorage in service.DataSources)
+						{
+							if(rel.Target == dataStorage.Name.Identifier && dataStorage.Storage)
+							{
+								functionName = new XplIName("Save"+dataStorage.Name.Identifier+"For"+form.Name.Identifier);
+							}
+						}
+					}
+				}
+
+				// Search for the next Form (if any)
+				string^ target = null;
+				XplType^ targetType = null;
+				XplFunctionBody^ callNextForm = new XplFunctionBody();
+
+				for(Relation rel in service.Relations)
+				{
+					if(rel.Source == form.Name.Identifier)
+					{
+						for(Form nextForm in service.Forms)
+						{
+							if(rel.Target == nextForm.Name.Identifier && nextForm.Type != "List")
+							{
+								target = rel.Target;
+								targetType = new XplType();
+								targetType.set_typename(target);
+								break;
+							}
+						}
+					}
+				}
+
+				if(targetType != null)
+				{
+					callNextForm = writecode{
+						// Assign the next form data (if there's any)
+						this.NextDataEntity = new DotNET::UtnEmall::Client::PresentationLayer::DataEntity();
+						this.NextDataEntity.IEntityList = localDataEntity.IEntityList;
+
+						// Show the next Form
+						DotNET::UtnEmall::Client::PresentationLayer::BaseForm^ target = new $targetType(this);
+						target.Owner = this;
+						target.ShowDialog();
+					};
+				}
+				else
+				{
+					callNextForm = writecode{
+						string^ msgTitle = DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(1);
+						string^ msgText = DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(4);
+						Bitmap^ msgIcon = new Bitmap(DotNET::UtnEmall::Client::PresentationLayer::Utilities::AppPath + "images\\\\\\ico_help.png");
+
+						if(!result){
+							msgTitle = DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(2);
+							msgText = DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(3);
+							msgIcon = new Bitmap(DotNET::UtnEmall::Client::PresentationLayer::Utilities::AppPath + "images\\\\\\ico_error.png");
+						}
+
+						DotNET::UtnEmall::Client::PresentationLayer::MessageForm msgForm = new DotNET::UtnEmall::Client::PresentationLayer::MessageForm();
+						msgForm.Owner = this;
+						msgForm.FormTitle = msgTitle;
+						msgForm.Icon = msgIcon;
+						msgForm.LabelMessage.Text = msgText;
+						msgForm.ShowDialog();
+					};
+				}
+
+				// Get the data
+				XplIName^ fieldName = new XplIName(form.EnterDataFieldName);
+				XplIName^ methodName = functionName;
+				string^ dataType = GetDataType(form.EnterDataValueType);
+				XplIName^ valueType = null;
+				if(dataType.Length != 0)
+				{
+					valueType = new XplIName(dataType);
+				}
+
+				XplExpression^ serviceCall = writecode( $valueType($fieldName.Text.ToString()) );
+				// cambiar por tipo de control, si es boolean, propiedad checked
+				if(form.EnterDataValueType == 4)
+				{
+					serviceCall = writecode( $fieldName.Checked );
+				}
+				if(form.EnterDataValueType == 3)
+				{
+					serviceCall = writecode( $valueType($fieldName.Text.ToString(), culture) );
+				}
+
+				// Verificación de tipo de control para envío de datos a servidor
+				XplExpression^ enviarDatosCondition = writecode(true);
+
+				if(dataType.Length == 0)
+				{
+					serviceCall = writecode( $fieldName.Text.ToString() );
+					enviarDatosCondition = writecode($fieldName.Text.Trim().Length>0);
+				}
+
+				formBlockCode.Children().InsertAtEnd(
+					writecode{
+						int entityId = 0;
+						if(localDataEntity.IsList){
+							entityId = ((DotNET::UtnEmall::Client::EntityModel::IEntity^)localDataEntity.IEntityList[0]).Id;
+						}else{
+							entityId = localDataEntity.Entity.Id;
+						}
+
+						$serviceName^ serviceClass = new $serviceName();
+						// Verificar tipo de control
+						if($enviarDatosCondition)
+						{
+							// Check if there's a connection available
+							if(Connection::IsConnected)
+							{
+								Cursor::Current = Cursors::WaitCursor;
+								// Statistic usage data
+								zoe::lang::DateTime start = zoe::lang::DateTime::Now;
+								// Web service call
+								bool result = serviceClass.$methodName(entityId, $serviceCall, "", Connection::Session);
+
+								// Statistic usage data
+								zoe::lang::DateTime stop = zoe::lang::DateTime::Now;
+
+								DotNET::UtnEmall::Client::EntityModel::UserActionClientDataEntity^ userAction =
+										new DotNET::UtnEmall::Client::EntityModel::UserActionClientDataEntity();
+								DotNET::UtnEmall::Client::BusinessLogic::UserActionClientData^ userActionDataAccess =
+										new DotNET::UtnEmall::Client::BusinessLogic::UserActionClientData();
+
+								// Fill statistical data
+								userAction.ActionType = DotNET::System::Convert::ToInt32(
+									DotNET::UtnEmall::Client::PresentationLayer::StatisticsActionType::ServiceConsumption);
+								userAction.Start = start;
+								userAction.Stop = stop;
+								userAction.IdService = $serviceID;
+
+								// Save the current statistic
+								userActionDataAccess.Save(userAction);
+
+								Cursor::Current = Cursors::Default;
+
+								$callNextForm;
+							}
+							else
+							{
+								ShowErrorMessage(DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(5), DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(2));
+							}
+						}
+					}
+				);
+			}//if "Enter"
+
+			XplFunctionBody^ finalFormMsg = new XplFunctionBody();
+			if(form.FinalForm && form.Type != "Enter")
+			{
+				finalFormMsg = writecode{
+					DotNET::UtnEmall::Client::PresentationLayer::MessageForm msgForm = new DotNET::UtnEmall::Client::PresentationLayer::MessageForm();
+					msgForm.Owner = this;
+					msgForm.FormTitle = DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(7);
+					msgForm.Icon = new Bitmap(DotNET::UtnEmall::Client::PresentationLayer::Utilities::AppPath + "images\\\\\\ico_help.png");
+					msgForm.LabelMessage.Text = DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(4);
+					msgForm.ShowDialog();
+				};
+			}
+
+			declarations =
+				writecode{%
+					private:
+					// Load all items to show in the listView
+					void Form_KeyDown(object^ sender, KeyEventArgs^ e){
+						if (e.KeyCode.Equals(Keys::Enter))
+						{
+							try{
+								$formBlockCode;
+								$finalFormMsg;
+
+								if(FinalizeService)
+								{
+									if(SourceForm != null)
+									{
+										SourceForm.FinalizeService = true;
+										SourceForm.GoBackToBegin = false;
+									}
+									this.Close();
+								}
+
+								if(GoBackToBegin)
+								{
+									if(SourceForm != null)
+									{
+										SourceForm.FinalizeService = false;
+										SourceForm.GoBackToBegin = true;
+										this.Close();
+									}
+								}
+
+							}
+							catch(FormatException formatError)
+							{
+								Cursor::Current = Cursors::Default;
+								ShowErrorMessage(DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(6), DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(2));
+							}
+							catch(Exception error){
+								Cursor::Current = Cursors::Default;
+								ShowErrorMessage(error.Message, DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(2));
+							}
+						}
+
+						if(e.KeyCode.Equals(Keys::Down))
+						{
+							this.AutoScrollPosition = new Point(0, -this.AutoScrollPosition.Y + 10);
+						}
+
+						if(e.KeyCode.Equals(Keys::Up))
+						{
+							this.AutoScrollPosition = new Point(0, -this.AutoScrollPosition.Y - 10);
+						}
+					}
+				%};
+
+			clase.Children().InsertAtEnd(declarations.Children());
+		}
+
+
+		static string^ GetDataType(int dataType){
+			switch(dataType){
+				case 1:
+					//string
+					//return "Convert::ToString";
+					return "";
+					break;
+				case 2:
+					//float
+					return "Convert::ToSingle";
+					break;
+				case 3:
+					//DateTime
+					return "Convert::ToDateTime";
+					break;
+				case 4:
+					//Boolean
+					return "Convert::ToBoolean";
+					break;
+				default: return null;
+			}
+		}
+
+
+
+		static XplNode^ GenerateProxy(CustomerServiceData^ data)
+		{
+			// Generate a skeleton for the class that includes a method for start and end
+			XplIName^ serviceName = new XplIName( data.ServiceName.Identifier );
+			XplIName^ storeNamespace = new XplIName(context.CurrentNamespace.get_name());
+			string^ webServiceEntityNamespace = "http://schemas.datacontract.org/2004/07/UtnEmall.Store"+data.StoreID+".EntityModel";
+
+			XplClass^ serviceClass = writecode{
+				public interface $serviceName{
+					SALGenerator::GenerateWSProxy("http://tempuri.org/" , $webServiceEntityNamespace);
+					// Se genera la conexiòn con el SmartClient
+					SCLGenerator::SetNamespace($storeNamespace, true);
+					SCLGenerator::GenerateAccessFacades("http://tempuri.org/" , $webServiceEntityNamespace, true);
+				public:
+					void ServiceInitiated(string^ customerSessionID);
+					void ServiceClosed(string^ customerSessionID);
+				}
+			};
+
+			// To store generated functions names
+			ArrayList^ generatedFunctions = new ArrayList();
+
+			// Define the proxy name for the rest of the methods
+			XplType^ businessProxyClass = new XplType();
+			businessProxyClass.set_typename("Store"+data.StoreID.ToString()+"InfrastructureService");
+			XplIName^ functionName = null;
+
+			// Add a method for every DataSource linked to a list form
+			// CollectionOf{Nombre de entidades del origen de datos}^ Get{Nombre origen de datos}ListFor{Nombre Formulario al q esta enlazado} (..)
+			for(DataSource ds in data.DataSources)
+			{
+				for(Relation rel in data.Relations)
+				{
+					if(rel.Source == ds.Name.Identifier)
+					{
+						for(Form targetForm in data.Forms)
+						{
+							if(rel.Target == targetForm.Name.Identifier)
+							{
+								// Create the generic List<FOO>
+								XplType^ entityType = new XplType();
+								entityType.set_typename(targetForm.InputTable.Identifier);
+								XplType^ arrayListType = new XplType();
+								arrayListType.set_typename("CollectionOf"+targetForm.InputTable.Identifier);
+								XplIName^ arrayListIName = new XplIName("CollectionOf"+targetForm.InputTable.Identifier);
+
+								functionName = new XplIName("Get"+ds.Name.Identifier+"ListFor"+rel.Target);
+								XplIName^ businessFunctionIName = new XplIName("GetCollectionOf"+ds.Name.Identifier);
+
+								serviceClass.Children().InsertAtEnd(writecode
+								{%
+								UtnEmall::Utils::List::NewCollection($arrayListIName,gettype($entityType^));
+								public:
+									$arrayListType^ $functionName(string^ customerSessionID);
+								%}.Children());
+							}
+						}
+					}
+					else
+					{
+						if(rel.Target == ds.Name.Identifier)
+						{
+
+						}
+					}
+				}
+			}
+
+			for(Form sourceForm in data.Forms)
+			{
+				Console::WriteLine("Form: " + sourceForm.Name.Identifier);
+				if(sourceForm.Type!=null)
+				Console::WriteLine("Form Type: " + sourceForm.Type);
+
+				if(sourceForm.Type == "Menu")
+				{
+					// Add a method for every list form linked from a list form
+					// Get{Nombre entidad de lo q llega al formulario}ListFrom{Nombre menu origen}For{Nombre menu destino}( int {id del registro seleccionado en el form origen}(....);
+					// Check that both are list menues
+					for(Relation rel in data.Relations)
+					{
+						if(rel.Source == sourceForm.Name.Identifier)
+						{
+							string^ optionOutputTable = "";
+							bool esOutputNull = false;
+							//Recorrer las opciones del menu
+							for(FieldTemplate menuOption in sourceForm.FieldsTemplate)
+							{
+								if(menuOption.FieldName == rel.Option)
+								{
+									if(menuOption.OutputTable.Identifier == null)
+									{	
+										esOutputNull = true;
+									}
+									else
+									{
+										optionOutputTable = menuOption.OutputTable.Identifier;
+									}
+									break;
+								}
+							}
+							
+							//Recorrer los formularios de destino
+							for(Form targetForm in data.Forms)
+							{
+								//if(rel.Target == targetForm.Name.Identifier && targetForm.Type != "Enter" && targetForm.Type != "Menu")
+								//if(rel.Target == targetForm.Name.Identifier && (!(sourceForm.InputTable.Identifier == optionOutputTable ) ))
+								if(rel.Target == targetForm.Name.Identifier && !esOutputNull && (!(sourceForm.InputTable.Identifier == optionOutputTable ) ))
+								{									
+									// Create the generic List<FOO>
+									// Assemble the Entity for the TargetForm and the business 
+									XplType^ entityType = new XplType();
+									entityType.set_typename(targetForm.InputTable.Identifier);
+
+									// Assemble the type for the generic instance
+									XplType^ arrayListType = new XplType();
+									arrayListType.set_typename("CollectionOf"+entityType.get_typename());
+									XplIName^ arrayListIName = new XplIName("CollectionOf"+entityType.get_typename());
+
+									// Establish the name of the web method and its parameters, considering
+									// that the "targetForm.InputTable.Identifier" should be cut into a version
+									// without "Entity" at the end.
+									functionName = new XplIName("Get"+entityType.get_typename()+"ListFrom"+sourceForm.Name.Identifier+"For"+targetForm.Name.Identifier);
+									XplIName^ idName = new XplIName("idSelected" + sourceForm.InputTable.Identifier);
+									XplIName^ businessObjectFunctionName = new XplIName("GetCollectionOf"+targetForm.InputTable.Identifier.Substring(0,targetForm.InputTable.Identifier.Length-6)+"By"+sourceForm.InputTable.Identifier.Substring(0,sourceForm.InputTable.Identifier.Length-6));
+									
+									if(!generatedFunctions.Contains(functionName.Identifier)){
+										generatedFunctions.Add(functionName.Identifier);
+										serviceClass.Children().InsertAtEnd(
+										writecode
+										{%
+											UtnEmall::Utils::List::NewCollection($arrayListIName,gettype($entityType));
+											public:
+												$arrayListType^ $functionName(int $idName, string^ customerSessionID);
+										%}.Children());
+									}
+
+								}
+							}
+						}
+					}
+				}
+
+				if(sourceForm.Type == "List")
+				{
+					// Add a method for every list form linked from a list form
+					// Get{Nombre entidad de lo q llega al formulario}ListFrom{Nombre menu origen}For{Nombre menu destino}( int {id del registro seleccionado en el form origen}(....);
+					// Check that both are list menues
+					for(Relation rel in data.Relations)
+					{
+						if(rel.Source == sourceForm.Name.Identifier)
+						{
+							for(Form targetForm in data.Forms)
+							{
+								if(rel.Target == targetForm.Name.Identifier && (!(sourceForm.InputTable.Identifier ==  sourceForm.OutputTable.Identifier) ))
+								{
+									// Create the generic List<FOO>
+									// Assemble the Entity for the TargetForm and the business
+									XplType^ entityType = new XplType();
+									entityType.set_typename(targetForm.InputTable.Identifier);
+
+									// Assemble the type for the generic instance
+									XplType^ arrayListType = new XplType();
+									arrayListType.set_typename("CollectionOf"+entityType.get_typename());
+									XplIName^ arrayListIName = new XplIName("CollectionOf"+entityType.get_typename());
+
+									// Establish the name of the web method and its parameters, considering
+									// that the "targetForm.InputTable.Identifier" should be cut into a version
+									// without "Entity" at the end.
+									functionName = new XplIName("Get"+entityType.get_typename()+"ListFrom"+sourceForm.Name.Identifier+"For"+targetForm.Name.Identifier);
+									XplIName^ idName = new XplIName("idSelected" + sourceForm.InputTable.Identifier);
+									XplIName^ businessObjectFunctionName = new XplIName("GetCollectionOf"+targetForm.InputTable.Identifier.Substring(0,targetForm.InputTable.Identifier.Length-6)+"By"+sourceForm.InputTable.Identifier.Substring(0,sourceForm.InputTable.Identifier.Length-6));
+
+									serviceClass.Children().InsertAtEnd(
+									writecode
+									{%
+										UtnEmall::Utils::List::NewCollection($arrayListIName,gettype($entityType));
+										public:
+											$arrayListType^ $functionName(int $idName, string^ customerSessionID);
+									%}.Children());
+								}
+							}
+						}
+					}
+				}
+				else if(sourceForm.Type == "Enter")
+				{
+					// Add a Method for each data saving form
+					//Save{Nombre del DataSource}(int {id registro q llega}, {tipo del dato ingresado} {valor del dato ingresado}, {session del usuario})
+					for(Relation rel in data.Relations)
+					{
+						if(rel.Source == sourceForm.Name.Identifier)
+						{
+							for(DataSource dataStorage in data.DataSources)
+							{
+								if(rel.Target == dataStorage.Name.Identifier && dataStorage.Storage)
+								{
+									// Create the generic List<FOO>
+									// Assemble the Entity for the TargetForm
+									XplType^ entityType = new XplType();
+									entityType.set_typename(dataStorage.Name.Identifier + "Entity");
+
+									// Assemble the type for the generic instance
+									XplType^ arrayListType = new XplType();
+									arrayListType.set_typename("CollectionOf"+entityType.get_typename());
+									XplIName^ arrayListIName = new XplIName("CollectionOf"+entityType.get_typename());
+
+									// Establish the name of the web method and its parameters
+									functionName = new XplIName("Save"+dataStorage.Name.Identifier+"For"+sourceForm.Name.Identifier);
+									XplIName^ idName = new XplIName("idSelected" + sourceForm.OutputTable.Identifier);
+									XplType^ valueType = new XplType();
+									XplIName^ valueIName = new XplIName();
+									XplIName^ businessFunctionName = new XplIName("Update"+dataStorage.Name.Identifier);
+
+									// Establish the table name
+									string^ tableName = dataStorage.Name.Identifier;
+
+									// Establish the data type base on the int field of the form
+									int valueTypeInt = sourceForm.EnterDataValueType;
+									switch(valueTypeInt)
+									{
+
+										case 1:
+											// STRING
+											valueType = ZoeHelper::MakeTypeFromString("^_"+NativeTypes::String);
+											valueIName.Identifier = "StringValue";
+											break;
+										// INTEGER
+										case 2:
+											valueType.set_typename(NativeTypes::Float);
+											valueIName.Identifier = "NumericValue";
+											break;
+										// DATETIME
+										case 3:
+											valueType.set_typename("DateTime");
+											valueIName.Identifier = "DateTimeValue";
+											break;
+										// BOOLEAN
+										case 4:
+											valueType.set_typename(NativeTypes::Boolean);
+											valueIName.Identifier = "BooleanValue";
+											break;
+										default:
+											valueType.set_typename(NativeTypes::Integer);
+											valueIName.Identifier = "IntegerValue";
+											break;
+									}
+
+									// Create the method
+									bool exists = false;
+									for(XplNode^ node in serviceClass.Children())
+									{
+										if(node is XplFunction)
+										{
+											XplFunction^ nodeFunc = (XplFunction^)node;
+											if(nodeFunc.get_name() == functionName.Identifier)
+											{
+												exists = true;
+											}
+										}
+									}
+
+									if(!exists)
+									{
+										serviceClass.Children().InsertAtEnd(
+										writecode
+										{%
+											UtnEmall::Utils::List::NewCollection($arrayListIName,gettype($entityType));
+											public:
+												bool $functionName(int $idName, $valueType value, string^ Key, string^ customerSessionID);
+										%}.Children());
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			return serviceClass;
+		}
+
+
+		static XplFunctionBody^ CallRemoteService(bool fillNextDataEntity,
+													XplIName^ serviceName,
+													int serviceID,
+													XplExpression^ methodName,
+													XplIName^ arrayListIName,
+													XplIName^ entityTypeName)
+		{
+			XplFunctionBody^ formBlockCode = XplFunctionBody::new_bk();
+			XplExpression^ newDataEntity = writecode( localDataEntity = new DotNET::UtnEmall::Client::PresentationLayer::DataEntity() );
+			XplExpression^ fillLocalCondition = writecode( SourceForm == null || SourceForm.NextDataEntity == null );
+			entityTypeName = new XplIName("DotNET::UtnEmall::Store"+storeID+"::EntityModel::"+entityTypeName.Identifier);
+			
+			if(fillNextDataEntity)
+			{
+				newDataEntity = writecode( NextDataEntity = new DotNET::UtnEmall::Client::PresentationLayer::DataEntity() );
+				fillLocalCondition = writecode( true );
+			}
+
+			formBlockCode.Children().InsertAtEnd(writecode{
+				if($fillLocalCondition)
+				{
+					Cursor::Current = Cursors::WaitCursor;
+
+					UtnEmall::Utils::List::NewCollection($arrayListIName,gettype($entityTypeName^));
+					// Web service access
+					$serviceName^ serviceClass = new $serviceName();
+					$newDataEntity;
+
+					// Statistic usage data
+					zoe::lang::DateTime start = zoe::lang::DateTime::Now;
+
+					// Web service call
+					$methodName;
+
+					// Statistic usage data
+					zoe::lang::DateTime stop = zoe::lang::DateTime::Now;
+
+					DotNET::UtnEmall::Client::EntityModel::UserActionClientDataEntity^ userAction =
+							new DotNET::UtnEmall::Client::EntityModel::UserActionClientDataEntity();
+					DotNET::UtnEmall::Client::BusinessLogic::UserActionClientData^ userActionDataAccess =
+							new DotNET::UtnEmall::Client::BusinessLogic::UserActionClientData();
+
+					// Fill statistical data
+					userAction.ActionType = DotNET::System::Convert::ToInt32(
+						DotNET::UtnEmall::Client::PresentationLayer::StatisticsActionType::ServiceConsumption);
+					userAction.Start = start;
+					userAction.Stop = stop;
+					userAction.IdService = $serviceID;
+
+					// Save the current statistic
+					userActionDataAccess.Save(userAction);
+
+					Cursor::Current = Cursors::Default;
+				}
+			});
+
+			return formBlockCode;
+		}
+
+		// Generates a new class for custom list with TemplateFields
+		static void GenerateCustomListClass(XplIName^ listClassName, Form^ form){
+			XplClass^ customListClass = writecode{
+				public class $listClassName inherits public UserControl
+				{
+					private:
+					DotNET::UtnEmall::Client::EntityModel::IEntity^ entity;
+					Form^ parent;
+					object^ tag;
+					public:
+					DotNET::UtnEmall::Client::EntityModel::IEntity^ property Entity
+					{
+						get
+						{
+							return entity;
+						}
+						set
+						{
+							entity = value;
+						}
+					}
+					object^ property Tag
+					{
+						get
+						{
+							return tag;
+						}
+						set
+						{
+							tag = value;
+						}
+					}
+
+					$listClassName(Form^ parent)
+					{
+						this.parent = parent;
+
+						Initialize();
+					}
+
+				}
+			};
+
+			// Custom item class components
+			XplFunctionBody^ initBlock = new XplFunctionBody();
+			ArrayList^ templates = form.FieldsTemplate;
+			int yPos = 0;
+			int i = 0;
+			string^ itemsListCount = "4";
+			
+			for(FieldTemplate^ field in templates){
+				XplIName^ fieldName = field.FieldMemberName;
+				XplIName^ propertyName = field.PropertyName;
+				XplIName^ fieldType = new XplIName("Label");
+
+				if(form.Type == "Menu")
+				{
+					itemsListCount = "8";
+					fieldName = new XplIName("menuOption");
+					if(i==1)break;
+				}
+
+				if(field.Type == "Image")
+				{
+					fieldType = new XplIName("PictureBox");
+				}
+
+				customListClass.Children().InsertAtEnd(
+					writecode{%
+						private:
+						$fieldType^ $fieldName;
+						public:
+						$fieldType^ property $propertyName
+						{
+							get
+							{
+								return this.$fieldName;
+							}
+							set
+							{
+								this.$fieldName = value;
+							}
+						}
+					%}.Children()
+				);
+
+				yPos = i*20;
+				if(field.Type == "Image"){
+					XplExpression^ menuExp = null;// writecode(new Bitmap(DotNET::UtnEmall::Client::PresentationLayer::Utilities::AppPath + "images\\\\\\ico_mall.png"));
+					initBlock.Children().InsertAtEnd( GetImageField(field, true, menuExp, false) );
+				}
+				else
+				{
+					initBlock.Children().InsertAtEnd( GetLabelField(field, true, null, false) );
+				}
+
+				i++;
+			}
+			customListClass.Children().InsertAtEnd(writecode{%
+				private:
+					void Initialize(){
+						this.Width = parent.Width;
+						int itemsCount = (int)(Single::Parse($itemsListCount,
+							DotNET::System::Globalization::NumberStyles::Number,
+							DotNET::System::Globalization::NumberFormatInfo::InvariantInfo));
+						this.Height = parent.Height / itemsCount;
+						$initBlock;
+					}
+			%}.Children());
+
+			context.CurrentNamespace.Children().InsertAtEnd(customListClass);
+		}
+
+
+		static exp void GetFontType(FieldTemplate^ field)
+		{
+			XplExpression^ fontType = null;
+			if(field.Bold)
+			{
+				if(fontType==null)
+				{
+					fontType = writecode( FontStyle::Bold );
+				}
+				else
+				{
+					fontType = writecode( $fontType | FontStyle::Bold );
+				}
+			}
+
+			if(field.Italic)
+			{
+				if(fontType==null)
+				{
+					fontType = writecode( FontStyle::Italic );
+				}
+				else
+				{
+					fontType = writecode( $fontType | FontStyle::Italic );
+				}
+			}
+
+			if(field.Underline)
+			{
+				if(fontType==null)
+				{
+					fontType = writecode( FontStyle::Underline );
+				}
+				else
+				{
+					fontType = writecode( $fontType | FontStyle::Underline );
+				}
+			}
+
+			if(fontType==null)
+			{
+				fontType = writecode( FontStyle::Regular );
+			}
+			return fontType;
+		}
+
+
+		static XplFunctionBody^ GetImageField(FieldTemplate^ field, bool declarePictureBox, XplExpression^ loadImg, bool calcTop)
+		{
+			XplIName^ fieldName = field.FieldMemberName;
+			XplIName^ propertyName = field.PropertyName;
+
+			string^ x = field.X.ToString().Replace(",", ".");
+			string^ y = field.Y.ToString().Replace(",", ".");
+
+			string^ imgW = field.Width.ToString().Replace(",", ".");
+			string^ imgH = field.Height.ToString().Replace(",", ".");
+
+			XplFunctionBody^ formBlockCode = XplFunctionBody::new_bk();
+
+			XplExpression^ topExp = writecode(new Point(xPos, yPos + header.Bottom + 26));
+
+			if(!calcTop)
+			{
+				topExp = writecode(new Point(xPos, yPos));
+			}
+			
+			if(declarePictureBox)
+			{
+				formBlockCode.Children().InsertAtEnd(
+					writecode{
+						this.$fieldName = new PictureBox();
+				});
+			}
+
+			formBlockCode.Children().InsertAtEnd(
+				writecode{
+					int xPos = (int)(Single::Parse($x,
+						DotNET::System::Globalization::NumberStyles::Number,
+						DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) * this.Width);
+					int yPos = (int)(Single::Parse($y,
+						DotNET::System::Globalization::NumberStyles::Number,
+						DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) * this.Height);
+					//Point fieldLocation = new Point(xPos, yPos + header.Bottom + 26);
+					Point fieldLocation = $topExp;
+					//Point fieldLocation = new Point(xPos, yPos);
+
+					int imgWidth = (int)(Single::Parse($imgW,
+						DotNET::System::Globalization::NumberStyles::Number,
+						DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) * this.Width);
+					int imgHeight = (int)(Single::Parse($imgH,
+						DotNET::System::Globalization::NumberStyles::Number,
+						DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) * this.Height);
+					Size fieldSize = new Size(imgWidth, imgHeight);
+
+					this.$fieldName.Location = fieldLocation;
+					this.$fieldName.Size = fieldSize;
+					this.$fieldName.SizeMode = PictureBoxSizeMode::StretchImage;
+			});
+
+			if(loadImg != null)
+			{
+				formBlockCode.Children().InsertAtEnd(
+					writecode{
+						this.$fieldName.Image = $loadImg;
+				});
+			}
+
+			if(declarePictureBox)
+			{
+				formBlockCode.Children().InsertAtEnd(
+					writecode(
+						this.Controls.Add(this.$fieldName)
+					)
+				);
+			}
+
+			return formBlockCode;
+		}
+
+
+		static XplFunctionBody^ GetLabelField(FieldTemplate^ field, bool declareLabel, XplExpression^ loadText, bool calcTop)
+		{
+			XplFunctionBody^ formBlockCode = XplFunctionBody::new_bk();
+			XplIName^ fieldName = field.FieldMemberName;
+			XplIName^ propertyName = field.PropertyName;
+
+			string^ x = field.X.ToString().Replace(",", ".");
+			string^ y = field.Y.ToString().Replace(",", ".");
+			string^ textW = field.Width.ToString().Replace(",", ".");
+			string^ textH = field.Height.ToString().Replace(",", ".");
+
+			long fontColor = field.FontColor;
+			long backColor = field.BackColor;
+			string^ fontName = field.FontName;
+			float fontSize = field.FontSize;
+			XplExpression^ fontType = GetFontType(field);
+			XplFunctionBody^ blockBackColor = new XplFunctionBody();
+
+			if(backColor>0)
+			{
+				blockBackColor.Children().InsertAtEnd(
+				writecode(
+					this.$fieldName.BackColor = System::Drawing::Color::FromArgb($backColor)
+					)
+				);
+			}
+
+			if(declareLabel)
+			{
+				formBlockCode.Children().InsertAtEnd(
+				writecode{
+					this.$fieldName = new Label();
+				});
+			}
+
+			XplExpression^ topExp = writecode(new Point(xPos, yPos + header.Bottom + 26));
+
+			if(!calcTop)
+			{
+				topExp = writecode(new Point(xPos, yPos));
+			}
+
+			// Set the current alignment
+			XplExpression^ labelAlign = writecode(this.$fieldName.TextAlign = ContentAlignment::TopLeft);
+
+			switch(field.Type)
+			{
+				case "Numeric":
+					labelAlign = writecode(this.$fieldName.TextAlign = ContentAlignment::TopRight);	            
+					break;
+				default:
+					labelAlign = writecode(this.$fieldName.TextAlign = ContentAlignment::TopLeft);
+					break;
+			}
+
+			formBlockCode.Children().InsertAtEnd(
+				writecode{
+					int xPos = (int)(Single::Parse($x,
+						DotNET::System::Globalization::NumberStyles::Number,
+						DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) * this.Width);
+					int yPos = (int)(Single::Parse($y,
+						DotNET::System::Globalization::NumberStyles::Number,
+						DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) * this.Height);
+					Point fieldLocation = $topExp;
+
+					$blockBackColor;
+					this.$fieldName.ForeColor = Color::FromArgb($fontColor);
+					this.$fieldName.Font = new Font($fontName, $fontSize, $fontType);
+					this.$fieldName.Location = fieldLocation;
+					//Size $fieldSize = new Size(width - this.$fieldName.Left, 20);
+
+					int textWidth = (int)(Single::Parse($textW,
+						DotNET::System::Globalization::NumberStyles::Number,
+						DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) * this.Width);
+					int textHeight = (int)(Single::Parse($textH,
+						DotNET::System::Globalization::NumberStyles::Number,
+						DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) * this.Height);
+					Size fieldSize = new Size(textWidth, textHeight);
+
+					this.$fieldName.Size = fieldSize;
+					$labelAlign;
+			});
+
+			if(loadText != null)
+			{
+				formBlockCode.Children().InsertAtEnd(
+					writecode{
+						this.$fieldName.Text = $loadText;
+				});
+			}
+
+			if(declareLabel)
+			{
+				formBlockCode.Children().InsertAtEnd(
+					writecode(this.Controls.Add(this.$fieldName))
+				);
+			}
+
+			return formBlockCode;
+		}
+
+		// Checks all the FieldsTemplates Numeric ranges
+		static void CheckNumericRanges(inout UtnEmall::Utils::Form*^ form)
+		{
+			for(FieldTemplate^ field in form.FieldsTemplate)
+			{
+				if(field.X >= 1)
+				{
+					field.X = 0.9999f;
+				}
+
+				if(field.Y >= 1)
+				{
+					field.Y = 0.9999f;
+				}
+
+				if(field.Width >= 1)
+				{
+					field.Width = 0.9999f;
+				}
+
+				if(field.Height >= 1)
+				{
+					field.Height = 0.9999f;
+				}
+			}
+		}
+
+		static void PreProcessFieldTemplates(inout UtnEmall::Utils::Form*^ form)
+		{
+			form.ListClassName = new XplIName(form.Name.Identifier + "ListUserControl");
+			form.EnterDataFieldName = "_" + form.EnterDataFieldName;
+
+			ArrayList^ fields = form.FieldsTemplate;
+			string^ fieldName = "";
+			string^ propertyName = "";
+			int i = 1;
+			Console::WriteLine("Preproccesing Form: " + form.Name.Identifier);
+
+			for(FieldTemplate^ field in fields)
+			{
+				fieldName = field.FieldName.Substring(0,1).ToLower() +
+							field.FieldName.Substring(1) + i;
+				propertyName = field.FieldName.Substring(0,1).ToUpper() +
+							field.FieldName.Substring(1) + i;
+				
+				if(field.MenuText!=null)
+					field.MenuText = GetString(field.MenuText);
+				
+				if(form.Type == "Menu")
+				{
+					field.X = 0.2f;
+					field.Y = 0;
+					field.Width = 0.9999f;
+					field.Height = 0.9999f;
+					field.FontColor = 0;
+					field.FontName = "Arial";
+					field.FontSize = 11.0f;
+					field.Bold = true;
+					field.Italic = false;
+					field.Underline = false;
+					field.Type = "";
+					fieldName = "menuOption";
+
+					/* UNCOMMENT THIS IF YOU WANT IMAGES IN MENUS */
+					/*if(i==2)
+					{
+						field.Type = "Image";
+						field.X = 0.0f;
+						field.Y = 0.0f;
+						field.Width = 0.1f;
+						field.Height = 0.1f;
+						field.FieldName = "menuOptionIcon";
+					}*/
+				}
+				
+				if(field.Y.ToString().IndexOf("E-05")>=0)
+				{
+					field.Y = 0.0f;
+				}
+
+				field.FieldMemberName = new XplIName(fieldName);
+				field.PropertyName = new XplIName(propertyName);
+				i++;
+			}
+
+			// Base 64 String decoding
+			form.Title = GetString(form.Title);
+			form.EnterDataDescription = GetString(form.EnterDataDescription);
+
+			if(form.Type == "Enter")
+			{
+				form.EnterDataControlType = new XplType();
+				form.EnterDataControlType.set_typename("TextBox");
+				
+				if(form.EnterDataValueType == 4)
+				{
+					form.EnterDataControlType.set_typename("CheckBox");
+				}
+			}
+		}
+
+		// Decode Base64 Strings
+		static string^ GetString(string^ encodedString){
+			if(encodedString != null)
+			{
+				return DotNET::System::Text::Encoding::UTF8.GetString(DotNET::System::Convert::FromBase64String(encodedString));
+			}
+			return "";
+		}
+		// Returns a source forms list for f
+		static ArrayList^ GetSourceFormsFor(Form^ f)
+		{
+			ArrayList^ list = new ArrayList();
+
+			// Check the relations searching f as a target
+			for(UtnEmall::Utils::Relation relation in storeService.Relations){
+				if(relation.Target == f.Name.Identifier){
+					// Check if it es a form, otherwise ignore it
+					for(Form^ sourceForm in storeService.Forms)
+					{
+						if(sourceForm.Name.Identifier == relation.Source)
+						{
+							list.Add(sourceForm);
+						}
+					}
+				}//if
+			}//for
+			
+			return list;
+		}
+
+		// Returns a Data source (if it exists) for f
+		static DataSource^ GetDataSourceFor(Form^ f)
+		{
+			// Check the relations searching f as a target
+			for(UtnEmall::Utils::Relation relation in storeService.Relations){
+				if(relation.Target == f.Name.Identifier){
+					// Check if it es a DataSource, otherwise ignore it
+					for(DataSource^ ds in storeService.DataSources)
+					{
+						if(ds.Name.Identifier == relation.Source)
+						{
+							return ds;
+						}
+					}
+				}//if
+			}//for
+			
+			return null;
+		}
+		//////////////////////////////////////
+
+		ObjectInterpreterBuilder::New(MyInterpreter, CustomerServiceData){
+			ServiceName = INAME;
+			StoreID = INT;
+			ServiceID = INT;
+			ServiceDescription = STRING;
+			Collection(Relations){
+				Relation{
+					Source = STRING;
+					Option = STRING;
+					Target = STRING;
+				};
+			};
+			Collection(DataSources){
+				DataSource{
+					Name = INAME;
+					Storage = BOOL;
+				};
+			};
+			Collection(DataStorages){
+				DataSource{
+					Name = INAME;
+				};
+			};
+			Collection(Forms){
+				Form{
+					Type = STRING;
+					Name = INAME;
+					IdInputTable = INT;
+					InputTable = INAME;
+					OutputTable = INAME;
+					IsOutputARegister = BOOL;
+					IsInputARegister = BOOL;
+					IdComponent = INT;
+					StartForm = BOOL;
+					FinalForm = BOOL;
+					Title = STRING;
+					EnterDataValueType = INT;
+					EnterDataFieldName = STRING;
+					EnterDataDescription = STRING;
+					Collection(FieldsTemplate){
+						FieldTemplate{
+							FieldName = STRING;
+							MenuText = STRING;
+							FontName = STRING;
+							IdComponent = INT;
+							OutputTable = INAME;
+							Bold = BOOL;
+							Italic = BOOL;
+							Underline = BOOL;
+							FontSize = FLOAT;
+							FontColor = LONG;
+							BackColor = LONG;
+							X = FLOAT;
+							Y = FLOAT;
+							Width = FLOAT;
+							Height = FLOAT;
+							Type = STRING;
+						};
+					};
+				};
+			};
+		};
+
+	}
+
+	//Estructura de datos de soporte
+	public factory class CustomerServiceData{
+	public:XplIName^ ServiceName;
+		int StoreID;
+		int ServiceID;
+		string^ ServiceDescription;
+		ArrayList^ Relations = new ArrayList();
+		ArrayList^ Forms = new ArrayList();
+		ArrayList^ DataSources = new ArrayList();
+		ArrayList^ DataStorages = new ArrayList();
+	}
+	public factory class Form{
+	public:
+		//Tipos: "List", "Show", "Enter", "Menu"
+		string^ Type;
+		XplIName^ Name, InputTable, OutputTable;
+		//Id de la tabla que usa el formulario (para estadìsticas)
+		int IdInputTable;
+		//Indica si la salida y entrada es un registro o una lista
+		bool IsOutputARegister, IsInputARegister;
+		int IdComponent;
+		bool StartForm, FinalForm;
+		//Lista de templates de items
+		ArrayList^ FieldsTemplate = new ArrayList();
+		//Tipo de datos del dato a obtener en un formulario EnterSingleData
+		int EnterDataValueType;
+		//Nombre del campo en un formulario EnterSingleData
+		string^ EnterDataFieldName;
+		//Descripcion en un formulario EnterSingleData
+		string^ EnterDataDescription;
+		// Form title
+		string^ Title;
+		XplIName^ ListClassName;
+		XplType^ EnterDataControlType;
+	}
+	//Clase para items template
+	public factory class FieldTemplate{
+	public:
+		//Nombre de campo del template o nombre de opción del menu
+		string^ FieldName;
+		int IdComponent;
+		XplIName^ OutputTable;
+		//Texto del menu en el caso de que sea un item para un menu
+		string^ MenuText;
+		string^ FontName;
+		string^ Type;
+		XplIName^ PropertyName, FieldMemberName;
+		//Posiciones relativas a la esquina superior izquierda
+		float X, Y;
+		bool Bold, Italic, Underline;
+		float FontSize;
+		long FontColor;
+		long BackColor;
+		float Width;
+		float Height;
+	}
+	//Clase para DataStorage y DataSource
+	public factory class DataSource{
+	public:
+		//El nombre de la tabla SIN el "Entity"
+		XplIName^ Name;
+		bool Storage;
+	}
+	public factory class Relation{
+	public:
+		string^ Source, Option, Target;
+	}
+}

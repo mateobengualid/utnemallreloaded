@@ -1,0 +1,22 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="SilverlightVisualDesigners.Dialog"
+	d:DesignWidth="250" d:DesignHeight="125	" Width="283.6" Height="144.2" BorderBrush="#FF000000">
+
+	<Border Height="144.2" Width="283.6" BorderBrush="#FF000000" Background="#FF000000">
+
+		<Grid x:Name="LayoutRoot" Background="#FF7E7E7E" Height="144.199996948242" Width="283.600006103516" >
+			<Rectangle Height="20.4" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Top" Fill="#FF323232" Stroke="#FF000000" d:LayoutOverrides="Height"/>
+			<TextBlock Height="20.4" VerticalAlignment="Top" Text="" TextWrapping="Wrap" Foreground="#FFFFFFFF" TextAlignment="Center" x:Name="textBlockTitle" d:LayoutOverrides="Height" Margin="0,0,0,0"/>
+			<TextBlock Margin="81.5999984741211,31.3999996185303,8,38.4000015258789" Text="" TextWrapping="Wrap" x:Name="textBlockMessage" FontSize="11"/>
+			<Button Height="20" HorizontalAlignment="Left" Margin="102.199996948242,0,0,9.19999980926514" VerticalAlignment="Bottom" Width="60" Content="Ok" d:LayoutOverrides="HorizontalAlignment" x:Name="buttonOk" Click="buttonOk_Click"/>
+			<Button Height="20" HorizontalAlignment="Right" Margin="0,0,8,9.19999980926514" VerticalAlignment="Bottom" Width="60" Content="No" x:Name="buttonNo" Click="buttonNo_Click"/>
+			<Image Margin="8,32.2000007629395,0,38.4000015258789" Stretch="Fill" VerticalAlignment="Stretch" Width="69.6" d:LayoutOverrides="Width" HorizontalAlignment="Left" x:Name="icon" Visibility="Visible"/>
+			<Button Height="20" HorizontalAlignment="Stretch" Margin="137.199996948242,0,86.4000015258789,9.19999980926514" VerticalAlignment="Bottom" Content="Yes" Width="60" x:Name="buttonYes" Click="buttonYes_Click" d:LayoutOverrides="Width"/>
+		</Grid>
+	</Border>
+</UserControl>

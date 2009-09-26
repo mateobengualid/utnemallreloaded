@@ -1,0 +1,9 @@
+using DotNET::LayerD::CodeDOM;
+using DotNET::LayerD::ZOECompiler;
+
+namespace Zoe{
+	public factory class Attribute{
+	public:
+		static extern exp void Add(string^ attExp);
+	}
+}

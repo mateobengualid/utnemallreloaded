@@ -1,0 +1,89 @@
+﻿<UserControl
+	x:Uid="UserControl_1" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:UtnEmall.ServerManager="clr-namespace:UtnEmall.ServerManager"
+	x:Class="UtnEmall.ServerManager.Menu"
+	Width="200" Height="407" Foreground="#FF3798D8" Background="#FF5A6F84" >
+
+	<UserControl.Resources>
+		<LinearGradientBrush x:Uid="LinearGradientBrush_1" x:Key="Background" EndPoint="1,0.5" StartPoint="0,0.5" SpreadMethod="Pad">
+			<GradientStop x:Uid="GradientStop_1" Color="#FF74BC76" Offset="0"/>
+			<GradientStop x:Uid="GradientStop_2" Color="#FF416FA5" Offset="1"/>
+		</LinearGradientBrush>
+		<DrawingBrush x:Uid="DrawingBrush_1" x:Key="MenuBackground" Viewbox="0,0,20,20" ViewboxUnits="Absolute">
+			<DrawingBrush.Drawing>
+				<DrawingGroup x:Uid="DrawingGroup_1">
+					<GeometryDrawing x:Uid="GeometryDrawing_1" Brush="#FFD3D3D3">
+						<GeometryDrawing.Geometry>
+							<RectangleGeometry x:Uid="RectangleGeometry_1" Rect="0,0,20,20"/>
+						</GeometryDrawing.Geometry>
+					</GeometryDrawing>
+					<GeometryDrawing x:Uid="GeometryDrawing_2" Brush="#FF000000">
+						<GeometryDrawing.Geometry>
+							<EllipseGeometry x:Uid="EllipseGeometry_1" Center="0,0" RadiusX="10" RadiusY="10"/>
+						</GeometryDrawing.Geometry>
+					</GeometryDrawing>
+					<GeometryDrawing x:Uid="GeometryDrawing_3" Brush="#FF000000">
+						<GeometryDrawing.Geometry>
+							<EllipseGeometry x:Uid="EllipseGeometry_2" Center="20,20" RadiusX="10" RadiusY="10"/>
+						</GeometryDrawing.Geometry>
+					</GeometryDrawing>
+					<GeometryDrawing x:Uid="GeometryDrawing_4" Brush="#FFFFFFFF">
+						<GeometryDrawing.Geometry>
+							<EllipseGeometry x:Uid="EllipseGeometry_3" Center="20,0" RadiusX="10" RadiusY="10"/>
+						</GeometryDrawing.Geometry>
+					</GeometryDrawing>
+					<GeometryDrawing x:Uid="GeometryDrawing_5" Brush="#FFFFFFFF">
+						<GeometryDrawing.Geometry>
+							<EllipseGeometry x:Uid="EllipseGeometry_4" Center="0,20" RadiusX="10" RadiusY="10"/>
+						</GeometryDrawing.Geometry>
+					</GeometryDrawing>
+				</DrawingGroup>
+			</DrawingBrush.Drawing>
+		</DrawingBrush>
+		<Storyboard x:Uid="Storyboard_1" x:Key="OnManageUsersMouseEnter"/>
+		<Storyboard x:Uid="Storyboard_2" x:Key="OnManageUsersMouseLeave"/>
+        <Storyboard x:Uid="Storyboard_3" x:Key="OnManageCustomersMouseLeave"/>
+        <Storyboard x:Uid="Storyboard_4" x:Key="OnManageCustomersMouseEnter"/>
+        <Storyboard x:Uid="Storyboard_5" x:Key="OnManageUsersClicked"/>
+        <Storyboard x:Uid="Storyboard_6" x:Key="OnManageCategoriesMouseEnter"/>
+        <Storyboard x:Uid="Storyboard_7" x:Key="OnManageCategoriesMouseLeave"/>
+        <Storyboard x:Uid="Storyboard_8" x:Key="OnManageServicesMouseEnter"/>
+        <Storyboard x:Uid="Storyboard_9" x:Key="OnManageServicesMouseLeave"/>
+        <Storyboard x:Uid="Storyboard_10" x:Key="OnManageStoresMouseEnter"/>
+        <Storyboard x:Uid="Storyboard_11" x:Key="OnManageStoresMouseLeave"/>
+        <Storyboard x:Uid="Storyboard_12" x:Key="OnManagePermissionsMouseEnter"/>
+        <Storyboard x:Uid="Storyboard_13" x:Key="OnManagePermissionsMouseLeave"/>
+        <Storyboard x:Uid="Storyboard_14" x:Key="OnManageGroupsMouseEnter"/>
+        <Storyboard x:Uid="Storyboard_15" x:Key="OnManageGroupsMouseLeave"/>
+        <Storyboard x:Uid="Storyboard_16" x:Key="OnManageDataModelMouseEnter"/>
+        <Storyboard x:Uid="Storyboard_17" x:Key="OnManageDataModelMouseLeave"/>
+        <Storyboard x:Uid="Storyboard_18" x:Key="OnViewStatisticsMouseEnter"/>
+		<Storyboard x:Uid="Storyboard_19" x:Key="OnViewStatisticsMouseLeave"/>
+    </UserControl.Resources>
+
+	<UserControl.Triggers>
+    </UserControl.Triggers>
+
+	<Grid x:Uid="Grid_1">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition x:Uid="ColumnDefinition_1" Width="0.705*"/>
+			<ColumnDefinition x:Uid="ColumnDefinition_2" Width="0.295*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition x:Uid="RowDefinition_1" Height="0.857*"/>
+			<RowDefinition x:Uid="RowDefinition_2" Height="0.143*"/>
+		</Grid.RowDefinitions>
+		<UtnEmall.ServerManager:Button Margin="8,16,8,0" VerticalAlignment="Top" Height="40" Grid.ColumnSpan="2" x:Name="Users" MouseLeftButtonUp="OnManageUsersClicked"/>
+		
+		<UtnEmall.ServerManager:Button Margin="8,59,8,0" VerticalAlignment="Top" Height="40" Grid.ColumnSpan="2" x:Name="Customers" MouseLeftButtonUp="OnManageCustomersClicked"/>
+		<UtnEmall.ServerManager:Button Margin="8,103,8,0" VerticalAlignment="Top" Height="40" x:Name="Categories" Grid.ColumnSpan="2" MouseLeftButtonUp="OnManageCategoriesClicked"/>
+		<UtnEmall.ServerManager:Button Margin="8,147,8,161.799" x:Name="Services" Grid.ColumnSpan="2" MouseLeftButtonUp="OnManageServicesClicked"/>
+		<UtnEmall.ServerManager:Button Margin="8,0,8,117.799" VerticalAlignment="Bottom" Height="40" x:Name="Stores" Grid.ColumnSpan="2" MouseLeftButtonUp="OnManageStoresClicked"/>
+		<UtnEmall.ServerManager:Button Margin="8,0,8,73.799" VerticalAlignment="Bottom" Height="40" x:Name="Groups" Grid.ColumnSpan="2" MouseLeftButtonUp="OnManageGroupsClicked"/>
+		<UtnEmall.ServerManager:Button Margin="8,0,8,29.799" VerticalAlignment="Bottom" Height="40" x:Name="DataModel" Grid.ColumnSpan="2" MouseLeftButtonUp="OnManageDataModelClicked"/>
+		<UtnEmall.ServerManager:Button Margin="8,0,8,-14.201" VerticalAlignment="Bottom" Height="40" x:Name="Statistics" Grid.ColumnSpan="2" MouseLeftButtonUp="OnViewStatisticsClicked"/>
+	</Grid>
+</UserControl>

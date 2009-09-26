@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:tns="http://tempuri.org/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" name="Category" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://cpu11:8081/Category?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://cpu11:8081/Category?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://cpu11:8081/Category?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Janus.Server.EntityModel" />
+      <xsd:import schemaLocation="http://cpu11:8081/Category?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Janus.Server.Base" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ICategory_Save_InputMessage">
+    <wsdl:part name="parameters" element="tns:Save" />
+  </wsdl:message>
+  <wsdl:message name="ICategory_Save_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICategory_Delete_InputMessage">
+    <wsdl:part name="parameters" element="tns:Delete" />
+  </wsdl:message>
+  <wsdl:message name="ICategory_Delete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICategory_GetCategory_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCategory" />
+  </wsdl:message>
+  <wsdl:message name="ICategory_GetCategory_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCategoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICategory_GetAllCategory_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllCategory" />
+  </wsdl:message>
+  <wsdl:message name="ICategory_GetAllCategory_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllCategoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICategory_GetCategoryWhere_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCategoryWhere" />
+  </wsdl:message>
+  <wsdl:message name="ICategory_GetCategoryWhere_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCategoryWhereResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICategory_GetCategoryWhereEqual_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCategoryWhereEqual" />
+  </wsdl:message>
+  <wsdl:message name="ICategory_GetCategoryWhereEqual_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCategoryWhereEqualResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICategory_Validate_InputMessage">
+    <wsdl:part name="parameters" element="tns:Validate" />
+  </wsdl:message>
+  <wsdl:message name="ICategory_Validate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ICategory">
+    <wsdl:operation name="Save">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICategory/Save" message="tns:ICategory_Save_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICategory/SaveResponse" message="tns:ICategory_Save_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Delete">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICategory/Delete" message="tns:ICategory_Delete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICategory/DeleteResponse" message="tns:ICategory_Delete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCategory">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICategory/GetCategory" message="tns:ICategory_GetCategory_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICategory/GetCategoryResponse" message="tns:ICategory_GetCategory_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllCategory">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICategory/GetAllCategory" message="tns:ICategory_GetAllCategory_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICategory/GetAllCategoryResponse" message="tns:ICategory_GetAllCategory_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCategoryWhere">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICategory/GetCategoryWhere" message="tns:ICategory_GetCategoryWhere_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICategory/GetCategoryWhereResponse" message="tns:ICategory_GetCategoryWhere_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCategoryWhereEqual">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICategory/GetCategoryWhereEqual" message="tns:ICategory_GetCategoryWhereEqual_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICategory/GetCategoryWhereEqualResponse" message="tns:ICategory_GetCategoryWhereEqual_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Validate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICategory/Validate" message="tns:ICategory_Validate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICategory/ValidateResponse" message="tns:ICategory_Validate_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ICategory" type="tns:ICategory">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Save">
+      <soap:operation soapAction="http://tempuri.org/ICategory/Save" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Delete">
+      <soap:operation soapAction="http://tempuri.org/ICategory/Delete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCategory">
+      <soap:operation soapAction="http://tempuri.org/ICategory/GetCategory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllCategory">
+      <soap:operation soapAction="http://tempuri.org/ICategory/GetAllCategory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCategoryWhere">
+      <soap:operation soapAction="http://tempuri.org/ICategory/GetCategoryWhere" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCategoryWhereEqual">
+      <soap:operation soapAction="http://tempuri.org/ICategory/GetCategoryWhereEqual" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Validate">
+      <soap:operation soapAction="http://tempuri.org/ICategory/Validate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Category">
+    <wsdl:port name="BasicHttpBinding_ICategory" binding="tns:BasicHttpBinding_ICategory">
+      <soap:address location="http://cpu11:8081/Category" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

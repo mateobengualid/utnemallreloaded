@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0E4FE665-290D-49A8-820F-F430BAC2C1A5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BusinessLogic</RootNamespace>
+    <AssemblyName>BusinessLogic</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>BusinessLogicKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRules>-Microsoft.Design#CA1062;-Microsoft.Usage#CA2209;-Microsoft.Usage#CA2202;-Microsoft.Usage#CA2241;-Microsoft.Design#CA1005;-Microsoft.Design#CA1020;-Microsoft.Design#CA1010;-Microsoft.Design#CA1050;-Microsoft.Design#CA1000;-Microsoft.Design#CA1002;-Microsoft.Design#CA1061;-Microsoft.Design#CA1006;-Microsoft.Design#CA1008;-Microsoft.Design#CA1004;-Microsoft.Design#CA1063;-Microsoft.Design#CA1033;-Microsoft.Design#CA1016;-Microsoft.Design#CA1014;-Microsoft.Design#CA1017;-Microsoft.Design#CA1059;-Microsoft.Design#CA1060;-Microsoft.Design#CA1057;-Microsoft.Design#CA1058;-Microsoft.Design#CA1001;-Microsoft.Design#CA1003;-Microsoft.Interoperability#CA1413;-Microsoft.Interoperability#CA1402;-Microsoft.Interoperability#CA1407;-Microsoft.Interoperability#CA1404;-Microsoft.Interoperability#CA1405;-Microsoft.Interoperability#CA1415;-Microsoft.Interoperability#CA1414;-Microsoft.Interoperability#CA1400;-Microsoft.Interoperability#CA1401;-Microsoft.Maintainability#CA1502;-Microsoft.Maintainability#CA1501;-Microsoft.Maintainability#CA1500;-Microsoft.Mobility#CA1600;-Microsoft.Mobility#CA1601;-Microsoft.Portability#CA1901;-Microsoft.Portability#CA1900;-Microsoft.Usage#CA2222;-Microsoft.Usage#CA1806;-Microsoft.Usage#CA2201;-Microsoft.Usage#CA2229;-Microsoft.Usage#CA2235;-Microsoft.Usage#CA2239;-Microsoft.Usage#CA2200;-Microsoft.Usage#CA1801</CodeAnalysisRules>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Category.cs" />
+    <Compile Include="Customer.cs" />
+    <Compile Include="CustomerServiceData.cs" />
+    <Compile Include="DataModel.cs" />
+    <Compile Include="Group.cs" />
+    <Compile Include="ICategory.cs" />
+    <Compile Include="ICustomer.cs" />
+    <Compile Include="ICustomerServiceData.cs" />
+    <Compile Include="IDataModel.cs" />
+    <Compile Include="IGroup.cs" />
+    <Compile Include="IRegisterAssociation.cs" />
+    <Compile Include="IService.cs" />
+    <Compile Include="IStore.cs" />
+    <Compile Include="ITable.cs" />
+    <Compile Include="IUser.cs" />
+    <Compile Include="IUserAction.cs" />
+    <Compile Include="IUserActionClientData.cs" />
+    <Compile Include="PreferenceDecorator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterAssociation.cs" />
+    <Compile Include="Service.cs" />
+    <Compile Include="Store.cs" />
+    <Compile Include="Table.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="UserAction.cs" />
+    <Compile Include="UserActionClientData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\BaseDesktop\BaseDesktop.csproj">
+      <Project>{BD074624-7847-458C-ACA0-E1707E7E68C0}</Project>
+      <Name>BaseDesktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataModel\DataModel.csproj">
+      <Project>{A7081E55-9370-4237-AECE-9A8C6664CE27}</Project>
+      <Name>DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EntityModel\EntityModel.csproj">
+      <Project>{2B6FB7B8-4944-4650-A06A-7BAD336251A7}</Project>
+      <Name>EntityModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="CustomDictionary.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BusinessLogicKey.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

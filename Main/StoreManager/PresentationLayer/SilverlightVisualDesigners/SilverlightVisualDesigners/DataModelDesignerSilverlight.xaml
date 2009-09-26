@@ -1,0 +1,35 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/client/2007"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vd="clr-namespace:SilverlightVisualDesigners"
+	
+    x:Class="SilverlightVisualDesigners.DataModelDesignerSilverlight" Loaded="UserControl_Loaded"
+	Width="Auto" Height="Auto" OpacityMask="#FFFFFFFF" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <vd:DataModelDesignerSilverlightResources x:Name="Resources"/>
+    </UserControl.Resources>
+
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush ImageSource="imgs/background.jpg"/>
+        </Grid.Background>
+        
+		<ScrollViewer Margin="197,63.013,0,0" Height="Auto" Width="Auto">
+            <vd:DragAndDropCanvas x:Name="canvasDraw" MouseMove="canvasDraw_MouseMove" Height="Auto" Width="Auto" Background="Transparent"/>
+        </ScrollViewer>
+		<StackPanel HorizontalAlignment="Left" Margin="3,63.013,0,0" Width="194" d:LayoutOverrides="GridBox">
+            <vd:CustomButton x:Name="ButtonNewTable" Text="New Table" Clicked="ButtonNewTable_Clicked" Margin="0,0,0,0" Image="imgs/model_newtable.png"/>
+			<TextBlock Height="19.6" Width="85" Text="{Binding textBlock_Relations, Source={StaticResource Resources}}" TextWrapping="Wrap" Foreground="#FF000000" d:LayoutOverrides="Height" Margin="0,5,0,5" FontFamily="Verdana" FontSize="14" FontWeight="Bold"/>
+			<vd:CustomButton x:Name="buttonOneToOne" Clicked="buttonOneToOne_Clicked" Margin="0,0,0,5" Image="imgs/model_onetoone.png"/>
+            <vd:CustomButton x:Name="buttonOneToMany" Clicked="buttonOneToMany_Clicked" Margin="0,0,0,5" Image="imgs/model_onetomany.png"/>
+            <vd:CustomButton x:Name="buttonManyToMany" Clicked="buttonManyToMany_Clicked" Margin="0,0,0,50" Image="imgs/model_manytomany.png"/>
+            <vd:CustomButton x:Name="buttonSave" Clicked="buttonSave_Clicked" Margin="0,0,0,5" Image="imgs/model_save.png"/>
+            <vd:CustomButton x:Name="buttonCancel" Clicked="buttonCancel_Clicked"/>
+        </StackPanel>
+		<Image Width="Auto" Height="65" HorizontalAlignment="Stretch" Margin="0,0,-423.964996337891,0" VerticalAlignment="Top" Source="imgs/header.png" Stretch="Fill" d:LayoutOverrides="Height"/>
+        <TextBlock Text="{Binding textBlockVersion, Source={StaticResource Resources}}" VerticalAlignment="Top" Margin="60,26,0,0" FontSize="12"></TextBlock>
+		<Image Height="48.32" HorizontalAlignment="Right" VerticalAlignment="Top" Width="145.28" Source="imgs/logo.png" d:LayoutOverrides="Width, Height" Margin="0,8,15,0"/>
+	</Grid>
+</UserControl>

@@ -1,0 +1,1 @@
+﻿The server was not found and there is no customer available in the local database. At least one of these requirements must be met to start the application.

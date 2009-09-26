@@ -1,0 +1,84 @@
+﻿<Canvas
+	x:Uid="CanvasListForm" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Name="CanvasListForm"
+	Width="105" Height="120" RenderTransformOrigin="0.5,0.5" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+	<Canvas.Resources>
+		<Storyboard x:Uid="Storyboard_1" x:Key="OnMouseEnter1">
+			<DoubleAnimationUsingKeyFrames x:Uid="DoubleAnimationUsingKeyFrames_1" BeginTime="00:00:00" Storyboard.TargetName="{x:Null}" Storyboard.TargetProperty="(UIElement.BitmapEffect).(OuterGlowBitmapEffect.GlowSize)">
+				<SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_1" KeyTime="00:00:00.3000000" Value="10"/>
+			</DoubleAnimationUsingKeyFrames>
+			<ColorAnimationUsingKeyFrames x:Uid="ColorAnimationUsingKeyFrames_1" BeginTime="00:00:00" Storyboard.TargetName="{x:Null}" Storyboard.TargetProperty="(UIElement.BitmapEffect).(OuterGlowBitmapEffect.GlowColor)">
+				<SplineColorKeyFrame x:Uid="SplineColorKeyFrame_1" KeyTime="00:00:00" Value="#FFFFFFFF"/>
+				<SplineColorKeyFrame x:Uid="SplineColorKeyFrame_2" KeyTime="00:00:00.3000000" Value="#FFFFFFFF"/>
+			</ColorAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames x:Uid="DoubleAnimationUsingKeyFrames_4" BeginTime="00:00:00" Storyboard.TargetName="{x:Null}" Storyboard.TargetProperty="(UIElement.BitmapEffect).(OuterGlowBitmapEffect.Opacity)">
+				<SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_4" KeyTime="00:00:00" Value="0"/>
+				<SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_5" KeyTime="00:00:00.3000000" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames x:Uid="DoubleAnimationUsingKeyFrames_5" BeginTime="00:00:00" Storyboard.TargetName="{x:Null}" Storyboard.TargetProperty="(UIElement.BitmapEffect).(OuterGlowBitmapEffect.Noise)">
+				<SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_6" KeyTime="00:00:00" Value="0"/>
+				<SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_7" KeyTime="00:00:00.3000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Uid="Storyboard_2" x:Key="OnMouseLeave">
+			<DoubleAnimationUsingKeyFrames x:Uid="DoubleAnimationUsingKeyFrames_6" BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="{x:Null}" Storyboard.TargetProperty="(UIElement.BitmapEffect).(OuterGlowBitmapEffect.GlowSize)">
+				<SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_8" KeyTime="00:00:00" Value="10"/>
+			</DoubleAnimationUsingKeyFrames>
+			<ColorAnimationUsingKeyFrames x:Uid="ColorAnimationUsingKeyFrames_2" BeginTime="00:00:00" Storyboard.TargetName="{x:Null}" Storyboard.TargetProperty="(UIElement.BitmapEffect).(OuterGlowBitmapEffect.GlowColor)">
+				<SplineColorKeyFrame x:Uid="SplineColorKeyFrame_3" KeyTime="00:00:00" Value="#FFFFFFFF"/>
+				<SplineColorKeyFrame x:Uid="SplineColorKeyFrame_4" KeyTime="00:00:00.3000000" Value="#FFFFFFFF"/>
+			</ColorAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames x:Uid="DoubleAnimationUsingKeyFrames_9" BeginTime="00:00:00" Storyboard.TargetName="{x:Null}" Storyboard.TargetProperty="(UIElement.BitmapEffect).(OuterGlowBitmapEffect.Opacity)">
+				<SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_13" KeyTime="00:00:00" Value="1"/>
+				<SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_14" KeyTime="00:00:00.3000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames x:Uid="DoubleAnimationUsingKeyFrames_10" BeginTime="00:00:00" Storyboard.TargetName="{x:Null}" Storyboard.TargetProperty="(UIElement.BitmapEffect).(OuterGlowBitmapEffect.Noise)">
+				<SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_15" KeyTime="00:00:00" Value="0"/>
+				<SplineDoubleKeyFrame x:Uid="SplineDoubleKeyFrame_16" KeyTime="00:00:00.3000000" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+	</Canvas.Resources>
+	<Canvas.BitmapEffect>
+		<OuterGlowBitmapEffect x:Uid="OuterGlowBitmapEffect_1" Opacity="0"/>
+	</Canvas.BitmapEffect>
+	<Canvas.RenderTransform>
+		<TransformGroup x:Uid="TransformGroup_1">
+			<ScaleTransform x:Uid="ScaleTransform_1" ScaleX="1" ScaleY="1"/>
+			<SkewTransform x:Uid="SkewTransform_1" AngleX="0" AngleY="0"/>
+			<RotateTransform x:Uid="RotateTransform_1" Angle="0"/>
+			<TranslateTransform x:Uid="TranslateTransform_1" X="0" Y="0"/>
+		</TransformGroup>
+	</Canvas.RenderTransform>
+	<Canvas.Triggers>
+		<EventTrigger x:Uid="EventTrigger_1" RoutedEvent="Mouse.MouseEnter">
+			<BeginStoryboard x:Uid="OnMouseEnter1_BeginStoryboard" Storyboard="{StaticResource OnMouseEnter1}" x:Name="OnMouseEnter1_BeginStoryboard"/>
+		</EventTrigger>
+		<EventTrigger x:Uid="EventTrigger_2" RoutedEvent="Mouse.MouseLeave">
+			<BeginStoryboard x:Uid="OnMouseLeave_BeginStoryboard" x:Name="OnMouseLeave_BeginStoryboard" Storyboard="{StaticResource OnMouseLeave}"/>
+		</EventTrigger>
+	</Canvas.Triggers>
+	<Rectangle x:Uid="Rectangle_1" Fill="#55FFFFFF" RadiusX="3.529" RadiusY="3.529" Width="103.934" Height="118.934" Canvas.Left="0.421" Canvas.Top="0.306"/>
+	<Canvas x:Uid="Canvas_1" Height="19.925" Width="100.248" Canvas.Left="2.67" Canvas.Top="3.196">
+		<Rectangle x:Uid="Rectangle_2" Height="16.848" Width="100.248" RadiusX="3.529" RadiusY="3.529" Fill="#FFFFFFFF" Stroke="#FF5F3A74" d:LayoutOverrides="Height"/>
+		<Rectangle x:Uid="Rectangle_3" Height="10.164" Width="98.5" Canvas.Left="0.991" Canvas.Top="0.999" RadiusX="2.713" RadiusY="2.713" Fill="#FFBAB3D6"/>
+		<Rectangle x:Uid="Rectangle_4" Height="7.503" RadiusX="2.713" RadiusY="2.713" Fill="#FF6D609E" Width="98.5" Canvas.Left="0.991" Canvas.Top="8.381" d:LayoutOverrides="Height"/>
+		<Rectangle x:Uid="Rectangle_5" Height="3.844" RadiusX="0" RadiusY="0" Fill="#FF6D609E" Width="98.5" Canvas.Left="0.991" Canvas.Top="8.215" d:LayoutOverrides="Height"/>
+	</Canvas>
+	<Canvas x:Uid="Canvas_2" Height="18.608" Width="47.327" Canvas.Left="2.67" Canvas.Top="97.871">
+		<Rectangle x:Uid="Rectangle_6" Height="13.181" Width="47.327" RadiusX="3.529" RadiusY="3.529" Fill="#FFFFFFFF" Stroke="#FF5F3A74" Canvas.Top="2.56"/>
+		<Rectangle x:Uid="Rectangle_7" Height="7.952" Width="45.176" Canvas.Top="3.341" RadiusX="2.713" RadiusY="2.713" Fill="#FFBAB3D6" Canvas.Left="1.126"/>
+		<Rectangle x:Uid="Rectangle_8" Height="5.87" RadiusX="2.713" RadiusY="2.713" Fill="#FF6D609E" Width="45.176" Canvas.Top="9.116" Canvas.Left="1.126"/>
+		<Rectangle x:Uid="Rectangle_9" Height="3.007" RadiusX="0" RadiusY="0" Fill="#FF6D609E" Width="45.176" Canvas.Top="8.987" Canvas.Left="1.126"/>
+	</Canvas>
+	<Canvas x:Uid="Canvas_3" Height="18.608" Width="47.327" Canvas.Left="54.944" Canvas.Top="97.871">
+		<Rectangle x:Uid="Rectangle_10" Height="13.181" Width="47.327" RadiusX="3.529" RadiusY="3.529" Fill="#FFFFFFFF" Stroke="#FF5F3A74" Canvas.Top="2.56"/>
+		<Rectangle x:Uid="Rectangle_11" Height="7.952" Width="45.176" Canvas.Top="3.341" RadiusX="2.713" RadiusY="2.713" Fill="#FFBAB3D6" Canvas.Left="1.126"/>
+		<Rectangle x:Uid="Rectangle_12" Height="5.87" RadiusX="2.713" RadiusY="2.713" Fill="#FF6D609E" Width="45.176" Canvas.Top="9.116" Canvas.Left="1.126"/>
+		<Rectangle x:Uid="Rectangle_13" Height="3.007" RadiusX="0" RadiusY="0" Fill="#FF6D609E" Width="45.176" Canvas.Top="8.987" Canvas.Left="1.126"/>
+	</Canvas>
+	<Rectangle x:Uid="Rectangle_14" RadiusX="2.71" RadiusY="2.71" Fill="#88FFFFFF" Width="99.66" Height="74.752" Canvas.Left="2.672" Canvas.Top="24.63"/>
+	<TextBlock x:Uid="TextBlock_1" Height="11.512" FontFamily="Trebuchet MS" FontSize="8" Foreground="#FFFFFFFF" Text="Back" TextAlignment="Center" TextWrapping="Wrap" Width="47.327" Canvas.Left="2.67" Canvas.Top="102.893"/>
+	<TextBlock x:Uid="TextBlock_2" Height="12.695" FontFamily="Trebuchet MS" FontSize="8" Foreground="#FFFFFFFF" Text="Option" TextAlignment="Center" TextWrapping="Wrap" Width="47.327" Canvas.Left="54.044" Canvas.Top="102.604"/>
+	<TextBlock x:Uid="Title" Height="15.195" x:Name="Title" FontFamily="Trebuchet MS" FontSize="10" Foreground="#FFFFFFFF" Text="Input" TextAlignment="Center" TextWrapping="Wrap" Width="98.597" Canvas.Left="2.971" Canvas.Top="5.854"/>
+</Canvas>

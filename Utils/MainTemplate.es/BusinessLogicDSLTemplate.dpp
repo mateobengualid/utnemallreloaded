@@ -1,0 +1,274 @@
+import "Microsoft", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "LayerD.CodeDOM", "platform=DotNET", "ns=DotNET", "assembly=lib_layerd_xpl_codedom_net";
+import "LayerD.ZOECompiler", "platform=DotNET", "ns=DotNET", "assembly=lib_zoec_core";
+using DotNET::System;
+using DotNET::System::IO;
+using DotNET::System::Collections;
+using DotNET::LayerD::CodeDOM;
+using DotNET::LayerD::ZOECompiler;
+
+namespace UtnEmall::Utils{
+	public factory class Rules{
+	public:
+		static XplIName^ ObjName()
+		{
+			XplIName^ objName;
+			if(context.CurrentFunction.get_name()=="Validate")
+			{
+				objName = new XplIName(context.CurrentClass.get_name().Substring(0,1).ToLower() + context.CurrentClass.get_name().Substring(1));	
+			}
+			else
+			{
+				XplNode^ temp = context;
+				while(!(temp.get_TypeName()=="XplFunction" || temp.get_TypeName()=="XplForStatement"))
+				{
+					temp = temp.get_Parent();
+				}
+				if(temp.get_TypeName()=="XplForStatement")
+				{
+					objName = new XplIName("item");
+				}
+				else
+				{
+					objName = new XplIName( ((XplParameter^)context.CurrentFunction.get_Parameters().Children().FirstNode()).get_name() );
+				}
+			}
+			return objName;
+		}
+		static XplNode^ PropertyNotNull(iname void propertyName, string^ errorMessage){
+			
+			string^ propertyStr = propertyName.Identifier;
+
+			XplIName^ objName = ObjName();
+
+			context.CurrentBlock.Children().InsertAfter(
+				writecode{
+					if ($objName.$propertyName == null)
+					{
+						$objName.Errors.Add(new Error($propertyStr,$propertyStr,$errorMessage));
+						result = false;
+					}
+				}.Children(), context.get_Parent() );
+			return null;
+		}
+
+		static XplNode^ HasPermission(iname void propertyName, string^ errorMessage){
+			
+			string^ propertyStr = propertyName.Identifier;
+
+			XplIName^ objName = ObjName();
+
+			context.CurrentBlock.Children().InsertAfter(
+				writecode{
+					if ($objName.$propertyName == null)
+					{
+						$objName.Errors.Add(new Error($propertyStr,$propertyStr,$errorMessage));
+						result = false;
+					}
+				}.Children(), context.get_Parent() );
+			return null;
+		}
+
+		// gives an error if the date is in the past
+		static XplNode^ PropertyDateTimeInThePast(iname void propertyName, string^ errorMessage){
+			
+			string^ propertyStr = propertyName.Identifier;
+
+			XplIName^ objName = ObjName();
+
+			context.CurrentBlock.Children().InsertAfter(
+				writecode{
+					if ($objName.$propertyName < zoe::lang::DateTime::Now)
+					{
+						$objName.Errors.Add(new Error($propertyStr,$propertyStr,$errorMessage));
+						result = false;
+					}
+				}.Children(), context.get_Parent() );
+			return null;
+		}
+
+		// gives an error if the date is in the future
+		static XplNode^ PropertyDateTimeInTheFuture(iname void propertyName, string^ errorMessage){
+			
+			string^ propertyStr = propertyName.Identifier;
+
+			XplIName^ objName = ObjName();
+
+			context.CurrentBlock.Children().InsertAfter(
+				writecode{
+					if ($objName.$propertyName > zoe::lang::DateTime::Now)
+					{
+						$objName.Errors.Add(new Error($propertyStr,$propertyStr,$errorMessage));
+						result = false;
+					}
+				}.Children(), context.get_Parent() );
+			return null;
+		}
+
+		// gives an error if the propertyName is lower than date
+		static XplNode^ PropertyDateTimeLowerThan(iname void propertyName, iname void propertyNameCmp, string^ errorMessage){
+			
+			string^ propertyStr = propertyName.Identifier;
+
+			XplIName^ objName = ObjName();
+
+			context.CurrentBlock.Children().InsertAfter(
+				writecode{
+					if ($objName.$propertyName < $objName.$propertyNameCmp)
+					{
+						$objName.Errors.Add(new Error($propertyStr,$propertyStr,$errorMessage));
+						result = false;
+					}
+				}.Children(), context.get_Parent() );
+			return null;
+		}
+
+		// gives an error if the propertyName is greater than date
+		static XplNode^ PropertyDateTimeGreaterThan(iname void propertyName, iname void propertyNameCmp, string^ errorMessage){
+			
+			string^ propertyStr = propertyName.Identifier;
+
+			XplIName^ objName = ObjName();
+
+			context.CurrentBlock.Children().InsertAfter(
+				writecode{
+					if ($objName.$propertyName > $objName.$propertyNameCmp)
+					{
+						$objName.Errors.Add(new Error($propertyStr,$propertyStr,$errorMessage));
+						result = false;
+					}
+				}.Children(), context.get_Parent() );
+			return null;
+		}
+
+		static XplNode^ PropertyStringNotEmpty(iname void propertyName, string^ errorMessage){
+			XplIName^ objName = ObjName();
+			string^ propertyStr = propertyName.Identifier;
+
+			context.CurrentBlock.Children().InsertAfter(
+				writecode{
+					if (DotNET::System::String::IsNullOrEmpty($objName.$propertyName))
+					{
+						$objName.Errors.Add(new Error($propertyStr,$propertyStr,$errorMessage));
+						result = false;
+					}
+				}.Children(), context.get_Parent() );
+			return null;
+		}
+
+		static XplNode^ PropertyGreaterThanZero(iname void propertyName, string^ errorMessage){
+			XplIName^ objName = ObjName();
+			string^ propertyStr = propertyName.Identifier;
+
+			context.CurrentBlock.Children().InsertAfter(
+				writecode{
+					if ($objName.$propertyName < 0)
+					{
+						$objName.Errors.Add(new Error($propertyStr,$propertyStr,$errorMessage));
+						result = false;
+					}
+				}.Children(), context.get_Parent() );
+			return null;
+		}
+
+		static XplNode^ CollectionNonEmpty(iname void collectionName, string^ errorMessage){
+			XplIName^ objName = ObjName();
+			string^ collectionStr = collectionName.Identifier;
+			
+			context.CurrentBlock.Children().InsertAfter(
+				writecode{
+					if ($objName.$collectionName == null)
+					{
+						$objName.Errors.Add(new Error($collectionStr,$collectionStr,$errorMessage));
+						result = false;
+					}
+				}.Children(), context.get_Parent() );
+			return null;
+		}
+
+		static XplNode^ PropertyCollection(iname void propertyName, iname void referencedType, block modelData)
+		{
+			
+			XplType^ entityType = new XplType();
+			entityType.set_typename(referencedType.Identifier + "Entity");
+			//Para el tipo de lista
+			XplType^ listOfType = new XplType();
+			listOfType.set_typename( "CollectionOf" + referencedType.Identifier + "Entity");
+			XplIName^ listOfTypeName = new XplIName( listOfType.get_typename() );
+
+			XplIName^ functionName = new XplIName("Validate"+propertyName.Identifier);
+
+			XplClassMembersList^ listaMiembros = null;
+			listaMiembros = writecode{%
+				static bool $functionName($listOfType^ $propertyName)
+				{
+					List::NewCollection( $listOfTypeName, gettype($entityType) );
+
+					bool result = true;
+
+					for(int i=0; i<$propertyName.Count; i++)
+					{
+						$entityType^ item = $propertyName[i];
+						$modelData;
+					}
+
+					return result;
+				}
+
+			%};
+
+			XplNodeList::CopyNodesAtEnd(listaMiembros.Children(), context.CurrentClass.Children());
+
+			XplIName^ objName = ObjName();
+			return writecode{
+
+				if( !( $functionName($objName.$propertyName) ) )
+				{
+					result = false;
+				}
+			};
+		}
+
+		static XplNode^ PropertyUnique(iname void propertyName, string^ errorMessage, iname void modelName){
+			
+			XplIName^ varDataAccess = new XplIName(modelName.Identifier.ToLower()+ "DataAccess");
+			
+			XplIName^ propertyStatica = new XplIName( "DB" + propertyName.Identifier);
+			
+			string^ propertyStr = propertyName.Identifier;
+
+			XplType^ entityType = new XplType();
+			entityType.set_typename(modelName.Identifier+"Entity");
+
+			XplIName^ listOfType = new XplIName("CollectionOf" + entityType.get_typename() );
+
+			XplIName^ objName = ObjName();
+
+			XplIName^ propertyStatic = new XplIName( entityType.get_typename() + "::" + propertyStatica.Identifier);
+
+			context.CurrentBlock.Children().InsertAfter(
+				writecode{
+
+					List::NewCollection( $listOfType , gettype( $entityType^ ) );
+					if($objName.$propertyName != null)
+					{
+						$listOfType^ listOfEquals = $varDataAccess.LoadWhere($propertyStatic, $objName.$propertyName, false, OperatorType::Equal);
+
+						if (listOfEquals.Count > 0 && (listOfEquals[0].Id != $objName.Id))
+						{
+							$objName.Errors.Add(new Error($propertyStr,$propertyStr,$errorMessage));
+							result = false;
+						}
+					}
+					
+				}, context.get_Parent() );
+			return null;
+		}
+
+		static XplNode^ Custom(block customBlock){
+			return customBlock;
+		}
+	}
+}
+

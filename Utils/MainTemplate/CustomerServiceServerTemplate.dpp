@@ -1,0 +1,662 @@
+import "Microsoft", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+using DotNET::System;
+using DotNET::System::IO;
+using DotNET::System::Collections;
+using DotNET::System::Collections::Generic;
+using DotNET::LayerD::CodeDOM;
+using DotNET::LayerD::ZOECompiler;
+using UtnEmall::Utils;
+using Zoe::Tools;
+
+namespace UtnEmall::Utils{
+	public factory class CustomServiceServer{
+	public:
+		
+		static XplNode^ New(block serviceData){
+			return New(false, serviceData);
+		}
+
+		static XplNode^ New(bool isClient, block serviceData){
+			MyInterpreter^ interpreter = new MyInterpreter();
+			CustomerServiceData^ data = interpreter.ProcessCustomerServiceData(serviceData);
+			
+			if(!isClient)
+			{
+				context.CurrentNamespace.Children().InsertAtEnd(
+					writecode(Zoe::Attribute::Add("System.ServiceModel.ServiceContract"))
+					);
+			}
+			context.CurrentNamespace.Children().InsertAtEnd(
+				Generate(isClient, data)
+				);
+			return null;
+		}
+
+		exp static XplNode^ Test(){
+			// Construct a CustomerServiceData, for the sake of testing
+			CustomerServiceData^ data = TestStubData();
+
+			data.ServiceName = new XplIName("TestService");
+			context.CurrentNamespace.Children().InsertAtEnd(
+				writecode(Zoe::Attribute::Add("System.ServiceModel.ServiceContract")));
+			context.CurrentNamespace.Children().InsertAtEnd(
+				CustomServiceServer::Generate(data));
+
+			return null;
+		}
+
+		
+		static XplNode^ Generate(CustomerServiceData^ data){
+			return Generate(false, data);
+		}
+
+		static XplNode^ Generate(bool isClient, CustomerServiceData^ data)
+		{
+			// Generate a skeleton for the class that includes a method for start and end
+			XplIName^ serviceName = data.ServiceName;
+
+			if(isClient){
+				serviceName = new XplIName(data.ServiceName.Identifier + "Local");
+			}
+
+			Console::WriteLine("Creando tipo: " + serviceName.Identifier);
+
+			XplClass^ serviceClass = null;
+
+			if(!isClient)
+			{	
+				serviceClass = writecode{
+					public class $serviceName{
+					public:
+						Zoe::Attribute::Add("System.ServiceModel.OperationContract");
+						void ServiceInitiated(string^ customerSessionID);
+						Zoe::Attribute::Add("System.ServiceModel.OperationContract");
+						void ServiceClosed(string^ customerSessionID);
+					}
+				};
+			}
+			else
+			{
+				serviceClass = writecode{
+					public class $serviceName{
+					public:
+						void ServiceInitiated(string^ customerSessionID);
+						void ServiceClosed(string^ customerSessionID);
+					}
+				};
+			}
+
+			// To store generated functions names
+			ArrayList^ generatedFunctions = new ArrayList();
+
+			// Define the proxy name for the rest of the methods
+			XplType^ businessProxyClass = new XplType();
+			businessProxyClass.set_typename("Store"+data.StoreID.ToString()+"InfrastructureService");
+
+			// Add a method for every DataSource linked to a list form
+			// CollectionOf{Nombre de entidades del origen de datos}^ Get{Nombre origen de datos}ListFor{Nombre Formulario al q esta enlazado} (..)			
+			for(DataSource ds in data.DataSources)
+			{
+				for(Relation rel in data.Relations)
+				{
+					if(rel.Source == ds.Name.Identifier)
+					{
+						for(Form targetForm in data.Forms)
+						{
+							if(rel.Target == targetForm.Name.Identifier)
+							{									
+								// Create the generic List<FOO>
+								XplType^ entityType = new XplType();
+								entityType.set_typename(targetForm.InputTable.Identifier);
+								XplType^ arrayListType = new XplType();
+								arrayListType.set_typename("CollectionOf"+targetForm.InputTable.Identifier);
+								XplIName^ arrayListIName = new XplIName("CollectionOf"+targetForm.InputTable.Identifier);
+
+								XplIName^ functionName = new XplIName("Get"+ds.Name.Identifier+"ListFor"+rel.Target);
+								XplIName^ businessFunctionIName = new XplIName("GetCollectionOf"+ds.Name.Identifier);
+
+								if(!isClient)
+								{
+									serviceClass.Children().InsertAtEnd(writecode(
+										Zoe::Attribute::Add("System.ServiceModel.OperationContract")));
+								}
+
+								serviceClass.Children().InsertAtEnd(writecode
+								{%
+								UtnEmall::Utils::List::NewCollection($arrayListIName,gettype($entityType^));
+								public:
+									$arrayListType^ $functionName(string^ customerSessionID)
+									{
+										$businessProxyClass^ businessObject = new $businessProxyClass();
+										return businessObject.$businessFunctionIName("");
+									}
+								%}.Children());
+							}
+						}
+					}
+					else
+					{
+						if(rel.Target == ds.Name.Identifier)
+						{
+
+						}
+					}
+				}
+			}
+
+			for(Form sourceForm in data.Forms)
+			{
+				Console::WriteLine("Form: " + sourceForm.Name.Identifier);
+				if(sourceForm.Type!=null)
+				Console::WriteLine("Form Type: " + sourceForm.Type);
+				if(sourceForm.Type == "Menu")
+				{
+					// Add a method for every list form linked from a list form
+					// Get{Nombre entidad de lo q llega al formulario}ListFrom{Nombre menu origen}For{Nombre menu destino}( int {id del registro seleccionado en el form origen}(....);
+					// Check that both are list menues
+					for(Relation rel in data.Relations)
+					{
+						if(rel.Source == sourceForm.Name.Identifier)
+						{
+							string^ optionOutputTable = "";
+							bool esOutputNull = false;
+							//Recorrer las opciones del menu
+							for(FieldTemplate menuOption in sourceForm.FieldsTemplate)
+							{	
+								if(menuOption.FieldName == rel.Option)
+								{
+									if(menuOption.OutputTable.Identifier == null)
+									{	
+										esOutputNull = true;										
+									}
+									else
+									{
+										optionOutputTable = menuOption.OutputTable.Identifier;
+									}
+									break;
+								}
+							}
+							
+							//Recorrer los formularios de destino
+							for(Form targetForm in data.Forms)
+							{
+								//if(rel.Target == targetForm.Name.Identifier && targetForm.Type != "Enter" && targetForm.Type != "Menu")
+								//if(rel.Target == targetForm.Name.Identifier && (!(sourceForm.InputTable.Identifier == optionOutputTable ) ))
+								if(rel.Target == targetForm.Name.Identifier && !esOutputNull && (!(sourceForm.InputTable.Identifier == optionOutputTable ) ))
+								{									
+									// Create the generic List<FOO>
+									// Assemble the Entity for the TargetForm and the business 
+									XplType^ entityType = new XplType();
+									entityType.set_typename(targetForm.InputTable.Identifier);
+
+									// Assemble the type for the generic instance
+									XplType^ arrayListType = new XplType();
+									arrayListType.set_typename("CollectionOf"+entityType.get_typename());
+									XplIName^ arrayListIName = new XplIName("CollectionOf"+entityType.get_typename());
+
+									// Establish the name of the web method and its parameters, considering
+									// that the "targetForm.InputTable.Identifier" should be cut into a version
+									// without "Entity" at the end.
+									XplIName^ functionName = new XplIName("Get"+entityType.get_typename()+"ListFrom"+sourceForm.Name.Identifier+"For"+targetForm.Name.Identifier);
+									XplIName^ idName = new XplIName("idSelected" + sourceForm.InputTable.Identifier);
+									XplIName^ businessObjectFunctionName = new XplIName("GetCollectionOf"+targetForm.InputTable.Identifier.Substring(0,targetForm.InputTable.Identifier.Length-6)+"By"+sourceForm.InputTable.Identifier.Substring(0,sourceForm.InputTable.Identifier.Length-6));
+									
+									Console::WriteLine("Function Name: " + functionName.Identifier);
+
+									if(!isClient)
+									{
+										serviceClass.Children().InsertAtEnd(writecode(
+										Zoe::Attribute::Add("System.ServiceModel.OperationContract")));
+									}
+
+									if(!generatedFunctions.Contains(functionName.Identifier)){
+										generatedFunctions.Add(functionName.Identifier);
+
+										serviceClass.Children().InsertAtEnd(
+										writecode
+										{%
+											UtnEmall::Utils::List::NewCollection($arrayListIName,gettype($entityType));
+											public:
+												$arrayListType^ $functionName(int $idName, string^ customerSessionID)
+												{
+													$businessProxyClass^ businessObject = new $businessProxyClass();
+													return businessObject.$businessObjectFunctionName($idName);
+												}
+										%}.Children());
+									}
+								}
+							}
+						}
+					}
+				}
+				if(sourceForm.Type == "List")
+				{
+					// Add a method for every list form linked from a list form
+					// Get{Nombre entidad de lo q llega al formulario}ListFrom{Nombre menu origen}For{Nombre menu destino}( int {id del registro seleccionado en el form origen}(....);
+					// Check that both are list menues
+					for(Relation rel in data.Relations)
+					{
+						if(rel.Source == sourceForm.Name.Identifier)
+						{
+							for(Form targetForm in data.Forms)
+							{
+								//if(rel.Target == targetForm.Name.Identifier && targetForm.Type != "Enter" && targetForm.Type != "Menu")
+								if(rel.Target == targetForm.Name.Identifier && (!(sourceForm.InputTable.Identifier == sourceForm.OutputTable.Identifier ) ))
+								{									
+									// Create the generic List<FOO>
+									// Assemble the Entity for the TargetForm and the business 
+									XplType^ entityType = new XplType();
+									entityType.set_typename(targetForm.InputTable.Identifier);
+
+									// Assemble the type for the generic instance
+									XplType^ arrayListType = new XplType();
+									arrayListType.set_typename("CollectionOf"+entityType.get_typename());
+									XplIName^ arrayListIName = new XplIName("CollectionOf"+entityType.get_typename());
+
+									// Establish the name of the web method and its parameters, considering
+									// that the "targetForm.InputTable.Identifier" should be cut into a version
+									// without "Entity" at the end.
+									XplIName^ functionName = new XplIName("Get"+entityType.get_typename()+"ListFrom"+sourceForm.Name.Identifier+"For"+targetForm.Name.Identifier);
+									XplIName^ idName = new XplIName("idSelected" + sourceForm.InputTable.Identifier);
+									XplIName^ businessObjectFunctionName = new XplIName("GetCollectionOf"+targetForm.InputTable.Identifier.Substring(0,targetForm.InputTable.Identifier.Length-6)+"By"+sourceForm.InputTable.Identifier.Substring(0,sourceForm.InputTable.Identifier.Length-6));
+									
+									if(!isClient)
+									{
+										serviceClass.Children().InsertAtEnd(writecode(
+										Zoe::Attribute::Add("System.ServiceModel.OperationContract")));
+									}
+
+									serviceClass.Children().InsertAtEnd(
+									writecode
+									{%
+										UtnEmall::Utils::List::NewCollection($arrayListIName,gettype($entityType));
+										public:
+											$arrayListType^ $functionName(int $idName, string^ customerSessionID)
+											{
+												$businessProxyClass^ businessObject = new $businessProxyClass();
+												return businessObject.$businessObjectFunctionName($idName);
+											}
+									%}.Children());
+								}
+							}
+						}
+					}
+				}
+				else if(sourceForm.Type == "Enter" && !isClient)
+				{
+					// Add a Method for each data saving form
+					//Save{Nombre del DataSource}(int {id registro q llega}, {tipo del dato ingresado} {valor del dato ingresado}, {session del usuario})
+					for(Relation rel in data.Relations)
+					{
+						if(rel.Source == sourceForm.Name.Identifier)
+						{
+							for(DataSource dataStorage in data.DataSources)
+							{
+								if(rel.Target == dataStorage.Name.Identifier && dataStorage.Storage)
+								{	
+									// Create the generic List<FOO>
+									// Assemble the Entity for the TargetForm
+									XplType^ entityType = new XplType();
+									entityType.set_typename(dataStorage.Name.Identifier + "Entity");
+
+									// Assemble the type for the generic instance
+									XplType^ arrayListType = new XplType();
+									arrayListType.set_typename("CollectionOf"+entityType.get_typename());
+									XplIName^ arrayListIName = new XplIName("CollectionOf"+entityType.get_typename());
+
+									// Establish the name of the web method and its parameters
+									XplIName^ functionName = new XplIName("Save"+dataStorage.Name.Identifier+"For"+sourceForm.Name.Identifier);
+									XplIName^ idName = new XplIName("idSelected" + sourceForm.OutputTable.Identifier);
+									XplType^ valueType = new XplType();
+									XplIName^ valueIName = new XplIName();
+									XplIName^ businessFunctionName = new XplIName("Update"+dataStorage.Name.Identifier);
+
+									// Establish the table name
+									string^ tableName = sourceForm.InputTable.Identifier;
+
+									// Establish the data type base on the int field of the form
+									int valueTypeInt = sourceForm.EnterDataValueType;
+									switch(valueTypeInt)
+									{
+										
+										case 1:
+											// STRING
+											valueType = ZoeHelper::MakeTypeFromString("^_"+NativeTypes::String);
+											valueIName.Identifier = "StringValue";
+											break;
+										// INTEGER
+										case 2:
+											valueType.set_typename(NativeTypes::Float);
+											valueIName.Identifier = "NumericValue";
+											break;
+										// DATETIME
+										case 3:
+											valueType.set_typename("zoe::lang::DateTime");
+											valueIName.Identifier = "DateTimeValue";
+											break;
+										// BOOLEAN
+										case 4:
+											valueType.set_typename(NativeTypes::Boolean);
+											valueIName.Identifier = "BooleanValue";
+											break;
+										default:
+												valueType.set_typename(NativeTypes::Integer);
+												valueIName.Identifier = "IntegerValue";
+												break;
+									}
+
+									bool exists = false;
+									for(XplNode^ node in serviceClass.Children())
+									{	
+										if(node is XplFunction)
+										{	
+											XplFunction^ nodeFunc = (XplFunction^)node;
+											if(nodeFunc.get_name() == functionName.Identifier)
+											{
+												exists = true;
+											}
+										}
+									}
+									
+									if(!exists)
+									{
+										// Create the method
+										if(!isClient)
+										{	
+											serviceClass.Children().InsertAtEnd(writecode(
+											Zoe::Attribute::Add("System.ServiceModel.OperationContract")));
+										}
+
+										serviceClass.Children().InsertAtEnd(
+										writecode
+										{%	
+											UtnEmall::Utils::List::NewCollection($arrayListIName,gettype($entityType));
+											public:
+												bool $functionName(int $idName, $valueType value, string^ Key, string^ customerSessionID)
+												{
+													$businessProxyClass businessObject = new $businessProxyClass();
+													$entityType entity = new $entityType();
+													CustomerEntity^ customer = SessionManager::Instance.GetCustomerFromSession(customerSessionID);
+													//CustomerEntity customer = null;
+													if(customer != null)
+													{
+														entity.CustomerId = customer.Id;
+													}
+													
+													entity.TableRelated = $tableName;
+													entity.OnTableId = $idName;
+													entity.StorageKey = Key;
+													entity.DateTimeValue = zoe::lang::DateTime::Now;
+													entity.$valueIName = value;
+													$arrayListIName^ listOfOne = new $arrayListIName();
+													listOfOne.Add(entity);
+													return businessObject.$businessFunctionName(listOfOne,customerSessionID);
+												}
+										%}.Children());
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			return serviceClass;
+		}
+
+
+		private:
+
+		static CustomerServiceData^ TestStubData()
+		{
+			CustomerServiceData^ data = new CustomerServiceData();
+
+			Form^ beginning = new Form();
+			beginning.FieldsTemplate = new ArrayList();
+			beginning.InputTable = new XplIName("");
+			beginning.OutputTable = new XplIName("");
+			beginning.Name = new XplIName("Init");
+			beginning.Type = "Menu";
+
+			Form^ listaCategorias = new Form();
+			listaCategorias.FieldsTemplate = new ArrayList();
+			listaCategorias.InputTable = new XplIName("CategoriasEntity");
+			listaCategorias.OutputTable = new XplIName("LibrosEntity");
+			listaCategorias.Name = new XplIName("ListaCategorias");
+			listaCategorias.IsInputARegister = false;
+			listaCategorias.IsOutputARegister = false;
+			listaCategorias.Type = "List";
+			listaCategorias.EnterDataValueType = 0;
+
+			Form^ listaAutores = new Form();
+			listaAutores.FieldsTemplate = new ArrayList();
+			listaAutores.InputTable = new XplIName("AutoresEntity");
+			listaAutores.OutputTable = new XplIName("LibrosEntity");
+			listaAutores.Name = new XplIName("ListaAutores");
+			listaAutores.IsInputARegister = false;
+			listaAutores.IsOutputARegister = false;
+			listaAutores.Type = "List";
+			listaAutores.EnterDataValueType = 0;
+
+			Form^ listaLibros = new Form();
+			listaLibros.FieldsTemplate = new ArrayList();
+			listaLibros.InputTable = new XplIName("LibrosEntity");
+			listaLibros.OutputTable = new XplIName("LibrosEntity");
+			listaLibros.Name = new XplIName("ListaLibros");
+			listaLibros.IsInputARegister = false;
+			listaLibros.IsOutputARegister = true;
+			listaLibros.Type = "List";
+			listaLibros.EnterDataValueType = 0;
+			
+			Form^ showLibro = new Form();
+			showLibro.FieldsTemplate = new ArrayList();
+			showLibro.InputTable = new XplIName("LibrosEntity");
+			showLibro.OutputTable = new XplIName("ReservasEntity");
+			showLibro.Name = new XplIName("ShowLibro");
+			showLibro.IsInputARegister = true;
+			showLibro.IsOutputARegister = true;
+			showLibro.Type = "Show";
+			showLibro.EnterDataValueType = 0;
+
+			Form^ enterCantidad = new Form();
+			enterCantidad.FieldsTemplate = new ArrayList();
+			enterCantidad.InputTable = new XplIName("ReservasEntity");
+			enterCantidad.OutputTable = new XplIName("ReservasEntity");
+			enterCantidad.Name = new XplIName("EnterReservation");
+			enterCantidad.IsInputARegister = true;
+			enterCantidad.IsOutputARegister = true;
+			enterCantidad.Type = "Enter";
+			enterCantidad.EnterDataValueType = 1;
+
+			Relation^ relationInitListaCat = new Relation();
+			relationInitListaCat.Source = "Init";
+			relationInitListaCat.Target = "ListaCategorias";
+
+			Relation^ relationInitListaAut = new Relation();
+			relationInitListaAut.Source = "Init";
+			relationInitListaAut.Target = "ListaAutores";
+
+			Relation^ relationListaCatListaLib = new Relation();
+			relationListaCatListaLib.Source = "ListaCategorias";
+			relationListaCatListaLib.Target = "ListaLibros";
+
+			Relation^ relationListaAutListaLib = new Relation();
+			relationListaAutListaLib.Source = "ListaAutores";
+			relationListaAutListaLib.Target = "ListaLibros";
+
+			Relation^ relationDSListaCat = new Relation();
+			relationDSListaCat.Source = "Categorias";
+			relationDSListaCat.Target = "ListaCategorias";
+
+			Relation^ relationDSListaAut = new Relation();
+			relationDSListaAut.Source = "Autores";
+			relationDSListaAut.Target = "ListaAutores";
+
+			Relation^ relationListaLibShowLib = new Relation();
+			relationListaLibShowLib.Source = "ListaLibros";
+			relationListaLibShowLib.Target = "ShowLibro";
+
+			Relation^ relationShowLibEnterRsrv = new Relation();
+			relationShowLibEnterRsrv.Source = "ShowLibro";
+			relationShowLibEnterRsrv.Target = "EnterReservation";
+
+			Relation^ relationEnterRsrvRsrv = new Relation();
+			relationEnterRsrvRsrv.Source = "EnterReservation";
+			relationEnterRsrvRsrv.Target = "Reservas";
+			
+			
+			DataSource^ categories = new DataSource();
+			categories.Name = new XplIName("Categorias");
+			
+			DataSource^ autores = new DataSource();
+			autores.Name = new XplIName("Autores");
+			
+			DataSource^ reservas = new DataSource();
+			reservas.Name = new XplIName("Reservas");
+
+			data.Forms = new ArrayList();
+			data.Forms.Add(beginning);
+			data.Forms.Add(listaCategorias);
+			data.Forms.Add(listaAutores);
+			data.Forms.Add(listaLibros);
+			data.Forms.Add(showLibro);
+			data.Forms.Add(enterCantidad);
+
+			data.DataStorages = new ArrayList();
+			data.DataStorages.Add(reservas);
+
+			data.DataSources = new ArrayList();
+			data.DataSources.Add(categories);
+			data.DataSources.Add(autores);
+
+			data.Relations = new ArrayList();
+			data.Relations.Add(relationInitListaCat);
+			data.Relations.Add(relationInitListaAut);
+			data.Relations.Add(relationListaCatListaLib);
+			data.Relations.Add(relationListaAutListaLib);
+			data.Relations.Add(relationDSListaCat);
+			data.Relations.Add(relationDSListaAut);
+			data.Relations.Add(relationListaLibShowLib);
+			data.Relations.Add(relationShowLibEnterRsrv);
+			data.Relations.Add(relationEnterRsrvRsrv);
+
+			data.StoreID = 1;
+
+			return data;
+		}		
+
+
+		ObjectInterpreterBuilder::New(MyInterpreter, CustomerServiceData){
+			ServiceName = INAME;
+			StoreID = INT;
+			ServiceID = INT;
+			ServiceDescription = STRING;
+			Collection(Relations){
+				Relation{
+					Source = STRING;
+					Option = STRING;
+					Target = STRING;
+				};
+			};
+			Collection(DataSources){
+				DataSource{
+					Name = INAME;
+					Storage = BOOL;
+				};
+			};
+			Collection(Forms){
+				Form{
+					Type = STRING;
+					Name = INAME;
+					IdInputTable = INT;
+					InputTable = INAME;
+					OutputTable = INAME;
+					IsOutputARegister = BOOL;
+					IsInputARegister = BOOL;
+					IdComponent = INT;
+					StartForm = BOOL;
+					FinalForm = BOOL;
+					Title = STRING;
+					EnterDataValueType = INT;
+					EnterDataFieldName = STRING;
+					EnterDataDescription = STRING;
+					EntityDisplayMember = STRING;
+					Collection(FieldsTemplate){
+						FieldTemplate{
+							FieldName = STRING;
+							MenuText = STRING;
+							Bold = BOOL;
+							IdComponent = INT;
+							OutputTable = INAME;
+							Italic = BOOL;
+							FontSize = INT;
+							X = FLOAT;
+							Y = FLOAT;
+						};
+					};
+				};
+			};
+		};
+	}
+
+
+	///Estructura de datos de soporte
+	public factory class CustomerServiceData{
+	public:
+		XplIName^ ServiceName;
+		int StoreID;
+		int ServiceID;
+		string^ ServiceDescription;
+		ArrayList^ Relations = new ArrayList();
+		ArrayList^ Forms = new ArrayList();
+		ArrayList^ DataSources = new ArrayList();
+		ArrayList^ DataStorages = new ArrayList();
+	}
+	public factory class Form{
+	public:
+		//Tipos: "List", "Show", "Enter", "Menu"
+		string^ Type;
+		XplIName^ Name, InputTable, OutputTable;
+		int IdInputTable;
+		//Indica si la salida y entrada es un registro o una lista
+		bool IsOutputARegister, IsInputARegister;
+		int IdComponent;
+		bool StartForm, FinalForm;
+		//Lista de templates de items
+		ArrayList^ FieldsTemplate = new ArrayList();
+		//Tipo de datos del dato a obtener en un formulario EnterSingleData
+		int EnterDataValueType;
+		//Nombre del campo en un formulario EnterSingleData
+		string^ EnterDataFieldName;
+		//Descripcion en un formulario EnterSingleData
+		string^ EnterDataDescription;
+		string^ EntityDisplayMember;
+		// Form title
+		string^ Title;
+	}
+	//Clase para items template
+	public factory class FieldTemplate{
+	public:
+		//Nombre de campo del template o nombre de opción del menu
+		string^ FieldName;
+		int IdComponent;
+		XplIName^ OutputTable;
+		//Texto del menu en el caso de que sea un item para un menu
+		string^ MenuText;
+		//Posiciones relativas a la esquina superior izquierda
+		float X, Y;
+		bool Bold, Italic;
+		int FontSize;
+	}
+	//Clase para DataStorage y DataSource
+	public factory class DataSource{
+	public:
+		//El nombre de la tabla incluyendo el "Entity"
+		XplIName^ Name;
+		bool Storage;
+	}
+	public factory class Relation{
+	public:
+		string^ Source, Option, Target;
+	}
+}

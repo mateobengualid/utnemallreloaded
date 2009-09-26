@@ -1,0 +1,336 @@
+import "Microsoft", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=System";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=System.Drawing";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=System.Windows.Forms";
+import "Janus", "platform=DotNET", "ns=DotNET", "assemblyfilename=C:\\Users\\Alexis\\Desktop\\Janus\\Source\\Main\\Common\\BaseMobile\\bin\\Debug\\BaseMobile.dll";
+import "Janus", "platform=DotNET", "ns=DotNET", "assemblyfilename=C:\\Users\\Alexis\\Desktop\\Janus\\Source\\Main\\Client\\EntityModel\\bin\\Debug\\EntityModel.dll";
+using DotNET::System;
+using DotNET::System::IO;
+using DotNET::System::Collections;
+using DotNET::System::Collections::Generic;
+using DotNET::LayerD::CodeDOM;
+using DotNET::LayerD::ZOECompiler;
+using DotNET::System::ComponentModel;
+using DotNET::System::Data;
+using DotNET::System::Drawing;
+using DotNET::System::Text;
+using DotNET::System::Windows::Forms;
+using DotNET::System::Reflection;
+using Zoe;
+using DotNET::Janus::Client::EntityModel;
+using DotNET::Janus::Client::PresentationLayer;
+
+using DotNET::System::ServiceModel;
+using DotNET::System::ServiceModel::Channels;
+using DotNET::System::Runtime::Serialization;
+using Microsoft::Tools::ServiceModel;
+import "System", "platform=DotNET", "ns=DotNET", "assemblyfilename=C:\\Program Files\\Microsoft.NET\\SDK\\CompactFramework\\v3.5\\WindowsCE\\System.Xml.dll";
+import "System", "platform=DotNET", "ns=DotNET", "assemblyfilename=C:\\Program files\\Reference Assemblies\\Microsoft\\Framework\\v3.0\\System.ServiceModel.dll";
+import "System", "platform=DotNET", "ns=DotNET", "assemblyfilename=C:\\Program files\\Reference Assemblies\\Microsoft\\Framework\\v3.0\\System.Runtime.Serialization.dll";
+
+import "Janus", "platform=DotNET", "ns=DotNET", "assemblyfilename=C:\\Users\\Alexis\\Desktop\\Janus\\Source\\Main\\Server\\Core\\bin\\Debug\\Store2Infrastructure_Mobile.dll";
+//import "Sample", "platform=DotNET", "ns=DotNET", "assemblyfilename=C:\\Users\\Alexis\\Desktop\\Janus\\Source\\Utils\\CustomerServiceLayerD\\CustomerServiceServer\\CustomerServiceServerTest.dll";
+using DotNET::Janus::Store2;
+using DotNET::Janus::Store2::EntityModel;
+
+using Janus::Utils;
+using DotNET::Sample;
+//Utils::DefaultNetImports();
+
+namespace Test{
+	//ModelMobile::Test();
+
+	ModelMobile::New{
+		ServiceName = LibraryTest;
+		StoreID = 2;
+		ServiceDescription = "A test service for a library.";
+		Relations{
+			Relation{
+				Source = "MainMenu";
+				Option = "Author";
+				Target = "Authors";
+			};
+			Relation{
+				Source = "Authors";
+				Target = "Books";
+			};
+			Relation{
+				Source = "Author";
+				Target = "Authors";
+			};
+		};
+		DataSources{
+			DataSource{
+				Name = Author;
+			};
+		};
+		Forms{
+			// Formulario de menu inicio
+			Form{
+				Type = "Menu";
+				Name = MainMenu;
+				FieldsTemplate{
+					FieldTemplate{
+						FieldName = "Author";
+						MenuText = "Books by Authors";
+					};
+				};
+			};
+			// Formulario par alistar autores
+			Form{
+				Type = "List";
+				Name = Authors;
+				InputTable = AuthorEntity;
+				OutputTable = BooksEntity;
+				IsOutputARegister = false;
+				IsInputARegister = false;
+				EntityDisplayMember = "LastName";
+				FieldsTemplate{
+					FieldTemplate{
+						FieldName = "LastName";
+						MenuText = "LastName";
+						Bold = true;
+						FontSize = 10;
+						X = 0.1;
+						Y = 0.2;
+					};
+					FieldTemplate{
+						FieldName = "FirstName";
+						MenuText = "FirstName";
+						Bold = true;
+						FontSize = 10;
+						X = 0.5;
+						Y = 0.2;
+					};
+				};
+			};
+			// Formulario para mostrar libros x autor
+			Form{
+				Type = "List";
+				Name = Books;
+				InputTable = BooksEntity;
+				OutputTable = BooksEntity;
+				IsOutputARegister = true;
+				IsInputARegister = false;
+				EntityDisplayMember = "Name";
+				FieldsTemplate{
+					FieldTemplate{
+						FieldName = "Name";
+						MenuText = "Title";
+						Bold = true;
+						FontSize = 10;
+						X = 0.1;
+						Y = 0.2;
+					};
+					FieldTemplate{
+						FieldName = "Description";
+						MenuText = "Description";
+						Bold = true;
+						FontSize = 10;
+						X = 0.1;
+						Y = 0.6;
+					};
+				};
+			};
+
+		};
+	};
+	//Test SErvice endpoint (I think it is called endpoint)
+	/*
+	public class TestService
+	{
+	public:
+		void ServiceInitiated(string^ customerSessionID)
+		{
+		} 
+		void ServiceClosed(string^ customerSessionID)
+		{
+		} 
+		
+        //[System.ServiceModel.OperationContract]
+		//Janus.Utils.List.New(ListOfCategoriasEntity, LayerD.CodeDOM.CodeDOM_Utils.MakeTypeFromString("^_CategoriasEntity"));
+        ArrayList^ GetCategoriasListForListaCategorias(string^ customerSessionID)
+		{
+            //Store1InfrastructureService businessObject=new Store1InfrastructureService();
+            //return (businessObject).GetListOfCategorias("");
+			CategoryEntity^ cat1 = new CategoryEntity();
+            cat1.Description = "Sports";
+			cat1.Id = 1;
+            CategoryEntity^ cat2 = new CategoryEntity();
+            cat2.Description = "Fiction";
+            CategoryEntity^ cat3 = new CategoryEntity();
+            cat3.Description = "Horror";
+            CategoryEntity^ cat4 = new CategoryEntity();
+            cat4.Description = "Essays";
+            CategoryEntity^ cat5 = new CategoryEntity();
+            cat5.Description = "Novels";
+            CategoryEntity^ cat6 = new CategoryEntity();
+            cat6.Description = "Classic";
+            CategoryEntity^ cat7 = new CategoryEntity();
+            cat7.Description = "History";
+            CategoryEntity^ cat8 = new CategoryEntity();
+            cat8.Description = "Other kind of books";
+            CategoryEntity^ cat9 = new CategoryEntity();
+            cat9.Description = "Other kind of books";
+            CategoryEntity^ cat10 = new CategoryEntity();
+            cat10.Description = "Other kind of books";
+            CategoryEntity^ cat11 = new CategoryEntity();
+            cat11.Description = "Other kind of books";
+            CategoryEntity^ cat12 = new CategoryEntity();
+            cat12.Description = "Other kind of books";
+            CategoryEntity^ cat13 = new CategoryEntity();
+            cat13.Description = "Other kind of books";
+            CategoryEntity^ cat14 = new CategoryEntity();
+            cat14.Description = "Other kind of books";
+
+            ArrayList^ res = new ArrayList();
+            res.Add(cat1);
+            res.Add(cat2);
+            res.Add(cat3);
+            res.Add(cat4);
+            res.Add(cat5);
+            res.Add(cat6);
+            res.Add(cat7);
+            res.Add(cat8);
+            res.Add(cat9);
+            res.Add(cat10);
+            res.Add(cat11);
+            res.Add(cat12);
+            res.Add(cat13);
+            res.Add(cat14);
+
+            return res;;
+		} 
+		
+		ArrayList^ GetLibrosListForListaLibros(string^ customerSessionID)
+		{
+			return null;
+		}
+
+        ArrayList^ GetAutoresListForListaAutores(string^ customerSessionID)
+		{   
+            CategoryEntity^ cat1 = new CategoryEntity();
+            cat1.Description = "William C. Sharpespeare";
+            CategoryEntity^ cat2 = new CategoryEntity();
+            cat2.Description = "Jorge Luis V. Basic";
+            CategoryEntity^ cat3 = new CategoryEntity();
+            cat3.Description = "Charles 'D++' Dickens";
+            CategoryEntity^ cat4 = new CategoryEntity();
+            cat4.Description = "Douglas Aspx Adams";
+            CategoryEntity^ cat5 = new CategoryEntity();
+            cat5.Description = "J.#.#. Tolkien";
+            CategoryEntity^ cat6 = new CategoryEntity();
+            cat6.Description = "Jorge Luis Borges";
+            CategoryEntity^ cat7 = new CategoryEntity();
+            cat7.Description = "Ernesto Sabato";
+
+            ArrayList^ res = new ArrayList();
+            res.Add(cat1);
+            res.Add(cat2);
+            res.Add(cat3);
+            res.Add(cat4);
+            res.Add(cat5);
+            res.Add(cat6);
+            res.Add(cat7);
+
+            return res;
+		} 
+		
+		ArrayList^ GetLibrosEntityListFromListaCategoriasForListaLibros(
+			int idSelectedLibrosEntity, 
+			string^ customerSessionID)
+		{   
+            CategoryEntity^ cat1 = new CategoryEntity();
+            cat1.Description = "Romeo & Juliet - The revenge of the clones";
+            cat1.Name = "BOOK";
+            CategoryEntity^ cat2 = new CategoryEntity();
+            cat2.Description = "Layer D - How to program";
+            cat2.Name = "BOOK";
+            CategoryEntity^ cat3 = new CategoryEntity();
+            cat3.Description = "The complete truth about LIS";
+            cat3.Name = "BOOK";
+            CategoryEntity^ cat4 = new CategoryEntity();
+            cat4.Description = "A.I. for dummies";
+            cat4.Name = "BOOK";
+            CategoryEntity^ cat5 = new CategoryEntity();
+            cat5.Description = "What does MVP means?";
+            cat5.Name = "BOOK";
+            CategoryEntity^ cat6 = new CategoryEntity();
+            cat6.Description = "RTM vs RTFM - Users manual";
+            cat6.Name = "BOOK";
+            CategoryEntity^ cat7 = new CategoryEntity();
+            cat7.Description = "Xtreme vs Xtremist programming";
+            cat7.Name = "BOOK";
+
+            ArrayList^ res = new ArrayList();
+            res.Add(cat1);
+            res.Add(cat2);
+            res.Add(cat3);
+            res.Add(cat4);
+            res.Add(cat5);
+            res.Add(cat6);
+            res.Add(cat7);
+
+            return res;
+		} 
+
+		IEntity^ GetBookFromListaLibrosForShowLibro(
+											int idSelectedLibrosEntity, 
+											string^ customerSessionID){
+			//Return a new book
+			CategoryEntity^ book = new CategoryEntity();
+			book.Description = "Some book";
+			book.Name = "This is a book";
+			//book.Id = 23;
+			return book;
+		}
+		
+        ArrayList^ GetLibrosEntityListFromListaAutoresForListaLibros(
+											int idSelectedLibrosEntity, 
+											string^ customerSessionID)
+		{   
+            CategoryEntity^ cat1 = new CategoryEntity();
+            cat1.Description = "Romeo & Juliet - The revenge of the clones";
+            cat1.Name = "";
+            CategoryEntity^ cat2 = new CategoryEntity();
+            cat2.Description = "Layer D - How to program";
+            cat2.Name = "";
+            CategoryEntity^ cat3 = new CategoryEntity();
+            cat3.Description = "The complete truth about LIS";
+            cat3.Name = "";
+            CategoryEntity^ cat4 = new CategoryEntity();
+            cat4.Description = "A.I. for dummies";
+            cat4.Name = "";
+            CategoryEntity^ cat5 = new CategoryEntity();
+            cat5.Description = "What does MVP means?";
+            cat5.Name = "";
+            CategoryEntity^ cat6 = new CategoryEntity();
+            cat6.Description = "RTM vs RTFM - Users manual";
+            cat6.Name = "";
+            CategoryEntity^ cat7 = new CategoryEntity();
+            cat7.Description = "Xtreme vs Xtremist programming";
+            cat7.Name = "";
+
+            ArrayList^ res = new ArrayList();
+            res.Add(cat1);
+            res.Add(cat2);
+            res.Add(cat3);
+            res.Add(cat4);
+            res.Add(cat5);
+            res.Add(cat6);
+            res.Add(cat7);
+
+            return res;
+		} 
+		
+		bool SaveReservas(int idSelectedReservasEntity, 
+							int value, 
+							int Key, 
+							string^ customerSessionID)
+		{
+            return true;
+		} 
+	}*/
+}
+

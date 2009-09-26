@@ -1,0 +1,241 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EF4289FB-D06E-45B2-87C9-99B95D29C0FB}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LogicalLibrary</RootNamespace>
+    <AssemblyName>LogicalLibrary</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>LogicalLibrarySilverlightKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRules>-Microsoft.Design#CA1062;-Microsoft.Usage#CA2209;-Microsoft.Usage#CA2202;-Microsoft.Usage#CA2241;-Microsoft.Design#CA1005;-Microsoft.Design#CA1020;-Microsoft.Design#CA1010;-Microsoft.Design#CA1050;-Microsoft.Design#CA1000;-Microsoft.Design#CA1002;-Microsoft.Design#CA1061;-Microsoft.Design#CA1006;-Microsoft.Design#CA1008;-Microsoft.Design#CA1004;-Microsoft.Design#CA1063;-Microsoft.Design#CA1033;-Microsoft.Design#CA1016;-Microsoft.Design#CA1014;-Microsoft.Design#CA1017;-Microsoft.Design#CA1059;-Microsoft.Design#CA1060;-Microsoft.Design#CA1057;-Microsoft.Design#CA1058;-Microsoft.Design#CA1001;-Microsoft.Design#CA1003;-Microsoft.Interoperability#CA1413;-Microsoft.Interoperability#CA1402;-Microsoft.Interoperability#CA1407;-Microsoft.Interoperability#CA1404;-Microsoft.Interoperability#CA1405;-Microsoft.Interoperability#CA1415;-Microsoft.Interoperability#CA1414;-Microsoft.Interoperability#CA1400;-Microsoft.Interoperability#CA1401;-Microsoft.Maintainability#CA1502;-Microsoft.Maintainability#CA1501;-Microsoft.Maintainability#CA1500;-Microsoft.Mobility#CA1600;-Microsoft.Mobility#CA1601;-Microsoft.Portability#CA1901;-Microsoft.Portability#CA1900;-Microsoft.Usage#CA2222;-Microsoft.Usage#CA1806;-Microsoft.Usage#CA2201;-Microsoft.Usage#CA2229;-Microsoft.Usage#CA2235;-Microsoft.Usage#CA2239;-Microsoft.Usage#CA2200;-Microsoft.Usage#CA1801</CodeAnalysisRules>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\Server\EntityModel\CategoryEntity.cs">
+      <Link>EntityModel\CategoryEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\ComponentEntity.cs">
+      <Link>EntityModel\ComponentEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\ConnectionPointEntity.cs">
+      <Link>EntityModel\ConnectionPointEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\ConnectionWidgetEntity.cs">
+      <Link>EntityModel\ConnectionWidgetEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\CustomerEntity.cs">
+      <Link>EntityModel\CustomerEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\CustomerServiceDataEntity.cs">
+      <Link>EntityModel\CustomerServiceDataEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\DataModelEntity.cs">
+      <Link>EntityModel\DataModelEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\DeviceProfileEntity.cs">
+      <Link>EntityModel\DeviceProfileEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\FieldEntity.cs">
+      <Link>EntityModel\FieldEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\GroupEntity.cs">
+      <Link>EntityModel\GroupEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\MallEntity.cs">
+      <Link>EntityModel\MallEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\PermissionEntity.cs">
+      <Link>EntityModel\PermissionEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\PreferenceEntity.cs">
+      <Link>EntityModel\PreferenceEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\RelationEntity.cs">
+      <Link>EntityModel\RelationEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\ServiceCategoryEntity.cs">
+      <Link>EntityModel\ServiceCategoryEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\ServiceEntity.cs">
+      <Link>EntityModel\ServiceEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\StoreCategoryEntity.cs">
+      <Link>EntityModel\StoreCategoryEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\StoreEntity.cs">
+      <Link>EntityModel\StoreEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\TableEntity.cs">
+      <Link>EntityModel\TableEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\UserEntity.cs">
+      <Link>EntityModel\UserEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Server\EntityModel\UserGroupEntity.cs">
+      <Link>EntityModel\UserGroupEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\BaseDesktop\Enums.cs">
+      <Link>EntityModel\Enums.cs</Link>
+    </Compile>
+    <Compile Include="..\..\BaseDesktop\Error.cs">
+      <Link>Error.cs</Link>
+    </Compile>
+    <Compile Include="..\..\BaseDesktop\IEntity.cs">
+      <Link>EntityModel\IEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\Component.cs">
+      <Link>Component.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\DataModelClasses\DataModel.cs">
+      <Link>DataModelClasses\DataModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\DataModelClasses\Field.cs">
+      <Link>DataModelClasses\Field.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\DataModelClasses\Relation.cs">
+      <Link>DataModelClasses\Relation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\DataModelClasses\Table.cs">
+      <Link>DataModelClasses\Table.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\DesignerError.cs">
+      <Link>DesignerError.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\Document.cs">
+      <Link>Document.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\GlobalSuppressions.cs">
+      <Link>GlobalSuppressions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\Properties\Resources.Designer.cs">
+      <Link>Properties\Resources.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\ServerDesignerClasses\Connection.cs">
+      <Link>ServerDesignerClasses\Connection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\ServerDesignerClasses\ConnectionPoint.cs">
+      <Link>ServerDesignerClasses\ConnectionPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\ServerDesignerClasses\Form.cs">
+      <Link>ServerDesignerClasses\Form.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\ServerDesignerClasses\FormMenuItem.cs">
+      <Link>ServerDesignerClasses\FormMenuItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\ServerDesignerClasses\ServiceDocument.cs">
+      <Link>ServerDesignerClasses\ServiceDocument.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\ServerDesignerClasses\TemplateListFormDocument.cs">
+      <Link>ServerDesignerClasses\TemplateListFormDocument.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\ServerDesignerClasses\TemplateListItem.cs">
+      <Link>ServerDesignerClasses\TemplateListItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\Utilities.cs">
+      <Link>Utilities.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\Widget.cs">
+      <Link>Widget.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\Widgets\DataSource.cs">
+      <Link>Widgets\DataSource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\Widgets\EnterSingleDataForm.cs">
+      <Link>Widgets\EnterSingleDataForm.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\Widgets\ListForm.cs">
+      <Link>Widgets\ListForm.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\Widgets\MenuForm.cs">
+      <Link>Widgets\MenuForm.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\Widgets\ShowDataFrom.cs">
+      <Link>Widgets\ShowDataFrom.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LogicalLibrary\Widgets\StatisticsForm.cs">
+      <Link>Widgets\StatisticsForm.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\LogicalLibrary\ClassDiagramLogicalLybrary.cd">
+      <Link>ClassDiagramLogicalLybrary.cd</Link>
+    </None>
+    <None Include="LogicalLibrarySilverlightKey.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\LogicalLibrary\README.html">
+      <Link>README.html</Link>
+    </Content>
+    <CodeAnalysisDictionary Include="CustomDictionary.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\LogicalLibrary\Properties\Resources.en-US.resx">
+      <Link>Properties\Resources.en-US.resx</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\LogicalLibrary\Properties\Resources.es-ES.resx">
+      <Link>Properties\Resources.es-ES.resx</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\LogicalLibrary\Properties\Resources.resx">
+      <Link>Properties\Resources.resx</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\v2.0\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
