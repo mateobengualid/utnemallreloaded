@@ -1,0 +1,3225 @@
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+using Zoe;
+using DotNET::System;
+using DotNET::LayerD::ZOECompiler;
+using DotNET::LayerD::CodeDOM;
+using DotNET::System::Collections;
+
+//Utils::DefaultNetImports();
+
+namespace UtnEmall::Utils
+{
+	// Clase factory para el modelo de negocio(classEntity) y de datos(DataAccessEntity).
+	public factory class Model
+	{
+		static Hashtable^ clasesBusiness = new Hashtable();
+		//ArrayList que almacena los campos de las entityclass.
+		static ArrayList^ listaCampos=new ArrayList(); 
+		// ArrayList que almacena los tipos de los campos de las entityclass.
+		static ArrayList^ listaTipos=new ArrayList(); 
+		// ArrayList que almacena las relaciones con la entity actual.
+		static ArrayList^ listaRelaciones=new ArrayList(); 
+		// ArrayList que almacena las relaciones con la entity actual.
+		static ArrayList^ listaRestricciones=new ArrayList(); 
+		// nombre de la clase Entity
+		static XplIName^ entityClassName = null; 
+		//Espacio de nombre para web servicies de entities, opcional
+		static string^ entityWebServiceNS = null; 
+		// nombre de la clase de Acceso a Datos
+		static XplIName^ dataAccessClassName = null; 
+		// Tipo de la clase entity actual
+		static XplType^ entityType = null; 
+		//Tipo de la clase dataAccess actual.
+		static XplType^ dataAccessType = null; 
+		static XplNamespace^ entityNS = null;
+		static XplNamespace^ businessLogicNS = null;
+		static bool addPreserveReferenceAttribute;
+
+		static XplType^ connectionType = null;
+		static XplType^ transactionType = null;
+		static XplType^ commandType = null;
+		static XplType^ parameterType = null;
+		static bool isMobil = false;
+		static bool isIdIdentity = true;
+		static int serializationCount;
+		static XplExpression^ dataMemberExpression = null;
+		static XplExpression^ isMobilExp = null;
+
+		static XplIName^ namespaceEntity = null;
+		static XplIName^ namespaceBusiness = null;
+
+		static XplFunctionBody^ BusinessRulesBlock = new XplFunctionBody();
+	
+	public:
+		static XplNode^ SetEntityWSNamespace(string^ wsNamespace){
+			entityWebServiceNS = wsNamespace;
+			return null;
+		}
+		static XplNode^ PreserveReferencies(){
+			addPreserveReferenceAttribute = true;
+			return null;
+		}
+		static XplNode^ ReinitSerializationCount2(int count){
+			return writecode( UtnEmall::Utils::Model::ReinitSerializationCount($count) );
+		}
+		static XplNode^ ReinitSerializationCount(int count){
+			serializationCount = count;
+			return null;
+		}
+		static XplNode^ InsertDataMemberAttribute(bool isMobil, bool isArray){
+
+			string^ attStr = null;
+			if(!isMobil){
+				attStr = "System.Runtime.Serialization.DataMember( Order = " + serializationCount.ToString() + " )";
+			}
+			else{
+				if(!isArray){
+					attStr = "System.Xml.Serialization.XmlElementAttribute( Order = " + serializationCount.ToString() + " )";
+				}
+				else{
+					attStr = "System.Xml.Serialization.XmlArrayAttribute( IsNullable = true, Order = " + serializationCount.ToString() + " )";
+				}
+			}
+			serializationCount++;
+			return writecode( Zoe::Attribute::Add($attStr) );
+		}
+		static XplNode^ DefineMobil(bool mobil){
+			connectionType = new XplType();
+			transactionType = new XplType();
+			commandType = new XplType();
+			parameterType = new XplType();
+			isMobil = mobil;
+
+			if(mobil)
+			{
+				connectionType.set_typename("SqlCeConnection");
+				transactionType.set_typename("SqlCeTransaction");
+				commandType.set_typename("SqlCeCommand");
+				parameterType.set_typename("SqlCeParameter");
+			}
+			else
+			{
+				connectionType.set_typename("IDbConnection");
+				transactionType.set_typename("IDbTransaction");
+				commandType.set_typename("IDbCommand");
+				parameterType.set_typename("IDbDataParameter");
+			}
+			return null;
+		}
+		static XplNode^ DefineIdentity(bool identity){
+			isIdIdentity = identity;
+			return null;
+		}
+		static XplNode^ DefineNamespace(iname void defNamespaceEntity){
+			namespaceEntity = new XplIName(defNamespaceEntity.Identifier);
+			return null;
+		}
+		static XplNode^ DefineBusinessNamespace(iname void defNamespaceEntity){
+			namespaceBusiness = new XplIName(defNamespaceEntity.Identifier);
+			return null;
+		}
+		// Define las clases Entity y DataAccess para cada clase del modelo.
+		static XplNode^ Define(iname void modelName, iname void tableName, bool business, block modelData){
+			return Define(modelName, tableName, business, false, modelData);
+		}
+		static XplNode^ Define(iname void modelName, bool business, block modelData){
+			return Define(modelName, modelName, business, false, modelData);
+		}
+		static XplNode^ Define(iname void modelName, bool business, bool addCircularReferenceAttribute, block modelData){
+			return Define(modelName, modelName, business, addCircularReferenceAttribute, modelData);
+		}
+		static XplNode^ Define(iname void modelName, iname void tableName, bool business, bool addCircularReferenceAttribute, block modelData){
+			if(business)
+			{
+				clasesBusiness.Add(modelName.Identifier, "");
+			}
+			if(namespaceEntity == null)
+			{
+				if(isMobil)
+				{
+					namespaceEntity = new XplIName("DotNET::UtnEmall::Client::EntityModel");
+				}
+				else
+				{
+					namespaceEntity = new XplIName("DotNET::UtnEmall::Server::EntityModel");
+				}
+			}
+			if(namespaceBusiness == null)
+			{
+				if(isMobil)
+				{
+					namespaceBusiness = new XplIName("DotNET::UtnEmall::Client::BusinessLogic");
+				}
+				else
+				{
+					namespaceBusiness = new XplIName("DotNET::UtnEmall::Server::BusinessLogic");
+				}
+			}
+
+			if(businessLogicNS == null){
+				businessLogicNS = (XplNamespace^)writecode{
+					namespace $namespaceBusiness {	}
+				}.Children().FirstNode();
+				//Lo inserto en el DocumentBody
+				XplNode^ body = context;
+				while(body.get_TypeName()!="XplDocumentBody")body = body.get_Parent();
+				body.Children().InsertAtEnd(businessLogicNS);
+			}
+
+			if(entityNS == null){
+				entityNS = (XplNamespace^)writecode{
+					namespace $namespaceEntity {	}
+				}.Children().FirstNode();
+				//Lo inserto en el DocumentBody
+				XplNode^ body = context;
+				while(body.get_TypeName()!="XplDocumentBody")body = body.get_Parent();
+				body.Children().InsertAtEnd(entityNS);
+			}
+
+			if(isMobilExp == null)
+			{
+				if(isMobil)
+					isMobilExp = writecode(true);
+				else
+					isMobilExp = writecode(false);
+			}
+
+			if(dataMemberExpression == null)
+			{
+				if(isMobil)
+					dataMemberExpression = writecode( UtnEmall::Utils::Model::InsertDataMemberAttribute( true , false ) );
+				else
+					dataMemberExpression = writecode( UtnEmall::Utils::Model::InsertDataMemberAttribute( false , false ) );
+			}
+
+			XplClass^ clase = null;
+			dataAccessClassName = new XplIName( modelName.Identifier + "DataAccess" );
+			XplIName^ entityClass = new XplIName(modelName.Identifier + "Entity" );
+			//Un identificador para el tipo de diccionario de entidades
+			XplIName^ dictInMemoryEntities = new XplIName(modelName.Identifier + "memory");
+
+			//public class $dataAccessClassName implements IDataAccess
+			clase = writecode
+			{
+					 // <summary>
+					 //   The <c>$dataAccessClassName$</c> is a class
+					 //   that provides access to the modelName stored on
+					 //   the database.
+					 // </summary>
+					public class $dataAccessClassName
+					{
+						bool isGlobalTransaction;
+						$connectionType^ dbConnection;
+						$transactionType^ dbTransaction;
+						DataAccessConnection^ dataAccess;
+
+						Dictionary::New( DictionaryOfStringIEntity , gettype( string^ ), gettype( IEntity^) );
+						Dictionary::New( dict , gettype( string^ ), gettype(Type^) );
+						Dictionary::New( $dictInMemoryEntities , gettype( int ), gettype( $entityClass^ ) );
+
+						$dictInMemoryEntities^ inMemoryEntities;
+
+						static dict^ properties;
+						
+						static bool dbChecked;
+
+						public:
+							// <summary>
+							//   Initializes a new instance of a 
+							//   <c>$dataAccessClassName$</c> type.
+							//   It checks if the table and stored procedure
+							//   are already on the database, if not, it creates
+							//   them.
+							//   Sets the properties that allows to make queries
+							//   by calling the LoadWhere method.
+							// </summary>
+							$dataAccessClassName()
+							{
+								dataAccess = DataAccessConnection::Instance;
+								if (!dbChecked)
+								{
+									DbChecked();
+								}
+
+								if(properties==null)
+								{
+									SetProperties();
+								}
+
+								inMemoryEntities = new $dictInMemoryEntities();
+							}
+						
+					}
+				};
+			//Inserto el modelo dentro de la clase
+			context.CurrentNamespace.Children().InsertAtEnd(clase);	
+			clases.Add(modelName.Identifier+"DataAccess", clase);
+
+			
+			//Inserto el comentario de la clase de entidad
+			// context.CurrentNamespace.Children().InsertAtEnd(
+			//		writecode{
+			//		}.Children().FirstNode()
+			// 	);
+			
+			//Inserto el atributo de serialización de la clase de entidad
+			if(isMobil)
+			{				
+				string^ wsNS = namespaceEntity.Identifier.Replace("::",".");				
+				if(wsNS[0]=='D')wsNS=wsNS.Substring(7);
+				if(entityWebServiceNS==null){
+					wsNS = "System.Xml.Serialization.XmlTypeAttribute(Namespace = \"http://schemas.datacontract.org/2004/07/"+wsNS+"\")";
+				}
+				else{
+					wsNS = "System.Xml.Serialization.XmlTypeAttribute(Namespace = \"http://schemas.datacontract.org/2004/07/"+entityWebServiceNS+"\")";
+				}
+				entityNS.Children().InsertAtEnd(
+					writecode( Zoe::Attribute::Add("System.SerializableAttribute") )
+				);
+				entityNS.Children().InsertAtEnd(
+					writecode( Zoe::Attribute::Add($wsNS) )
+				);
+			}
+			else
+			{
+				entityNS.Children().InsertAtEnd(
+					writecode(Zoe::Attribute::Add("System.Runtime.Serialization.DataContract"))
+				);
+			}
+			entityClassName = new XplIName(modelName.Identifier+"Entity");
+			//string^ str = "SuppressMessage(\"Microsoft.Usage\", \"CA2227:CollectionPropertiesShouldBeReadOnly\", Justification = \"We need set for serialization on web services interfaces.\")";
+			//Zoe::Attribute::Add($str);
+			clase = writecode{
+					// <summary>
+					//   The <c>$entityClassName$</c> is a entity class
+					//   that contains all the fields that are inserted and
+					//   loaded from the database. 
+					//   This class is used by the upper layers.
+					// </summary>
+					public class $entityClassName implements IEntity
+					{
+						int id;
+						bool changed;
+						bool isNew;
+						zoe::lang::DateTime timestamp;
+						CollectionOfError^ errors;
+
+						UtnEmall::Utils::Model::ReinitSerializationCount(0);
+						UtnEmall::Utils::List::NewCollection(CollectionOfError, gettype(Error^));
+
+						public:
+							// <summary>
+							// Initializes a new instance of a 
+							// <c>$entityClassName$</c> type.
+							// </summary>
+							$entityClassName ()
+							{
+								isNew = true;
+								errors = new CollectionOfError();
+							}					
+							
+							// <summary>
+							// Gets or sets the Id of the entity.
+							// <summary>
+							$dataMemberExpression;
+							int property Id
+							{
+								get
+								{
+									return id;
+								}
+								set
+								{
+									id = value;
+								}
+							}
+
+							// <summary>
+							// Gets or sets if the entity has changed.
+							// <summary>
+							$dataMemberExpression;
+							bool property Changed
+							{
+								get
+								{
+									return changed;
+								}
+								set
+								{
+									changed = value;
+								}
+							}
+
+							// <summary>
+							// Gets or sets if the entity is new.
+							// <summary>
+							$dataMemberExpression;
+							bool property IsNew
+							{
+								get
+								{
+									return isNew;
+								}
+								set
+								{
+									isNew = value;
+								}
+							}
+
+
+							// <summary>
+							// Gets or sets the timestamp of the last access.
+							// <summary>
+							$dataMemberExpression;
+							zoe::lang::DateTime property Timestamp
+							{
+								get
+								{
+									return timestamp;
+								}
+								set
+								{
+									timestamp = value;
+								}
+							}
+
+
+							const string^ DBTimestamp = "timestamp";
+							// <summary>
+							// The collection of entity's errors.
+							// <summary>
+							UtnEmall::Utils::Model::InsertDataMemberAttribute( $isMobilExp , true );
+							
+							CollectionOfError^ property Errors
+							{
+								get
+								{
+									return errors;
+								}
+								set
+								{
+									errors = value;
+								}
+							}
+					}
+				};
+
+			if(addCircularReferenceAttribute){
+				modelData.Children().InsertAtEnd(
+					writecode( Model::PreserveReferencies() )
+					);
+			}
+			modelData.Children().InsertAtEnd(
+				writecode( Model::ProcessModel($modelName, $tableName) )
+				);
+			
+			//Inserto el modelo dentro de la clase
+			XplNodeList::CopyNodesAtEnd(modelData.Children(), clase.Children());
+
+			//Agrego el reconteo de propiedades
+			clase.Children().InsertAtEnd(
+				writecode( UtnEmall::Utils::Model::ReinitSerializationCount2(5) )
+				);
+
+			entityNS.Children().InsertAtEnd(clase);
+
+			return null;
+		}
+		static XplNode^ DefineBusinessLogic(iname void modelName){		
+			if(addPreserveReferenceAttribute){
+				businessLogicNS.Children().InsertAtEnd(
+						writecode(
+							ModelBusiness::Define($modelName, true)
+							{
+								$BusinessRulesBlock;
+							}
+						)
+					);
+			}
+			else{
+				businessLogicNS.Children().InsertAtEnd(
+						writecode(
+							ModelBusiness::Define($modelName, false)
+							{
+								$BusinessRulesBlock;
+							}
+						)
+					);
+			}
+			return null;
+		}
+		// Define los campos y propiedades de cada entity y agrega cada campo y su tipo
+		// a la lista de campos y la lista de tipos de campos
+		static exp void Field(iname void fieldName, type fieldType){
+			return Field(fieldName, fieldType, null);
+		}
+		static exp void Field(iname void fieldName, type fieldType, block rulesBlock){
+			if(rulesBlock!=null)
+			{
+				BusinessRulesBlock.Children().InsertAtEnd(
+						rulesBlock.Children()
+					);
+			}
+
+			string^ typeName = fieldType.get_typename();
+			XplIName^ internalFieldName = new XplIName("_"+fieldName.Identifier);
+			XplClassMembersList^ listaMiembros = null;
+						
+			switch(fieldType.get_typename())
+			{
+				case NativeTypes::Boolean:
+				case NativeTypes::Float:
+				case NativeTypes::Double:
+				case NativeTypes::Integer:
+					listaMiembros = 
+						writecode{%
+
+						private:
+							$fieldType $internalFieldName;
+						public:
+							$dataMemberExpression;
+							// <summary>
+							// Gets or sets the value for $fieldName$.
+							// <summary>
+							$fieldType property $fieldName
+							{
+								get 
+								{ 
+									return $internalFieldName; 
+								} 
+								set {
+									$internalFieldName = value;
+									changed = true;
+								}
+							}
+						%};
+					break;
+				case "UtnEmall.Utils.Image":
+					XplIName^ fieldAsImage = new XplIName(fieldName.Identifier+"AsImage");
+					listaMiembros = 
+						writecode{%
+						private:
+							string^ $internalFieldName;
+						// <summary>
+						// Gets or sets the $fieldName.
+						// <summary>
+						public:
+							$dataMemberExpression;
+							string^ property $fieldName
+							{
+								get 
+								{ 
+									return $internalFieldName; 
+								} 
+								set 
+								{
+									$internalFieldName = value;
+									changed = true;
+								}
+							}
+						%};
+					break;
+				case NativeTypes::String:
+					listaMiembros = 
+						writecode{%
+						private:
+							$fieldType^ $internalFieldName;
+						public:
+							$dataMemberExpression;
+							// <summary>
+							// Gets or sets the value for $fieldName$.
+							// <summary>
+							$fieldType^ property $fieldName
+							{
+								get 
+								{ 
+									return $internalFieldName; 
+								} 
+								set 
+								{
+									$internalFieldName = value;
+									changed = true;
+								}
+							}
+						%};
+					break;
+				default:
+					listaMiembros = 
+						writecode{%
+						private:
+							$fieldType $internalFieldName;
+						public:
+							$dataMemberExpression;
+							// <summary>
+							// Gets or sets the value for $fieldName$.
+							// <summary>
+							$fieldType property $fieldName
+							{
+								get 
+								{ 
+									return $internalFieldName; 
+								} 
+								set {
+									$internalFieldName = value;
+									changed = true;
+								}
+							}
+						%};
+					break;
+			}
+
+			//Inserto los miembros en la clase actual
+			XplNodeList::CopyNodesAtEnd(listaMiembros.Children(), context.CurrentClass.Children());
+			//Agrego la info del campo al array list 
+			listaCampos.Add(fieldName);
+			listaTipos.Add(fieldType);
+
+			return null;
+		}
+		static exp void Relations(iname void fieldName, iname void referencedType, iname void parentName, 
+								int relationType, bool recursiveLoad, bool recursiveSave, bool deleteCascade, 
+								bool generateRelation, bool loadSubRelations, block rulesBlock)	{
+			if(rulesBlock!=null)
+			{
+				BusinessRulesBlock.Children().InsertAtEnd(
+						rulesBlock.Children()
+					);
+			}
+
+			XplIName^ internalFieldName = new XplIName("_"+fieldName.Identifier);
+			XplIName^ internalFieldNameId = new XplIName("_Id"+fieldName.Identifier);
+			XplIName^ fieldNameId= new XplIName("Id"+fieldName.Identifier);
+			XplType^ entityTypeRelation = new XplType();
+			entityTypeRelation.set_typename(referencedType.Identifier+"Entity");
+
+			Relation^ relation = new Relation();
+			relation.fieldName = fieldName;
+			relation.referencedType = referencedType;
+			relation.relationType = relationType;
+			relation.parentName = parentName;
+			relation.recursiveLoad = recursiveLoad;
+			relation.recursiveSave = recursiveSave;
+			relation.deleteCascade = deleteCascade;
+			relation.generateRelation = generateRelation;
+			relation.loadSubRelations = loadSubRelations;
+
+			// Aqui generar los campos para los Id de las relaciones y las propiedades,
+			// si es recursiveLoad entonces agregar un campo y propiedad para los elementos relacionados
+
+			XplClassMembersList^ listaMiembros = null;
+			//OK, aqui deberia hacer un switch mas grande de acuerdo a cada tipo de campo
+			
+			//Para los tipos de listas
+			XplIName^ listOfTypeName = new XplIName( "CollectionOf" + entityTypeRelation.get_typename() );
+			XplType^ listOfType = new XplType();
+			listOfType.set_typename( listOfTypeName.Identifier );
+			string^ str = "System.Diagnostics.CodeAnalysis.SuppressMessage(\"Microsoft.Usage\", \"CA2227:CollectionPropertiesShouldBeReadOnly\", Justification = \"We need set for serialization and deserialization web service interfaces.\")";
+			if(relationType == RelationTypes::UnoAMuchos)
+			{
+				listaMiembros = 
+					writecode{%
+					private:
+						UtnEmall::Utils::List::NewCollection( $listOfTypeName , gettype( $entityTypeRelation^ ) );
+						$listOfType^ $internalFieldName;
+					public:
+						
+						UtnEmall::Utils::Model::InsertDataMemberAttribute( $isMobilExp , true );
+						Zoe::Attribute::Add($str);
+						// <summary>
+						// Gets or sets the value for $fieldName$.
+						// <summary>
+						$listOfType^ property $fieldName
+						{
+							get 
+							{
+								if($internalFieldName == null)
+								{
+									$internalFieldName = new $listOfType(); 
+								}
+								return $internalFieldName; 
+							} 
+							set
+							{
+								$internalFieldName = value;
+							}
+						}
+					%};
+			}
+			
+			if(relationType == RelationTypes::UnoAUno)
+			{
+				listaMiembros = 
+					writecode{%
+					
+					private:
+						$entityTypeRelation^ $internalFieldName;
+						int $internalFieldNameId;
+					public:
+						// <summary>
+						// Gets or sets the value for $fieldName$.
+						// <summary>
+						$dataMemberExpression;
+						$entityTypeRelation^ property $fieldName
+						{
+							get 
+							{ 
+								return $internalFieldName;
+							} 
+							set 
+							{
+								$internalFieldName = value;
+								// If provided value is null set id to 0, else to provided object id
+								if($internalFieldName != null)
+									$fieldNameId = $internalFieldName.Id;
+								else
+									$fieldNameId = 0;
+								changed = true;
+							}
+						}
+
+						// <summary>
+						// Gets or sets the Id of the $fieldName$.
+						// If $fieldName$ is set return the Id of the object,
+						// else returns manually stored Id
+						// <summary>
+						$dataMemberExpression;
+						int property $fieldNameId
+						{
+							get 
+							{ 
+								if($internalFieldName == null)
+								{
+									return $internalFieldNameId; 
+								}
+								else
+								{
+									return $internalFieldName.Id;
+								}
+							} 
+							set 
+							{
+								$internalFieldNameId = value;
+							}
+						}
+					%};
+					listaCampos.Add(fieldNameId);
+					listaTipos.Add( (XplType^)gettype(int) );
+			}
+			
+			if(relationType == RelationTypes::MuchosAMuchos)
+			{
+			}
+				
+			if(relationType == RelationTypes::MuchosAUno)
+			{
+				listaMiembros = 
+					writecode{%
+					
+					private:
+						$entityTypeRelation^ $internalFieldName;
+						int $internalFieldNameId;
+					public:
+						// <summary>
+						// Gets or sets the value for $fieldName$.
+						// <summary>
+						$dataMemberExpression;
+						$entityTypeRelation^ property $fieldName
+						{
+							get 
+							{ 
+								return $internalFieldName;
+							} 
+							set 
+							{
+								$internalFieldName = value;
+								//If provided value is null set id to 0, else to provided object id
+								if($internalFieldName != null)
+									$fieldNameId = $internalFieldName.Id;
+								else
+									$fieldNameId = 0;
+								changed = true;
+							}
+						}
+
+						// <summary>
+						// Gets or sets the Id of the $fieldName$.
+						// If $fieldName$ is set return the Id of the object,
+						// else returns manually stored Id
+						// <summary>
+						$dataMemberExpression;
+						int property $fieldNameId
+						{
+							get
+							{
+								if($internalFieldName == null)
+								{
+									return $internalFieldNameId; 
+								}
+								else
+								{
+									return $internalFieldName.Id;
+								}
+							}
+							set
+							{
+								$internalFieldNameId = value;
+							}
+						}
+					%};
+					listaCampos.Add(fieldNameId);
+					listaTipos.Add( (XplType^)gettype(int));
+			}
+			//Inserto los miembros en la clase actual
+			XplNodeList::CopyNodesAtEnd(listaMiembros.Children(), context.CurrentClass.Children());
+
+			listaRelaciones.Add( relation );
+			
+			return null;
+		}
+		static exp void Relations(iname void fieldName, iname void referencedType, int relationType, 
+								bool recursiveLoad, bool recursiveSave, block rulesBlock){
+			return Relations(fieldName, referencedType, null, relationType, recursiveLoad, recursiveSave,  false, false, true, rulesBlock);
+		}
+		static exp void Relations(iname void fieldName, iname void referencedType, int relationType, 
+								bool recursiveLoad, bool recursiveSave, bool deleteCascade, block rulesBlock){
+			return Relations(fieldName, referencedType, null, relationType, recursiveLoad, recursiveSave,  deleteCascade, false, true, rulesBlock);
+		}
+		static exp void Relations(iname void fieldName, iname void referencedType, int relationType, 
+								bool recursiveLoad, bool recursiveSave, bool deleteCascade, bool generateRelation, block rulesBlock){
+			return Relations(fieldName, referencedType, null, relationType, recursiveLoad, recursiveSave, deleteCascade, generateRelation, true, rulesBlock);
+		}
+		// Define las funciones para el dataAccessEntity. Las inserta dentro de esta clase.
+		static exp void ProcessModel(iname void modelName, iname void tableName){
+			dataAccessType = new XplType();
+			dataAccessType.set_typename(modelName.Identifier+"DataAccess");
+			entityType = new XplType();
+			entityType.set_typename(modelName.Identifier+"Entity");
+			
+			SetConnectionObjects(modelName);
+			
+			GenerateLoad(modelName,tableName);
+
+			GenerateDBChecked(modelName,tableName);
+			GenerateSave(modelName,tableName);
+
+			GenerateDelete(modelName,tableName);
+			GenerateCheckDeleteFunctions(modelName, tableName);
+
+			GenerateSetProperties(modelName);
+
+			GenerateLoadAll(modelName,tableName);
+			GenerateLoadWhere(modelName,tableName);
+
+			GenerateFunctionRelations(modelName,tableName);
+						
+			if(clasesBusiness.ContainsKey(modelName.Identifier))
+			{
+				DefineBusinessLogic(modelName);
+			}
+						
+			BusinessRulesBlock = new XplFunctionBody();
+
+			listaCampos = new ArrayList();
+			listaTipos = new ArrayList();
+			listaRelaciones = new ArrayList();
+			listaRestricciones = new ArrayList();
+			addPreserveReferenceAttribute = false;
+
+			return null;
+		}
+		// Agrega una restriccion a la eliminación de la entidad. 
+		// targetTypeName : El nombre de la clase destino a chequear por su existencia.
+		// targetFieldName : El nombre del campo en la clase destino a chequear (el valor de este campo se comparará con el Id de la entidad a borrar
+		static exp void DeleteRestriction(iname void targetTypeName, iname void targetFieldName, string^ messageToUser){
+			DeleteRestriction^ restriction = new DeleteRestriction();
+			restriction.referencedType = targetTypeName;
+			restriction.fieldName = targetFieldName;
+			restriction.messageToUser = messageToUser;
+			listaRestricciones.Add(restriction);
+			return null;
+		}
+		// Genera la función para controlar las relaciones al eliminar
+		static void GenerateCheckDeleteFunctions(iname void modelName, iname void tableName){
+
+			// If there is not restrictions exit
+			if(listaRestricciones.Count == 0) return;
+			
+			XplFunctionBody^ funcBody = new XplFunctionBody();
+			XplIName^ mainEntityName = new XplIName(modelName.Identifier + "Entity");
+
+			// First create dataaccess variables
+			Hashtable^ added = new Hashtable();
+						
+			for(DeleteRestriction^ restriction in listaRestricciones){
+				// Name of data access type
+				XplIName^ dataAccessName = new XplIName(restriction.referencedType.Identifier + "DataAccess");
+				// Name of data access variable
+				XplIName^ dataAccessVarName = new XplIName( "var" + restriction.referencedType.Identifier + "DataAccess");
+				
+				if(added[restriction.referencedType.Identifier]==null){
+					funcBody.Children().InsertAtEnd(
+						writecode{
+							$dataAccessName^ $dataAccessVarName = new $dataAccessName();
+						}.Children()
+					);
+					added.Add(restriction.referencedType.Identifier, true);
+				}
+			}
+
+			for(DeleteRestriction^ restriction in listaRestricciones){
+				// Name of entity type
+				XplIName^ entityName = new XplIName(restriction.referencedType.Identifier + "Entity");
+				// Name of data access type
+				XplIName^ dataAccessName = new XplIName(restriction.referencedType.Identifier + "DataAccess");
+				// Name of data access variable
+				XplIName^ dataAccessVarName = new XplIName( "var" + restriction.referencedType.Identifier + "DataAccess");
+				// Name of related field constant identifier on entity
+				XplIName^ relatedFieldConstant = new XplIName(restriction.referencedType.Identifier + "Entity::DBId" + restriction.fieldName.Identifier);
+				string^ messageString = restriction.messageToUser;
+				
+				funcBody.Children().InsertAtEnd(
+					writecode{						
+						if($dataAccessVarName.LoadWhere( $relatedFieldConstant, entity.Id, false, OperatorType::Equal ).Count > 0){
+							throw new UtnEmallDataAccessException($messageString);
+						}
+					}.Children()
+				);
+			}
+
+			// Create the Function and insert into de DAO class
+			GetDataAccessClass( modelName.Identifier ).Children().
+				InsertAtEnd(
+					writecode{%
+						static void CheckForDelete($mainEntityName^ entity){
+							$funcBody;
+						}
+					%}.Children()
+				);
+		}
+		// Genera la funcion Load para la cargar una entity particular		
+		static void GenerateLoad(iname void modelName, iname void tableName){
+			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
+			string^ entityStringName = modelName.Identifier;
+			string^ nameId = "id" + modelName.Identifier;
+			string^ nameIdParameter = "@id" + modelName.Identifier;
+			string^ sql = "SELECT " + nameId;
+			int timestamp = listaCampos.Count + 1;
+
+			for(int i = 0; i<listaCampos.Count; i++)
+			{
+				sql += ", " + ToLowerCamelCase(((XplIName^)listaCampos[i]).Identifier);
+			}
+
+			sql+=", timestamp FROM ["+ tableName.Identifier +"] WHERE " + nameId + " = " +nameIdParameter;
+
+			XplFunctionBody^ fieldsBlock = new XplFunctionBody();
+			
+			fieldsBlock.Children().InsertAtEnd(
+					writecode(
+						$entity.Id = reader.GetInt32(0)
+						)
+					);
+
+			XplIName^ propertyName;
+			int j = 0;
+			for(int i = 0; i<listaCampos.Count; i++)
+			{
+				j++;
+				XplType^ propertyType = (XplType^)listaTipos[i];
+				XplIName^ propertyTypeCall = null;
+				XplExpression^ read = null;
+				bool datetime= false;
+				bool isString = false;
+				
+				// Console::WriteLine("$$$ VALOR DEL TIPO : "+propertyName.Identifier+" "+propertyType.get_typename());
+				switch(propertyType.get_typename())
+				{
+					case NativeTypes::Boolean:
+						read = writecode(reader.GetBoolean($j));
+						break;
+					case NativeTypes::Float:
+						read = writecode(reader.GetFloat($j));
+						break;
+					case NativeTypes::Double:
+						read = writecode(Convert::ToDouble(reader.GetDecimal($j)));
+						break;
+					case NativeTypes::Integer:
+						read = writecode(reader.GetInt32($j));
+						break;
+					case NativeTypes::String:
+						propertyName = (XplIName^)listaCampos[i];
+						XplNodeList::CopyNodesAtEnd( 
+							writecode
+							{
+								if(!reader.IsDBNull($j))
+								{
+									$entity.$propertyName = reader.GetString($j);
+								}
+							}.Children(), fieldsBlock.Children() );
+
+						isString = true;
+						break;
+					case "UtnEmall.Utils.Image":
+						propertyName = (XplIName^)listaCampos[i];
+						XplNodeList::CopyNodesAtEnd( 
+							writecode
+							{
+								if (!reader.IsDBNull($j))
+								{
+									byte[] bytes = (byte[])reader[$j];
+									$entity.$propertyName = DotNET::System::Convert::ToBase64String(bytes);
+								}
+							}.Children(), fieldsBlock.Children() );
+
+						isString = true;
+						break;
+					default:
+						read = writecode(reader.GetDateTime($j));
+						break;
+				}
+				
+				if(!isString)
+				{
+					propertyName = (XplIName^)listaCampos[i];
+						fieldsBlock.Children().InsertAtEnd(
+							writecode(
+								$entity.$propertyName = $read
+								)
+							);
+				}
+			}
+
+			XplFunctionBody^ fieldsBlockRelations = new XplFunctionBody();
+			for(int i = 0; i < listaRelaciones.Count; i++)
+			{
+				Relation^ relation = (Relation^)listaRelaciones[i];
+				XplIName^ functionName = new XplIName("LoadRelation" + relation.fieldName.Identifier);
+
+				if(relation.recursiveLoad)
+				{
+					fieldsBlockRelations.Children().InsertAtEnd(
+					writecode(
+							$functionName($entity, scope)
+						)
+					);
+				}
+			}
+
+
+
+			XplClassMembersList^ loadFunction = writecode{%
+				public:
+				// <summary>
+				// Function to load a $entityType$ from database. 
+				// </summary>
+				// <param name="id">The ID of the record to load</param>
+				// <param name="loadRelation">if is true load the relation</param>
+				// <param name="scope">Internal structure used to avoid circular reference locks, must be provided if calling from other data access object</param>
+				// <returns>The entity instance</returns>
+				// <exception cref="UtnEmallDataAccessException">
+				// If a DbException occurs while accessing the database.
+				// </exception>
+				$entityType^ Load(int id, bool loadRelation, DictionaryOfStringIEntity^ scope)
+				{
+					// Build a key for internal scope object
+					string^ scopeKey = id.ToString(DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) + $entityStringName;
+					if (scope != null)
+					{
+						// If scope contains the object it was already loaded, 
+						// return it to avoid circular references
+						if (scope.ContainsKey(scopeKey))
+						{
+							return ($entityType^)scope[scopeKey];
+						}
+					}
+					else
+					{
+						// If there isn't a current scope create one
+						scope = new DictionaryOfStringIEntity();
+					}
+
+					$entityType^ $entity = null;
+					// Check if the entity was already loaded by current data access object
+					// and return it if that is the case
+					if(inMemoryEntities.ContainsKey(id))
+					{
+						$entity = inMemoryEntities[id];
+						// Add current object to current load scope
+						scope.Add(scopeKey, $entity);
+					}
+					else
+					{
+						bool closeConnection = false;
+						try
+						{						
+							// Open a new connection if it isn't on a transaction
+							if(dbConnection == null || dbConnection.State.CompareTo(DotNET::System::Data::ConnectionState::Closed) == 0)
+							{
+								closeConnection = true;
+								dbConnection = dataAccess.GetNewConnection();
+								dbConnection.Open();
+							}
+							
+							string^ cmdText = $sql;
+							// Create the command
+							$commandType^ sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
+							// Create the Id parameter for the query
+							$parameterType^ parameter = dataAccess.GetNewDataParameter($nameIdParameter, DbType::Int32);
+							parameter.Value = id;
+							sqlCommand.Parameters.Add(parameter);
+
+							// Use a DataReader to get data from db
+							IDataReader reader = sqlCommand.ExecuteReader();
+							$entity = new $entityType();
+
+							if (reader.Read())
+							{
+								// Load fields of entity
+								$fieldsBlock;
+
+								// Add current object to the scope
+								scope.Add(scopeKey, $entity);
+								// Add current object to cache of loaded entities
+								inMemoryEntities.Add($entity.Id, $entity);
+								
+								// Read the timestamp and set new and changed properties
+								$entity.Timestamp = reader.GetDateTime($timestamp);
+								$entity.IsNew = false;
+								$entity.Changed = false;
+
+								// Close the reader
+								reader.Close();
+								// Load related objects if required
+								if(loadRelation)
+								$fieldsBlockRelations;
+							}
+							else
+							{
+								reader.Close();
+							}
+						}
+						catch(DbException^ dbException)
+						{
+							// Catch DBException and rethrow as custom exception
+							throw new UtnEmallDataAccessException(dbException.Message, dbException);
+						}
+						finally
+						{
+							// Close connection if it was opened by ourself
+							if(closeConnection)
+							{
+								dbConnection.Close();
+							}
+						}
+					}
+					// Return the loaded entity
+					return $entity;
+				}
+				
+				%};
+
+				XplClass^ target = GetDataAccessClass(modelName.Identifier);
+				if(target!=null)
+				{
+					XplNodeList::CopyNodesAtEnd(loadFunction.Children(), target.Children());
+				}
+
+
+				XplClassMembersList^ loadFunctionOneParameter = writecode{%
+				public:
+					// <summary>
+					// Function to load a $entityType$ from database. 
+					// </summary>
+					// <param name="id">The ID of the record to load</param>
+					// <returns>the entity instance</returns>
+					// <exception cref="UtnEmallDataAccessException">
+					// If a DbException occurs while accessing the database.
+					// </exception>
+					$entityType^ Load(int id)
+					{
+						return Load(id, true, null);
+					}
+
+					// <summary>
+					// Function to load a $entityType$ from database. 
+					// </summary>
+					// <param name="id">The ID of the record to load</param>
+					// <param name="loadRelation">if is true load the relation</param>
+					// <returns>the entity instance</returns>
+					// <exception cref="UtnEmallDataAccessException">
+					// If a DbException occurs while accessing the database.
+					// </exception>
+					$entityType^ Load(int id, bool loadRelations)
+					{
+						return Load(id, loadRelations, null);
+					}
+
+					// <summary>
+					// Function to load a $entityType$ from database. 
+					// </summary>
+					// <param name="id">The ID of the record to load</param>
+					// <param name="scope">Internal structure used to avoid circular reference locks, must be provided if calling from other data access object</param>
+					// <returns>the entity instance</returns>
+					// <exception cref="UtnEmallDataAccessException">
+					// If a DbException occurs while accessing the database.
+					// </exception>
+					$entityType^ Load(int id, DictionaryOfStringIEntity^ scope)
+					{
+						return Load(id, true, scope);
+					}
+				%};
+
+				target = GetDataAccessClass(modelName.Identifier);
+				if(target!=null){
+					XplNodeList::CopyNodesAtEnd(loadFunctionOneParameter.Children(), target.Children());
+				}
+
+		}
+		// Genera la funcion LoadWhere para cargar todas las entitys correspondientes
+		static void GenerateLoadWhere(iname void modelName, iname void tableName){
+			XplIName^ entityList = new XplIName(ToLowerCamelCase(modelName.Identifier)+"List");
+			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
+			string^ nameId = "id" + modelName.Identifier;
+			string^ nameIdParameter = "@id" + modelName.Identifier;
+			string^ sql = "SELECT " + nameId;
+
+			int timestamp = listaCampos.Count + 1;
+
+			for(int i = 0; i<listaCampos.Count; i++)
+			{
+				sql += ", " + ToLowerCamelCase(((XplIName^)listaCampos[i]).Identifier);
+			}
+
+			sql+=", timestamp FROM ["+ tableName.Identifier + "]";
+
+			XplFunctionBody^ fieldsBlock = new XplFunctionBody();
+			
+			fieldsBlock.Children().InsertAtEnd(
+					writecode(
+						$entity.Id = reader.GetInt32(0)
+						)
+					);
+
+			XplIName^ propertyName;
+			int j = 0;
+			for(int i = 0; i<listaCampos.Count; i++)
+			{
+				j++;
+				XplType^ propertyType = (XplType^)listaTipos[i];
+				XplIName^ propertyTypeCall = null;
+				XplExpression^ read = null;
+				bool datetime= false;
+				bool isString = false;
+				switch(propertyType.get_typename())
+				{
+					case NativeTypes::Boolean:
+						read = writecode(reader.GetBoolean($j));
+						break;
+					case NativeTypes::Float:
+						read = writecode(reader.GetFloat($j));
+						break;
+					case NativeTypes::Double:
+						read = writecode(Convert::ToDouble(reader.GetDecimal($j)));
+						break;
+					case NativeTypes::Integer:
+						read = writecode(reader.GetInt32($j));
+						break;
+					case NativeTypes::String:
+						propertyName = (XplIName^)listaCampos[i];
+						XplNodeList::CopyNodesAtEnd( writecode{
+								if(!reader.IsDBNull($j))
+								{
+									$entity.$propertyName = reader.GetString($j);
+								}
+						}.Children(), fieldsBlock.Children());
+						isString = true;
+						break;
+					default:
+						read = writecode(reader.GetDateTime($j));
+						break;
+				}
+
+				if(!isString)
+				{
+					propertyName = (XplIName^)listaCampos[i];
+						fieldsBlock.Children().InsertAtEnd(
+							writecode(
+								$entity.$propertyName = $read
+								)
+							);
+				}
+			}
+
+			XplFunctionBody^ fieldsBlockRelations = new XplFunctionBody();
+			for(int i = 0; i < listaRelaciones.Count; i++)
+			{
+				Relation^ relation = (Relation^)listaRelaciones[i];
+				XplIName^ functionName = new XplIName("LoadRelation" + relation.fieldName.Identifier);
+
+				if(relation.recursiveLoad)
+				{
+					fieldsBlockRelations.Children().InsertAtEnd(
+					writecode(
+							$functionName($entity)
+						)
+					);
+				}
+			}
+
+			//Tipo para lista
+			XplType^ listOfType = new XplType();
+			listOfType.set_typename( "CollectionOf" + entityType.get_typename() );
+
+			XplClassMembersList^ loadWhereFunction = writecode{%
+				public:
+					UtnEmall::Utils::List::New( ListInt, gettype(int) );
+
+					// <summary>
+					// Function to Load a $entityType$ from database. 
+					// </summary>
+					// <param name="propertyName">A string with the name of the field or a
+					//	constant from the class that represent that field</param>
+					// <param name="expValue">The value that will be inserted on the where
+					// clause of the sql query</param>
+					// <param name="loadRelation">If is true load the relations</param>
+					// <returns>A list containing all the entities that match the where clause</returns>
+					// <exception cref="ArgumentNullException">
+					// If <paramref name="propertyName"/> is null or empty.
+					// If <paramref name="propertyName"/> is not a property of $entityType$ class.
+					// If <paramref name="expValue"/> is null.
+					// </exception>
+					// <exception cref="UtnEmallDataAccessException">
+					// If an DbException occurs in the try block while accessing the database.
+					// </exception>
+					$listOfType^ LoadWhere(string^ propertyName, object^ expValue, bool loadRelation, OperatorType operatorType)
+					{
+						if(DotNET::System::String::IsNullOrEmpty(propertyName) ||  expValue==null)
+						{
+							throw new ArgumentException("The argument can not be null or be empty", "propertyName");
+						}						
+						if(!properties.ContainsKey(propertyName))
+						{
+							throw new ArgumentException("The property " + propertyName + " is not a property of this entity", "propertyName");
+						}
+
+						$listOfType^ $entityList;
+						
+						bool closeConnection = false;
+						try
+						{
+							// Open a new connection with a database if necessary
+							if(dbConnection == null || dbConnection.State.CompareTo(DotNET::System::Data::ConnectionState::Closed) == 0)
+							{
+								closeConnection = true;
+								dbConnection = dataAccess.GetNewConnection();
+								dbConnection.Open();
+							}
+		
+							string^ op = DataAccessConnection::GetOperatorString(operatorType);
+
+							// Build the query string
+							string^ cmdText = $sql + " WHERE " + propertyName + " " + op + " @expValue";
+							// Create the command
+							$commandType^ sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
+							
+							// Add parameters values to the command
+							$parameterType^ parameter = dataAccess.GetNewDataParameter();
+							parameter.ParameterName = "@expValue";
+							DotNET::System::Type^ parameterType = properties[propertyName];
+							parameter.DbType = DataAccessConnection::GetParameterDBType(parameterType);	
+							
+							parameter.Value = expValue;
+							sqlCommand.Parameters.Add(parameter);
+
+							// Create a DataReader
+							IDataReader^ reader = sqlCommand.ExecuteReader();
+							$entityList = new $listOfType();
+							$entityType^ $entity;
+							ListInt listId = new ListInt();
+
+							// Add list of Ids to a list
+							while (reader.Read())
+							{
+								listId.Add(reader.GetInt32(0));
+							}
+
+							// Close the reader
+							reader.Close();
+
+							// Load the entities
+							foreach(int id in listId)
+							{
+								$entity = Load( id, loadRelation, null);
+								$entityList.Add($entity);
+							}
+						}
+						catch(DbException^ dbException)
+						{
+							// Catch DbException and rethrow as custom exception
+							throw new UtnEmallDataAccessException(dbException.Message, dbException);
+						}
+						finally
+						{
+							// Close connection if it was opened by myself
+							if(closeConnection)
+							{
+								dbConnection.Close();
+							}
+						}
+
+						return $entityList;
+					}
+				
+				%};
+
+				XplClass^ target = GetDataAccessClass(modelName.Identifier);
+				if(target!=null){
+					XplNodeList::CopyNodesAtEnd(loadWhereFunction.Children(), target.Children());
+				}
+		}
+		// Genera la funcion LoadAll para cargar todas las entitys correspondientes
+		static void GenerateLoadAll(iname void modelName, iname void tableName){
+			XplIName^ entityList = new XplIName(ToLowerCamelCase(modelName.Identifier)+"List");
+			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
+			string^ nameId = "id" + modelName.Identifier;
+			string^ nameIdParameter = "@id" + modelName.Identifier;
+			string^ sql = "SELECT " + nameId;
+
+			// for(int i = 0; i<listaCampos.Count; i++)
+			// {
+			//	sql += ", " + ToLowerCamelCase(((XplIName^)listaCampos[i]).Identifier);
+			// }
+
+			// sql+=", timestamp FROM ["+ tableName.Identifier + "]";
+			
+			sql+=" FROM ["+ tableName.Identifier + "]";
+
+			int timestamp = listaCampos.Count + 1;
+
+			XplFunctionBody^ fieldsBlock = new XplFunctionBody();
+			
+			fieldsBlock.Children().InsertAtEnd(
+					writecode(
+						$entity.Id = reader.GetInt32(0)
+						)
+					);
+
+			XplIName^ propertyName;
+			int j = 0;
+			for(int i = 0; i<listaCampos.Count; i++)
+			{
+				j++;
+				XplType^ propertyType = (XplType^)listaTipos[i];
+				XplIName^ propertyTypeCall = null;
+				XplExpression^ read = null;
+				bool datetime= false;
+				bool isString = false;
+				switch(propertyType.get_typename())
+				{
+					case NativeTypes::Boolean:
+						read = writecode(reader.GetBoolean($j));
+						break;
+					case NativeTypes::Float:
+						read = writecode(reader.GetFloat($j));
+						break;
+					case NativeTypes::Double:
+						read = writecode(Convert::ToDouble(reader.GetDecimal($j)));
+						break;
+					case NativeTypes::Integer:
+						read = writecode(reader.GetInt32($j));
+						break;
+					case NativeTypes::String:
+						propertyName = (XplIName^)listaCampos[i];
+						XplNodeList::CopyNodesAtEnd( writecode{
+								if(!reader.IsDBNull($j))
+								{
+									$entity.$propertyName = reader.GetString($j);
+								}
+						}.Children(), fieldsBlock.Children());
+						isString = true;
+						break;
+					default:
+						read = writecode(reader.GetDateTime($j));
+						break;
+				}
+
+				if(!isString)
+				{
+					propertyName = (XplIName^)listaCampos[i];
+						fieldsBlock.Children().InsertAtEnd(
+							writecode(
+								$entity.$propertyName = $read
+								)
+							);
+				}
+			}
+
+			XplFunctionBody^ fieldsBlockRelations = new XplFunctionBody();
+			for(int i = 0; i < listaRelaciones.Count; i++)
+			{
+				Relation^ relation = (Relation^)listaRelaciones[i];
+				XplIName^ functionName = new XplIName("LoadRelation" + relation.fieldName.Identifier);
+
+				if(relation.recursiveLoad)
+				{
+					fieldsBlockRelations.Children().InsertAtEnd(
+					writecode(
+							$functionName($entity)
+						)
+					);
+				}
+			}
+
+			//Tipo para lista
+			XplIName^ listOfTypeName = new XplIName("CollectionOf" + entityType.get_typename());			
+			XplType^ listOfType = new XplType();
+			listOfType.set_typename( listOfTypeName.Identifier );
+
+			XplClassMembersList^ loadAllFunction = writecode{%
+				public:
+					UtnEmall::Utils::List::NewCollection( $listOfTypeName, gettype($entityType^) );
+
+					// <summary>
+					// Function to Load all the $entityType$ from database. 
+					// </summary>
+					// <param name="loadRelation">If is true load the relation</param>
+					// <returns>A list of all the entities</returns>
+					// <exception cref="UtnEmallDataAccessException">
+					// If a DbException occurs in the try block while accessing the database.
+					// </exception>
+					$listOfType^ LoadAll(bool loadRelation)
+					{
+						$listOfType^ $entityList = new $listOfType();;
+
+						bool closeConnection = false;
+						try
+						{
+							// Open a new connection if necessary
+							if(dbConnection == null || dbConnection.State.CompareTo(DotNET::System::Data::ConnectionState::Closed) == 0)
+							{
+								closeConnection = true;
+								dbConnection = dataAccess.GetNewConnection();
+								dbConnection.Open();
+							}
+						
+							// Build the query string
+							string^ cmdText = $sql;
+							$commandType^ sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
+							
+							// Create a DataReader
+							IDataReader^ reader = sqlCommand.ExecuteReader();
+							
+							$entityType^ $entity;
+							
+							// Read the Ids and insert on a list
+							ListInt listId = new ListInt();
+							while (reader.Read())
+							{
+								listId.Add(reader.GetInt32(0));
+							}
+							// Close the DataReader
+							reader.Close();
+							
+							// Create a scope
+							DictionaryOfStringIEntity^ scope = new DictionaryOfStringIEntity();
+							
+							// Load entities and add to return list
+							foreach(int id in listId)
+							{
+								$entity = Load( id, loadRelation, scope);
+								$entityList.Add($entity);
+							}
+						}
+						catch(DbException^ dbException)
+						{
+							// Catch DbException and rethrow as custom exception
+							throw new UtnEmallDataAccessException(dbException.Message, dbException);
+						}
+						finally
+						{
+							// Close the connection
+							if(closeConnection)
+							{
+								dbConnection.Close();
+							}
+						}
+						// Return the loaded
+						return $entityList;
+					}
+				
+				%};
+
+				XplClass^ target = GetDataAccessClass(modelName.Identifier);
+				if(target!=null){
+					XplNodeList::CopyNodesAtEnd(loadAllFunction.Children(), target.Children());
+				}
+		}
+		// Genera la funcion SaveEntity para guardar una entity
+		static void GenerateSave(iname void modelName, iname void tableName){
+			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
+			string^ entityStringName = modelName.Identifier;
+			string^ sqlSave = "Save" + tableName.Identifier;
+			string^ sqlUpdate = "Update" + tableName.Identifier;
+			string^ nameId = "id" + modelName.Identifier;
+			string^ nameIdParameter = "@id" + modelName.Identifier;
+			string^ tableNameString = tableName.Identifier;
+			XplFunctionBody^ fieldsBlockCommandType = new XplFunctionBody();
+			XplFunctionBody^ executeBlock = new XplFunctionBody();
+
+			XplFunctionBody^ parameterIdentityBlock = null;
+
+			if(!isIdIdentity)
+			{
+				parameterIdentityBlock = writecode{
+					if(!isUpdate && $entity.Id == 0)
+					{
+						$entity.Id = DataAccessConnection::GetNextId($nameId,$tableNameString, dbConnection, dbTransaction);
+					}
+					parameter = dataAccess.GetNewDataParameter($nameIdParameter, DbType::Int32);
+					parameter.Value = $entity.Id;
+					sqlCommand.Parameters.Add(parameter);
+				};
+			}
+			else
+			{
+				parameterIdentityBlock = writecode{
+					if(isUpdate)
+					{
+						parameter = dataAccess.GetNewDataParameter($nameIdParameter, DbType::Int32);
+						parameter.Value = $entity.Id;
+						sqlCommand.Parameters.Add(parameter);
+					}
+				};
+			}
+
+			if(isMobil)
+			{
+				sqlSave = "INSERT INTO [" + tableName.Identifier + "] (";
+				string^ sqlSaveValues = ") VALUES(";
+				sqlUpdate  = "UPDATE [" + tableName.Identifier + "] SET ";
+				
+				if(!isIdIdentity){
+					// Add the id to the sqlSave and sqlSaveValues
+					sqlSave += nameId + ", ";
+					sqlSaveValues += " @" + nameId + ", ";
+
+					executeBlock.Children().InsertAtEnd(
+						writecode( sqlCommand.ExecuteNonQuery() )
+					);
+				}
+				else{
+					executeBlock = writecode{
+						sqlCommand.ExecuteNonQuery();
+						if(!isUpdate){
+							sqlCommand = dataAccess.GetNewCommand("SELECT @@IDENTITY;", dbConnection, dbTransaction);
+							$entity.Id = Convert::ToInt32( sqlCommand.ExecuteScalar() , DotNET::System::Globalization::NumberFormatInfo::InvariantInfo );
+						}
+					};
+				}
+
+				for(int i = 0; i<listaCampos.Count; i++)
+				{
+					if(i==0)
+					{
+						sqlSave += ((XplIName^)listaCampos[i]).Identifier.ToUpper();
+						sqlSaveValues += " @" + ToLowerCamelCase(((XplIName^)listaCampos[i]).Identifier);
+						sqlUpdate += "" + ToLowerCamelCase(((XplIName^)listaCampos[i]).Identifier) + " = @" + ToLowerCamelCase(((XplIName^)listaCampos[i]).Identifier);
+					}
+					else
+					{
+						sqlSave += ", " + ((XplIName^)listaCampos[i]).Identifier.ToUpper();
+						sqlSaveValues += ",@" + ToLowerCamelCase(((XplIName^)listaCampos[i]).Identifier);
+						sqlUpdate += ", " + ToLowerCamelCase(((XplIName^)listaCampos[i]).Identifier) + " = @" + ToLowerCamelCase(((XplIName^)listaCampos[i]).Identifier);
+					}
+			    }
+				sqlSave += ", [TIMESTAMP] ";
+	            sqlSaveValues += ", GETDATE()); ";
+				sqlSave = sqlSave + sqlSaveValues;
+
+		        sqlUpdate += " , timestamp=GETDATE() WHERE " + nameId + " = @" + nameId;
+			}
+			else
+			{
+				fieldsBlockCommandType.Children().InsertAtEnd(
+					writecode(
+						sqlCommand.CommandType = CommandType::StoredProcedure
+						)
+					);
+
+				if(isIdIdentity)
+				{
+					executeBlock = writecode{
+						if(isUpdate)
+						{
+							sqlCommand.ExecuteNonQuery();
+						}
+						else
+						{
+							$parameterType^ parameterIdOutput = dataAccess.GetNewDataParameter($nameIdParameter, DbType::Int32);
+							parameterIdOutput.Direction = ParameterDirection::ReturnValue;
+							sqlCommand.Parameters.Add(parameterIdOutput);
+
+							sqlCommand.ExecuteNonQuery();						
+							$entity.Id = Convert::ToInt32(parameterIdOutput.Value, DotNET::System::Globalization::NumberFormatInfo::InvariantInfo);
+						}
+					};
+				}
+				else
+				{
+					//executeBlock = writecode{
+					//	$parameterType^ parameterIdOutput = dataAccess.GetNewDataParameter($nameIdParameter, DbType::Int32);
+					//	sqlCommand.ExecuteNonQuery();
+					//};
+					executeBlock.Children().InsertAtEnd(
+						writecode( sqlCommand.ExecuteNonQuery() )
+					);
+				}
+			}
+			
+			XplFunctionBody^ fieldsBlock = new XplFunctionBody();
+			
+			for(int i = 0; i<listaCampos.Count; i++)
+			{
+				XplType^ propertyType = (XplType^)listaTipos[i];
+				XplIName^ propertyTypeCall = null;
+				XplIName^ imageAsChar = new XplIName("imageAsChar"+i);
+				XplIName^ imageAsBytes = new XplIName("imageAsBytes"+i);
+				bool isString = false;
+				bool isImage = false;
+				
+				switch(propertyType.get_typename())
+				{
+					case NativeTypes::Boolean:
+						propertyTypeCall = new XplIName("DbType::Boolean");
+						break;
+					case NativeTypes::Float:
+						propertyTypeCall = new XplIName("DbType::Decimal");
+						break;
+					case NativeTypes::Double:
+						propertyTypeCall = new XplIName("DbType::Decimal");
+						break;
+					case NativeTypes::Integer:
+						propertyTypeCall = new XplIName("DbType::Int32");
+						break;
+					case NativeTypes::String:
+						propertyTypeCall = new XplIName("DbType::String");
+						isString = true;
+						break;
+					case "UtnEmall.Utils.Image":
+						propertyTypeCall = new XplIName("DbType::Object");
+						isImage = true;
+						break;
+					default:
+						propertyTypeCall = new XplIName("DbType::DateTime");
+						break;
+				}
+								
+				XplIName^ propertyName = (XplIName^)listaCampos[i];
+				//XplIName^ propertyNameRelation = new XplIName(propertyName.Identifier.Substring(2));
+				string^ propertyStringName = "@" + ToLowerCamelCase(propertyName.Identifier);
+				
+				XplNodeList::CopyNodesAtEnd( writecode{
+						parameter = dataAccess.GetNewDataParameter($propertyStringName, $propertyTypeCall);
+				}.Children(), fieldsBlock.Children());
+
+								
+				if(isString)
+				{
+					XplNodeList::CopyNodesAtEnd( writecode
+					{
+						parameter.Value = $entity.$propertyName;
+						if(DotNET::System::String::IsNullOrEmpty($entity.$propertyName))
+						{
+							parameter.Value = DotNET::System::DBNull::Value;
+						}
+						sqlCommand.Parameters.Add(parameter);
+					}.Children(), fieldsBlock.Children());
+				}
+				else if(isImage){
+						XplNodeList::CopyNodesAtEnd( writecode{
+							char[] $imageAsChar = $entity.$propertyName.ToCharArray();
+							byte[] $imageAsBytes = Convert::FromBase64CharArray($imageAsChar, 0, (int)$imageAsChar.Length);
+							parameter.Value = $imageAsBytes;
+							sqlCommand.Parameters.Add(parameter);
+						}.Children(), fieldsBlock.Children());
+				}
+				else{
+					XplNodeList::CopyNodesAtEnd( 
+						writecode{
+							parameter.Value = $entity.$propertyName;
+							sqlCommand.Parameters.Add(parameter);
+						}.Children(), fieldsBlock.Children());
+				}
+			}
+
+			bool update = false;
+
+			XplFunctionBody^ fieldsBlockRelations = new XplFunctionBody();
+			XplFunctionBody^ entityTemp = new XplFunctionBody();
+			XplFunctionBody^ fieldsBlockRelationsToDelete = new XplFunctionBody();
+			XplFunctionBody^ fieldsBlockRelationsCollections = new XplFunctionBody();
+			for(int i = 0; i < listaRelaciones.Count; i++)
+			{				
+				Relation^ relation = (Relation^)listaRelaciones[i];
+				if( !(relation.recursiveLoad && relation.recursiveSave))
+				{
+					continue;
+				}
+
+				XplType^ dataAccessRelation = new XplType();
+				dataAccessRelation.set_typename(relation.referencedType.Identifier+"DataAccess");
+				XplIName^ propertyNameRelation = relation.fieldName;
+				XplIName^ idPropertyNameRelation = new XplIName("Id" + propertyNameRelation.Identifier);
+
+				if(relation.relationType == RelationTypes::UnoAMuchos)
+				{					
+					XplIName^ functionName = new XplIName("Save"+relation.referencedType.Identifier+"Collection");
+
+					XplNodeList::CopyNodesAtEnd( writecode{
+						if ( $entity.$propertyNameRelation != null )
+						{
+							this.$functionName((new $dataAccessRelation()),$entity, $entity.$propertyNameRelation, ($entity.IsNew), scope);
+						}
+					}.Children(), fieldsBlockRelationsCollections.Children());
+				}
+				else
+				{
+					XplIName^ varDataAccess = new XplIName(ToLowerCamelCase(relation.referencedType.Identifier)+"DataAccess");
+					XplNodeList::CopyNodesAtEnd( writecode{
+						if ( $entity.$propertyNameRelation != null )
+						{
+							$dataAccessRelation $varDataAccess= new $dataAccessRelation();
+							$varDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
+							$varDataAccess.Save($entity.$propertyNameRelation, scope);
+						}
+					}.Children(), fieldsBlockRelations.Children());
+
+					if(relation.relationType == RelationTypes::UnoAUno && relation.recursiveSave)
+					{
+						XplIName^ classNameLoadRelation = new XplIName("LoadRelation" + relation.fieldName.Identifier);
+						XplIName^ entity2 = new XplIName(ToLowerCamelCase(modelName.Identifier) + "Temp" + i);
+
+						XplNodeList::CopyNodesAtEnd( writecode{
+								$entityType^ $entity2 = new $entityType();
+								$entity2.Id = $entity.Id;
+								$classNameLoadRelation($entity2, scope);
+								if($entity2.$propertyNameRelation != null && $entity2.$idPropertyNameRelation != $entity.$idPropertyNameRelation)
+								{
+									$dataAccessRelation $varDataAccess= new $dataAccessRelation();
+									$varDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
+									$varDataAccess.Delete($entity2.$propertyNameRelation, scope);
+								}
+							
+						}.Children(), fieldsBlockRelationsToDelete.Children());
+					}
+					update = true;
+				}
+			}
+			
+			XplFunctionBody^ fieldsBlockUpdate = new XplFunctionBody();
+			if(update)
+			{
+				fieldsBlockUpdate.Children().InsertAtEnd(
+						writecode( Update($entity) )
+					);
+			}
+
+			XplClassMembersList^ saveFunction = writecode{%				
+				private:
+				void FillSaveParameters($entityType^ $entity, $commandType^ sqlCommand){
+					$parameterType^ parameter;
+					$fieldsBlock;
+				}
+				
+				public:
+				// <summary>
+				// Function to Save a $entityType$ in the database. 
+				// </summary>
+				// <param name="$entity$">$entityType$ to save</param>
+				// <exception cref="ArgumentNullException">
+				// if <paramref name="$entity$"/> is not a <c>$entityType$</c>.
+				// </exception>
+				// <exception cref="UtnEmallDataAccessException">
+				// If an DbException occurs in the try block while accessing the database.
+				// </exception>
+				void Save($entityType^ $entity){
+					Save($entity, null);
+				}
+				// <summary>
+				// Function to Save a $entityType$ in the database. 
+				// </summary>
+				// <param name="$entity$">$entityType$ to save</param>
+				// <param name="scope">Interna structure to avoid circular reference locks. Provide an instance when calling from other data access object.</param>
+				// <exception cref="ArgumentNullException">
+				// If <paramref name="$entity$"/> is not a <c>$entityType$</c>.
+				// </exception>
+				// <exception cref="UtnEmallDataAccessException">
+				// If an DbException occurs in the try block while accessing the database.
+				// </exception>
+				void Save($entityType^ $entity, DictionaryOfStringIEntity^ scope)
+				{
+					if($entity == null)
+					{
+						throw new ArgumentException("The argument can't be null");
+					}
+					
+					// Create a unique key to identify the object in the internal scope
+					string^ scopeKey = $entity.Id.ToString(DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) + $entityStringName;
+					if (scope != null)
+					{
+						// If it's on the scope return it, don't save again
+						if (scope.ContainsKey(scopeKey))
+						{
+							return;
+						}
+					}
+					else
+					{
+						// Create a new scope if it's not provided
+						scope = new DictionaryOfStringIEntity();
+					}
+										
+					try
+					{
+						// Open a DbConnection and a new transaction if it isn't on a higher level one
+						if (!(isGlobalTransaction))
+						{
+							dbConnection = dataAccess.GetNewConnection();
+							dbConnection.Open();
+							dbTransaction = dbConnection.BeginTransaction();
+						}
+
+						string^ commandName = "";
+						bool isUpdate = false;
+						// Check if it is an insert or update command
+						if($entity.IsNew || !DataAccessConnection::ExistsEntity($entity.Id, $tableNameString, $nameId, dbConnection, dbTransaction) ) 
+						{
+							commandName = $sqlSave;
+						}
+						else
+						{
+							isUpdate = true;
+							commandName = $sqlUpdate;
+							$entityTemp;
+							$fieldsBlockRelationsToDelete;
+						}
+
+						// Create a db command
+						$commandType^ sqlCommand = dataAccess.GetNewCommand(commandName, dbConnection, dbTransaction);
+						$fieldsBlockCommandType;
+						
+						// Add parameters values to current command
+						$parameterType^ parameter;
+						
+						$parameterIdentityBlock;
+
+						FillSaveParameters($entity, sqlCommand);
+						
+						// Execute the command
+						$executeBlock;
+
+						scopeKey = $entity.Id.ToString(DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) + $entityStringName;
+						// Add entity to current internal scope
+						scope.Add(scopeKey, $entity);
+
+						// Save collections of related objects to current entity
+						$fieldsBlockRelationsCollections;
+
+						// Save objects related to current entity
+						$fieldsBlockRelations;
+						
+						// Update
+						$fieldsBlockUpdate;
+						
+						// Close transaction if initiated by me
+						if (!isGlobalTransaction)
+		                {
+				            dbTransaction.Commit();
+						}
+						// Update new and changed flags
+						$entity.IsNew = false;
+						$entity.Changed = false;					
+					}
+					catch(DbException^ dbException)
+					{
+						// Rollback transaction
+						if (!isGlobalTransaction)
+						{
+							dbTransaction.Rollback();
+						}
+						// Rethrow as custom exception
+						throw new UtnEmallDataAccessException(dbException.Message, dbException);
+					}
+					finally
+					{
+						// Close connection if initiated by me
+						if (!isGlobalTransaction)
+						{
+							dbConnection.Close();
+							dbConnection = null;
+							dbTransaction = null;
+						}
+					}
+				}
+				
+				%};
+
+				XplClass^ target = GetDataAccessClass(modelName.Identifier);
+				if(target!=null){
+					XplNodeList::CopyNodesAtEnd(saveFunction.Children(), target.Children());
+				}
+		}
+		static void GenerateUpdate(iname void modelName, iname void tableName){
+			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
+			string^ sqlUpdate = "Update" + tableName.Identifier;
+			string^ nameId = "id" + modelName.Identifier;
+			string^ nameIdParameter = "@id" + modelName.Identifier;
+			
+			XplFunctionBody^ fieldsBlockCommandType = new XplFunctionBody();
+
+			if(isMobil)
+			{
+				sqlUpdate  = "UPDATE [" + tableName.Identifier + "] SET ";
+				for(int i = 0; i<listaCampos.Count; i++)
+				{
+					if(i==0)
+					{
+						sqlUpdate += "" + ToLowerCamelCase(((XplIName^)listaCampos[i]).Identifier) + " = @" + ToLowerCamelCase(((XplIName^)listaCampos[i]).Identifier);
+					}
+					else
+					{
+						sqlUpdate += ", " + ToLowerCamelCase(((XplIName^)listaCampos[i]).Identifier) + " = @" + ToLowerCamelCase(((XplIName^)listaCampos[i]).Identifier);
+					}
+			    }
+		        sqlUpdate += " , timestamp=GETDATE() WHERE " + nameId + " = @" + nameId;
+			}
+			else
+			{
+				fieldsBlockCommandType.Children().InsertAtEnd(
+					writecode(
+						sqlCommand.CommandType = CommandType::StoredProcedure
+						)
+					);
+			}
+			
+			XplFunctionBody^ fieldsBlock = new XplFunctionBody();
+			
+			for(int i = 0; i<listaCampos.Count; i++)
+			{
+				XplType^ propertyType = (XplType^)listaTipos[i];
+				XplIName^ propertyTypeCall = null;
+				bool isString = false;
+		
+				switch(propertyType.get_typename())
+				{
+					case NativeTypes::Boolean:
+						propertyTypeCall = new XplIName("DbType::Boolean");
+						break;
+					case NativeTypes::Float:
+						propertyTypeCall = new XplIName("DbType::Decimal");
+						break;
+					case NativeTypes::Double:
+						propertyTypeCall = new XplIName("DbType::Decimal");
+						break;
+					case NativeTypes::Integer:
+						propertyTypeCall = new XplIName("DbType::Int32");
+						break;
+					case NativeTypes::String:
+						propertyTypeCall = new XplIName("DbType::String");
+						isString = true;
+						break;
+					case "UtnEmall.Utils.Image":
+						propertyTypeCall = new XplIName("DbType::Object");
+						break;
+					default:
+						propertyTypeCall = new XplIName("DbType::DateTime");
+						break;
+				}
+
+				XplIName^ propertyName = (XplIName^)listaCampos[i];
+				//XplIName^ propertyNameRelation = new XplIName(propertyName.Identifier.Substring(2));
+				string^ propertyStringName = "@" + ToLowerCamelCase(propertyName.Identifier);
+				
+				XplNodeList::CopyNodesAtEnd( writecode{
+						parameter = dataAccess.GetNewDataParameter($propertyStringName, $propertyTypeCall);
+				}.Children(), fieldsBlock.Children());
+								
+				if(isString)
+				{
+					XplNodeList::CopyNodesAtEnd( writecode{
+						parameter.Value = $entity.$propertyName;
+						if(DotNET::System::String::IsNullOrEmpty($entity.$propertyName)){
+							parameter.Value = DotNET::System::DBNull::Value;
+						}
+						sqlCommand.Parameters.Add(parameter);
+					}.Children(), fieldsBlock.Children());
+
+				}
+				else
+				{
+					XplNodeList::CopyNodesAtEnd( writecode{
+					parameter.Value = $entity.$propertyName;
+					sqlCommand.Parameters.Add(parameter);
+					}.Children(), fieldsBlock.Children());
+				}
+			}
+
+			string^ parameterName = entity.Identifier;
+			XplClassMembersList^ updateFunction = writecode{%
+				// <summary>
+				// Function to Update a $entityType$ from database. 
+				// </summary>
+				// <param name="$entity$">$entityType$ to update</param>
+				// <exception cref="ArgumentNullException">
+				// if <paramref name="$entity$"/> is not a <c>$entityType$</c>.
+				// </exception>
+				// <exception cref="UtnEmallDataAccessException">
+				// If an DbException occurs in the try block while accessing the database.
+				// </exception>
+				void Update($entityType^ $entity)
+				{
+					if($entity == null)
+					{
+						throw new ArgumentException("The argument can't be null", $parameterName);
+					}
+
+					// Build update command
+					string^ commandName = $sqlUpdate;
+					$commandType^ sqlCommand = dataAccess.GetNewCommand(commandName, dbConnection, dbTransaction);
+					$fieldsBlockCommandType;
+					
+					// Set update parameters values
+					$parameterType^ parameter = dataAccess.GetNewDataParameter($nameIdParameter, DbType::Int32);
+					parameter.Value = $entity.Id;
+					sqlCommand.Parameters.Add(parameter);
+
+					$fieldsBlock;
+					
+					// Execute the update
+					sqlCommand.ExecuteNonQuery();
+
+					// Update new and changed flags
+					$entity.IsNew = false;
+					$entity.Changed = false;
+				}
+				
+				%};
+
+				XplClass^ target = GetDataAccessClass(modelName.Identifier);
+				if(target!=null){
+					XplNodeList::CopyNodesAtEnd(updateFunction.Children(), target.Children());
+				}
+		}
+		// Genera la funcion DeleteEntity para borrar una entity
+		static void GenerateDelete(iname void modelName, iname void tableName){
+			string^ entityStringName = modelName.Identifier;
+
+			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
+			string^ sqlCommand = "Delete" + tableName.Identifier;
+			string^ nameIdParameter = "@id" + modelName.Identifier;
+			string^ nameId = "id" + modelName.Identifier;
+
+			XplFunctionBody^ fieldsBlockCommandType = new XplFunctionBody();
+			if(isMobil)
+			{
+				sqlCommand = "DELETE FROM [" + tableName.Identifier + "] WHERE " + nameId + " = @" + nameId;
+			}
+			else
+			{
+				fieldsBlockCommandType.Children().InsertAtEnd(
+					writecode(
+						sqlCommand.CommandType = CommandType::StoredProcedure
+						)
+					);
+			}
+			
+			XplFunctionBody^ fieldsBlockRelations = new XplFunctionBody();
+			for(int i = 0; i < listaRelaciones.Count; i++)
+			{
+				
+				Relation^ relation = (Relation^)listaRelaciones[i];
+				if( !(relation.recursiveLoad && relation.deleteCascade))
+				{
+					continue;
+				}
+
+				XplType^ dataAccessRelation = new XplType();
+				dataAccessRelation.set_typename(relation.referencedType.Identifier+"DataAccess");
+				XplIName^ propertyNameRelation = relation.fieldName;
+
+				if(relation.relationType == 2)
+				{					
+					XplIName^ functionName = new XplIName("Delete"+relation.referencedType.Identifier+"Collection");
+
+					XplNodeList::CopyNodesAtEnd( writecode{
+						if ( $entity.$propertyNameRelation != null )
+						{
+							this.$functionName((new $dataAccessRelation()), $entity.$propertyNameRelation, scope);
+						}
+					}.Children(), fieldsBlockRelations.Children());
+				}
+				else
+				{
+					XplIName^ varDataAccess = new XplIName(ToLowerCamelCase(relation.referencedType.Identifier)+"DataAccess");
+					XplNodeList::CopyNodesAtEnd( writecode{
+						if ( $entity.$propertyNameRelation != null )
+						{
+							$dataAccessRelation $varDataAccess= new $dataAccessRelation();
+							$varDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
+							$varDataAccess.Delete($entity.$propertyNameRelation, scope);
+						}
+					}.Children(), fieldsBlockRelations.Children());
+				}
+			}
+			
+			// If there are restrictions defined call check for delete
+			XplFunctionBody^ blockCheckForDelete = writecode{
+			{
+				// Check for related data
+				CheckForDelete($entity);
+			}
+			};
+			if(listaRestricciones.Count==0) blockCheckForDelete = new XplFunctionBody();
+
+			XplClassMembersList^ deleteFunction = writecode{%
+			public:
+				// <summary>
+				// Function to Delete a $entityType$ from database. 
+				// </summary>
+				// <param name="$entity$">$entityType$ to delete</param>
+				// <exception cref="ArgumentNullException">
+				// If <paramref name="$entity$"/> is not a <c>$entityType$</c>.
+				// </exception>
+				// <exception cref="UtnEmallDataAccessException">
+				// If an DbException occurs in the try block while accessing the database.
+				// </exception>
+				void Delete($entityType^ $entity){
+					Delete($entity, null);
+				}
+
+				// <summary>
+				// Function to Delete a $entityType$ from database. 
+				// </summary>
+				// <param name="$entity$">$entityType$ to delete</param>
+				// <param name="scope">Internal structure to avoid circular reference locks. Must provide an instance while calling from other data access object.</param>
+				// <exception cref="ArgumentNullException">
+				// If <paramref name="$entity$"/> is not a <c>$entityType$</c>.
+				// </exception>
+				// <exception cref="UtnEmallDataAccessException">
+				// If an DbException occurs in the try block while accessing the database.
+				// </exception>
+				void Delete($entityType^ $entity, DictionaryOfStringIEntity^ scope)
+				{
+					if($entity == null)
+					{
+						throw new ArgumentException("The argument can't be null");
+					}
+
+					try
+					{
+						// Open connection and initialize a transaction if needed
+						if (!isGlobalTransaction)
+						{
+							dbConnection = dataAccess.GetNewConnection();
+							dbConnection.Open();
+							dbTransaction = dbConnection.BeginTransaction();
+						}
+						// Reload the entity to ensure deletion of older data
+						$entity = this.Load($entity.Id, true);
+						if ($entity == null)
+						{
+							throw new UtnEmallDataAccessException("Error retrieving data while trying to delete.");
+						}
+
+						$blockCheckForDelete;
+						
+						// Create a command for delete
+						string^ cmdText = $sqlCommand;
+						$commandType^ sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
+						$fieldsBlockCommandType;
+						// Add values to parameters
+						$parameterType^ parameterID = dataAccess.GetNewDataParameter($nameIdParameter, DbType::Int32);
+						parameterID.Value = $entity.Id;
+						sqlCommand.Parameters.Add(parameterID);
+
+						// Execute the command
+						sqlCommand.ExecuteNonQuery();
+
+						// Delete related objects
+						$fieldsBlockRelations;
+
+						// Commit transaction if is mine
+						if (!isGlobalTransaction)
+						{
+							dbTransaction.Commit();
+						}
+						// Remove entity from loaded objects
+						inMemoryEntities.Remove($entity.Id);
+						// Remove entity from current internal scope
+						if(scope!=null)
+						{
+							string^ scopeKey = $entity.Id.ToString(DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) + $entityStringName;
+							scope.Remove(scopeKey);
+						}
+					}
+					catch(DbException^ dbException)
+					{
+						// Rollback transaction
+						if (!isGlobalTransaction)
+						{
+							dbTransaction.Rollback();
+						}
+						// Rethrow as custom exception
+						throw new UtnEmallDataAccessException(dbException.Message, dbException);
+					}
+					finally
+					{
+						// Close connection if it was initiated by this instance
+						if (!isGlobalTransaction)
+						{
+							dbConnection.Close();
+							dbConnection = null;
+							dbTransaction = null;
+						}
+					}
+				}
+				
+				%};
+
+			XplClass^ target = GetDataAccessClass(modelName.Identifier);
+				if(target!=null){
+					XplNodeList::CopyNodesAtEnd(deleteFunction.Children(), target.Children());
+				}
+		}	
+
+		
+		static void GenerateDeleteCollection(iname void modelName, Relation^ relation){
+			XplType^ entityTypeRelation = new XplType();
+			entityTypeRelation.set_typename(relation.referencedType.Identifier+"Entity");
+
+			XplType^ dataAccessTypeRelation = new XplType();
+			dataAccessTypeRelation.set_typename(relation.referencedType.Identifier+"DataAccess");
+			
+			XplIName^ functionName = new XplIName("Delete"+relation.referencedType.Identifier+"Collection");
+			XplIName^ relationName = new XplIName(relation.referencedType.Identifier);
+
+			//Tipo para lista
+			XplType^ listOfType = new XplType();
+			listOfType.set_typename( "CollectionOf" + entityTypeRelation.get_typename() );
+
+			XplClassMembersList^ saveCollectionFunction = writecode{%
+				// <summary>
+				// Function to Delete a list of related entities from database. 
+				// </summary>
+				// <param name="collectionDataAccess">IDataAccess of the relation</param>
+				// <param name="collection">The collection of entities to delete</param>
+				// <param name="scope">Internal structure to keep safe circular referencies</param>
+				// <returns>True if collection not null</returns>
+				bool $functionName($dataAccessTypeRelation^ collectionDataAccess, $listOfType^ collection, DictionaryOfStringIEntity^ scope)
+				{
+					if(collection == null)
+					{
+						return false;
+					}
+					// Set connection objects of related data access object
+					collectionDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
+
+					// Delete related objects
+					for (int i = 0; i < collection.Count; i++)
+					{
+						collectionDataAccess.Delete( collection[i], scope);
+					}
+
+					return true;
+				}
+				
+				%};
+
+				XplClass^ target = GetDataAccessClass(modelName.Identifier);
+				if(target!=null)
+				{
+					XplNodeList::CopyNodesAtEnd(saveCollectionFunction.Children(), target.Children());
+				}
+		}
+		// Genera la funcion DBChecked para chequear si existen los procedures y la tabla en la base de datos
+		static void GenerateDBChecked(iname void modelName, iname void tableName){
+			string^ nameTable = tableName.Identifier;
+			string^ nameProcedureDelete = "Delete" + tableName.Identifier;
+			string^ nameProcedureSave = "Save" + tableName.Identifier;
+			string^ nameProcedureUpdate = "Update" + tableName.Identifier;
+			string^ nameProcedureNextID = "NextID" + tableName.Identifier;
+			string^ nameId = "id" + modelName.Identifier;
+
+			XplFunctionBody^ fieldsBlockCreateTable = new XplFunctionBody();
+
+			if(isIdIdentity)
+			{
+				XplNodeList::CopyNodesAtEnd( writecode{
+			
+					DataAccessConnection::CreateTable($nameTable, fieldsName, true, fieldsType);
+
+				}.Children(), fieldsBlockCreateTable.Children());
+			}
+			else
+			{
+				XplNodeList::CopyNodesAtEnd( writecode{
+			
+					DataAccessConnection::CreateTable($nameTable, fieldsName, false, fieldsType);
+
+				}.Children(), fieldsBlockCreateTable.Children());
+			}
+
+			XplFunctionBody^ fieldsBlockProcedures = new XplFunctionBody();
+
+			if(!isMobil)
+			{
+				if(!isIdIdentity)
+				{
+					XplNodeList::CopyNodesAtEnd( writecode{
+						bool existsProcedureDelete = DataAccessConnection::DBCheckedStoredProcedure($nameProcedureDelete);
+						bool existsProcedureSave = DataAccessConnection::DBCheckedStoredProcedure($nameProcedureSave);
+						bool existsProcedureUpdate = DataAccessConnection::DBCheckedStoredProcedure($nameProcedureUpdate);
+						bool existsProcedureNextID = DataAccessConnection::DBCheckedStoredProcedure($nameProcedureNextID);
+
+						if (!existsProcedureDelete)
+						{
+							DataAccessConnection::CreateDeleteStoredProcedure($nameTable,$nameId);
+						}
+
+						if (!existsProcedureSave)
+						{
+							DataAccessConnection::CreateSaveStoredProcedureNonAutonumeric($nameTable, fieldsName, fieldsType);
+						}
+
+						if (!existsProcedureUpdate)
+						{
+							DataAccessConnection::CreateUpdateStoredProcedure($nameTable, $nameId, fieldsName, fieldsType);
+						}
+
+						if (!existsProcedureNextID)
+						{
+							DataAccessConnection::CreateNextIdStoredProcedure($nameTable, $nameId);
+						}
+
+					}.Children(), fieldsBlockProcedures.Children());
+				}
+				else
+				{
+					XplNodeList::CopyNodesAtEnd( writecode{
+						bool existsProcedureDelete = DataAccessConnection::DBCheckedStoredProcedure($nameProcedureDelete);
+						bool existsProcedureSave = DataAccessConnection::DBCheckedStoredProcedure($nameProcedureSave);
+						bool existsProcedureUpdate = DataAccessConnection::DBCheckedStoredProcedure($nameProcedureUpdate);
+
+						if (!existsProcedureDelete)
+						{
+							DataAccessConnection::CreateDeleteStoredProcedure($nameTable,$nameId);
+						}
+
+						if (!existsProcedureSave)
+						{
+							DataAccessConnection::CreateSaveStoredProcedure($nameTable, fieldsName, fieldsType);
+						}
+
+						if (!existsProcedureUpdate)
+						{
+							DataAccessConnection::CreateUpdateStoredProcedure($nameTable, $nameId, fieldsName, fieldsType);
+						}
+					}.Children(), fieldsBlockProcedures.Children());
+				}
+
+			}
+			//Lista de campos: new {"f1", "f2", ....}
+			XplExpression^ fieldsNamesExp = writecode(new string^[] = {$nameId });
+			XplInitializerList^ list = (XplInitializerList^)fieldsNamesExp.FindNode("/init");
+			if(list!=null){
+				for(int n=0;n<listaCampos.Count;n++){
+					string^ nombreCampo = ToLowerCamelCase(((XplIName^)listaCampos[n]).Identifier);
+					list.Children().InsertAtEnd(
+						writecode($nombreCampo)
+						);
+				}
+			}
+
+			//Lista de tipos: new { gettype(int), ....}
+			XplExpression^ fieldsTypesExp = writecode(new Type^[] = {});
+			list = (XplInitializerList^)fieldsTypesExp.FindNode("/init");
+			if(list!=null)
+			{
+				list.Children().InsertAtEnd(
+					writecode(typeof(int))
+					);
+
+				for(int n=0;n<listaTipos.Count;n++){
+					XplType^ tipoCampo = ((XplType^)listaTipos[n]);
+					
+					if(tipoCampo.get_typeStr() == "UtnEmall.Utils.Image"){
+						tipoCampo = new XplType();
+						tipoCampo.set_typename("DotNET::System::Drawing::Image");
+					}
+
+					list.Children().InsertAtEnd(
+						writecode(typeof($tipoCampo))
+						);
+				}
+			}
+					
+			XplClassMembersList^ dbChequedFunction = writecode{%
+				// <summary>
+				// Function to check and create table and stored procedures for this class. 
+				// </summary>
+				static void DbChecked()
+				{
+					if (dbChecked)
+					{
+						return;
+					}
+
+					string^[] fieldsName = $fieldsNamesExp;
+					Type^[] fieldsType = $fieldsTypesExp;
+
+					bool existsTable = DataAccessConnection::DBCheckedTable($nameTable);
+					
+					if (!existsTable)
+					{
+						$fieldsBlockCreateTable;
+					}
+
+					$fieldsBlockProcedures;
+
+					dbChecked = true;
+				
+				}
+				
+				%};
+
+
+				XplClass^ target = GetDataAccessClass(modelName.Identifier);
+				if(target!=null)
+				{
+					XplNodeList::CopyNodesAtEnd(dbChequedFunction.Children(), target.Children());
+				}
+		}
+
+		static void SetConnectionObjects(iname void modelName){
+			XplClassMembersList^ SetConnectionObjectsFunction = writecode{%
+			public:
+				// <summary>
+				// set the connection and the transaction to the object, in the case
+				// that a global transaction is running.
+				// </summary>
+				// <param name="connection">The $connectionType$ connection to the database</param>
+				// <param name="transaction">The global $transactionType$ transaction</param>
+				// <exception cref="UtnEmallDataAccessException">
+				// If an DbException occurs in the try block while accessing the database.
+				// </exception>
+				void SetConnectionObjects($connectionType^ connection, $transactionType^ transaction)
+				{
+					if (connection == null)
+					{
+						throw new ArgumentException("The connection cannot be null");
+					}
+
+					this.dbConnection = connection;
+					this.dbTransaction = transaction;
+					// FIXME : The name of this flag is not always apropiated
+					this.isGlobalTransaction = true;
+				}
+			%};
+
+			XplClass^ target = GetDataAccessClass(modelName.Identifier);
+			if(target!=null)
+			{
+				XplNodeList::CopyNodesAtEnd(SetConnectionObjectsFunction.Children(), target.Children());
+			}
+		}
+		static void GenerateSetProperties(iname void modelName){
+
+			XplClassMembersList^ listaMiembros = null;
+			
+			XplFunctionBody^ fieldsBlock = new XplFunctionBody();
+			string^ nameIdProperty = "id" + modelName.Identifier;
+			XplIName^ nameIdPropertyStatic = new XplIName("DBId" + modelName.Identifier);
+
+			//Inserto los miembros en la clase actual
+			listaMiembros = writecode{% 
+				public: const string^ $nameIdPropertyStatic = $nameIdProperty;
+			%};
+			XplNodeList::CopyNodesAtEnd(listaMiembros.Children(), context.CurrentClass.Children());
+
+			fieldsBlock.Children().InsertAtEnd(
+					writecode(
+						properties.Add($nameIdProperty, typeof(int))
+						)
+					);
+
+			for(int i = 0; i<listaCampos.Count; i++)
+			{
+				string^ propertya = ToLowerCamelCase(((XplIName^)listaCampos[i]).Identifier);
+				string^ propertyb = ((XplIName^)listaCampos[i]).Identifier;
+				XplIName^ propertyaStatic = new XplIName( "DB" + propertyb);
+				XplType^ typeProperty = ((XplType^)listaTipos[i]);
+
+				if(typeProperty.get_typeStr() == "UtnEmall.Utils.Image"){
+					typeProperty.set_typename(NativeTypes::String);
+				}
+
+				fieldsBlock.Children().InsertAtEnd(
+					writecode(
+						properties.Add($propertya, typeof($typeProperty))
+						)
+					);				
+
+				listaMiembros = writecode{% public: const string^ $propertyaStatic = $propertya;  %};
+				XplNodeList::CopyNodesAtEnd(listaMiembros.Children(), context.CurrentClass.Children());
+			}
+
+			XplClassMembersList^ SetPropertiesFunction = writecode{%
+				// <summary>
+				// Add to the dictionary the properties that can
+				// be used as first parameter on the LoadWhere method.
+				// </summary>
+				static void SetProperties()
+				{
+					properties = new dict();
+					properties.Add("timestamp", typeof(DateTime));
+					$fieldsBlock;
+				}			
+			%};
+
+			XplClass^ target = GetDataAccessClass(modelName.Identifier);
+			if(target!=null)
+			{
+				XplNodeList::CopyNodesAtEnd(SetPropertiesFunction.Children(), target.Children());
+			}
+		}
+		// Crea la funciones correspondientes para cada uno de los campos relacionados.
+		// Se basa en la cardinalidad de la relacion para decidir que funciones crear.
+		static void GenerateFunctionRelations(iname void modelName, iname void tableName){
+			bool update = false;
+
+			for(int i = 0; i < listaRelaciones.Count; i++)
+			{
+				Relation^ relation = (Relation^)listaRelaciones[i];
+				
+				switch(relation.relationType)
+				{
+					case 1:
+						//case RelationTypes::UnoAUno:
+						if(relation.recursiveLoad)
+						{
+							GenerateLoadRelations(modelName, tableName, relation);
+							if(relation.recursiveSave)
+							{
+								update = true;
+							}
+						}
+						break;
+					
+					case 2:
+						//case RelationTypes::UnoAMuchos:
+						if(relation.recursiveLoad)
+						{
+							GenerateLoadRelationsUnoMuchos(modelName, tableName, relation);
+							if(relation.recursiveSave)
+							{
+								GenerateSaveCollection(modelName, relation);
+							}
+						}
+
+						if(relation.deleteCascade)
+						{
+							GenerateDeleteCollection(modelName, relation);
+						}
+						break;					
+					
+					case 3:
+						//case RelationTypes::MuchosAUno:						
+						if(relation.generateRelation)
+						{
+							GenerateLoadBy(modelName, relation);
+						}
+						if(relation.recursiveLoad)
+						{
+							GenerateLoadRelations(modelName, tableName, relation);
+							if(relation.recursiveSave)
+							{
+								update = true;
+							}
+						}
+						break;
+					
+					case 4:
+						//case RelationTypes::MuchosAMuchos:
+						break;					
+				}
+			}
+			if(update)
+			{
+				GenerateUpdate(modelName, tableName);
+			}
+		}
+		static string^ ToLowerCamelCase(string^ valor){
+			string^ primeraLetra = valor.Substring(0,1).ToLower();
+			string^ ultimasLetras = valor.Substring(1);
+			string^ resultado = primeraLetra + ultimasLetras;
+			return resultado;
+		}
+		// Genera la funcion Save para cada una de las colecciones
+		static void GenerateSaveCollection(iname void modelName, Relation^ relation){
+			XplType^ entityType = new XplType();
+			entityType.set_typename(modelName.Identifier+"Entity");
+
+			XplType^ entityTypeRelation = new XplType();
+			entityTypeRelation.set_typename(relation.referencedType.Identifier+"Entity");
+
+			XplType^ dataAccessTypeRelation = new XplType();
+			dataAccessTypeRelation.set_typename(relation.referencedType.Identifier+"DataAccess");
+			
+			XplIName^ propertyName =  new XplIName(modelName.Identifier);
+			if(relation.parentName!=null)
+			{
+				propertyName = new XplIName(relation.parentName.Identifier);
+			}
+
+			string^ propertyNameRelationString = ToLowerCamelCase(modelName.Identifier);
+			
+			XplIName^ propertyNameRelation = relation.fieldName;
+			XplIName^ functionName = new XplIName("Save"+relation.referencedType.Identifier+"Collection");
+			
+			string^ nameId = "id" + modelName.Identifier;
+			string^ nameIdParameter = "@id" + modelName.Identifier;
+			if(relation.referencedType.Identifier == modelName.Identifier)
+			{
+				nameId = "id" + relation.parentName.Identifier;
+				nameIdParameter = "@id" + relation.parentName.Identifier;
+			}
+			string^ nameTableRelated = relation.referencedType.Identifier;
+			string^ namecolumnRelatedParameter= "@id" + relation.referencedType.Identifier;
+			string^ namecolumnRelated = "id" + relation.referencedType.Identifier;
+
+			//Tipo para lista
+			XplType^ listOfType = new XplType();
+			listOfType.set_typename( "CollectionOf" + entityTypeRelation.get_typename() );
+
+			XplClassMembersList^ saveCollectionFunction = writecode{%
+				// <summary>
+				// Updates the database to reflect the current state of the list.
+				// </summary>
+				// <param name="collectionDataAccess">the IDataAccess of the relation</param>
+				// <param name="parent">the parent of the object</param>
+				// <param name="collection">a collection of items</param>
+				// <param name="isNewParent">if the parent is a new object</param>
+				// <param name="scope">internal data structure to aviod problems with circular referencies on entities</param>
+				// <exception cref="UtnEmallDataAccessException">
+				// If an DbException occurs in the try block while accessing the database.
+				// </exception>
+				void $functionName($dataAccessTypeRelation^ collectionDataAccess, $entityType^ parent, $listOfType^ collection, bool isNewParent, DictionaryOfStringIEntity^ scope)
+				{
+					if(collection == null)
+					{
+						return;
+					}
+					// Set connection objects on collection data access
+					collectionDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
+
+					// Set the child/parent relation
+					for (int i = 0; i < collection.Count; i++)
+					{
+						bool changed = collection[i].Changed;
+						collection[i].$propertyName = parent;
+						collection[i].Changed = changed;
+					}
+
+					// If the parent is new save all childs, else check diferencies with db
+					if (isNewParent)
+					{
+						for (int i = 0; i < collection.Count; i++)
+						{
+							collectionDataAccess.Save(collection[i], scope);
+						}
+					}
+					else
+					{
+						// Check the childs that are not part of the parent any more
+						string^ idList = "0";
+						if(collection.Count > 0)
+						{	
+							idList = "" + (collection[0]).Id;
+						}
+
+						for (int i = 1; i < collection.Count; i++)
+						{
+							idList += ", " + (collection[i]).Id;
+						}
+
+						// Returns the ids that doesn't exists in the current collection
+						string^ command = "SELECT "+ $namecolumnRelated +" FROM ["+ $nameTableRelated + "] " +
+											"WHERE "+ $nameId +" = "+ $nameIdParameter +" AND "+ $namecolumnRelated +" NOT IN ("+idList+")";
+
+						$commandType^ sqlCommand = dataAccess.GetNewCommand(command, dbConnection, dbTransaction);
+
+						$parameterType^ sqlParameterId = dataAccess.GetNewDataParameter($nameIdParameter, DbType::Int32);
+						sqlParameterId.Value = parent.Id;
+						sqlCommand.Parameters.Add(sqlParameterId);
+
+						IDataReader^ reader = sqlCommand.ExecuteReader();
+						$listOfType^ objectsToDelete = new $listOfType();
+
+						// Insert Ids on a list
+						ListInt listId = new ListInt();
+						while (reader.Read())
+						{
+							listId.Add(reader.GetInt32(0));
+						}
+						reader.Close();
+
+						// Load items to be removed
+						foreach(int id in listId)
+						{
+							$entityTypeRelation^ entityToDelete = collectionDataAccess.Load(id, scope);
+							objectsToDelete.Add( entityToDelete );
+						}
+
+						// Have to do this because the reader must be closed before
+						// deletion of entities
+						for (int i = 0; i < objectsToDelete.Count; i++)
+						{
+							collectionDataAccess.Delete(objectsToDelete[i], scope);
+						}
+
+						zoe::lang::DateTime timestamp;						
+						// Check all the properties of the collection items 
+						// to see if they have changed (timestamp)
+						for (int i = 0; i < collection.Count; i++)
+						{   
+							$entityTypeRelation^ item = collection[i];							
+							if (!item.Changed && !item.IsNew)
+							{
+								// Create the command
+								string^ sql = "SELECT timestamp FROM ["+$nameTableRelated+"] WHERE "+ $namecolumnRelated +" = "+ $namecolumnRelatedParameter;						
+								$commandType^ sqlCommandTimestamp = dataAccess.GetNewCommand(sql, dbConnection, dbTransaction);
+								// Set the command's parameters values	
+								$parameterType^ sqlParameterIdPreference = dataAccess.GetNewDataParameter($namecolumnRelatedParameter, DbType::Int32);
+								sqlParameterIdPreference.Value = item.Id;
+								sqlCommandTimestamp.Parameters.Add(sqlParameterIdPreference);
+
+								timestamp = (zoe::lang::DateTime)sqlCommandTimestamp.ExecuteScalar();
+								if (item.Timestamp!=timestamp)
+								{
+									item.Changed = true;
+								}
+							}
+							// Save the item if it changed or is new
+							if(item.Changed || item.IsNew)
+							{
+								collectionDataAccess.Save(item);
+							}
+						}
+					}
+				}
+				
+				%};
+
+				XplClass^ target = GetDataAccessClass(modelName.Identifier);
+				if(target!=null)
+				{
+					XplNodeList::CopyNodesAtEnd(saveCollectionFunction.Children(), target.Children());
+				}
+		}
+		// Genera la funcion LoadRelations para cardinalidad uno a muchos
+		static void GenerateLoadRelationsUnoMuchos(iname void modelName, iname void sqlTableName, Relation^ relation){
+			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
+			XplIName^ relationDataAccess = new XplIName(ToLowerCamelCase(relation.referencedType.Identifier)+"DataAccess");
+			string^ nameId = "id" + modelName.Identifier;
+			string^ nameTable = sqlTableName.Identifier; // modelName.Identifier;
+			
+			string^ nameIdParameter = "@id" + modelName.Identifier;
+
+			string^ namecolumnRelated = "id" + relation.fieldName.Identifier;
+
+			XplType^ entityTypeRelation = new XplType();
+			entityTypeRelation.set_typename(relation.referencedType.Identifier+"Entity");
+			XplType^ dataAccessTypeRelation = new XplType();
+			dataAccessTypeRelation.set_typename(relation.referencedType.Identifier+"DataAccess");
+
+			XplIName^ functionLoadByName = new XplIName("LoadBy" + modelName.Identifier + "Collection");
+
+			XplIName^ propertyName = relation.fieldName;
+
+			XplIName^ functionName = new XplIName("LoadRelation" + relation.fieldName.Identifier);
+
+			//Lista de tipos generica
+			XplType^ listOfType = new XplType();
+			listOfType.set_typename( "CollectionOf" + entityTypeRelation.get_typename() );
+
+			XplClassMembersList^ loadRelationsFunction = writecode{%
+				public:
+				// <summary>
+				// Function to Load the relation $propertyName$ from database. 
+				// </summary>
+				// <param name="$entity$">$entityType$ parent</param>
+				// <param name="scope">Internal structure to avoid problems with circular referencies</param>
+	    		// <exception cref="ArgumentNullException">
+				// if <paramref name="$entity$"/> is not a <c>$entityType$</c>.
+				// </exception>
+				void $functionName($entityType^ $entity, DictionaryOfStringIEntity^ scope)
+				{
+					if($entity == null)
+					{
+						throw new ArgumentException("The argument can't be null");
+					}
+					// Create data access object for related object
+					$dataAccessTypeRelation^ $relationDataAccess = new $dataAccessTypeRelation();
+					// Set connection objects to the data access
+					$relationDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
+					// Load related objects
+					$entity.$propertyName = $relationDataAccess.$functionLoadByName($entity.Id, scope);
+				}
+				
+				%};
+
+				XplClass^ target = GetDataAccessClass(modelName.Identifier);
+				if(target!=null)
+				{
+					XplNodeList::CopyNodesAtEnd(loadRelationsFunction.Children(), target.Children());
+				}
+		}
+		// Genera la funcion LoadRelations para cardinalidad muchos a uno y uno a uno.
+		static void GenerateLoadRelations(iname void modelName, iname void sqlTableName, Relation^ relation){
+			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
+			XplIName^ relationDataAccess = new XplIName(ToLowerCamelCase(relation.referencedType.Identifier)+"DataAccess");
+
+			string^ nameId = "id" + modelName.Identifier;
+			string^ nameTable = sqlTableName.Identifier; // modelName.Identifier;
+			string^ nameIdParameter = "@id" + modelName.Identifier;
+			
+			string^ namecolumnRelated = "id" + relation.fieldName.Identifier;
+
+			XplType^ entityTypeRelation = new XplType();
+			entityTypeRelation.set_typename(relation.referencedType.Identifier+"Entity");
+			XplType^ dataAccessTypeRelation = new XplType();
+			dataAccessTypeRelation.set_typename(relation.referencedType.Identifier+"DataAccess");
+
+			XplIName^ propertyName = relation.fieldName;
+
+			XplIName^ className = new XplIName("LoadRelation" + relation.fieldName.Identifier);
+			
+			XplExpression^ loadSubRelations = writecode(true);
+			
+			if(!relation.loadSubRelations)loadSubRelations = writecode(false);
+
+			XplClassMembersList^ loadRelationsFunction = writecode{%
+				public:
+				// <summary>
+				// Function to Load the relation $propertyName$ from database. 
+				// </summary>
+				// <param name="$entity$">$entityType$ parent</param>
+	    		// <exception cref="ArgumentNullException">
+				// if <paramref name="$entity$"/> is not a <c>$entityType$</c>.
+				// </exception>		
+				void $className($entityType^ $entity, DictionaryOfStringIEntity^ scope)
+				{
+					if($entity == null)
+					{
+						throw new ArgumentException("The argument can't be null");
+					}
+					bool closeConnection = false;
+					try
+					{
+						// Create a new connection if needed
+						if(dbConnection == null || dbConnection.State.CompareTo(DotNET::System::Data::ConnectionState::Closed) == 0)
+						{
+							closeConnection = true;
+							dbConnection = dataAccess.GetNewConnection();
+							dbConnection.Open();
+						}
+						// Create a command
+						string^ cmdText = "SELECT " + $namecolumnRelated +" FROM ["+ $nameTable +"] WHERE "+ $nameId +" = "+ $nameIdParameter;
+						$commandType^ sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
+						$parameterType^ parameter = dataAccess.GetNewDataParameter($nameIdParameter, DbType::Int32);
+						// Set command parameters values
+						parameter.Value = $entity.Id;
+						sqlCommand.Parameters.Add(parameter);
+						// Execute commands
+						object^ idRelation = sqlCommand.ExecuteScalar();
+						if (idRelation != null && (int)idRelation > 0)
+						{
+							// Create data access objects and set connection objects
+							$dataAccessTypeRelation^ $relationDataAccess = new $dataAccessTypeRelation();
+							$relationDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
+							// Load related object
+							$entity.$propertyName = $relationDataAccess.Load((int)idRelation, $loadSubRelations, scope);
+						}
+					}
+					catch (DbException^ dbException)
+					{
+						// Catch and rethrow as custom exception
+						throw new UtnEmallDataAccessException(dbException.Message, dbException);
+					}
+					finally
+					{
+						// Close connection if initiated by me
+						if(closeConnection)
+						{
+							dbConnection.Close();
+						}
+					}
+				}
+				
+				%};
+
+				XplClass^ target = GetDataAccessClass(modelName.Identifier);
+				if(target!=null){
+					XplNodeList::CopyNodesAtEnd(loadRelationsFunction.Children(), target.Children());
+				}
+		}
+		// Genera la funcion LoadBy para cardinalidad uno a muchos.
+		static void GenerateLoadByUnoMuchos(iname void modelName, Relation^ relation){
+			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
+			string^ nameId = "id" + modelName.Identifier;
+			
+			string^ nameIdParameter = "@id" + modelName.Identifier;
+
+			string^ namecolumnRelated = "id" + relation.referencedType.Identifier;
+			XplIName^ nameColumnRelatedInt = new XplIName("id" + relation.referencedType.Identifier);
+			string^ namecolumnRelatedParameter = "@id" +relation.referencedType.Identifier;
+
+			string^ nameTableRelated = relation.referencedType.Identifier;
+
+			XplType^ entityType = new XplType();
+			entityType.set_typename(modelName.Identifier+"Entity");
+			
+			XplIName^ propertyName = relation.fieldName;
+
+			XplIName^ className = new XplIName("LoadBy" + relation.referencedType.Identifier);
+
+
+			XplClassMembersList^ loadByFunction = writecode{%
+				public:
+				// <summary>
+				// Function to Load a $entityType$ by a $propertyName$ from database. 
+				// </summary>
+				// <param name="$nameColumnRelatedInt$">$propertyName$ Id</param>
+				$entityType^ $className(int $nameColumnRelatedInt, DictionaryOfStringIEntity^ scope)
+				{
+					$entityType^ $entity;
+					bool closeConnection = false;
+					try
+					{
+						// Create a connection if necessary
+						if(dbConnection == null || dbConnection.State.CompareTo(DotNET::System::Data::ConnectionState::Closed) == 0)
+						{
+							closeConnection = true;
+							dbConnection = dataAccess.GetNewConnection();
+							dbConnection.Open();
+						}
+						// Create a command
+						string^ cmdText = "SELECT "+ $nameId +" FROM ["+ $nameTableRelated +"] WHERE "+ $namecolumnRelated +" = "+ $namecolumnRelatedParameter;
+						$commandType sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
+						// Set command parameters values
+						$parameterType^ parameter = dataAccess.GetNewDataParameter($namecolumnRelatedParameter, DbType::Int32);
+						parameter.Value = $nameColumnRelatedInt;
+						sqlCommand.Parameters.Add(parameter);
+
+						// Create a Data Reader and load the related object
+						IDataReader^ reader = sqlCommand.ExecuteReader();
+						$entity = new $entityType();
+
+						if (reader.Read())
+						{
+							int id = reader.GetInt32(0);
+							reader.Close();
+							$entity = ($entityType^)Load(id, scope);
+						}
+						else
+						{
+							reader.Close();
+						}						
+					}
+					finally
+					{
+						// Close connection if initiated by me
+						if(closeConnection)
+						{
+							dbConnection.Close();
+						}
+					}
+					// Return the related object
+					return $entity;
+				}
+				
+				%};
+
+				XplClass^ target = GetDataAccessClass(modelName.Identifier);
+				if(target!=null){
+					XplNodeList::CopyNodesAtEnd(loadByFunction.Children(), target.Children());
+				}
+		}
+		// Genera la funcion LoadBy para cardinalidad muchos a uno y uno a uno.
+		static void GenerateLoadBy(iname void modelName, Relation^ relation){
+			XplIName^ entityList = new XplIName(ToLowerCamelCase(modelName.Identifier)+ "List");
+			string^ nameId = "id" + modelName.Identifier;
+			
+			string^ nameTable = modelName.Identifier;
+			string^ nameIdParameter = "@id" + modelName.Identifier;
+
+			string^ namecolumnRelated = "id" + relation.referencedType.Identifier;
+			XplIName^ nameColumnRelatedInt = new XplIName("id" + relation.referencedType.Identifier);
+			string^ namecolumnRelatedParameter = "@id" + relation.referencedType.Identifier;
+
+			if(relation.referencedType.Identifier == modelName.Identifier)
+			{
+				namecolumnRelated = "id" + relation.parentName.Identifier;
+				namecolumnRelatedParameter= "@id" + relation.parentName.Identifier;
+			}
+
+			XplIName^ propertyName = relation.fieldName;
+
+			XplIName^ className = new XplIName("LoadBy" + relation.referencedType.Identifier + "Collection");
+
+			//Tipo para lista
+			XplIName^ listOfTypeName = new XplIName("CollectionOf" + modelName.Identifier + "Entity");
+			XplType^ entityType = new XplType();
+			entityType.set_typename( modelName.Identifier + "Entity" );
+			XplType^ listOfType = new XplType();
+			listOfType.set_typename( listOfTypeName.Identifier );
+
+			XplClassMembersList^ loadByFunction = writecode{%
+				UtnEmall::Utils::List::NewCollection( $listOfTypeName, gettype($entityType^) );
+				public:
+				// <summary>
+				// Function to Load a list of $entityType$ from database by $nameColumnRelatedInt$. 
+				// </summary>
+				// <param name="$nameColumnRelatedInt$">Foreing key column</param>
+				// <param name="scope">Internal data structure to avoid circular reference problems</param>
+				// <returns>List of $entityType$</returns>
+				$listOfType^ $className(int $nameColumnRelatedInt, DictionaryOfStringIEntity^ scope)
+				{
+					$listOfType^ $entityList;
+					bool closeConnection = false;
+					try
+					{
+						// Create a new connection
+						if(dbConnection == null || dbConnection.State.CompareTo(DotNET::System::Data::ConnectionState::Closed) == 0)
+						{
+							closeConnection = true;
+							dbConnection = dataAccess.GetNewConnection();
+							dbConnection.Open();
+						}
+						// Create a command
+						string^ cmdText = "SELECT "+ $nameId +" FROM ["+ $nameTable +"] WHERE "+ $namecolumnRelated +" = "+ $namecolumnRelatedParameter;
+						$commandType sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
+						// Set command parameters values
+						$parameterType^ parameter = dataAccess.GetNewDataParameter($namecolumnRelatedParameter, DbType::Int32);
+						parameter.Value = $nameColumnRelatedInt;
+						sqlCommand.Parameters.Add(parameter);
+
+						// Create a DataReader
+						IDataReader^ reader = sqlCommand.ExecuteReader();
+						$entityList = new $listOfType();
+						// Load Ids of related objects into a list of int
+						ListInt listId = new ListInt();
+						while (reader.Read())
+						{
+							listId.Add(reader.GetInt32(0));
+						}
+						reader.Close();
+
+						// Load related objects and add to collection
+						foreach(int id in listId)
+						{
+							$entityList.Add(Load( id, scope));
+						}
+					}
+					catch(DbException^ dbException)
+					{
+						// Rethrow as custom exception
+						throw new UtnEmallDataAccessException(dbException.Message, dbException);
+					}
+					finally
+					{
+						// Close connection if initiated be me
+						if(closeConnection)
+						{
+							dbConnection.Close();
+						}
+					}
+					// Return related objects list
+					return $entityList;
+				}
+				
+				%};
+
+				XplClass^ target = GetDataAccessClass(modelName.Identifier);
+				if(target!=null){
+					XplNodeList::CopyNodesAtEnd(loadByFunction.Children(), target.Children());
+				}
+
+				XplClassMembersList^ loadByFunctionOverWrite = writecode{%
+					UtnEmall::Utils::List::NewCollection( $listOfTypeName, gettype($entityType^) );
+					public:
+					// <summary>
+					// Function to Load a list of $entityType$ from database by $nameColumnRelatedInt$. 
+					// </summary>
+					// <param name="$nameColumnRelatedInt$">Foreing key column</param>
+					// <returns>IList of $entityType$</returns>
+					$listOfType^ $className(int $nameColumnRelatedInt)
+					{
+						return $className($nameColumnRelatedInt, null);
+					}				
+				%};
+
+				if(target!=null){
+					XplNodeList::CopyNodesAtEnd(loadByFunctionOverWrite.Children(), target.Children());
+				}
+		}
+
+		static Hashtable^ clases = new Hashtable();		
+		static XplClass^ GetDataAccessClass(string^ modelName){
+			if(clases.ContainsKey(modelName+"DataAccess")){
+				return (XplClass^)clases[modelName+"DataAccess"];
+			}
+			else{
+				XplClass^ myClass = (XplClass^)context.CurrentNamespace.FindNode("/@XplClass[name='"+modelName+"DataAccess"+"']");
+				clases.Add(modelName+"DataAccess", myClass);
+				return myClass;
+			}
+		}
+
+	}
+
+
+	// Factory class Relation para declarar Relaciones entre entitys
+	public factory class Relation{ 
+	public:
+		XplIName^ 	referencedType, 
+					fieldName, 
+					parentName;
+					
+		int 		relationType;
+		
+		bool 		recursiveLoad, 
+					recursiveSave, 
+					deleteCascade, 
+					generateRelation,
+					loadSubRelations;
+	}
+
+	public factory class DeleteRestriction{
+	public:
+		XplIName^	referencedType,
+					fieldName;
+		string^		messageToUser;
+	}
+	// Factory class para expresar tipos de relaciones entre entity.
+	public factory class RelationTypes{
+	public: 
+			static int UnoAUno = 1;
+			static int UnoAMuchos = 2;
+			static int MuchosAUno = 3;
+			static int MuchosAMuchos = 4;
+	}
+	
+	public factory class Image{
+	}
+}

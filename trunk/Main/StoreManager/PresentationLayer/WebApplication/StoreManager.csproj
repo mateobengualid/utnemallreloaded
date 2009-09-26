@@ -1,0 +1,538 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DF7DA167-D373-4740-82B5-A5DCB63CCEE0}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebApplication</RootNamespace>
+    <AssemblyName>WebApplication</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SilverlightApplicationList>{70297C24-59E0-4A37-A553-981423F068F2}|..\SilverlightVisualDesigners\SilverlightVisualDesigners\SilverlightVisualDesigners.csproj|ClientBin|False</SilverlightApplicationList>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>StoreManagerKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRules>-Microsoft.Design#CA1062;-Microsoft.Usage#CA2209;-Microsoft.Usage#CA2202;-Microsoft.Usage#CA2241;-Microsoft.Design#CA1005;-Microsoft.Design#CA1020;-Microsoft.Design#CA1010;-Microsoft.Design#CA1050;-Microsoft.Design#CA1000;-Microsoft.Design#CA1002;-Microsoft.Design#CA1061;-Microsoft.Design#CA1006;-Microsoft.Design#CA1008;-Microsoft.Design#CA1004;-Microsoft.Design#CA1063;-Microsoft.Design#CA1033;-Microsoft.Design#CA1016;-Microsoft.Design#CA1014;-Microsoft.Design#CA1017;-Microsoft.Design#CA1059;-Microsoft.Design#CA1060;-Microsoft.Design#CA1057;-Microsoft.Design#CA1058;-Microsoft.Design#CA1001;-Microsoft.Design#CA1003;-Microsoft.Interoperability#CA1413;-Microsoft.Interoperability#CA1402;-Microsoft.Interoperability#CA1407;-Microsoft.Interoperability#CA1404;-Microsoft.Interoperability#CA1405;-Microsoft.Interoperability#CA1415;-Microsoft.Interoperability#CA1414;-Microsoft.Interoperability#CA1400;-Microsoft.Interoperability#CA1401;-Microsoft.Maintainability#CA1502;-Microsoft.Maintainability#CA1501;-Microsoft.Maintainability#CA1500;-Microsoft.Mobility#CA1600;-Microsoft.Mobility#CA1601;-Microsoft.Portability#CA1901;-Microsoft.Portability#CA1900;-Microsoft.Usage#CA2222;-Microsoft.Usage#CA1806;-Microsoft.Usage#CA2201;-Microsoft.Usage#CA2229;-Microsoft.Usage#CA2235;-Microsoft.Usage#CA2239;-Microsoft.Usage#CA2200;-Microsoft.Usage#CA1801</CodeAnalysisRules>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Silverlight, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="css\style.css" />
+    <Content Include="img\btn_01.gif" />
+    <Content Include="img\btn_02.gif" />
+    <Content Include="img\btn_03.gif" />
+    <Content Include="img\btn_exit1.gif" />
+    <Content Include="img\btn_exit2.gif" />
+    <Content Include="img\btn_home1.gif" />
+    <Content Include="img\btn_home2.gif" />
+    <Content Include="img\btn_options1.gif" />
+    <Content Include="img\btn_options2.gif" />
+    <Content Include="img\btn_pass1.gif" />
+    <Content Include="img\btn_pass2.gif" />
+    <Content Include="img\btn_services1.gif" />
+    <Content Include="img\btn_services2.gif" />
+    <Content Include="img\btn_store1.gif" />
+    <Content Include="img\btn_store2.gif" />
+    <Content Include="img\btn_user1.gif" />
+    <Content Include="img\btn_user2.gif" />
+    <Content Include="img\fonicon_exit.gif" />
+    <Content Include="img\fonicon_options.gif" />
+    <Content Include="img\fonicon_pass.gif" />
+    <Content Include="img\fonicon_services.gif" />
+    <Content Include="img\fonicon_user.gif" />
+    <Content Include="img\fonico_home.gif" />
+    <Content Include="img\fonico_login.gif" />
+    <Content Include="img\fonico_store.gif" />
+    <Content Include="img\fon_abajo.gif" />
+    <Content Include="img\fon_menu.jpg" />
+    <Content Include="img\fon_site.jpg" />
+    <Content Include="img\fon_site_aba.jpg" />
+    <Content Include="img\fon_tittabla.gif" />
+    <Content Include="img\icon_exit.gif" />
+    <Content Include="img\icon_home.gif" />
+    <Content Include="img\icon_login.gif" />
+    <Content Include="img\icon_pass.gif" />
+    <Content Include="img\icon_services.gif" />
+    <Content Include="img\icon_store.gif" />
+    <Content Include="img\icon_user.gif" />
+    <Content Include="img\linea_20.gif" />
+    <Content Include="img\linea_seccion.gif" />
+    <Content Include="img\logo_home.gif" />
+    <Content Include="img\pic_services.gif" />
+    <Content Include="img\pic_services2.gif" />
+    <Content Include="img\top.gif" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CategoriesTree.cs" />
+    <Compile Include="ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorPage.aspx.cs">
+      <DependentUpon>ErrorPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ErrorPage.aspx.designer.cs">
+      <DependentUpon>ErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="PagesConstants.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="proxies\DataModel.Reference.cs" />
+    <Compile Include="proxies\User.Reference.cs" />
+    <Compile Include="Service References\ServiceReferenceCustomerServiceData\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ServiceReferenceStatisticsAnalyzer\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service.aspx.cs">
+      <DependentUpon>Service.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Service.aspx.designer.cs">
+      <DependentUpon>Service.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="proxies\ServiceBuilder.Reference.cs" />
+    <Compile Include="ServiceStatisticsViewer.aspx.cs">
+      <DependentUpon>ServiceStatisticsViewer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceStatisticsViewer.aspx.designer.cs">
+      <DependentUpon>ServiceStatisticsViewer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SessionConstants.cs" />
+    <Compile Include="SilverlightServices.svc.cs">
+      <DependentUpon>SilverlightServices.svc</DependentUpon>
+    </Compile>
+    <Compile Include="StatisticsViewer.aspx.cs">
+      <DependentUpon>StatisticsViewer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StatisticsViewer.aspx.designer.cs">
+      <DependentUpon>StatisticsViewer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="proxies\Store.Reference.cs" />
+    <Compile Include="ServicesClients.cs">
+    </Compile>
+    <Compile Include="Home.aspx.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Home.aspx.designer.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LogOn.aspx.cs">
+      <DependentUpon>LogOn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LogOn.aspx.designer.cs">
+      <DependentUpon>LogOn.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage.master.cs">
+      <DependentUpon>MasterPage.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\ServiceReferenceCategory\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ServiceReferenceCustomer\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ServiceReferenceGroup\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ServiceReferenceSessionManager\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="ListServices.aspx.cs">
+      <DependentUpon>ListServices.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ListServices.aspx.designer.cs">
+      <DependentUpon>ListServices.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="proxies\Service.Reference.cs" />
+    <Compile Include="StoreProfile.aspx.cs">
+      <DependentUpon>StoreProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StoreProfile.aspx.designer.cs">
+      <DependentUpon>StoreProfile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StoreStatisticsViewer.aspx.cs">
+      <DependentUpon>StoreStatisticsViewer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StoreStatisticsViewer.aspx.designer.cs">
+      <DependentUpon>StoreStatisticsViewer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserProfile.aspx.cs">
+      <DependentUpon>UserProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserProfile.aspx.designer.cs">
+      <DependentUpon>UserProfile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CircularReferencesManager.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="VisualDesigners.aspx.cs">
+      <DependentUpon>VisualDesigners.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VisualDesigners.aspx.designer.cs">
+      <DependentUpon>VisualDesigners.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ChangePassword.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="Home.aspx" />
+    <Content Include="LogOn.aspx" />
+    <Content Include="MasterPage.master" />
+    <None Include="Service References\ServiceReferenceCategory\configuration91.svcinfo" />
+    <None Include="Service References\ServiceReferenceCategory\configuration.svcinfo" />
+    <None Include="Service References\ServiceReferenceCategory\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServiceReferenceCustomer\configuration91.svcinfo" />
+    <None Include="Service References\ServiceReferenceCustomer\configuration.svcinfo" />
+    <None Include="Service References\ServiceReferenceCustomer\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServiceReferenceGroup\configuration91.svcinfo" />
+    <None Include="Service References\ServiceReferenceGroup\configuration.svcinfo" />
+    <None Include="Service References\ServiceReferenceGroup\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServiceReferenceSessionManager\configuration91.svcinfo" />
+    <None Include="Service References\ServiceReferenceSessionManager\configuration.svcinfo" />
+    <None Include="Service References\ServiceReferenceSessionManager\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="ListServices.aspx" />
+    <Content Include="StoreProfile.aspx" />
+    <Content Include="UserProfile.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\BaseDesktop\BaseDesktop.csproj">
+      <Project>{BD074624-7847-458C-ACA0-E1707E7E68C0}</Project>
+      <Name>BaseDesktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Server\EntityModel\EntityModel.csproj">
+      <Project>{2B6FB7B8-4944-4650-A06A-7BAD336251A7}</Project>
+      <Name>EntityModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ServiceReferenceCategory\" />
+    <WCFMetadataStorage Include="Service References\ServiceReferenceCustomerServiceData\" />
+    <WCFMetadataStorage Include="Service References\ServiceReferenceCustomer\" />
+    <WCFMetadataStorage Include="Service References\ServiceReferenceGroup\" />
+    <WCFMetadataStorage Include="Service References\ServiceReferenceSessionManager\" />
+    <WCFMetadataStorage Include="Service References\ServiceReferenceStatisticsAnalyzer\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\DataSources\Janus.Server.EntityModel.CategoryEntity.datasource" />
+    <None Include="Properties\DataSources\Janus.Server.EntityModel.CustomerEntity.datasource" />
+    <None Include="Properties\DataSources\Janus.Server.EntityModel.GroupEntity.datasource" />
+    <None Include="Properties\DataSources\Janus.Server.EntityModel.StoreEntity.datasource" />
+    <None Include="Properties\DataSources\Janus.Server.EntityModel.UserEntity.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\ChangePassword.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\LogOn.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Properties\DataSources\Janus.Server.EntityModel.ServiceEntity.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\StoreProfile.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\UserProfile.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Service.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Service.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="img\arrows\first.gif" />
+    <Content Include="img\arrows\last.gif" />
+    <Content Include="img\arrows\next.gif" />
+    <Content Include="img\arrows\prev.gif" />
+    <Content Include="img\arrows\select.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\ListServices.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Home.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="clientaccesspolicy.xml" />
+    <None Include="Properties\DataSources\Janus.Server.EntityModel.CustomerServiceDataEntity.datasource" />
+    <None Include="Properties\DataSources\Janus.Server.EntityModel.DataModelEntity.datasource" />
+    <None Include="Service References\ServiceReferenceCategory\Category1.wsdl" />
+    <None Include="Service References\ServiceReferenceCategory\Category4.xsd" />
+    <None Include="Service References\ServiceReferenceCategory\Category41.xsd" />
+    <None Include="Service References\ServiceReferenceCategory\Category42.xsd" />
+    <None Include="Service References\ServiceReferenceCategory\Category43.xsd" />
+    <None Include="Service References\ServiceReferenceCustomerServiceData\CustomerServiceData.wsdl" />
+    <None Include="Service References\ServiceReferenceCustomerServiceData\CustomerServiceData.xsd" />
+    <None Include="Service References\ServiceReferenceCustomerServiceData\CustomerServiceData1.xsd" />
+    <None Include="Service References\ServiceReferenceCustomerServiceData\CustomerServiceData2.xsd" />
+    <None Include="Service References\ServiceReferenceCustomerServiceData\CustomerServiceData3.xsd" />
+    <None Include="Service References\ServiceReferenceCustomer\Customer1.wsdl" />
+    <None Include="Service References\ServiceReferenceCustomer\Customer4.xsd" />
+    <None Include="Service References\ServiceReferenceCustomer\Customer41.xsd" />
+    <None Include="Service References\ServiceReferenceCustomer\Customer42.xsd" />
+    <None Include="Service References\ServiceReferenceCustomer\Customer43.xsd" />
+    <None Include="Service References\ServiceReferenceGroup\Group1.wsdl" />
+    <None Include="Service References\ServiceReferenceGroup\Group4.xsd" />
+    <None Include="Service References\ServiceReferenceGroup\Group41.xsd" />
+    <None Include="Service References\ServiceReferenceGroup\Group42.xsd" />
+    <None Include="Service References\ServiceReferenceGroup\Group43.xsd" />
+    <None Include="Service References\ServiceReferenceSessionManager\SessionManager1.wsdl" />
+    <None Include="Service References\ServiceReferenceSessionManager\SessionManager3.xsd" />
+    <None Include="Service References\ServiceReferenceSessionManager\SessionManager31.xsd" />
+    <None Include="Service References\ServiceReferenceSessionManager\SessionManager32.xsd" />
+    <None Include="Service References\ServiceReferenceStatisticsAnalyzer\StatisticsAnalyzer.wsdl" />
+    <None Include="Service References\ServiceReferenceStatisticsAnalyzer\StatisticsAnalyzer.xsd" />
+    <None Include="Service References\ServiceReferenceStatisticsAnalyzer\StatisticsAnalyzer1.xsd" />
+    <Content Include="ClientBin\SilverlightVisualDesigners.xap" />
+    <None Include="Service References\ServiceReferenceCategory\Category1.disco" />
+    <None Include="Service References\ServiceReferenceCustomer\Customer1.disco" />
+    <None Include="Service References\ServiceReferenceSessionManager\SessionManager1.disco" />
+    <None Include="Service References\ServiceReferenceGroup\Group1.disco" />
+    <None Include="Service References\ServiceReferenceCustomerServiceData\CustomerServiceData.disco" />
+    <None Include="Service References\ServiceReferenceCustomerServiceData\configuration91.svcinfo" />
+    <None Include="Service References\ServiceReferenceCustomerServiceData\configuration.svcinfo" />
+    <None Include="Service References\ServiceReferenceCustomerServiceData\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="SilverlightServices.svc" />
+    <Content Include="StatisticsViewer.aspx" />
+    <Content Include="StoreStatisticsViewer.aspx" />
+    <Content Include="VisualDesigners.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\StatisticsViewer.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Service References\ServiceReferenceStatisticsAnalyzer\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServiceReferenceStatisticsAnalyzer\configuration.svcinfo" />
+    <None Include="Service References\ServiceReferenceStatisticsAnalyzer\configuration91.svcinfo" />
+    <None Include="Service References\ServiceReferenceStatisticsAnalyzer\StatisticsAnalyzer.disco" />
+    <None Include="Service References\ServiceReferenceStatisticsAnalyzer\StatisticsAnalyzer2.xsd" />
+    <None Include="Service References\ServiceReferenceStatisticsAnalyzer\StatisticsAnalyzer3.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\StoreStatisticsViewer.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Default.aspx" />
+    <Content Include="img\icon_statistics.gif" />
+    <Content Include="img\loader.gif" />
+    <Content Include="img\msgs\error.png" />
+    <Content Include="img\msgs\info.png" />
+    <Content Include="img\msgs\question.png" />
+    <Content Include="ServiceStatisticsViewer.aspx" />
+    <None Include="Properties\DataSources\UtnEmall.Server.EntityModel.DataModelEntity.datasource" />
+    <None Include="StoreManagerKey.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\ServiceStatisticsViewer.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <CodeAnalysisDictionary Include="CustomDictionary.xml" />
+    <Content Include="ErrorPage.aspx" />
+    <Content Include="img\formImages\InputImage.jpg" />
+    <Content Include="img\formImages\ListImage.jpg" />
+    <Content Include="img\formImages\MenuImage.jpg" />
+    <Content Include="img\formImages\ShowDataImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\ErrorPage.aspx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\ChangePassword.aspx.es.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\ErrorPage.aspx.es.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Home.aspx.es.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\ListServices.aspx.es.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\LogOn.aspx.es.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Service.aspx.es.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\ServiceStatisticsViewer.aspx.es.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\StatisticsViewer.aspx.es.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\StoreProfile.aspx.es.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\StoreStatisticsViewer.aspx.es.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\UserProfile.aspx.es.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\MasterPage.master.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\MasterPage.master.es.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>8082</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

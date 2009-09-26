@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="7ed27b62-dea1-4dfe-b6f9-605f6ce2df7f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8081/Customer" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Customer44.xsd" MetadataType="Schema" ID="3ffe1adf-d01a-4b37-a00e-784a94f1ee47" SourceId="1" SourceUrl="http://cpu12:8081/Customer?xsd=xsd1" />
+    <MetadataFile FileName="Customer45.xsd" MetadataType="Schema" ID="023377e0-30bb-485c-9727-ba4ed07aa406" SourceId="1" SourceUrl="http://cpu12:8081/Customer?xsd=xsd2" />
+    <MetadataFile FileName="Customer11.wsdl" MetadataType="Wsdl" ID="e05ab9cd-0446-4744-a96d-c05569863552" SourceId="1" SourceUrl="http://cpu12:8081/Customer?wsdl" />
+    <MetadataFile FileName="Customer46.xsd" MetadataType="Schema" ID="b3b3ef37-a1eb-4981-9892-6e304c98dab0" SourceId="1" SourceUrl="http://cpu12:8081/Customer?xsd=xsd3" />
+    <MetadataFile FileName="Customer47.xsd" MetadataType="Schema" ID="12ee722a-f14f-415d-b9db-0108d7c404e0" SourceId="1" SourceUrl="http://cpu12:8081/Customer?xsd=xsd0" />
+    <MetadataFile FileName="Customer11.disco" MetadataType="Disco" ID="24bf75c8-fd37-4590-9967-943f6305365a" SourceId="1" SourceUrl="http://cpu12:8081/Customer?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

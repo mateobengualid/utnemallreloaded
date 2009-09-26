@@ -1,0 +1,19 @@
+﻿<Canvas
+	x:Uid="UserControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Name="UserControl"
+	d:DesignWidth="640" d:DesignHeight="480" Height="26.868" Width="93.736">
+
+	<Canvas x:Uid="LayoutRoot" x:Name="LayoutRoot">
+		<Canvas x:Uid="Canvas_1" Width="88.15" Height="22.125" Canvas.Left="2.317" Canvas.Top="2.268">
+			<Rectangle x:Uid="Rectangle_1" Height="21.861" Width="89.157" RadiusX="3.529" RadiusY="3.529" Fill="#FFFFFFFF" Stroke="#FF848484"/>
+			<Rectangle x:Uid="Rectangle_2" Height="13.188" Width="86.986" Canvas.Left="1.094" Canvas.Top="1.033" RadiusX="2.713" RadiusY="2.713" Fill="#FFF2F0F0"/>
+			<Rectangle x:Uid="Rectangle_3" Height="9.735" RadiusX="2.713" RadiusY="2.713" Fill="#FFDAD9D8" Width="86.986" Canvas.Left="1.094" Canvas.Top="11.138"/>
+			<Rectangle x:Uid="Rectangle_4" Height="4.988" RadiusX="0" RadiusY="0" Fill="#FFDAD9D8" Width="86.986" Canvas.Left="1.094" Canvas.Top="10.66"/>
+		</Canvas>
+		<TextBlock x:Uid="Label" FontFamily="Trebuchet MS" FontSize="11" Foreground="#FF414141" Text="" TextAlignment="Left" TextWrapping="Wrap" x:Name="Label" Width="85.637" Height="16.372" Canvas.Left="4.83" Canvas.Top="5.809"/>
+	</Canvas>
+</Canvas>

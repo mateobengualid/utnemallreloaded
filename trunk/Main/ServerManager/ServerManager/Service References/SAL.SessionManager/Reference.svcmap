@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="61fd61ed-6403-4edf-9c81-e8e0a4e00921" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8081/SessionManager" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="SessionManager.wsdl" MetadataType="Wsdl" ID="2fab9bed-9665-4d1b-900e-762d7088cd16" SourceId="1" SourceUrl="http://cpu12:8081/SessionManager?wsdl" />
+    <MetadataFile FileName="SessionManager.xsd" MetadataType="Schema" ID="3c36aaac-1f04-4374-a007-ef7db466314a" SourceId="1" SourceUrl="http://cpu12:8081/SessionManager?xsd=xsd0" />
+    <MetadataFile FileName="SessionManager.disco" MetadataType="Disco" ID="8ff18bfb-37c3-4e8c-a97d-c170ca3d2efd" SourceId="1" SourceUrl="http://cpu12:8081/SessionManager?disco" />
+    <MetadataFile FileName="SessionManager1.xsd" MetadataType="Schema" ID="43be9077-e0dc-4084-b8dd-47fc5d5e2b95" SourceId="1" SourceUrl="http://cpu12:8081/SessionManager?xsd=xsd1" />
+    <MetadataFile FileName="SessionManager2.xsd" MetadataType="Schema" ID="b67667f2-ff59-4266-9ec5-c41a67e70f4e" SourceId="1" SourceUrl="http://cpu12:8081/SessionManager?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

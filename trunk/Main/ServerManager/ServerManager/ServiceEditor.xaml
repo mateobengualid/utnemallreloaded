@@ -1,0 +1,27 @@
+﻿<UserControl
+	x:Uid="UserControl_1" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:UtnEmall.ServerManager="clr-namespace:UtnEmall.ServerManager"
+	x:Class="UtnEmall.ServerManager.ServiceEditor"
+	Width="640" Height="480">
+
+	<Grid x:Uid="Grid_1">
+		<Image x:Uid="Image_1" HorizontalAlignment="Right" Margin="200,0,0,100" Width="Auto" Source="imgs\services_mono.png" Stretch="Fill"/>
+		<Label x:Uid="Title" HorizontalAlignment="Left" Margin="8,8,0,0" VerticalAlignment="Top" Width="292" Height="37" Content="{x:Static UtnEmall.ServerManager:UIResources.AddService}" FontSize="20" x:Name="Title"/>
+		<Button x:Uid="bOK" Margin="0,0,121,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.OK}" x:Name="bOK" HorizontalAlignment="Right" Width="100" Click="OnOkClicked"/>
+		<Button x:Uid="bCancel" Margin="0,0,8,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Cancel}" x:Name="bCancel" HorizontalAlignment="Right" Width="100" Click="OnCancelClicked"/>
+		<UniformGrid x:Uid="UniformGrid_1" Margin="8,91,0,0" Columns="2" Rows="5" VerticalAlignment="Top" Height="160" HorizontalAlignment="Left">
+			<Label x:Uid="Label_1" Width="183" Height="33" Content="{x:Static UtnEmall.ServerManager:UIResources.Name}" FontSize="16" Foreground="#FF444444"/>
+			<TextBox x:Uid="TxtName" Width="182" Height="25" Text="" TextWrapping="Wrap" x:Name="TxtName" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
+			<Label x:Uid="Label_2" Width="183" Height="43" Content="{x:Static UtnEmall.ServerManager:UIResources.Description}" Foreground="#FF444444" FontSize="16"/>
+			<TextBox x:Uid="TxtDescription" Width="182" Height="25" Text="" TextWrapping="Wrap" x:Name="TxtDescription" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
+			<Label x:Uid="Label_3" Width="183" Height="45" Content="{x:Static UtnEmall.ServerManager:UIResources.StartDate}" FontSize="16" Foreground="#FF444444"/>
+			<UtnEmall.ServerManager:DatePicker x:Uid="StartDate" x:Name="StartDate" Height="32" Width="180"/>
+			<Label x:Uid="Label_4" Width="183" Height="33" Content="{x:Static UtnEmall.ServerManager:UIResources.StopDate}" FontSize="16" Foreground="#FF444444"/>
+			<UtnEmall.ServerManager:DatePicker x:Uid="StopDate" Width="180" Height="32" x:Name="StopDate"/>
+			<Label x:Uid="Label_5" Width="183" Height="33" Content="{x:Static UtnEmall.ServerManager:UIResources.Store}" FontSize="16" Foreground="#FF444444"/>
+			<ComboBox x:Uid="storeCombo" Width="180" Height="25" IsSynchronizedWithCurrentItem="True" x:Name="storeCombo"/>
+		</UniformGrid>
+		<Button x:Uid="bCategories" Margin="0,0,235.264,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Categories}" x:Name="bCategories" Click="OnCategoriesClicked" HorizontalAlignment="Right" Width="100"/>
+	</Grid>
+</UserControl>

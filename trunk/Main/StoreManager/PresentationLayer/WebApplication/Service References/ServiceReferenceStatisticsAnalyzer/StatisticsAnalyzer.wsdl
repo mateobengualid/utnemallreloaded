@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:tns="http://tempuri.org/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" name="StatisticsAnalyzer" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://cpu13:8081/StatisticsAnalyzer?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://cpu13:8081/StatisticsAnalyzer?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://cpu13:8081/StatisticsAnalyzer?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" />
+      <xsd:import schemaLocation="http://cpu13:8081/StatisticsAnalyzer?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Collections" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IStatisticsAnalyzer_GetRegistersClickAmount_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRegistersClickAmount" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetRegistersClickAmount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRegistersClickAmountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetRegisterClickPercentageAmount_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRegisterClickPercentageAmount" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetRegisterClickPercentageAmount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRegisterClickPercentageAmountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetCustomersAccessAmount_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomersAccessAmount" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetCustomersAccessAmount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomersAccessAmountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetCustomersTimeAmountByStore_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomersTimeAmountByStore" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetCustomersTimeAmountByStore_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomersTimeAmountByStoreResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetCustomersAccessAmountByStore_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomersAccessAmountByStore" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetCustomersAccessAmountByStore_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomersAccessAmountByStoreResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetCustomersTimeAmount_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomersTimeAmount" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetCustomersTimeAmount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomersTimeAmountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetCustomerAccessAmount_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerAccessAmount" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetCustomerAccessAmount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerAccessAmountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetCustomerTimeAmount_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerTimeAmount" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetCustomerTimeAmount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerTimeAmountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetCustomerFormAccessAmount_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerFormAccessAmount" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetCustomerFormAccessAmount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerFormAccessAmountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetFormAccessAmount_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFormAccessAmount" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetFormAccessAmount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFormAccessAmountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetMenuItemAccessAmounts_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMenuItemAccessAmounts" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetMenuItemAccessAmounts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMenuItemAccessAmountsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetMenuItemAccessAmount_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMenuItemAccessAmount" />
+  </wsdl:message>
+  <wsdl:message name="IStatisticsAnalyzer_GetMenuItemAccessAmount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMenuItemAccessAmountResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IStatisticsAnalyzer">
+    <wsdl:operation name="GetRegistersClickAmount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetRegistersClickAmount" message="tns:IStatisticsAnalyzer_GetRegistersClickAmount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetRegistersClickAmountResponse" message="tns:IStatisticsAnalyzer_GetRegistersClickAmount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRegisterClickPercentageAmount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetRegisterClickPercentageAmount" message="tns:IStatisticsAnalyzer_GetRegisterClickPercentageAmount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetRegisterClickPercentageAmountResponse" message="tns:IStatisticsAnalyzer_GetRegisterClickPercentageAmount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomersAccessAmount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetCustomersAccessAmount" message="tns:IStatisticsAnalyzer_GetCustomersAccessAmount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetCustomersAccessAmountResponse" message="tns:IStatisticsAnalyzer_GetCustomersAccessAmount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomersTimeAmountByStore">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetCustomersTimeAmountByStore" message="tns:IStatisticsAnalyzer_GetCustomersTimeAmountByStore_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetCustomersTimeAmountByStoreResponse" message="tns:IStatisticsAnalyzer_GetCustomersTimeAmountByStore_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomersAccessAmountByStore">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetCustomersAccessAmountByStore" message="tns:IStatisticsAnalyzer_GetCustomersAccessAmountByStore_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetCustomersAccessAmountByStoreResponse" message="tns:IStatisticsAnalyzer_GetCustomersAccessAmountByStore_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomersTimeAmount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetCustomersTimeAmount" message="tns:IStatisticsAnalyzer_GetCustomersTimeAmount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetCustomersTimeAmountResponse" message="tns:IStatisticsAnalyzer_GetCustomersTimeAmount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerAccessAmount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetCustomerAccessAmount" message="tns:IStatisticsAnalyzer_GetCustomerAccessAmount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetCustomerAccessAmountResponse" message="tns:IStatisticsAnalyzer_GetCustomerAccessAmount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerTimeAmount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetCustomerTimeAmount" message="tns:IStatisticsAnalyzer_GetCustomerTimeAmount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetCustomerTimeAmountResponse" message="tns:IStatisticsAnalyzer_GetCustomerTimeAmount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerFormAccessAmount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetCustomerFormAccessAmount" message="tns:IStatisticsAnalyzer_GetCustomerFormAccessAmount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetCustomerFormAccessAmountResponse" message="tns:IStatisticsAnalyzer_GetCustomerFormAccessAmount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFormAccessAmount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetFormAccessAmount" message="tns:IStatisticsAnalyzer_GetFormAccessAmount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetFormAccessAmountResponse" message="tns:IStatisticsAnalyzer_GetFormAccessAmount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMenuItemAccessAmounts">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetMenuItemAccessAmounts" message="tns:IStatisticsAnalyzer_GetMenuItemAccessAmounts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetMenuItemAccessAmountsResponse" message="tns:IStatisticsAnalyzer_GetMenuItemAccessAmounts_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMenuItemAccessAmount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetMenuItemAccessAmount" message="tns:IStatisticsAnalyzer_GetMenuItemAccessAmount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStatisticsAnalyzer/GetMenuItemAccessAmountResponse" message="tns:IStatisticsAnalyzer_GetMenuItemAccessAmount_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IStatisticsAnalyzer" type="tns:IStatisticsAnalyzer">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetRegistersClickAmount">
+      <soap:operation soapAction="http://tempuri.org/IStatisticsAnalyzer/GetRegistersClickAmount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRegisterClickPercentageAmount">
+      <soap:operation soapAction="http://tempuri.org/IStatisticsAnalyzer/GetRegisterClickPercentageAmount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomersAccessAmount">
+      <soap:operation soapAction="http://tempuri.org/IStatisticsAnalyzer/GetCustomersAccessAmount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomersTimeAmountByStore">
+      <soap:operation soapAction="http://tempuri.org/IStatisticsAnalyzer/GetCustomersTimeAmountByStore" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomersAccessAmountByStore">
+      <soap:operation soapAction="http://tempuri.org/IStatisticsAnalyzer/GetCustomersAccessAmountByStore" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomersTimeAmount">
+      <soap:operation soapAction="http://tempuri.org/IStatisticsAnalyzer/GetCustomersTimeAmount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerAccessAmount">
+      <soap:operation soapAction="http://tempuri.org/IStatisticsAnalyzer/GetCustomerAccessAmount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerTimeAmount">
+      <soap:operation soapAction="http://tempuri.org/IStatisticsAnalyzer/GetCustomerTimeAmount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerFormAccessAmount">
+      <soap:operation soapAction="http://tempuri.org/IStatisticsAnalyzer/GetCustomerFormAccessAmount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFormAccessAmount">
+      <soap:operation soapAction="http://tempuri.org/IStatisticsAnalyzer/GetFormAccessAmount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMenuItemAccessAmounts">
+      <soap:operation soapAction="http://tempuri.org/IStatisticsAnalyzer/GetMenuItemAccessAmounts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMenuItemAccessAmount">
+      <soap:operation soapAction="http://tempuri.org/IStatisticsAnalyzer/GetMenuItemAccessAmount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="StatisticsAnalyzer">
+    <wsdl:port name="BasicHttpBinding_IStatisticsAnalyzer" binding="tns:BasicHttpBinding_IStatisticsAnalyzer">
+      <soap:address location="http://cpu13:8081/StatisticsAnalyzer" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

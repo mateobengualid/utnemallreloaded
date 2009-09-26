@@ -1,0 +1,354 @@
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=System";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=System.Data";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=System.Data.SqlServerCe";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=System.Drawing";
+import "UtnEmall", "platform=DotNET", "ns=DotNET", "assemblyfilename=..\\..\\Main\\Common\\BaseMobile\\bin\\Debug\\BaseMobile.dll";
+import "UtnEmall", "platform=DotNET", "ns=DotNET", "assemblyfilename=..\\..\\Main\\Client\\BackgroundBroadcastService\\bin\\Debug\\BackgroundBroadcastService.dll";
+import "System", "platform=DotNET", "ns=DotNET", "assemblyfilename=C:\\Program Files\\Microsoft.NET\\SDK\\CompactFramework\\v3.5\\WindowsCE\\System.Xml.dll";
+import "System", "platform=DotNET", "ns=DotNET", "assemblyfilename=C:\\Program files\\Reference Assemblies\\Microsoft\\Framework\\v3.0\\System.ServiceModel.dll";
+import "System", "platform=DotNET", "ns=DotNET", "assemblyfilename=C:\\Program files\\Reference Assemblies\\Microsoft\\Framework\\v3.0\\System.Runtime.Serialization.dll";
+
+using Zoe;
+using zoe::lang;
+using DotNET::System;
+using DotNET::System::Collections;
+using DotNET::System::Data;
+using DotNET::System::Data::Common;
+using DotNET::System::Data::SqlServerCe;
+using DotNET::UtnEmall::Client::EntityModel;
+using DotNET::UtnEmall::Client::DataModel;
+using DotNET::System::Globalization;
+
+using UtnEmall::Utils;
+using DotNET::System::Diagnostics;
+using System::Collections::Generic;
+using DotNET::System::Collections::Generic;
+using DotNET::System::Collections::ObjectModel;
+using DotNET::UtnEmall::Client::PresentationLayer;
+
+using DotNET::System::ServiceModel;
+using DotNET::System::ServiceModel::Channels;
+using DotNET::System::Runtime::Serialization;
+using Microsoft::Tools::ServiceModel;
+using DotNET::UtnEmall::Client::PresentationLayer;
+using DotNET::UtnEmall::Client::BusinessLogic;
+using DotNET::UtnEmall::Client::SmartClientLayer;
+using DotNET::UtnEmall::Client::ServiceAccessLayer;
+using DotNET::UtnEmall::Client::BackgroundBroadcastService;
+
+
+namespace DotNET::UtnEmall::Client::DataModel
+{
+	// Definiciones para modelo
+	Model::DefineMobil(true);
+	Model::DefineIdentity(false);
+	Model::SetEntityWSNamespace("UtnEmall.Server.EntityModel");
+	// Definiciones para Business
+	ModelBusiness::IsWindowsMobile(true);
+	ModelBusiness::SetMobileWebServiceEntityNamespace("UtnEmall.Server.EntityModel");
+	ModelBusiness::SetProxiesNamespace(DotNET::UtnEmall::Client::ServiceAccessLayer);
+	// Definiciones para SmartClient layer
+	SCLGenerator::SetNamespace(DotNET::UtnEmall::Client::SmartClientLayer, false);
+	
+	Model::Define(LastSync, false)
+	{
+		Model::Field(EntityName, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(EntityName, "EntityName can't be empty");
+		};
+
+		Model::Field(LastTimestamp, gettype(DateTime))
+		{
+		};
+	};
+
+	Model::Define(Category, true, true)
+	{
+		Model::Field(Description, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(Description, "Description can't be empty");
+		};
+
+		Model::Field(Name, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(Name,"Name can't be empty");
+			Rules::PropertyUnique(Name, "Duplicated name for category", Category);
+		};
+		
+		Model::Relations(Childs, Category, ParentCategory, RelationTypes::UnoAMuchos, true, true, true, false, true){};
+		Model::Relations(ParentCategory, Category, ParentCategory, RelationTypes::MuchosAUno, true, false, false, true, true){};
+		
+		Model::Relations(Preference, Preference, RelationTypes::UnoAMuchos, false, false){};
+		Model::Relations(ServiceCategory, ServiceCategory, RelationTypes::UnoAMuchos, false, false)
+		{
+		};
+	};
+
+	Model::Define(Customer, true)
+	{
+
+		Model::Field(Name, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(Name, "Name can't be empty");
+		};
+		Model::Field(Surname, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(Surname, "Surname can't be empty");
+		};
+		Model::Field(Address, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(Address, "Address can't be empty");
+		};
+		Model::Field(PhoneNumber, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(PhoneNumber, "Phone Number can't be empty");
+		};
+		Model::Field(UserName, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(UserName, "UserName can't be empty");
+			Rules::PropertyUnique(UserName, "Duplicated userName", Customer);
+		};
+
+		Model::Field(Password, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(Password, "Password can't be empty");
+		};		
+		Model::Relations(Preferences, Preference, RelationTypes::UnoAMuchos, true, true, true)
+		{
+			Rules::CollectionNonEmpty(Preferences, "Preferences can't be empty");
+		};
+		Model::Relations(DeviceProfile, DeviceProfile, RelationTypes::UnoAMuchos,true, true, true)
+		{
+			Rules::PropertyNotNull(DeviceProfile, "Device Profile can't be null");
+		};
+	
+	};
+
+	Model::Define(DeviceProfile, false)
+	{
+		Model::Field(DeviceType, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(DeviceType,"DeviceType can't be empty");
+		};
+		Model::Field(DeviceModel, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(DeviceModel,"DeviceModel can't be empty");
+		};
+		Model::Field(MacAddress, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(MacAddress,"MacAddress can't be empty");
+			Rules::PropertyUnique(MacAddress, "MAC Address duplicated for Device", DeviceProfile);
+		};
+		Model::Field(WindowsMobileVersion, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(WindowsMobileVersion,"WindowsMobileVersion can't be empty");
+		};
+
+		Model::Relations(Customer, Customer, RelationTypes::MuchosAUno, false, false, false, true){};
+	};
+
+	Model::Define(Preference, false)
+	{
+		Model::Field(Active, gettype(bool));
+		Model::Field(Level, gettype(double))
+		{
+			Rules::PropertyGreaterThanZero(Level, "Level can't be negative");
+		};
+		Model::Relations(Customer, Customer, RelationTypes::MuchosAUno, false, false, false, true){};
+		Model::Relations(Category, Category, RelationTypes::MuchosAUno, true, true, false, true)
+		{
+			Rules::PropertyNotNull(Category, "Category can't be null");
+		};
+	};
+	
+	Model::Define(Service, true, true)
+	{
+		Model::Field(Name, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(Name, "Name can't be empty");
+			Rules::PropertyUnique(Name, "A service with that name already exists", Service);
+		};
+		Model::Field(Description, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(Description, "Description can't be empty");
+		};
+		
+		Model::Field(WebAccess, gettype(string));		
+		Model::Field(RelativePathAssembly, gettype(string));
+
+		Model::Field(PathAssemblyServer, gettype(string));
+
+		Model::Field(Active, gettype(bool));
+		Model::Field(Global, gettype(bool));
+
+		Model::Field(Image, gettype(string));
+		
+		Model::Field(Website, gettype(string));
+
+		//Mark if the service was deployed (and builded)
+		Model::Field(Deployed, gettype(bool)){};
+		//Mark if the service need to be redeployed on server startup
+		Model::Field(Updated, gettype(bool)){};
+
+		Model::Relations(ServiceCategory, ServiceCategory, RelationTypes::UnoAMuchos, true, true, true)
+		{
+			/*Rules::CollectionNonEmpty(ServiceCategory, "ServiceCategory can't be empty");
+
+			Rules::PropertyCollection(ServiceCategory, ServiceCategory)
+			{
+				Rules::PropertyNotNull(Category, "Category can't be empty");
+			};*/
+		};
+
+		Model::Relations(Store, Store, RelationTypes::MuchosAUno, false, false, false, true)
+		{
+			if (service.Store != null)
+            {
+                foreach (ServiceCategoryEntity serviceCategory in service.ServiceCategory)
+                {
+                    CategoryEntity categoryService = serviceCategory.Category;
+                    bool isCategoryOfTheStore = false;
+                    foreach (StoreCategoryEntity storeCategory in service.Store.StoreCategory)
+                    {
+                        CategoryEntity categoryStore = storeCategory.Category;
+                        if (categoryService.Id == categoryStore.Id)
+                        {
+                            isCategoryOfTheStore = true;
+                        }
+                    }
+                    result = isCategoryOfTheStore;
+                    service.Errors.Add(new Error(categoryService.Name, "Service Category", categoryService.Name + "is not a category of the store"));
+                }
+            }
+		};
+		Model::Field(StartDate, gettype(DateTime))
+		{
+			Rules::PropertyNotNull(StartDate, "Start date can't be null");
+		};
+
+		Model::Field(StopDate, gettype(DateTime))
+		{
+			Rules::PropertyDateTimeLowerThan(StopDate, StartDate, "Stop date can't be lower than start date");
+			Rules::PropertyNotNull(StopDate, "Stop date can't be null");
+		};
+	};
+
+	Model::Define(ServiceCategory, false)
+	{
+		Model::Relations(Service, Service, RelationTypes::MuchosAUno, false, false, false, true){};
+		Model::Relations(Category, Category, RelationTypes::MuchosAUno, true, false, false, true){};
+		
+	};
+
+	Model::Define(Store, true, true)
+	{
+		Model::Field(Name, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(Name, "Name can't be empty");
+			Rules::PropertyUnique(Name, "A store with that name already exists", Store);
+		};
+
+		Model::Field(TelephoneNumber, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(TelephoneNumber, "Telephone number can't be empty");
+		};
+		
+		Model::Field(InternalPhoneNumber, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(InternalPhoneNumber, "Internal phone number can't be empty");
+		};
+
+		Model::Field(ContactName, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(ContactName, "Contact name can't be empty");
+		};
+		Model::Field(OwnerName, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(OwnerName, "Owner name can't be empty");
+		};
+
+		Model::Field(Email, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(Email, "Email can't be empty");
+		};
+
+		Model::Field(WebAddress, gettype(string));
+
+		Model::Field(LocalNumber, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(LocalNumber, "Local number can't be empty");
+			Rules::PropertyUnique(Name, "A service with that local number already exists", Store);
+		};
+
+		Model::Relations(StoreCategory, StoreCategory, RelationTypes::UnoAMuchos, true, true, true)
+		{
+			Rules::CollectionNonEmpty(StoreCategory, "Store category can't be empty");
+			Rules::PropertyCollection(StoreCategory, StoreCategory)
+			{
+				Rules::PropertyNotNull(Category, "Category can't be empty");
+			};
+		};
+
+		Model::Relations(Service, Service, RelationTypes::UnoAMuchos, false, false)
+		{
+			Rules::CollectionNonEmpty(Service, "Service can't be empty");
+		};
+
+		
+	};
+
+	Model::Define(StoreCategory, false)
+	{
+		Model::Relations(Category, Category, RelationTypes::MuchosAUno, true, false, false, true){};
+		Model::Relations(Store, Store, RelationTypes::MuchosAUno, false, false, false, true){};
+		
+	};
+
+	// Seek stadistical data about services usage. Used on client and for interface
+	// between Server and Client
+	Model::Define(UserActionClientData, true)
+	{
+		// An integer that mark the type of the action
+		Model::Field(ActionType, gettype(int))
+		{
+			Rules::PropertyGreaterThanZero(ActionType, "ActionType can't be negative");
+		};
+		// The Start time of the action
+		Model::Field(Start, gettype(DateTime))
+		{
+			Rules::PropertyDateTimeInTheFuture(Start, "Start date can't be in the future");
+			Rules::PropertyNotNull(Start, "Start can't be null");
+		};
+		// The End time of the action
+		Model::Field(Stop, gettype(DateTime))
+		{
+			Rules::PropertyDateTimeInTheFuture(Stop, "Stop date can't be in the future");
+			Rules::PropertyDateTimeLowerThan(Stop, Start, "Stop can't be lower than start");
+			Rules::PropertyNotNull(Stop, "Stop can't be null");
+		};
+		// The Id of the Table on the related data model (when it is applicable)
+		Model::Field(IdTable, gettype(int))
+		{
+			Rules::PropertyGreaterThanZero(IdTable, "IdTable can't be negative");
+		};
+		// The Id of the register on the related data model (when it is applicable)
+		Model::Field(IdRegister, gettype(int))
+		{
+			Rules::PropertyGreaterThanZero(IdRegister, "IdRegister can't be negative");
+		};
+		// The Component that launch the action on the designed Custom Service. This can be 
+		// a form, or menuitem
+		Model::Field(IdComponent, gettype(int))
+		{
+			Rules::PropertyGreaterThanZero(IdComponent, "IdComponent can't be negative");
+		};
+		// The Id of the service
+		Model::Field(IdService, gettype(int))
+		{
+			Rules::PropertyGreaterThanZero(IdService, "IdService can't be negative");
+		};
+	};
+
+
+}

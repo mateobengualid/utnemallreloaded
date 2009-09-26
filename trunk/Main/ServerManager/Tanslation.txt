@@ -1,0 +1,17 @@
+http://www.codeproject.com/KB/WPF/WPFUsingLocbaml.aspx
+
+si hay nuevas cadenas para traducir se compila el proyecto y se corre el siguiente comando
+
+C:\Users\mariano.guerra\trunk\Source\Main\ServerManager\ServerManager\bin\Debug\
+en-US>LocBaml.exe /parse ServerManager.resources.dll /out:trans.csv
+
+luego se abre el documento y se reemplazan los campos de la 7ma columna que tienen texto (Button, Label, Text, Checkbox, Title y alguno mas..)
+yo uso CSVed porque excel me modifica el archivo.
+
+cuando termino lo guardo y lo abro con wordpad y lo guardo como documento de texto unicode (por las eñes y los acentos) despues corro el siguiente comando:
+
+C:\Users\mariano.guerra\trunk\Source\Main\ServerManager\ServerManager\bin\Debug\
+en-US>locbaml /generate /trans:trans.csv /out:..\es-ES /cul:es-ES ServerManager.
+resources.dll
+
+y al correr la aplicacion se ve en español, los pasos mas detallados en la url del comienzo.

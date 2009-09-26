@@ -1,0 +1,1 @@
+﻿Seleccione un servicio de la lista. En el caso que el servicio no se encuentre instalado se pedirá la  confirmación de su instalación antes de poder utilizarlo. Una vez que el servicio está instalado comenzará su ejecución. Para navegar por el servicio utilice la opción siguiente y para volver al menú de servicios seleccione salir.

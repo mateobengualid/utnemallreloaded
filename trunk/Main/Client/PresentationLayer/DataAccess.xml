@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+This file specifies the source & catalog
+for the connection string
+-->
+<dataaccess>
+	<source>UtnEmallDataBase.sdf</source>
+	<catalog>UtnEmallDataBase</catalog>
+  <assemblydll></assemblydll>
+  <classname></classname>
+</dataaccess>

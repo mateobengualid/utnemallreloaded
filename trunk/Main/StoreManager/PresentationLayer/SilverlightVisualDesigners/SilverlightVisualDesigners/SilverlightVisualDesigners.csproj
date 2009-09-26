@@ -1,0 +1,377 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DefaultClrNameSpace>SilverlightVisualDesigners</DefaultClrNameSpace>
+    <AssemblyName>SilverlightVisualDesigners</AssemblyName>
+    <RootNamespace>SilverlightVisualDesigners</RootNamespace>
+    <ApplicationVersion>1.0.0.*</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <AlwaysCompileMarkupFilesInSeparateDomain>false</AlwaysCompileMarkupFilesInSeparateDomain>
+    <ExpressionBlendCreationVersion>2.1.1111.0</ExpressionBlendCreationVersion>
+    <ProjectGuid>{70297C24-59E0-4A37-A553-981423F068F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoStdLib>true</NoStdLib>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <StartPageUrl>Default.html</StartPageUrl>
+    <XapOutputs>true</XapOutputs>
+    <XapFilename>SilverlightVisualDesigners.xap</XapFilename>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>SilverlightVisualDesigners.App</SilverlightAppEntry>
+    <CreateTestPage>true</CreateTestPage>
+    <TestPageFileName>Default.html</TestPageFileName>
+    <DefineConstants>SILVERLIGHT</DefineConstants>
+    <SilverlightApplication>true</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>false</ThrowErrorsInValidation>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>SilverlightVisualDesignersKey.snk</AssemblyOriginatorKeyFile>
+    <SupportedCultures>en-US;es-ES</SupportedCultures>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRules>-Microsoft.Design#CA1062;-Microsoft.Usage#CA2209;-Microsoft.Usage#CA2202;-Microsoft.Usage#CA2241;-Microsoft.Design#CA1005;-Microsoft.Design#CA1020;-Microsoft.Design#CA1010;-Microsoft.Design#CA1050;-Microsoft.Design#CA1000;-Microsoft.Design#CA1002;-Microsoft.Design#CA1061;-Microsoft.Design#CA1006;-Microsoft.Design#CA1008;-Microsoft.Design#CA1004;-Microsoft.Design#CA1063;-Microsoft.Design#CA1033;-Microsoft.Design#CA1016;-Microsoft.Design#CA1014;-Microsoft.Design#CA1017;-Microsoft.Design#CA1059;-Microsoft.Design#CA1060;-Microsoft.Design#CA1057;-Microsoft.Design#CA1058;-Microsoft.Design#CA1001;-Microsoft.Design#CA1003;-Microsoft.Interoperability#CA1413;-Microsoft.Interoperability#CA1402;-Microsoft.Interoperability#CA1407;-Microsoft.Interoperability#CA1404;-Microsoft.Interoperability#CA1405;-Microsoft.Interoperability#CA1415;-Microsoft.Interoperability#CA1414;-Microsoft.Interoperability#CA1400;-Microsoft.Interoperability#CA1401;-Microsoft.Maintainability#CA1502;-Microsoft.Maintainability#CA1501;-Microsoft.Maintainability#CA1500;-Microsoft.Mobility#CA1600;-Microsoft.Mobility#CA1601;-Microsoft.Portability#CA1901;-Microsoft.Portability#CA1900;-Microsoft.Usage#CA2222;-Microsoft.Usage#CA1806;-Microsoft.Usage#CA2201;-Microsoft.Usage#CA2229;-Microsoft.Usage#CA2235;-Microsoft.Usage#CA2239;-Microsoft.Usage#CA2200;-Microsoft.Usage#CA1801</CodeAnalysisRules>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Browser" />
+    <Reference Include="System.Windows.Controls, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Dialog.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditControls\EditTableControl.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DataModelDesignerSilverlight.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditControls\EditListFormControl.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Widgets\DataSourceSilverlight.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Widgets\ListFormSilverlight.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Widgets\MenuFormSilverlight.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Widgets\MenuWidget.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Widgets\ShowDataFormSilverlight.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Widgets\EnterSingleDataFormSilverlight.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Widgets\TextField.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="..\..\WebApplication\CircularReferencesManager.cs">
+      <Link>CircularReferencesManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\WebApplication\SessionConstants.cs">
+      <Link>SessionConstants.cs</Link>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Button.xaml.cs">
+      <DependentUpon>Button.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ConnectionSilverLight.cs" />
+    <Compile Include="EditControls\EditEnterSingleDataFormControl.Designer.cs" />
+    <Compile Include="EditControls\EditEnterSingleDataFormControl.es-ES.Designer.cs" />
+    <Compile Include="EditControls\EditMenuFormControl.es-ES.Designer.cs">
+      <DependentUpon>EditMenuFormControl.es-ES.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="EditControls\EditListFormControl.es-ES1.Designer.cs">
+      <DependentUpon>EditListFormControl.es-ES.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="EditControls\EditListFormControl.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditListFormControl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="EditControls\EditMenuFormControl.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditMenuFormControl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="EditControls\EditShowDataFormControl.Designer.cs" />
+    <Compile Include="EditControls\EditShowDataFormControl.es-ES.Designer.cs" />
+    <Compile Include="EditControls\EditTableControl.es-ES.Designer.cs">
+      <DependentUpon>EditTableControl.es-ES.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="EditControls\EditTableControl.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditTableControl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesignerSilverlightResources.es-ES.Designer.cs">
+      <DependentUpon>ServiceDesignerSilverlightResources.es-ES.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DataModelDesignerSilverlightResources.es-ES.Designer.cs">
+      <DependentUpon>DataModelDesignerSilverlightResources.es-ES.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Dialog.xaml.cs">
+      <DependentUpon>Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DragableCanvas.cs" />
+    <Compile Include="EditControls\EditEnterSingleDataFormControl.xaml.cs">
+      <DependentUpon>EditEnterSingleDataFormControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditControls\EditShowDataFormControl.xaml.cs">
+      <DependentUpon>EditShowDataFormControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditControls\EditTableControl.xaml.cs">
+      <DependentUpon>EditTableControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditControls\EditListFormControl.xaml.cs">
+      <DependentUpon>EditListFormControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IWindow.cs" />
+    <Compile Include="EditControls\EditMenuFormControl.xaml.cs">
+      <DependentUpon>EditMenuFormControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IConnection.cs" />
+    <Compile Include="IDraw.cs" />
+    <Compile Include="DataModelDesignerSilverlight.xaml.cs">
+      <DependentUpon>DataModelDesignerSilverlight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IWidget.cs" />
+    <Compile Include="PageConstants.cs" />
+    <Compile Include="DataModelDesignerSilverlightResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataModelDesignerSilverlightResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesignerSilverlightResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ServiceDesignerSilverlightResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SilverlightServices.Proxy.cs" />
+    <Compile Include="SupportEvent.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="Widgets\DataSourceSilverlight.xaml.cs">
+      <DependentUpon>DataSourceSilverlight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Widgets\ListFormSilverlight.xaml.cs">
+      <DependentUpon>ListFormSilverlight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Widgets\MenuFormSilverlight.xaml.cs">
+      <DependentUpon>MenuFormSilverlight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Widgets\MenuItemSilverlight.xaml.cs">
+      <DependentUpon>MenuItemSilverlight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Widgets\MenuWidget.xaml.cs">
+      <DependentUpon>MenuWidget.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Widgets\ShowDataFormSilverlight.xaml.cs">
+      <DependentUpon>ShowDataFormSilverlight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Widgets\EnterSingleDataFormSilverlight.xaml.cs">
+      <DependentUpon>EnterSingleDataFormSilverlight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Widgets\TableSilverlight.xaml.cs">
+      <DependentUpon>TableSilverlight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesignerSilverlight.xaml.cs">
+      <DependentUpon>ServiceDesignerSilverlight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Widgets\TextField.xaml.cs">
+      <DependentUpon>TextField.xaml</DependentUpon>
+    </Compile>
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="SilverlightVisualDesignersKey.snk" />
+    <Resource Include="Cerrar.png" />
+    <Resource Include="imgs\background.jpg" />
+    <Resource Include="imgs\Cerrar.png" />
+    <Resource Include="imgs\connection.png" />
+    <Resource Include="imgs\Dialog_Ok.png" />
+    <Resource Include="imgs\Dialog_Error.png" />
+    <Resource Include="imgs\information.png" />
+    <Resource Include="imgs\input.png" />
+    <Resource Include="imgs\list.png" />
+    <Resource Include="imgs\menu.png" />
+    <Resource Include="imgs\model_manytomany.png" />
+    <Resource Include="imgs\model_newtable.png" />
+    <Resource Include="imgs\model_onetomany.png" />
+    <Resource Include="imgs\model_onetoone.png" />
+    <Resource Include="imgs\model_save.png" />
+    <Resource Include="imgs\service.png" />
+    <Resource Include="imgs\showdata.png" />
+    <Resource Include="information.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Button.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditControls\EditEnterSingleDataFormControl.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditControls\EditMenuFormControl.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditControls\EditShowDataFormControl.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Widgets\MenuItemSilverlight.xaml">
+      <SubType>Page</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
+    <Page Include="Widgets\TableSilverlight.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ServiceDesignerSilverlight.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EditControls\EditEnterSingleDataFormControl.es-ES.resx" />
+    <EmbeddedResource Include="EditControls\EditEnterSingleDataFormControl.resx" />
+    <EmbeddedResource Include="EditControls\EditMenuFormControl.es-ES.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditMenuFormControl.es-ES.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditControls\EditListFormControl.es-ES.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditListFormControl.es-ES1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditControls\EditListFormControl.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditListFormControl.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditControls\EditMenuFormControl.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditMenuFormControl.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditControls\EditShowDataFormControl.es-ES.resx" />
+    <EmbeddedResource Include="EditControls\EditShowDataFormControl.resx" />
+    <EmbeddedResource Include="EditControls\EditTableControl.es-ES.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditTableControl.es-ES.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditControls\EditTableControl.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditTableControl.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServiceDesignerSilverlightResources.es-ES.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ServiceDesignerSilverlightResources.es-ES.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataModelDesignerSilverlightResources.es-ES.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>DataModelDesignerSilverlightResources.es-ES.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataModelDesignerSilverlightResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>DataModelDesignerSilverlightResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.es-ES.resx" />
+    <EmbeddedResource Include="Properties\Resources.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServiceDesignerSilverlightResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ServiceDesignerSilverlightResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="imgs\header.png" />
+    <Resource Include="imgs\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Common\LogicalLibrarySilverlight\LogicalLibrary\LogicalLibrary.csproj">
+      <Project>{EF4289FB-D06E-45B2-87C9-99B95D29C0FB}</Project>
+      <Name>LogicalLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="imgs\arrow_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="imgs\arrow_down.png" />
+    <Resource Include="imgs\arrow_up.png" />
+    <Resource Include="imgs\trash.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\V2.0\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

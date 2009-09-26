@@ -1,0 +1,611 @@
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+using DotNET::System;
+using DotNET::System::IO;
+using DotNET::System::Collections;
+using DotNET::LayerD::CodeDOM;
+using DotNET::LayerD::ZOECompiler;
+
+namespace Zoe::Tools{
+
+	public interactive class iObjectInterpreterBuilder{
+	public:
+		static XplClass^ Sample(){
+			return Help();
+		}
+		static XplClass^ Help(){
+			Console::WriteLine("Ejecutando Help de iObjectInterpreterBuilder.");
+			return writecode{
+				public factory class SampleDSL
+				{				
+				public:
+					static XplNode^ New(block dslData){
+						MyInterpreter^ interpreter = new MyInterpreter();
+						DSLData^ data = interpreter.ProcessDSLData(dslData);
+						// Call code generation function
+						return Generate(data);
+					} 
+					
+					static void Generate(DSLData^ data){
+						// Place your generation code here
+					}
+					
+					// Class to store main DSL data
+					class DSLData{				
+					public:
+						XplIName^ SampleName;
+						int SampleInt;
+						string^ SampleString;
+						ArrayList^ SampleCollection = new ArrayList();
+					}
+					// Class to store collection item data
+					class SampleItem{
+					public:
+						XplExpression^ SampleExpression;
+						float SampleFloat;
+						bool SampleBoolean;
+					}
+					// Sample DSL Model for ObjectInterpreterBuilder
+					ObjectInterpreterBuilder::New(MyInterpreter, DSLData){
+						// Use "INAME" to capture an identifier on a XplIName field
+						SampleName = INAME;
+						// Use "INT" to capture an integer literal
+						SampleInt = INT;
+						// Use "STRING" to capture a string literal
+						SampleString = STRING;
+						// Use "Collection(COLLECTION_FIELD_NAME) { ... };" to capture
+						// collection of items, the collection must have an "Add( item )"
+						// method and must be initialized
+						Collection(SampleCollection){
+							// Use "ITEM_TYPE { ...item content... };" to capture
+							// each type of items inside the collection
+							SampleItem{
+								// Use "EXPRESSION" to capture a complete expression
+								SampleExpression = EXPRESSION;
+								// Use "FLOAT" to capture a float literal
+								SampleFloat = FLOAT;
+								// Use "BOOL" to capture a boolean literal
+								SampleBoolean = BOOL;
+							};
+						};
+					};				
+				}
+			};
+		}
+	}
+	
+	public factory class ObjectInterpreterBuilder{
+		static Hashtable^ generatedFunctions;
+	public:
+		static XplNode^ New(iname void interpreterName, iname void mainClass, block contentTemplate){
+			XplClass^ interpreterClass = writecode{
+				public class $interpreterName{
+					ZOECompilerCore^ compiler = ClassfactoryBase::compiler;
+				public:
+				}
+			};
+			generatedFunctions = new Hashtable();
+
+			MakeFunctionForType(interpreterClass, mainClass, contentTemplate);
+
+			return interpreterClass;
+		}
+	private:
+		static void MakeFunctionForType(XplClass^ interpreterClass, iname void classType, XplFunctionBody^ contentTemplate){
+			XplIName^ functionName = new XplIName("Process"+classType.Identifier);
+
+			if(generatedFunctions.ContainsKey(functionName.Identifier))return;
+			generatedFunctions.Add(functionName.Identifier, functionName.Identifier);
+
+			XplFunctionBody^ propertysIfs = new XplFunctionBody(), collectionsIfs = new XplFunctionBody();
+
+			//Itero en los nodos del template para generar los Ifs y otras funciones que hagan falta
+			for(XplNode^ nodeIt in contentTemplate.Children()){
+				XplNode^ node = nodeIt.get_Content();
+				if(node!=null && node.get_TypeName()=="XplAssing"){
+					XplAssing^ assingNode = (XplAssing^)node;
+					XplExpression^ leftExp = assingNode.get_l();
+					XplExpression^ rightExp = assingNode.get_r();
+					if(leftExp.get_Content()!=null && leftExp.get_Content().get_TypeName()!="XplNode")
+					{
+						compiler.get_ErrorCollection().AddError(new Error("Se requiere un identificador en lado izquierdo de Content Tempalte.",node));
+						return;
+					}
+					if(rightExp.get_Content()!=null && rightExp.get_Content().get_TypeName()!="XplNode")
+					{
+						compiler.get_ErrorCollection().AddError(new Error("Se requiere un identificador en lado derecho de Content Tempalte.",node));
+						return;
+					}
+					string^ propertyName = leftExp.get_Content().get_StringValue();
+					string^ propertyType = rightExp.get_Content().get_StringValue();
+					XplFunctionBody^ propertyIf = null;
+					//Armo el if para la propiedad actual
+					if(propertyType!="STRING" && propertyType!="INT" && propertyType!="LONG" && propertyType!="FLOAT" && propertyType!="BOOL" && propertyType!="INAME" && propertyType!="EXPRESSION"){
+						compiler.get_ErrorCollection().AddError(new Error("Se requiere un tipo soportado en lado derecho propiedad de Content Tempalte.",node));
+					}
+					else{
+						if(propertyType=="EXPRESSION"){
+							propertyIf = writecode{
+								if(propertyName == $propertyName){
+									errorFlag = false;
+									instance.$leftExp = rightExp.get_Content();
+								}
+							};
+						}
+						else if(propertyType=="INAME"){
+							propertyIf = writecode{
+								if(propertyName == $propertyName){
+									errorFlag = false;
+									instance.$leftExp = new XplIName(rightExp.get_Content().get_StringValue());
+								}
+							};
+						}
+						else if(propertyType=="STRING"){
+							propertyIf = writecode{
+								if(propertyName == $propertyName){
+									errorFlag = false;
+									instance.$leftExp = ((XplLiteral^)rightExp.get_Content()).get_str();
+								}
+							};
+						}
+						else if(propertyType=="INT"){
+							propertyIf = writecode{
+								if(propertyName == $propertyName){
+									errorFlag = false;
+									string^ tempstr = ((XplLiteral^)rightExp.get_Content()).get_str();
+									if(tempstr!=null && tempstr.Length>1 && (tempstr[1]=='x' || tempstr[1]=='X')){
+										instance.$leftExp = Int32::Parse( tempstr.Substring(2),											
+											DotNET::System::Globalization::NumberStyles::AllowHexSpecifier,
+											DotNET::System::Globalization::NumberFormatInfo::InvariantInfo );
+									}
+									else{
+										instance.$leftExp = Int32::Parse( tempstr,
+											DotNET::System::Globalization::NumberStyles::Number ,
+											DotNET::System::Globalization::NumberFormatInfo::InvariantInfo );
+									}
+								}
+							};
+						}
+						else if(propertyType=="LONG"){
+							propertyIf = writecode{
+								if(propertyName == $propertyName){
+									errorFlag = false;
+									string^ tempstr = ((XplLiteral^)rightExp.get_Content()).get_str();
+									if(tempstr!=null && tempstr.Length>1 && (tempstr[1]=='x' || tempstr[1]=='X')){
+										instance.$leftExp = Int64::Parse( tempstr.Substring(2),											
+											DotNET::System::Globalization::NumberStyles::AllowHexSpecifier,
+											DotNET::System::Globalization::NumberFormatInfo::InvariantInfo );
+									}
+									else{
+										instance.$leftExp = Int64::Parse( tempstr,
+											DotNET::System::Globalization::NumberStyles::Number ,
+											DotNET::System::Globalization::NumberFormatInfo::InvariantInfo );
+									}
+								}
+							};
+						}
+						else if(propertyType=="FLOAT"){
+							propertyIf = writecode{
+								if(propertyName == $propertyName){
+									errorFlag = false;
+									instance.$leftExp = Single::Parse( ((XplLiteral^)rightExp.get_Content()).get_str(),
+										DotNET::System::Globalization::NumberStyles::Number ,
+										DotNET::System::Globalization::NumberFormatInfo::InvariantInfo );
+								}
+							};
+						}
+						else if(propertyType=="BOOL"){
+							propertyIf = writecode{
+								if(propertyName == $propertyName){
+									errorFlag = false;
+									if(((XplLiteral^)rightExp.get_Content()).get_str()=="true")
+										instance.$leftExp = true;
+									else
+										instance.$leftExp = false;
+								}
+							};
+						}
+					}
+					//Agrego el bloque if al bloque de ifs :-)
+					if(propertyIf!=null){
+						Console::WriteLine("Propiedad agregada. "+propertyName);
+						propertysIfs.Children().InsertAtEnd( propertyIf.Children() );
+					}
+				}
+				else if(node!=null && node.get_TypeName()=="XplFunctioncall"){
+					// Si es una llamada a función
+					XplFunctioncall^ functionCall = (XplFunctioncall^)node;
+					XplFunctionBody^ fcBlock = functionCall.get_bk();
+					if(fcBlock==null){
+						compiler.get_ErrorCollection().AddError(new Error("Se requiere un bloque en el Content Template.",node));
+						return;
+					}
+					XplNode^ leftNode = functionCall.get_l().get_Content();
+					if(leftNode==null || leftNode.get_TypeName()!="XplNode"){
+						compiler.get_ErrorCollection().AddError(new Error("Se requiere un identificador en el Content Template.",node));
+						return;
+					}
+					if(functionCall.get_args()!=null && functionCall.get_args().Children().GetLength()>0){
+						//Puede ser una colección o algun item especial
+						if(leftNode.get_StringValue()=="Collection"){
+							XplExpression^ collectionFieldName = (XplExpression^)functionCall.get_args().Children().FirstNode();
+							string^ collectionName = collectionFieldName.get_Content().get_StringValue();
+							XplFunctionBody^ itemsTypesIfs = new XplFunctionBody();
+
+							//Itero en la colección para ver los tipos que contiene la colección
+							for(XplNode^ nodeItCol in fcBlock.Children()){
+								if(nodeItCol.get_Content()!=null && nodeItCol.get_Content().get_TypeName()=="XplFunctioncall"){
+									//Obtengo el nombre de tipo de los items
+									XplFunctioncall^ collectionTypeFunc = (XplFunctioncall^)nodeItCol.get_Content();
+									XplIName^ collectionItemTypeName = new XplIName(collectionTypeFunc.get_l().get_Content().get_StringValue());
+									string^ collectionItemTypeNameStr = collectionItemTypeName.Identifier;
+									XplIName^ functionForItemType = new XplIName("Process"+collectionItemTypeName.Identifier);
+									//Creo la funcion para el tipo de los items
+									MakeFunctionForType(interpreterClass, collectionItemTypeName, collectionTypeFunc.get_bk());
+									//Creo el código para el interprete
+									itemsTypesIfs.Children().InsertAtEnd(
+										writecode{
+											if(itemTypeName.Identifier == $collectionItemTypeNameStr){
+												//Creo la instancia del tipo del item
+												$collectionItemTypeName^ item = $functionForItemType( fcbk );
+												//Lo agrego a la coleccion
+												instance.$collectionFieldName.Add( item );
+											}
+										}.Children()
+									);
+								}
+								else{
+									compiler.get_ErrorCollection().AddError(new Error("Error en el modelo de colección en el Content Template.", nodeItCol ));
+								}
+							}
+							//Código comun
+							collectionsIfs.Children().InsertAtEnd(
+								writecode{
+									if(collectionName == $collectionName){
+										errorFlag = false;
+										for(XplNode^ node2 in fcBlock.Children()){
+											//asumo q cada nodo es una llamada a funcion de la forma:  id{ }
+											if(node2.get_Content()!=null && node2.get_Content().get_TypeName()=="XplFunctioncall"){
+												XplFunctioncall^ fc = (XplFunctioncall^)node2.get_Content();
+												XplIName^ itemTypeName = new XplIName(fc.get_l().get_Content().get_StringValue());
+												XplFunctionBody^ fcbk = fc.get_bk();
+
+												$itemsTypesIfs;
+											}
+										}
+									}
+								}.Children()
+							);
+
+						}
+						else{
+							//Es un item 
+							XplExpression^ simpleItemFieldName = (XplExpression^)functionCall.get_args().Children().FirstNode();
+							//Si no es un identificador es un error
+							if(simpleItemFieldName!=null && simpleItemFieldName .get_TypeName()!="XplNode"){
+								compiler.get_ErrorCollection().AddError(new Error("Se requiere un identificador en el Content Template.", simpleItemFieldName ));
+							}
+							else{
+								//Pendiente el codigo para cuando es un item solo
+								compiler.get_ErrorCollection().AddError(new Error("El código para un item solo no esta implementado en Content Template.", simpleItemFieldName));
+							}							
+						}
+					}
+					else{
+						//Es un item simple
+						//Primero proceso el tipo para el elemento
+					}
+				}
+				else{
+					// Tipo de expresión no reconocida, será ignorada.
+					compiler.get_ErrorCollection().AddError(new Error("Expresión no reconocida en el Content Template.",node));
+				}
+			}
+
+			//Creo la función para procesar el tipo
+			XplFunction^ function = (XplFunction^)
+				writecode{%
+				public:
+					$classType^ $functionName(XplFunctionBody^ instanceData){
+						$classType^ instance = new $classType();
+						bool errorFlag = false;
+						XplNode^ errorNode = null;
+
+						for(XplNode^ nodeIt in instanceData.Children()){
+							XplNode^ node = nodeIt.get_Content();
+							if(node!=null && node.get_TypeName()=="XplAssing"){
+								XplAssing^ assingNode = (XplAssing^)node;
+								XplExpression^ leftExp = assingNode.get_l();
+								XplExpression^ rightExp = assingNode.get_r();
+								if(leftExp.get_Content()!=null && leftExp.get_Content().get_TypeName()!="XplNode")
+								{
+									compiler.get_ErrorCollection().AddError(new Error("Se requiere un identificador en Instance Creator.",node));
+									return null;
+								}
+								string^ propertyName = leftExp.get_Content().get_StringValue();
+								errorFlag = true;
+
+								$propertysIfs;
+
+								if(errorFlag){
+									compiler.get_ErrorCollection().AddError(new Error("Propiedad "+propertyName+" no soportada en Instance Creator.", errorNode));
+									return null;
+								}
+							}
+							else if(node!=null && node.get_TypeName()=="XplFunctioncall"){
+								XplFunctioncall^ functionCall = (XplFunctioncall^)node;
+								XplFunctionBody^ fcBlock = functionCall.get_bk();
+								if(fcBlock==null){
+									// Es un error
+									compiler.get_ErrorCollection().AddError(new Error("Se requiere un bloque para Instance Creator.",node));
+									return null;
+								}
+								XplNode^ leftNode = functionCall.get_l().get_Content();
+								if(leftNode!=null && leftNode.get_TypeName()!="XplNode"){
+									compiler.get_ErrorCollection().AddError(new Error("Se requiere un identificador en Instance Creator.",node));
+									return null;
+								}
+								string^ collectionName = leftNode.get_StringValue();
+								errorFlag = true;
+
+								$collectionsIfs;
+
+								if(errorFlag){
+									compiler.get_ErrorCollection().AddError(new Error("Colección no soportada en Instance Creator.", errorNode));
+									return null;
+								}
+							}
+							else{
+								// Tipo de expresión no reconocida, será ignorada.
+								compiler.get_ErrorCollection().AddError(
+									new Error("Expresión no reconocida por Instance Creator.",node)
+									);
+							}
+						}
+
+						return instance;
+					}
+				%}
+				.Children().FirstNode();
+
+			interpreterClass.Children().InsertAtEnd(function);
+		}
+	}
+	public factory class ObjectCreator{
+	public:
+		static exp void New(iname void mainObjectType, block blockArgument){
+			return New(mainObjectType, false, blockArgument);
+		}
+		static exp void New(iname void mainObjectType, bool simpleIdentifierToString, block blockArgument){
+			if(context.CurrentClass==null){
+				compiler.get_ErrorCollection().AddError(
+						new Error("No puede llamar a ObjectCreator.New fuera de una clase.", context)
+					);
+				return null;
+			}
+			XplIName^ funcName = new XplIName();
+			XplFunctionBody^ funcBody = new XplFunctionBody();
+
+			// Proceso los elementos del bloque argumento
+			for(XplNode^ node in blockArgument.Children()){
+				ProcessItem(node, funcBody, new XplIName("retObj"), null, null, simpleIdentifierToString);
+			}
+
+			// Genero la función auxiliar
+			XplFunction^ func = (XplFunction^)writecode{% 
+
+				static $mainObjectType^ $funcName(){
+					$mainObjectType^ retObj = new $mainObjectType();
+
+					$funcBody;
+
+					return retObj;
+				}
+
+			%}.Children().FirstNode();
+
+			// Inserto la función auxiliar dentro de la clase actual
+			context.CurrentClass.Children().InsertAtEnd(func);
+
+			// Retorno la llamada a funcion
+			return writecode( $funcName() );
+		}
+	private:
+		static void ProcessItem(XplNode^ node, XplFunctionBody^ body, XplIName^ parentObjectId, XplIName^ collectionIName, XplIName^ grandParentObjectId, bool simpleIdentifierToString){
+			// Si el nodo es nulo retorno
+			if(node==null || node.get_Content()==null)return;
+			// Obtengo el contenido del nodo a procesar
+			node = node.get_Content();
+
+			if(node.get_TypeName()=="XplAssing"){
+				XplAssing^ assingNode = (XplAssing^)node;
+				XplExpression^ leftExp = assingNode.get_l();
+				XplExpression^ rightExp = assingNode.get_r();
+				if(simpleIdentifierToString){
+					if(rightExp.get_Content().get_TypeName()=="XplNode"){
+						XplLiteral^ lit = XplExpression::new_lit();
+						lit.set_str(rightExp.get_Content().get_StringValue());
+						rightExp.set_Content(lit);
+					}
+				}
+				body.Children().InsertAtEnd(
+						writecode( $parentObjectId.$leftExp = $rightExp )
+					);
+			}
+			else if(node.get_TypeName()=="XplFunctioncall"){
+				XplFunctioncall^ functionCall = (XplFunctioncall^)node;
+				XplFunctionBody^ fcBlock = functionCall.get_bk();
+				if(fcBlock==null){
+					// Es un error
+					compiler.get_ErrorCollection().AddError(
+						new Error("Se requiere un bloque para Object Creator.",node)
+						);
+					return;
+				}
+				XplNode^ leftNode = functionCall.get_l().get_Content();
+				if(leftNode!=null && leftNode.get_TypeName()!="XplNode"){
+					compiler.get_ErrorCollection().AddError(
+						new Error("Se requiere un identificador en Object Creator.",node)
+						);
+					return;
+				}
+				XplIName^ leftNodeIName = new XplIName();
+				XplIName^ fcParentIName = new XplIName( leftNode.get_StringValue() );
+				XplIName^ newCollectionIName = null;
+				if(collectionIName!=null){
+					// Inserto la declaración para la variable del elemento
+					body.Children().InsertAtEnd(
+							writecode{ 
+								$fcParentIName^ $leftNodeIName = new $fcParentIName();
+							}.Children().FirstNode()
+						);
+				}
+				else{
+					newCollectionIName = new XplIName(fcParentIName.Identifier);
+				}
+				// Proceso el bloque para elemento
+				for(XplNode^ nodeInFc in fcBlock.Children()){
+					ProcessItem(nodeInFc, body, leftNodeIName, newCollectionIName, parentObjectId, simpleIdentifierToString);
+				}
+				if(collectionIName!=null){
+					// Inserto el elemento dentro de la colección padre
+					body.Children().InsertAtEnd(
+							writecode( $grandParentObjectId.$collectionIName.Add( $leftNodeIName ) )
+						);
+				}
+
+			}
+			else{
+				// Tipo de expresión no reconocida, será ignorada.
+				compiler.get_ErrorCollection().AddError(
+					new Error("Expresión no reconocida por Object Creator.",node)
+					);
+			}
+		}
+	}
+}
+
+
+/*
+Seria llamado de la forma:
+	ObjectInterpreterBuilder::New( MyInterpreter, MainTypeName ){
+		Property1 = "stringValue";
+		Property2 = 120; //int value
+		Property3 = true; //bool value
+		Collection1{
+			CollectionItemType1{
+				Property1 = "stringValue";
+			};
+			CollectionItemType2{
+				Property1 = 120; //int value
+			};
+		};
+		Collection2{
+			CollectionItemType3{
+				Property1 = true; //bool value
+				Property2 = Id; //IName value
+				Property3 = 3 + "hola"; //Expression value
+				Collection3{
+					CollectionItemType4{
+						Property2 = "stringValue";
+					};
+				};
+			};
+		};
+	};
+
+//De forma similar no seria mejor llamarlo con un template de la forma
+	ObjectInterpreterBuilder::New( MyInterpreter, MainTypeName ){
+		Property1 = STRING;
+		Property2 = INT; //int value
+		Property3 = BOOL; //bool value
+		Collection(Collection1){ //<-- "Collection1" es el campo utilizado en MainTypeName como coleccion
+			CollectionItemType1{ //<-- "CollectionItemType1" es el tipo utilizado para los elementos
+				Property1 = STRING;
+			};
+			CollectionItemType2{
+				Property1 = INT; //int value
+			};
+		};
+		SimpleItem(SimpleItemType){
+			Property1 = INT;
+			SimpleItem2(SimpleItem2Type){
+				Property2 = STRING;
+			};
+			Collection(SimpleItemCollection){
+				CollectionItemType{
+					Property2 = BOOL;
+				};
+			};
+		};
+		Collection2{
+			CollectionItemType3{
+				Property1 = BOOL; //bool value
+				Property2 = INAME; //IName value
+				Property3 = EXPRESSION; //Expression value
+				Collection3{
+					CollectionItemType4{
+						Property2 = STRING;
+					};
+				};
+			};
+		};
+	};
+
+//Algoritmo
+	-Comienzo con un tipo, procesando ese tipo y le paso el bloque como argumento,
+	creo una función para procesar el tipo:
+
+	MainTypeName^ ProcessMainTypeName(block instanceData){
+		MainTypeName^ instance = new MainTypeName();
+		//Itero en los nodos del bloque
+		for(XplNode^ node in instanceData.Children()){
+			if(node is XplFunction){
+				//un if en todas las colecciones q tengo
+				if(Collection1){
+					//Itero en todos los nodos del bloque
+					for(XplNode^ node2 in collectionData)
+					{
+						//si no es una llamada a funcion con bloque es un error
+						//Un if por cada tipo de elemento q puede contener la coleccion
+						if(node2 Id name == CollectionItemType1){
+							instance.Collection1.Add(
+									ProcessCollectionItemType1(data)
+								);
+						}
+						else{
+							//si no es un tipo de elemento valido es un error
+						}
+					}
+				}
+				else if(Collection2){
+				}
+				else{
+					//Error
+				}
+			}
+			else if(node is XplAssing){
+				//un switch o if en todas las propiedades que tengo
+				if(propertyName == "Property1"){
+					instance.Property1 = valor;
+				}
+				else if(propertyName == "Property2"){
+					instance.Property2 = valor;
+				}
+				else{
+					//Error
+				}
+			}
+			else{
+				//Error
+			}
+		}
+		return instance;
+	}
+
+	-Y creo una función para procesar cada uno de los tipos
+	void ProcessCollectionItemType1(block instanceData){
+	}			
+	
+*/
+
+//Crea un nuevo interprete

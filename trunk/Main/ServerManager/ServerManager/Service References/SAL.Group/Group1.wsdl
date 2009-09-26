@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:tns="http://tempuri.org/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" name="Group" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://notebookalexis:8081/Group?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://notebookalexis:8081/Group?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://notebookalexis:8081/Group?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Janus.Server.EntityModel" />
+      <xsd:import schemaLocation="http://notebookalexis:8081/Group?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Janus.Server.Base" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IGroup_Save_InputMessage">
+    <wsdl:part name="parameters" element="tns:Save" />
+  </wsdl:message>
+  <wsdl:message name="IGroup_Save_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveResponse" />
+  </wsdl:message>
+  <wsdl:message name="IGroup_Delete_InputMessage">
+    <wsdl:part name="parameters" element="tns:Delete" />
+  </wsdl:message>
+  <wsdl:message name="IGroup_Delete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="IGroup_GetGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetGroup" />
+  </wsdl:message>
+  <wsdl:message name="IGroup_GetGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="IGroup_GetAllGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllGroup" />
+  </wsdl:message>
+  <wsdl:message name="IGroup_GetAllGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="IGroup_GetGroupWhere_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetGroupWhere" />
+  </wsdl:message>
+  <wsdl:message name="IGroup_GetGroupWhere_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetGroupWhereResponse" />
+  </wsdl:message>
+  <wsdl:message name="IGroup_GetGroupWhereEqual_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetGroupWhereEqual" />
+  </wsdl:message>
+  <wsdl:message name="IGroup_GetGroupWhereEqual_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetGroupWhereEqualResponse" />
+  </wsdl:message>
+  <wsdl:message name="IGroup_Validate_InputMessage">
+    <wsdl:part name="parameters" element="tns:Validate" />
+  </wsdl:message>
+  <wsdl:message name="IGroup_Validate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IGroup">
+    <wsdl:operation name="Save">
+      <wsdl:input wsaw:Action="http://tempuri.org/IGroup/Save" message="tns:IGroup_Save_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IGroup/SaveResponse" message="tns:IGroup_Save_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Delete">
+      <wsdl:input wsaw:Action="http://tempuri.org/IGroup/Delete" message="tns:IGroup_Delete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IGroup/DeleteResponse" message="tns:IGroup_Delete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGroup">
+      <wsdl:input wsaw:Action="http://tempuri.org/IGroup/GetGroup" message="tns:IGroup_GetGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IGroup/GetGroupResponse" message="tns:IGroup_GetGroup_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllGroup">
+      <wsdl:input wsaw:Action="http://tempuri.org/IGroup/GetAllGroup" message="tns:IGroup_GetAllGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IGroup/GetAllGroupResponse" message="tns:IGroup_GetAllGroup_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGroupWhere">
+      <wsdl:input wsaw:Action="http://tempuri.org/IGroup/GetGroupWhere" message="tns:IGroup_GetGroupWhere_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IGroup/GetGroupWhereResponse" message="tns:IGroup_GetGroupWhere_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGroupWhereEqual">
+      <wsdl:input wsaw:Action="http://tempuri.org/IGroup/GetGroupWhereEqual" message="tns:IGroup_GetGroupWhereEqual_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IGroup/GetGroupWhereEqualResponse" message="tns:IGroup_GetGroupWhereEqual_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Validate">
+      <wsdl:input wsaw:Action="http://tempuri.org/IGroup/Validate" message="tns:IGroup_Validate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IGroup/ValidateResponse" message="tns:IGroup_Validate_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IGroup" type="tns:IGroup">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Save">
+      <soap:operation soapAction="http://tempuri.org/IGroup/Save" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Delete">
+      <soap:operation soapAction="http://tempuri.org/IGroup/Delete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGroup">
+      <soap:operation soapAction="http://tempuri.org/IGroup/GetGroup" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllGroup">
+      <soap:operation soapAction="http://tempuri.org/IGroup/GetAllGroup" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGroupWhere">
+      <soap:operation soapAction="http://tempuri.org/IGroup/GetGroupWhere" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGroupWhereEqual">
+      <soap:operation soapAction="http://tempuri.org/IGroup/GetGroupWhereEqual" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Validate">
+      <soap:operation soapAction="http://tempuri.org/IGroup/Validate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Group">
+    <wsdl:port name="BasicHttpBinding_IGroup" binding="tns:BasicHttpBinding_IGroup">
+      <soap:address location="http://notebookalexis:8081/Group" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

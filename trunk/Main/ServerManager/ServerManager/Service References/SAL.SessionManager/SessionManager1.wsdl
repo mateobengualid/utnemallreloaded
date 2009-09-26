@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:tns="http://tempuri.org/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" name="SessionManager" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://notebookalexis:8081/SessionManager?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://notebookalexis:8081/SessionManager?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://notebookalexis:8081/SessionManager?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Janus.Server.EntityModel" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ISessionManager_UserLogOff_InputMessage">
+    <wsdl:part name="parameters" element="tns:UserLogOff" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_UserLogOff_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UserLogOffResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_ValidateCustomer_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateCustomer" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_ValidateCustomer_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_ValidateUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateUser" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_ValidateUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_GetCustomerFromSession_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerFromSession" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_GetCustomerFromSession_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerFromSessionResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_GetUserFromSession_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserFromSession" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_GetUserFromSession_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserFromSessionResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_IsCustomerSession_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsCustomerSession" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_IsCustomerSession_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsCustomerSessionResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_IsUserSession_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsUserSession" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_IsUserSession_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsUserSessionResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_StoreFromUserSession_InputMessage">
+    <wsdl:part name="parameters" element="tns:StoreFromUserSession" />
+  </wsdl:message>
+  <wsdl:message name="ISessionManager_StoreFromUserSession_OutputMessage">
+    <wsdl:part name="parameters" element="tns:StoreFromUserSessionResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ISessionManager">
+    <wsdl:operation name="UserLogOff">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISessionManager/UserLogOff" message="tns:ISessionManager_UserLogOff_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISessionManager/UserLogOffResponse" message="tns:ISessionManager_UserLogOff_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateCustomer">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISessionManager/ValidateCustomer" message="tns:ISessionManager_ValidateCustomer_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISessionManager/ValidateCustomerResponse" message="tns:ISessionManager_ValidateCustomer_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISessionManager/ValidateUser" message="tns:ISessionManager_ValidateUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISessionManager/ValidateUserResponse" message="tns:ISessionManager_ValidateUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerFromSession">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISessionManager/GetCustomerFromSession" message="tns:ISessionManager_GetCustomerFromSession_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISessionManager/GetCustomerFromSessionResponse" message="tns:ISessionManager_GetCustomerFromSession_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserFromSession">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISessionManager/GetUserFromSession" message="tns:ISessionManager_GetUserFromSession_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISessionManager/GetUserFromSessionResponse" message="tns:ISessionManager_GetUserFromSession_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IsCustomerSession">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISessionManager/IsCustomerSession" message="tns:ISessionManager_IsCustomerSession_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISessionManager/IsCustomerSessionResponse" message="tns:ISessionManager_IsCustomerSession_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IsUserSession">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISessionManager/IsUserSession" message="tns:ISessionManager_IsUserSession_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISessionManager/IsUserSessionResponse" message="tns:ISessionManager_IsUserSession_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="StoreFromUserSession">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISessionManager/StoreFromUserSession" message="tns:ISessionManager_StoreFromUserSession_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISessionManager/StoreFromUserSessionResponse" message="tns:ISessionManager_StoreFromUserSession_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ISessionManager" type="tns:ISessionManager">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="UserLogOff">
+      <soap:operation soapAction="http://tempuri.org/ISessionManager/UserLogOff" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateCustomer">
+      <soap:operation soapAction="http://tempuri.org/ISessionManager/ValidateCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateUser">
+      <soap:operation soapAction="http://tempuri.org/ISessionManager/ValidateUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerFromSession">
+      <soap:operation soapAction="http://tempuri.org/ISessionManager/GetCustomerFromSession" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserFromSession">
+      <soap:operation soapAction="http://tempuri.org/ISessionManager/GetUserFromSession" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsCustomerSession">
+      <soap:operation soapAction="http://tempuri.org/ISessionManager/IsCustomerSession" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsUserSession">
+      <soap:operation soapAction="http://tempuri.org/ISessionManager/IsUserSession" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoreFromUserSession">
+      <soap:operation soapAction="http://tempuri.org/ISessionManager/StoreFromUserSession" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SessionManager">
+    <wsdl:port name="BasicHttpBinding_ISessionManager" binding="tns:BasicHttpBinding_ISessionManager">
+      <soap:address location="http://notebookalexis:8081/SessionManager" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

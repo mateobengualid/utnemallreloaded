@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/UtnEmall.Server.Base" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/UtnEmall.Server.Base" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="OperatorType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Equal" />
+      <xs:enumeration value="NotEqual" />
+      <xs:enumeration value="Less" />
+      <xs:enumeration value="Greater" />
+      <xs:enumeration value="LessOrEqual" />
+      <xs:enumeration value="GreaterOrEqual" />
+      <xs:enumeration value="Like" />
+      <xs:enumeration value="NotLike" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="OperatorType" nillable="true" type="tns:OperatorType" />
+</xs:schema>

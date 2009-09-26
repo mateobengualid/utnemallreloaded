@@ -1,0 +1,1 @@
+﻿Choose an available service from the list. If the service is not installed, you will be required to accept the installation. Once the service is installed, it will start its execution. In order to navigate through the service, press Select to advance, Back to return, and Exit to return to this menu.

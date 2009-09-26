@@ -1,0 +1,711 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CantDeleteMallDataModel" xml:space="preserve">
+    <value>El modelo de datos del centro comercial no puede ser borrado</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="ConfirmDeleteCategory" xml:space="preserve">
+    <value>¿Está seguro que desea borrar la categoría seleccionada?</value>
+  </data>
+  <data name="ConfirmDeleteCustomer" xml:space="preserve">
+    <value>¿Está seguro que desea borrar el cliente seleccionado?</value>
+  </data>
+  <data name="ConfirmDeleteDataModel" xml:space="preserve">
+    <value>¿Está seguro que desea borrar el modelo de datos seleccionado?</value>
+  </data>
+  <data name="ConfirmDeleteGroup" xml:space="preserve">
+    <value>¿Está seguro que desea borrar el grupo seleccionado?</value>
+  </data>
+  <data name="ConfirmDeleteService" xml:space="preserve">
+    <value>¿Está seguro que desea borrar el servicio seleccionado?</value>
+  </data>
+  <data name="ConfirmDeleteStore" xml:space="preserve">
+    <value>¿Está seguro que desea borrar la tienda seleccionada?</value>
+  </data>
+  <data name="ConfirmDeleteUser" xml:space="preserve">
+    <value>¿Está seguro que desea borrar el usuario seleccionado?</value>
+  </data>
+  <data name="ConnectionErrorAuthenticationFailed" xml:space="preserve">
+    <value>Error de conexión, la autenticación falló</value>
+  </data>
+  <data name="ConnectionErrorGroupsNotLoaded" xml:space="preserve">
+    <value>Error de conexión, los grupos no pudieron ser cargados</value>
+  </data>
+  <data name="ConnectionErrorItemNotSaved" xml:space="preserve">
+    <value>Error de conexión, el elemento no pudo ser guardado</value>
+  </data>
+  <data name="DeleteFailed" xml:space="preserve">
+    <value>El borrado falló</value>
+  </data>
+  <data name="DesignerOpened" xml:space="preserve">
+    <value>Un diseñador ya se encuentra abierto</value>
+  </data>
+  <data name="EmptyPassword" xml:space="preserve">
+    <value>Contraseña vacía</value>
+  </data>
+  <data name="EmptyUserName" xml:space="preserve">
+    <value>Usuario vacío</value>
+  </data>
+  <data name="GroupExists" xml:space="preserve">
+    <value>Un grupo con ese nombre ya existe</value>
+  </data>
+  <data name="LoadCategoriesFailed" xml:space="preserve">
+    <value>No se pudieron cargar las categorías</value>
+  </data>
+  <data name="LoadCategoryListFailed" xml:space="preserve">
+    <value>No se pudo cargar la lista de categorías</value>
+  </data>
+  <data name="LoadCustomersFailed" xml:space="preserve">
+    <value>No se pudieron cargar los clientes</value>
+  </data>
+  <data name="LoadDataModelFailed" xml:space="preserve">
+    <value>No se pudieron cargar los modelos de datos</value>
+  </data>
+  <data name="LoadErrorDuplicatedCategories" xml:space="preserve">
+    <value>Algunas categorías duplicadas no pudieron ser cargadas</value>
+  </data>
+  <data name="LoadGroupsFailed" xml:space="preserve">
+    <value>No se pudieron cargar los grupos</value>
+  </data>
+  <data name="LoadServicesFailed" xml:space="preserve">
+    <value>No se pudieron cargar los servicios</value>
+  </data>
+  <data name="LoadStoreListFailed" xml:space="preserve">
+    <value>Lista de tiendas vacía</value>
+  </data>
+  <data name="LoadStoresFailed" xml:space="preserve">
+    <value>No se pudieron cargar las tiendas</value>
+  </data>
+  <data name="LoadUsersFailed" xml:space="preserve">
+    <value>No se pudieron cargar los usuarios</value>
+  </data>
+  <data name="NoCategorySelected" xml:space="preserve">
+    <value>Categoría no seleccionada</value>
+  </data>
+  <data name="NoCustomerSelected" xml:space="preserve">
+    <value>Cliente no seleccionado</value>
+  </data>
+  <data name="NoDataModelSelected" xml:space="preserve">
+    <value>Modelo de datos no seleccionado</value>
+  </data>
+  <data name="NoGroupSelected" xml:space="preserve">
+    <value>Grupo no seleccionado</value>
+  </data>
+  <data name="NoPermissionSelected" xml:space="preserve">
+    <value>Permiso no seleccionado</value>
+  </data>
+  <data name="NoStoreSelected" xml:space="preserve">
+    <value>Tienda no seleccionada</value>
+  </data>
+  <data name="NoStoresLoaded" xml:space="preserve">
+    <value>No se pudieron cargar las tiendas</value>
+  </data>
+  <data name="NotLoggedIn" xml:space="preserve">
+    <value>No está autenticado</value>
+  </data>
+  <data name="NoUserSelected" xml:space="preserve">
+    <value>Usuario no seleccionado</value>
+  </data>
+  <data name="SaveFailed" xml:space="preserve">
+    <value>Guardado falló</value>
+  </data>
+  <data name="ServiceDesignerOpened" xml:space="preserve">
+    <value>Un diseñador de servicios ya se encuentra abierto</value>
+  </data>
+  <data name="UnhandledError" xml:space="preserve">
+    <value>Error no manejado</value>
+  </data>
+  <data name="LoadStatisticsFailed" xml:space="preserve">
+    <value>Error cargando estadísticas</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Dirección</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Atrás</value>
+  </data>
+  <data name="Class" xml:space="preserve">
+    <value>Clase</value>
+  </data>
+  <data name="ContactName" xml:space="preserve">
+    <value>Contacto</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Creación</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Descripción</value>
+  </data>
+  <data name="Design" xml:space="preserve">
+    <value>Diseñar</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="Groups" xml:space="preserve">
+    <value>Grupos</value>
+  </data>
+  <data name="HideContent" xml:space="preserve">
+    <value>Ocultar detalle</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Apellido</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="NewRootCategory" xml:space="preserve">
+    <value>Nueva categoría raiz</value>
+  </data>
+  <data name="Owner" xml:space="preserve">
+    <value>Propietario</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>Permisos</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Teléfono</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Cargo</value>
+  </data>
+  <data name="Read" xml:space="preserve">
+    <value>Lectura</value>
+  </data>
+  <data name="ShowContent" xml:space="preserve">
+    <value>Mostrar contenido</value>
+  </data>
+  <data name="StoreNumber" xml:space="preserve">
+    <value>Número de tienda</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Actualización</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Usuario</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>Página web</value>
+  </data>
+  <data name="HowManyCustomersUsedForm" xml:space="preserve">
+    <value>Clientes que lo han usado</value>
+  </data>
+  <data name="HowManyTimesUsedForm" xml:space="preserve">
+    <value>Veces que fue usado</value>
+  </data>
+  <data name="HowManyTimesMenuWasUsed" xml:space="preserve">
+    <value>Clicks por Menú</value>
+  </data>
+  <data name="ServiceStatisticsViewerOpened" xml:space="preserve">
+    <value>Un visor de estadísticas de un servicio ya se encuentra abierto</value>
+  </data>
+  <data name="NoDataContextDefined" xml:space="preserve">
+    <value>El formulario anterior no indicó una lista de salida.</value>
+  </data>
+  <data name="NoOutputDataContext" xml:space="preserve">
+    <value>No existe una salida de datos definida</value>
+  </data>
+  <data name="Categories" xml:space="preserve">
+    <value>Categorías</value>
+  </data>
+  <data name="Customers" xml:space="preserve">
+    <value>Clientes</value>
+  </data>
+  <data name="DataModel" xml:space="preserve">
+    <value>Modelo de datos</value>
+  </data>
+  <data name="Services" xml:space="preserve">
+    <value>Servicios</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Estadísticas</value>
+  </data>
+  <data name="Stores" xml:space="preserve">
+    <value>Tiendas</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Usuarios</value>
+  </data>
+  <data name="HowManyRegisterSelections" xml:space="preserve">
+    <value>Registros más elegidos</value>
+  </data>
+  <data name="AlreadyBuilt" xml:space="preserve">
+    <value>El servicio ya fue construido</value>
+  </data>
+  <data name="Build" xml:space="preserve">
+    <value>Construir</value>
+  </data>
+  <data name="CantBuildEmptyService" xml:space="preserve">
+    <value>No se puede construir un servicio vacío</value>
+  </data>
+  <data name="ServiceBuildError" xml:space="preserve">
+    <value>Error construyendo el servicio</value>
+  </data>
+  <data name="NonFatalErrorLoadingConnection" xml:space="preserve">
+    <value>Un error ha ocurrido al cargar las conexiones. Sin embargo las estadísticas no se verán afectadas.</value>
+  </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>Error desconocido</value>
+  </data>
+  <data name="LoadFailed" xml:space="preserve">
+    <value>No se pudieron cargar las entidades</value>
+  </data>
+  <data name="ConnectionSaveError" xml:space="preserve">
+    <value>Error de conexión, no se pudo guardar la entidad</value>
+  </data>
+  <data name="ItemAlreadySelected" xml:space="preserve">
+    <value>Ítem ya seleccionado</value>
+  </data>
+  <data name="NoItemSelected" xml:space="preserve">
+    <value>Ningún ítem ha sido seleccionado</value>
+  </data>
+  <data name="SaveCategoryError" xml:space="preserve">
+    <value>Error guardando categoría</value>
+  </data>
+  <data name="SaveCustomerError" xml:space="preserve">
+    <value>Error guardando cliente</value>
+  </data>
+  <data name="SaveGroupError" xml:space="preserve">
+    <value>Error guardando grupo</value>
+  </data>
+  <data name="SaveServiceError" xml:space="preserve">
+    <value>Error guardando servicio</value>
+  </data>
+  <data name="SaveStoreError" xml:space="preserve">
+    <value>Error guardando tienda</value>
+  </data>
+  <data name="SaveUserError" xml:space="preserve">
+    <value>Error guardando usuario</value>
+  </data>
+  <data name="SaveDataModelError" xml:space="preserve">
+    <value>Error guardando modelo de datos</value>
+  </data>
+  <data name="SaveError" xml:space="preserve">
+    <value>Error salvando</value>
+  </data>
+  <data name="ConfirmDelete" xml:space="preserve">
+    <value>¿Está seguro que desea eliminar el ítem seleccionado?</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Información</value>
+  </data>
+  <data name="InfrastructureServiceBuilt" xml:space="preserve">
+    <value>El modelo de datos ha sido construido y publicado correctamente.</value>
+  </data>
+  <data name="QueryInsertTestDataOnInfrastructureService" xml:space="preserve">
+    <value>¿ Desea cargar datos de ejemplo en el modelo de datos para testing ?</value>
+  </data>
+  <data name="NoStore" xml:space="preserve">
+    <value>Sin tienda</value>
+  </data>
+  <data name="AddCategory" xml:space="preserve">
+    <value>Agregar categoría</value>
+  </data>
+  <data name="AddCustomer" xml:space="preserve">
+    <value>Agregar cliente</value>
+  </data>
+  <data name="AddGroup" xml:space="preserve">
+    <value>Agregar grupo</value>
+  </data>
+  <data name="AddPermission" xml:space="preserve">
+    <value>Agregar permiso</value>
+  </data>
+  <data name="AddressIsEmpty" xml:space="preserve">
+    <value>Dirección vacía</value>
+  </data>
+  <data name="AddService" xml:space="preserve">
+    <value>Agregar servicio</value>
+  </data>
+  <data name="AddStore" xml:space="preserve">
+    <value>Agregar tienda</value>
+  </data>
+  <data name="AddUser" xml:space="preserve">
+    <value>Agregar usuario</value>
+  </data>
+  <data name="CategoryWindowStillOpen" xml:space="preserve">
+    <value>La ventana de categorías ya se encuentra abierta</value>
+  </data>
+  <data name="ContactNameIsEmpty" xml:space="preserve">
+    <value>Nombre del contacto vacío</value>
+  </data>
+  <data name="DescriptionIsEmpty" xml:space="preserve">
+    <value>Descripcion vacía</value>
+  </data>
+  <data name="EditCategory" xml:space="preserve">
+    <value>Editar categoría</value>
+  </data>
+  <data name="EditCustomer" xml:space="preserve">
+    <value>Editar cliente</value>
+  </data>
+  <data name="EditGroup" xml:space="preserve">
+    <value>Editar grupo</value>
+  </data>
+  <data name="EditPermission" xml:space="preserve">
+    <value>Editar permiso</value>
+  </data>
+  <data name="EditService" xml:space="preserve">
+    <value>Editar servicio</value>
+  </data>
+  <data name="EditStore" xml:space="preserve">
+    <value>Editar tienda</value>
+  </data>
+  <data name="EditUser" xml:space="preserve">
+    <value>Editar usuario</value>
+  </data>
+  <data name="EmailIsEmpty" xml:space="preserve">
+    <value>Email vacío</value>
+  </data>
+  <data name="FirstNameIsEmpty" xml:space="preserve">
+    <value>Nombre vacío</value>
+  </data>
+  <data name="InternalPhoneIsEmpty" xml:space="preserve">
+    <value>Teléfono interno vacío</value>
+  </data>
+  <data name="InvalidStartDate" xml:space="preserve">
+    <value>Fecha de inicio inválida</value>
+  </data>
+  <data name="InvalidStopDate" xml:space="preserve">
+    <value>Fecha de finalización inválida</value>
+  </data>
+  <data name="LastNameIsEmpty" xml:space="preserve">
+    <value>Apellido vacío</value>
+  </data>
+  <data name="NameIsEmpty" xml:space="preserve">
+    <value>Nombre vacío</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="OwnerNameIsEmpty" xml:space="preserve">
+    <value>Nombre del dueño vacío</value>
+  </data>
+  <data name="PasswordAndConfirmNotEqual" xml:space="preserve">
+    <value>La contraseña y la confirmación no coinciden</value>
+  </data>
+  <data name="PasswordCantBeEmpty" xml:space="preserve">
+    <value>La contraseña no puede estar vacía</value>
+  </data>
+  <data name="PhoneIsEmpty" xml:space="preserve">
+    <value>Teléfono vacío</value>
+  </data>
+  <data name="PositionIsEmpty" xml:space="preserve">
+    <value>Cargo vacío</value>
+  </data>
+  <data name="StartDateInThePast" xml:space="preserve">
+    <value>Fecha de inicio en el pasado</value>
+  </data>
+  <data name="StopDateInThePast" xml:space="preserve">
+    <value>Fecha de finalización en el pasado</value>
+  </data>
+  <data name="StopDateSmallerStart" xml:space="preserve">
+    <value>Fecha de finalización anterior a fecha de inicio</value>
+  </data>
+  <data name="StoreNumberIsEmpty" xml:space="preserve">
+    <value>Número de tienda vacío</value>
+  </data>
+  <data name="StoreNumberNotValid" xml:space="preserve">
+    <value>Número de tienda inválido</value>
+  </data>
+  <data name="UserNameIsEmpty" xml:space="preserve">
+    <value>Usuario vacío</value>
+  </data>
+  <data name="WebsiteIsEmpty" xml:space="preserve">
+    <value>Sitio web vacío</value>
+  </data>
+  <data name="ConnectionErrors" xml:space="preserve">
+    <value>Errores de conexión</value>
+  </data>
+  <data name="SameNodesSelected" xml:space="preserve">
+    <value>Seleccione dos nodos diferentes para crear una conexión.</value>
+  </data>
+  <data name="SaveInfrastructureError" xml:space="preserve">
+    <value>Error al guardar el servicio de infraestructura</value>
+  </data>
+  <data name="SaveInfrastructureSuccessfully" xml:space="preserve">
+    <value>El servicio de infraestructura se guardó correctamente</value>
+  </data>
+  <data name="SelectTableOriginConnection" xml:space="preserve">
+    <value>Seleccione la tabla origen de la conexión</value>
+  </data>
+  <data name="SelectTableTargetConnection" xml:space="preserve">
+    <value>Seleccione la tabla destino de la conexión</value>
+  </data>
+  <data name="FieldNameRequired" xml:space="preserve">
+    <value>El campo nombre es requerido</value>
+  </data>
+  <data name="TableNameDupplicated" xml:space="preserve">
+    <value>Nombre de tabla duplicado</value>
+  </data>
+  <data name="TableNameRequired" xml:space="preserve">
+    <value>El nombre de la tabla es un dato requerido</value>
+  </data>
+  <data name="AllFieldsRequired" xml:space="preserve">
+    <value>Todos los campos son requeridos</value>
+  </data>
+  <data name="EmptyText" xml:space="preserve">
+    <value>Texto vacío</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="LoadServiceDesignFailed" xml:space="preserve">
+    <value>No se pudo cargar el diseño del servicio</value>
+  </data>
+  <data name="NoDisplayedField" xml:space="preserve">
+    <value>Agregue al menos un campo para mostrar</value>
+  </data>
+  <data name="NoInputConnection" xml:space="preserve">
+    <value>Agregue una conexión de entrada</value>
+  </data>
+  <data name="OutputDataContextChanged" xml:space="preserve">
+    <value>Datos de salida modificados</value>
+  </data>
+  <data name="ResetConnectionAndForm" xml:space="preserve">
+    <value>Esta acción limpiará las conexiones y formularios posteriores</value>
+  </data>
+  <data name="InvalidServicePath" xml:space="preserve">
+    <value>El diseño del servicio contiene formularios inaccesibles.</value>
+  </data>
+  <data name="NoDataModelLoaded" xml:space="preserve">
+    <value>&lt; No se cargó el modelo de datos &gt;</value>
+  </data>
+  <data name="NoStartForm" xml:space="preserve">
+    <value>Establezca un formulario de entrada</value>
+  </data>
+  <data name="ServiceDesignLogicIncorrect" xml:space="preserve">
+    <value>La lógica en el diseño del servicio es incorrecta.</value>
+  </data>
+  <data name="InternalError" xml:space="preserve">
+    <value>Error interno</value>
+  </data>
+  <data name="SaveSuccessfully" xml:space="preserve">
+    <value>Se guardó exitosamente</value>
+  </data>
+  <data name="SelectFormOriginConnection" xml:space="preserve">
+    <value>Seleccione el formulario origen de la conexión</value>
+  </data>
+  <data name="SelectFormTargetConnection" xml:space="preserve">
+    <value>Seleccione el formulario destino de la conexión</value>
+  </data>
+  <data name="ResetConnectionAndField" xml:space="preserve">
+    <value>Esta accion limpiará los campos y conexiones asociados a esta tabla</value>
+  </data>
+  <data name="Deployed" xml:space="preserve">
+    <value>Desplegado</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Fecha de inicio</value>
+  </data>
+  <data name="StopDate" xml:space="preserve">
+    <value>Fecha de fin</value>
+  </data>
+  <data name="FieldNameDuplicated" xml:space="preserve">
+    <value>Nombre de campo repetido</value>
+  </data>
+  <data name="NoTitle" xml:space="preserve">
+    <value>Sin título</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Agregar</value>
+  </data>
+  <data name="HidePreferences" xml:space="preserve">
+    <value>Ocultar preferencias</value>
+  </data>
+  <data name="ShowPreferences" xml:space="preserve">
+    <value>Mostrar preferencias</value>
+  </data>
+  <data name="NoServiceDesigned" xml:space="preserve">
+    <value>No se ha diseñado un servicio</value>
+  </data>
+  <data name="ServiceName" xml:space="preserve">
+    <value>Nombre del Servicio</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Valor</value>
+  </data>
+  <data name="NoServiceSelected" xml:space="preserve">
+    <value>Seleccione un servicio.</value>
+  </data>
+  <data name="ServiceBuilt" xml:space="preserve">
+    <value>El servicio se construyó y publicó correctamente.</value>
+  </data>
+  <data name="ConnectionError" xml:space="preserve">
+    <value>Error de conexión</value>
+  </data>
+  <data name="EmptyPermissions" xml:space="preserve">
+    <value>No hay permisos</value>
+  </data>
+  <data name="ErrorMakingCanvas" xml:space="preserve">
+    <value>Ha ocurrido un error al dibujar</value>
+  </data>
+  <data name="ImpossibleLoadDocument" xml:space="preserve">
+    <value>El documento no pudo cargarse</value>
+  </data>
+  <data name="PermissionAlreadyExists" xml:space="preserve">
+    <value>Ya existe ese permiso para la clase</value>
+  </data>
+  <data name="ImpossibleSaveService" xml:space="preserve">
+    <value>No se pudo guardar el servicio</value>
+  </data>
+  <data name="SelectPointOriginConnection" xml:space="preserve">
+    <value>Elija el punto de origen</value>
+  </data>
+  <data name="ServiceSavedSuccessfully" xml:space="preserve">
+    <value>El servicio se guardó correctamente.</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="Input" xml:space="preserve">
+    <value>Ingreso</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Lista</value>
+  </data>
+  <data name="ShowData" xml:space="preserve">
+    <value>Visualización Datos</value>
+  </data>
+  <data name="CustomerServiceDataNull" xml:space="preserve">
+    <value>CustomerServiceData es null</value>
+  </data>
+  <data name="NoInputForm" xml:space="preserve">
+    <value>Sin Formulario de Entrada</value>
+  </data>
+  <data name="AllStores" xml:space="preserve">
+    <value>Todas las Tiendas</value>
+  </data>
+  <data name="Mall" xml:space="preserve">
+    <value>Shopping</value>
+  </data>
+  <data name="MenuForm" xml:space="preserve">
+    <value>Menú</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Título</value>
+  </data>
+</root>

@@ -1,0 +1,27 @@
+﻿<Window
+	x:Uid="Window" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:UtnEmall.ServerManager="clr-namespace:UtnEmall.ServerManager"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2006" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+	x:Class="UtnEmall.ServerManager.CategorySelectorWindow"
+	x:Name="Window"
+	Title="{x:Static UtnEmall.ServerManager:UIResources.CategorySelector}"
+    Icon="UtnEmall.ico"
+	Width="536.068" Height="406.718" ResizeMode="NoResize" Closed="OnWindowClosed" WindowStartupLocation="CenterOwner">
+
+	<Grid x:Uid="Grid_1">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition x:Uid="ColumnDefinition_1" Width="16*"/>
+            <ColumnDefinition Width="199.012*" />
+            <ColumnDefinition Width="80.039*" />
+            <ColumnDefinition x:Uid="ColumnDefinition_2" Width="197*"/>
+			<ColumnDefinition x:Uid="ColumnDefinition_3" Width="22*"/>
+		</Grid.ColumnDefinitions>
+		<UtnEmall.ServerManager:CategorySelector x:Uid="selector" Margin="8,38.359,6.068,30.359" x:Name="selector" Grid.ColumnSpan="5"/>
+		<Label x:Uid="Label_1" Margin="0,8,0,0" VerticalAlignment="Top" Height="30.359" Content="{x:Static UtnEmall.ServerManager:UIResources.AvailableCategories}" FontSize="14" Grid.Column="1" HorizontalAlignment="Left" Width="199.019" Grid.ColumnSpan="2" />
+		<Label x:Uid="Label_2" Margin="0,8,0,0" VerticalAlignment="Top" Height="30.359" Content="{x:Static UtnEmall.ServerManager:UIResources.SelectedCategories}" FontSize="14" Grid.Column="3"/>
+		<Button x:Uid="bCancel" Margin="0,0,0,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Cancel}" Grid.Column="3" Width="100" d:LayoutOverrides="Width" HorizontalAlignment="Right" x:Name="bCancel" Click="OnCancelClicked"/>
+		<Button x:Uid="bOK" d:LayoutOverrides="GridBox" Margin="61.248,0,115.807,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.OK}" Grid.ColumnSpan="2" x:Name="bOK" Click="OnOkClicked" Grid.Column="2" />
+	</Grid>
+</Window>

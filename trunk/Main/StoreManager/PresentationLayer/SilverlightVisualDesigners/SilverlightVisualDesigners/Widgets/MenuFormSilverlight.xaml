@@ -1,0 +1,28 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="SilverlightVisualDesigners.MenuFormSilverlight"
+	d:DesignWidth="640" d:DesignHeight="480" Height="27">
+
+	<Grid x:Name="LayoutRoot" Background="#00000000" Width="116" Height="26" >
+		<Canvas HorizontalAlignment="Left" Margin="0.0270000007003546,3.07500004768372,0,10.9250001907349" VerticalAlignment="Stretch" Width="15" x:Name="CanvasConnectionPointInput" Height="12">
+			<Path Height="11.8" x:Name="circle1" Width="14.063" Fill="#55FFFFFF" Stretch="Fill" Data="M5.8000002,0 C7.9310822,7.1198144E-08 9.7937222,1.1691551 10.717732,2.96 L14.063,2.96 L14.063,8.5880003 L10.884755,8.5880003 C9.9812107,10.509748 8.0387287,11.8 5.8000002,11.8 C2.5967486,11.8 8.8817842E-16,9.1584806 0,5.9000001 C8.8817842E-16,2.64152 2.5967486,7.1198144E-08 5.8000002,0 z" d:LayoutOverrides="Height" x:Uid="circle"/>
+			<Ellipse x:Uid="circle" Width="7.065" Height="6.692" Fill="#55000000" x:Name="circle_Copy" Canvas.Left="2.294" Canvas.Top="2.502" d:LayoutOverrides="Width, Height"/>
+		</Canvas>
+		<Canvas Margin="14.0590000152588,-0.17399999499321,0,0" x:Name="canvasWidget" VerticalAlignment="Top" Height="24.574" d:LayoutOverrides="Height">
+			<Rectangle Fill="#55FFFFFF" RadiusX="3.529" RadiusY="3.529" Height="26.1739999949932" Width="101.940999984741"/>
+			<Canvas Height="21.351" Width="97.7009994983673" Canvas.Left="1.883" Canvas.Top="2.442">
+				<Rectangle Height="21.351" Width="97.701" RadiusX="3.529" RadiusY="3.529" Fill="#FFFFFFFF" Stroke="#FF80231F"/>
+				<Rectangle Height="12.881" Width="95.2" Canvas.Left="1.202" Canvas.Top="1.268" RadiusX="2.713" RadiusY="2.713" Fill="#FFEF9BA0"/>
+				<Rectangle Height="9.508" RadiusX="2.713" RadiusY="2.713" Fill="#FFDA251D" Width="95.2" Canvas.Left="1.202" Canvas.Top="10.623"/>
+				<Rectangle Height="4.871" RadiusX="0" RadiusY="0" Fill="#FFDA251D" Width="95.2" Canvas.Left="1.202" Canvas.Top="10.409"/>
+			</Canvas>
+			<TextBlock Height="13.482" FontFamily="Trebuchet MS" FontSize="10" Foreground="#FFFFFFFF" x:Name="Title" Text="Menu" TextAlignment="Center" TextWrapping="Wrap" d:LayoutOverrides="Height" Width="97.4510004520416" Canvas.Left="2.133" Canvas.Top="6.017"/>
+		</Canvas>
+		<Canvas Height="Auto" HorizontalAlignment="Stretch" Margin="14.059,0,-0.059,-4" VerticalAlignment="Bottom" x:Name="canvasMenuItems"/>
+		<Canvas HorizontalAlignment="Left" Margin="14.0590000152588,0,0,0" VerticalAlignment="Top" x:Name="canvasMenu"/>
+	</Grid>
+</UserControl>

@@ -1,0 +1,67 @@
+﻿<UserControl
+	x:Uid="UserControl_1" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:UtnEmall.ServerManager="clr-namespace:UtnEmall.ServerManager"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2006" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+	x:Class="UtnEmall.ServerManager.UserControl1"
+	Width="777" Height="407">
+
+	<UserControl.Resources>
+		<DrawingBrush x:Uid="DrawingBrush_1" x:Key="MenuBackground" Viewbox="0,0,20,20" ViewboxUnits="Absolute">
+			<DrawingBrush.Drawing>
+				<DrawingGroup x:Uid="DrawingGroup_1">
+					<GeometryDrawing x:Uid="GeometryDrawing_1" Brush="#FFD3D3D3">
+						<GeometryDrawing.Geometry>
+							<RectangleGeometry x:Uid="RectangleGeometry_1" Rect="0,0,20,20"/>
+						</GeometryDrawing.Geometry>
+					</GeometryDrawing>
+					<GeometryDrawing x:Uid="GeometryDrawing_2" Brush="#FF000000">
+						<GeometryDrawing.Geometry>
+							<EllipseGeometry x:Uid="EllipseGeometry_1" Center="0,0" RadiusX="10" RadiusY="10"/>
+						</GeometryDrawing.Geometry>
+					</GeometryDrawing>
+					<GeometryDrawing x:Uid="GeometryDrawing_3" Brush="#FF000000">
+						<GeometryDrawing.Geometry>
+							<EllipseGeometry x:Uid="EllipseGeometry_2" Center="20,20" RadiusX="10" RadiusY="10"/>
+						</GeometryDrawing.Geometry>
+					</GeometryDrawing>
+					<GeometryDrawing x:Uid="GeometryDrawing_4" Brush="#FFFFFFFF">
+						<GeometryDrawing.Geometry>
+							<EllipseGeometry x:Uid="EllipseGeometry_3" Center="20,0" RadiusX="10" RadiusY="10"/>
+						</GeometryDrawing.Geometry>
+					</GeometryDrawing>
+					<GeometryDrawing x:Uid="GeometryDrawing_5" Brush="#FFFFFFFF">
+						<GeometryDrawing.Geometry>
+							<EllipseGeometry x:Uid="EllipseGeometry_4" Center="0,20" RadiusX="10" RadiusY="10"/>
+						</GeometryDrawing.Geometry>
+					</GeometryDrawing>
+				</DrawingGroup>
+			</DrawingBrush.Drawing>
+		</DrawingBrush>
+	</UserControl.Resources>
+
+	<Grid x:Uid="Grid_1" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+		<Image x:Uid="Image_1" Margin="161,0,0,0" Source="imgs\background.jpg" Stretch="Fill"/>
+		<UtnEmall.ServerManager:Menu x:Uid="menu" HorizontalAlignment="Left" Width="196" x:Name="menu"/>
+		<UtnEmall.ServerManager:CategoryManager x:Uid="categoryManager" Margin="0,8,8,8" Visibility="Hidden" x:Name="categoryManager" HorizontalAlignment="Right" Width="512" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:CustomerManager x:Uid="customerManager" Margin="0,8,8,8" Visibility="Hidden" x:Name="customerManager" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391"/>
+		<UtnEmall.ServerManager:PermissionManager x:Uid="permissionManager" Margin="0,8,8,8" Visibility="Hidden" x:Name="permissionManager" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:ServiceManager x:Uid="serviceManager" Margin="0,8,8,8" Visibility="Hidden" x:Name="serviceManager" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:StoreManager x:Uid="storeManager" Margin="0,8,8,8" Visibility="Hidden" x:Name="storeManager" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:UserManager x:Uid="userManager" Margin="0,8,8,8" Visibility="Hidden" x:Name="userManager" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:UserEditor x:Uid="addUser" Margin="0,8,8,8" Visibility="Hidden" x:Name="addUser" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:CustomerEditor x:Uid="addCustomer" Margin="0,8,8,8" Visibility="Hidden" x:Name="addCustomer" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:StoreEditor x:Uid="addStore" Margin="0,8,8,8" Visibility="Hidden" x:Name="addStore" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:ServiceEditor x:Uid="addService" Margin="0,8,8,8" Visibility="Hidden" x:Name="addService" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391"/>
+		<UtnEmall.ServerManager:CategoryEditor x:Uid="addCategory" Margin="0,8,8,8" Visibility="Hidden" x:Name="addCategory" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:GroupEditor x:Uid="addGroup" Margin="0,8,8,8" Visibility="Hidden" x:Name="addGroup" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:AuthorizationEditor x:Uid="addPermission" Margin="0,8,8,8" Visibility="Hidden" x:Name="addPermission" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:Welcome x:Uid="welcome" Margin="0,8,8,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391" x:Name="welcome"/>
+		<UtnEmall.ServerManager:GroupManager x:Uid="groupManager" Margin="0,8,8,0" Visibility="Hidden" x:Name="groupManager" Width="512" Height="391" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+		<UtnEmall.ServerManager:DataModelManager x:Uid="dataModelManager" Margin="0,8,8,0" x:Name="dataModelManager" Width="512" Height="391" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="0,0,0,0"/>
+		<UtnEmall.ServerManager:DataModelEditor x:Uid="addDataModel" Margin="0,8,8,0" x:Name="addDataModel" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391" Visibility="Hidden"/>
+		<UtnEmall.ServerManager:EditGroups x:Uid="editGroups" Margin="257,8,8,8" x:Name="editGroups" Visibility="Hidden" Width="512" Height="391"/>
+        <UtnEmall.ServerManager:StatisticsViewer x:Uid="statisticsViewer" Margin="0,8,8,0" x:Name="statisticsViewer" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391" Visibility="Hidden"/>
+        <UtnEmall.ServerManager:GlobalStatisticsAnalyzer x:Uid="globalStatisticsAnalyzer" Margin="0,8,8,0" x:Name="globalStatisticsAnalyzer" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391" Visibility="Hidden"/>
+	</Grid>
+</UserControl>

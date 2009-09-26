@@ -1,0 +1,42 @@
+﻿<UserControl
+	x:Uid="UserControl_1" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="SilverlightVisualDesigners.DataSourceSilverlight"
+	d:DesignWidth="400" d:DesignHeight="480" Height="115.2" Width="96.8">
+
+	<Grid x:Uid="LayoutRoot" x:Name="LayoutRoot" Background="Transparent">
+		<Canvas x:Uid="Canvas_1" Height="114.962" Width="97.694" Margin="0,0,-0.893999993801117,0.238000005483627" VerticalAlignment="Stretch" d:LayoutOverrides="Width, Height" HorizontalAlignment="Stretch">
+			<Canvas.Resources>
+				<LinearGradientBrush x:Uid="LinearGradientBrush_1" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Key="id0" MappingMode="Absolute" StartPoint="10.8766,19.8084" EndPoint="22.4035,19.8084">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection x:Uid="GradientStopCollection_1">
+							<GradientStop x:Uid="GradientStop_1" Color="#E77844" Offset="0"/>
+							<GradientStop x:Uid="GradientStop_2" Color="#F8C300" Offset="0.858824"/>
+							<GradientStop x:Uid="GradientStop_3" Color="#E77817" Offset="0.870588"/>
+							<GradientStop x:Uid="GradientStop_4" Color="#E77817" Offset="1"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+				<LinearGradientBrush x:Uid="LinearGradientBrush_2" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Key="linearGradient3122" MappingMode="Absolute" StartPoint="10.8766,19.8084" EndPoint="22.4035,19.8084">
+					<LinearGradientBrush.GradientStops>
+						<GradientStopCollection x:Uid="GradientStopCollection_2">
+							<GradientStop x:Uid="GradientStop_5" Color="#E77844" Offset="0"/>
+							<GradientStop x:Uid="GradientStop_6" Color="#F8C300" Offset="0.858824"/>
+							<GradientStop x:Uid="GradientStop_7" Color="#E77817" Offset="0.870588"/>
+							<GradientStop x:Uid="GradientStop_8" Color="#E77817" Offset="1"/>
+						</GradientStopCollection>
+					</LinearGradientBrush.GradientStops>
+				</LinearGradientBrush>
+			</Canvas.Resources>
+			<Path x:Uid="Path_1" Opacity="0.5" Fill="#FFFFFFFF" Stretch="Fill" Data="M46.599998,0 C72.336464,0 93.199997,6.6261826 93.199997,14.800003 L93.025101,15.900002 L93.199997,15.900002 L93.199997,95.099998 L93.009201,95.099998 C93.148209,95.489388 93.199997,95.892769 93.199997,96.300003 C93.199997,104.47382 72.336464,111.1 46.599998,111.1 C20.863529,111.1 -6.133659E-07,104.47382 0,96.300003 L0.19079171,95.099998 L0,95.099998 L0,15.900002 L0.17489192,15.900002 C0.043590162,15.543999 -2.8036254E-08,15.173622 0,14.800003 C-6.133659E-07,6.6261826 20.863529,0 46.599998,0 z" Height="111.100002765656" Width="93.2000036239624" Canvas.Left="2.4" Canvas.Top="2"/>
+			<Path x:Uid="path2442" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path2442" Fill="{StaticResource linearGradient3122}" Data="M 102.16098 107.68842 C 102.16098 123.17402 17.83835 123.21247 17.83835 107.72469 C 17.83835 94.481264 17.83835 81.229134 17.83835 67.967574 L 17.83835 42.774094 C 17.83835 39.652744 20.01957 37.080514 22.82804 36.727974 C 31.65455 39.714404 45.02858 41.619274 59.99967 41.619274 C 73.98614 41.619274 86.57881 39.956684 95.37167 37.303214 C 98.41165 36.616994 102.16098 38.432644 102.16098 42.774094 L 102.16098 67.985714 C 102.16098 81.211004 102.16098 94.444994 102.16098 107.68842 L 102.16098 107.68842 z" Canvas.Left="-11" Canvas.Top="-12.5"/>
+			<Path x:Uid="path2444" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path2444" Fill="#F8C300" Data="M 34.41187 47.037934 C 34.41187 43.635854 33.58272 42.584764 31.47351 42.404144 C 28.34739 42.156784 25.12031 41.606214 22.08773 40.396994 C 21.62268 40.215644 21.24916 41.760724 21.24916 42.774094 L 21.24916 67.967574 C 21.24916 81.219704 21.24916 94.472564 21.24916 107.72469 C 21.24916 107.73774 21.24916 107.7508 21.25051 107.76386 C 21.31714 108.44355 22.28492 109.38438 22.57633 109.63246 C 24.00446 110.84821 25.83908 111.49816 27.41796 111.91889 C 29.09241 112.36573 30.84223 112.64065 32.62301 112.7821 C 33.6157 112.76904 34.41187 112.01246 34.41187 110.35495 L 34.41187 47.037934 L 34.41187 47.037934 z" Canvas.Left="-11" Canvas.Top="-12.5"/>
+			<Path x:Uid="path2446" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path2446" Fill="#9A5922" Data="M 59.99967 19.583414 C 81.78766 19.583414 99.45683 23.450454 99.45683 28.219164 C 99.45683 32.987144 81.78766 36.854194 59.99967 36.854194 C 38.21235 36.854194 20.54317 32.987144 20.54317 28.219164 C 20.54317 23.450454 38.21235 19.583414 59.99967 19.583414 z" Canvas.Left="-11" Canvas.Top="-12.5"/>
+			<Path x:Uid="path2554" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path2554" Fill="#F8C300" Data="M 59.99967 19.583414 C 65.65496 19.583414 71.03163 19.844554 75.89479 20.313874 C 79.4079 21.655844 81.43971 23.239374 81.43971 24.935334 C 81.43971 29.778754 64.89446 33.706004 44.49287 33.706004 C 37.62818 33.706004 31.20162 33.260614 25.69304 32.485904 C 22.41683 31.227354 20.54317 29.770774 20.54317 28.219164 C 20.54317 23.451184 38.21235 19.583414 59.99967 19.583414 L 59.99967 19.583414 z" Canvas.Left="-11" Canvas.Top="-12.5"/>
+		</Canvas>
+		<TextBlock x:Uid="textBlockName" Margin="8,51.5999984741211,8,44.4000015258789" Text="&lt;No Name&gt;" TextWrapping="Wrap" FontSize="12" TextAlignment="Center" FontFamily="Verdana" x:Name="textBlockName"/>
+	</Grid>
+</UserControl>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://cpu13:8081/StatisticsAnalyzer?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" />
+  <xs:import schemaLocation="http://cpu13:8081/StatisticsAnalyzer?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Collections" />
+  <xs:element name="GetRegistersClickAmount">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="ListFormComponent" nillable="true" type="q1:ComponentEntity" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRegistersClickAmountResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/System.Collections" minOccurs="0" name="GetRegistersClickAmountResult" nillable="true" type="q2:ArrayOfDictionaryEntry" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRegisterClickPercentageAmount">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="ListFormComponent" nillable="true" type="q3:ComponentEntity" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRegisterClickPercentageAmountResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/System.Collections" minOccurs="0" name="GetRegisterClickPercentageAmountResult" nillable="true" type="q4:ArrayOfDictionaryEntry" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCustomersAccessAmount">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCustomersAccessAmountResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/System.Collections" minOccurs="0" name="GetCustomersAccessAmountResult" nillable="true" type="q5:ArrayOfDictionaryEntry" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCustomersTimeAmountByStore">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="store" nillable="true" type="q6:StoreEntity" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCustomersTimeAmountByStoreResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/System.Collections" minOccurs="0" name="GetCustomersTimeAmountByStoreResult" nillable="true" type="q7:ArrayOfDictionaryEntry" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCustomersAccessAmountByStore">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="store" nillable="true" type="q8:StoreEntity" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCustomersAccessAmountByStoreResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/System.Collections" minOccurs="0" name="GetCustomersAccessAmountByStoreResult" nillable="true" type="q9:ArrayOfDictionaryEntry" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCustomersTimeAmount">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCustomersTimeAmountResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/System.Collections" minOccurs="0" name="GetCustomersTimeAmountResult" nillable="true" type="q10:ArrayOfDictionaryEntry" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCustomerAccessAmount">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="customerId" type="xs:int" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCustomerAccessAmountResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/System.Collections" minOccurs="0" name="GetCustomerAccessAmountResult" nillable="true" type="q11:ArrayOfDictionaryEntry" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCustomerTimeAmount">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="customerId" type="xs:int" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCustomerTimeAmountResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/System.Collections" minOccurs="0" name="GetCustomerTimeAmountResult" nillable="true" type="q12:ArrayOfDictionaryEntry" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCustomerFormAccessAmount">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="component" nillable="true" type="q13:ComponentEntity" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCustomerFormAccessAmountResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetCustomerFormAccessAmountResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetFormAccessAmount">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="component" nillable="true" type="q14:ComponentEntity" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetFormAccessAmountResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetFormAccessAmountResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMenuItemAccessAmounts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="component" nillable="true" type="q15:ComponentEntity" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMenuItemAccessAmountsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/System.Collections" minOccurs="0" name="GetMenuItemAccessAmountsResult" nillable="true" type="q16:ArrayOfDictionaryEntry" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMenuItemAccessAmount">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" minOccurs="0" name="component" nillable="true" type="q17:ComponentEntity" />
+        <xs:element minOccurs="0" name="session" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMenuItemAccessAmountResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetMenuItemAccessAmountResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

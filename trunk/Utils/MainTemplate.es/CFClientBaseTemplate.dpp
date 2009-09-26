@@ -1,0 +1,171 @@
+import "Microsoft", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+//import "LayerD.CodeDOM", "platform=DotNET", "ns=DotNET", "assembly=lib_layerd_xpl_codedom_net";
+//import "LayerD.ZOECompiler", "platform=DotNET", "ns=DotNET", "assembly=lib_zoec_core";
+using DotNET::System;
+using DotNET::System::IO;
+using DotNET::System::Collections;
+using DotNET::LayerD::CodeDOM;
+using DotNET::LayerD::ZOECompiler;
+
+namespace UtnEmall::Utils{
+	public factory class CFClientBase{
+		static bool flag;
+		static XplNamespace^ serviceNS;
+		static Hashtable^ classes = new Hashtable();
+	public:
+		static XplNode^ New(iname void cfClientBaseClassName, type TChannel){
+
+			//La primera vez inserto el espacio de nombres para las clases
+			if(serviceNS==null){
+				serviceNS = (XplNamespace^)writecode{
+					namespace Microsoft::Tools::ServiceModel{
+					}
+				}.Children().FirstNode();
+				
+				XplDocumentBody^ docBody = context.CurrentDocumentBody;				
+
+				docBody.Children().InsertBefore( serviceNS, docBody.get_NamespaceNodeList().FirstNode() );
+			}
+			//Inserto una vez las clases de utilidad
+			if(!flag){
+				XplClass^ supportClass = writecode{
+					private extern class CFContractSerializer
+					{
+					public:
+						CFContractSerializer(CFContractSerializerInfo^ info);
+					}
+				};
+				serviceNS.Children().InsertAtEnd(supportClass);
+
+				supportClass = writecode{
+					protected extern struct CFContractSerializerInfo
+					{
+					public:
+						DotNET::System::Type^ MessageContractType;
+						bool IsWrapped;
+						bool IsResponse;
+						DotNET::System::Type[] ExtraTypes;
+						string^ DefaultNamespace;
+						bool UseEncoded;
+					}
+				};
+				serviceNS.Children().InsertAtEnd(supportClass);
+
+				supportClass = writecode{
+					protected extern class CFInvokeInfo
+					{
+					public:
+						string^ Action;
+						string^ ReplyAction;
+						bool IsOneWay;
+						bool RequestIsWrapped;
+						bool ResponseIsWrapped;
+						DotNET::System::Type[] ExtraTypes;
+						bool UseEncoded;
+					}
+				};
+				serviceNS.Children().InsertAtEnd(supportClass);
+
+				flag = true;
+			}
+
+			//Creo la clase generica
+			XplClass^ clase = writecode{
+				public extern class $cfClientBaseClassName
+				{
+				public:
+					$cfClientBaseClassName(DotNET::System::ServiceModel::Channels::Binding^ binding, DotNET::System::ServiceModel::EndpointAddress^ remoteAddress);
+					extern DotNET::System::ServiceModel::Description::ClientCredentials^ property ClientCredentials
+					{
+						get;
+					}
+				protected:
+					extern DotNET::System::ServiceModel::Channels::BindingParameterCollection^ property Parameters
+					{
+						get;
+					}
+					static void ApplyProtection(string^ action, DotNET::System::ServiceModel::Security::ScopedMessagePartSpecification^ parts, bool protection);
+					static bool IsSecureMessageBinding(DotNET::System::ServiceModel::Channels::Binding^ binding);
+					void Close();
+					virtual DotNET::System::Runtime::Serialization::XmlObjectSerializer^ GetContractSerializer(CFContractSerializerInfo^ info){
+					}
+					//
+					//protected TRESPONSE^ Invoke<TREQUEST, TRESPONSE>(CFInvokeInfo^ info, TREQUEST^ request);
+					//protected void Invoke<TREQUEST>(CFInvokeInfo^ info, TREQUEST^ request);
+					//
+				}
+			};
+
+			//Marco la clase generica para el Modulo de Salida 
+			clase.set_externalname("CFClientBase<T,M>");
+			clase.set_lddata("$NET_GENERIC[Microsoft.Tools.ServiceModel.CFClientBase<"+ GetNETTypeName(TChannel) +">]$");
+
+			//Agrego la instancia generica a las clases existentes
+			classes.Add(cfClientBaseClassName.Identifier, clase);
+
+			//Inserto la clase dentro del espacio de nombres
+			serviceNS.Children().InsertAtEnd(clase);
+
+			return null;
+		}
+		static string^ GetNETTypeName(XplType^ zoeType){
+			if(zoeType.get_ispointer())
+				zoeType = zoeType.get_dt();
+			string^ zoeTypeName = zoeType.get_typename();
+
+			switch(zoeTypeName){
+				case "$OBJECT$":
+					return "object";
+				case "^_" + NativeTypes::String:
+				case NativeTypes::String:
+					return "string";
+				case NativeTypes::Boolean:
+					return "bool";
+				case NativeTypes::Integer:
+					return "int";
+				case NativeTypes::Long:
+					return "long";
+				case NativeTypes::Char:
+					return "char";
+			}
+			if(zoeTypeName.IndexOf("DotNET.") == 0)
+				zoeTypeName = zoeTypeName.Substring(7);
+			return zoeTypeName;
+		}
+		static exp void MakeInvoke(iname void forClass, type TREQUEST, type TRESPONSE){
+			if(classes[forClass.Identifier]==null){
+				Error^ error = new Error("El tipo \""+forClass.Identifier+"\" no existe.");
+				compiler.get_ErrorCollection().AddError( error );
+				return null;
+			}
+			//Creo la funcion generica
+			XplFunction^ func = (XplFunction^) writecode{%
+				protected:
+					$TRESPONSE^ Invoke(CFInvokeInfo^ info, $TREQUEST^ request){}
+				%}.Children().FirstNode();
+
+			//Marco la funcion para el modulo de salida
+			func.set_externalname("Invoke<"+GetNETTypeName(TREQUEST)+","+GetNETTypeName(TRESPONSE)+">");
+			//Obtengo la clase generica
+			XplClass^ clase = (XplClass^)classes[forClass.Identifier];
+			//Inserto la funcion
+			clase.Children().InsertAtEnd(func);
+
+			return null;
+		}
+		static exp void MakeInvoke(iname void forClass, type TREQUEST){
+			XplFunction^ func = (XplFunction^) writecode{%
+				protected:
+					void Invoke(CFInvokeInfo^ info, $TREQUEST^ request){}				
+				%}.Children().FirstNode();
+
+			func.set_externalname("Invoke<"+GetNETTypeName(TREQUEST)+">");
+			XplClass^ clase = (XplClass^)classes[forClass.Identifier];
+			clase.Children().InsertAtEnd(func);
+
+			return null;
+		}
+	}
+}
+

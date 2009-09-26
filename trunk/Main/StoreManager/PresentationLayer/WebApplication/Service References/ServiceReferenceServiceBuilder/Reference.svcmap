@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="5e848a9f-9e76-44e0-b159-63c8954e2f46" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8081/ServiceBuilder" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ServiceBuilder1.disco" MetadataType="Disco" ID="fa4554bf-12c1-4f3e-8d8c-242ae594a348" SourceId="1" SourceUrl="http://cpu14:8081/ServiceBuilder?disco" />
+    <MetadataFile FileName="ServiceBuilder1.wsdl" MetadataType="Wsdl" ID="6349b2f4-cfba-4a4a-b7eb-c3d66a747798" SourceId="1" SourceUrl="http://cpu14:8081/ServiceBuilder?wsdl" />
+    <MetadataFile FileName="ServiceBuilder3.xsd" MetadataType="Schema" ID="a23fd65a-6d37-4dee-817e-2611e26fff80" SourceId="1" SourceUrl="http://cpu14:8081/ServiceBuilder?xsd=xsd0" />
+    <MetadataFile FileName="ServiceBuilder31.xsd" MetadataType="Schema" ID="a3705ce4-8476-41ca-9237-6588a7b814db" SourceId="1" SourceUrl="http://cpu14:8081/ServiceBuilder?xsd=xsd1" />
+    <MetadataFile FileName="ServiceBuilder32.xsd" MetadataType="Schema" ID="b742d0bd-eea9-449f-9da4-3d545ce24c2a" SourceId="1" SourceUrl="http://cpu14:8081/ServiceBuilder?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

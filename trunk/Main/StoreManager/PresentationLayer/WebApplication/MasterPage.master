@@ -1,0 +1,45 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>UtnEmall Project</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+</head>
+<body>
+    <div id="header">
+    </div>
+    <div id="content">
+        <div id="menu">
+            <ul class="menulist">
+                <li class="menuitem" id="mihome"><a href="./Home.aspx"><span>
+                    <asp:Label ID="lblHome" runat="server" Text="Home" CssClass="floatright" meta:resourcekey="lblHomeResource1"></asp:Label>
+                </span></a></li>
+                <li class="menuitem" id="mistoreprofile"><a href="./StoreProfile.aspx"><span>
+                    <asp:Label ID="lblStoreProfile" runat="server" Text="Store profile" CssClass="floatright"
+                        meta:resourcekey="lblStoreProfileResource1"></asp:Label></span></a></li>
+                <li class="menuitem" id="miuserprofile"><a href="./UserProfile.aspx"><span>
+                    <asp:Label ID="lblUserProfile" runat="server" Text="User profile" CssClass="floatright"
+                        meta:resourcekey="lblUserProfileResource1"></asp:Label></span></a></li>
+                <li class="menuitem" id="mipass"><a href="./ChangePassword.aspx"><span>
+                    <asp:Label ID="lblChangePassword" runat="server" Text="Change password" CssClass="floatright"
+                        meta:resourcekey="lblChangePasswordResource1"></asp:Label></span></a></li>
+                <li class="menuitem" id="miservices"><a href="./ListServices.aspx"><span>
+                    <asp:Label ID="lblServices" runat="server" Text="Services" CssClass="floatright"
+                        meta:resourcekey="lblServicesResource1"></asp:Label></span></a></li>
+                <li class="menuitem" id="mistatistics"><a href="./StatisticsViewer.aspx"><span>
+                    <asp:Label ID="lblStatistics" runat="server" Text="Statistics" CssClass="floatright"
+                        meta:resourcekey="lblStatisticsResource1"></asp:Label></span></a></li>
+                <li class="menuitem" id="miexit"><a href="./LogOn.aspx"><span>
+                    <asp:Label ID="lblExit" runat="server" Text="Exit" CssClass="floatright" meta:resourcekey="lblExitResource1"></asp:Label></span></a></li>
+            </ul>
+        </div>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+    <div id="footer">
+        <p>
+            <strong>UtnEmall Mall Service</strong> | UTN-FRC&copy;2008</p>
+    </div>
+</body>
+</html>

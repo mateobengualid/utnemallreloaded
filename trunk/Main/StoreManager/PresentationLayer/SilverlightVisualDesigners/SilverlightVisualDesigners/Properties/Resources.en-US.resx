@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CustomerServiceSuccessfullySaved" xml:space="preserve">
+    <value>The customer service was saved successfully.</value>
+  </data>
+  <data name="DataModelSuccessfullySaved" xml:space="preserve">
+    <value>The data model was saved successfully.</value>
+  </data>
+  <data name="EnterSingleDataDescriptionEmpty" xml:space="preserve">
+    <value>Description is required.</value>
+  </data>
+  <data name="EnterSingleDataFormName" xml:space="preserve">
+    <value>Input</value>
+  </data>
+  <data name="EnterSingleDataNameEmpty" xml:space="preserve">
+    <value>Name is required.</value>
+  </data>
+  <data name="EnterSingleDataTypeEmpty" xml:space="preserve">
+    <value>Type is required.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorWhileSavingCustomerService" xml:space="preserve">
+    <value>An error has occurred while saving the customer service.</value>
+  </data>
+  <data name="ErrorWhileSavingDataModel" xml:space="preserve">
+    <value>An error has occurred while saving the data model.</value>
+  </data>
+  <data name="FieldSameNameError" xml:space="preserve">
+    <value>Duplicated field name</value>
+  </data>
+  <data name="FieldSameNameMessage" xml:space="preserve">
+    <value>A field with the same name already exists.</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="InvalidConnectionError" xml:space="preserve">
+    <value>Invalid Connection</value>
+  </data>
+  <data name="InvalidConnectionMessage" xml:space="preserve">
+    <value>You need a valid input information to connect this widget, please check the connection source widget.</value>
+  </data>
+  <data name="InvalidConnection_MenuItemMustBeSourceInMenu" xml:space="preserve">
+    <value>It's not possible to set a menu as source connection. Must select a menu item as source connection on a menu form.</value>
+  </data>
+  <data name="InvalidCustomService" xml:space="preserve">
+    <value>Invalid custom service</value>
+  </data>
+  <data name="InvalidFieldNameError" xml:space="preserve">
+    <value>Invalid field name</value>
+  </data>
+  <data name="InvalidFieldNameMessage" xml:space="preserve">
+    <value>Field name is required.</value>
+  </data>
+  <data name="InvalidServicePath" xml:space="preserve">
+    <value>The service design has an inaccessible form.</value>
+  </data>
+  <data name="InvalidTableNameError" xml:space="preserve">
+    <value>Invalid table name</value>
+  </data>
+  <data name="InvalidTableNameMessage" xml:space="preserve">
+    <value>Table name is required.</value>
+  </data>
+  <data name="InvalidTypeOfWidget" xml:space="preserve">
+    <value>Invalid type of widget</value>
+  </data>
+  <data name="ListFormName" xml:space="preserve">
+    <value>List</value>
+  </data>
+  <data name="MenuFormName" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="NoListItems" xml:space="preserve">
+    <value>Add at least one displayed field.</value>
+  </data>
+  <data name="NoMenuItems" xml:space="preserve">
+    <value>Add at least one menu option.</value>
+  </data>
+  <data name="NoSelectedDataType" xml:space="preserve">
+    <value>Select a data type.</value>
+  </data>
+  <data name="NoStartForm" xml:space="preserve">
+    <value>Set a start form.</value>
+  </data>
+  <data name="SaveError" xml:space="preserve">
+    <value>Error while saving</value>
+  </data>
+  <data name="SaveErrorMessage" xml:space="preserve">
+    <value>An error has occurred while saving.</value>
+  </data>
+  <data name="ShowDataFormName" xml:space="preserve">
+    <value>Show Data</value>
+  </data>
+  <data name="TableNameDuplicateError" xml:space="preserve">
+    <value>Duplicated table name</value>
+  </data>
+  <data name="TableNameDuplicateMessage" xml:space="preserve">
+    <value>A table with the same name already exists.</value>
+  </data>
+  <data name="TableNoName" xml:space="preserve">
+    <value>&lt;No Name&gt;</value>
+  </data>
+  <data name="TheTableHasRelations" xml:space="preserve">
+    <value>The table has relations. Can´t be set as storage.</value>
+  </data>
+  <data name="TitleFormEmpty" xml:space="preserve">
+    <value>Title is required.</value>
+  </data>
+  <data name="UnhandledError" xml:space="preserve">
+    <value>UnhandledError</value>
+  </data>
+</root>

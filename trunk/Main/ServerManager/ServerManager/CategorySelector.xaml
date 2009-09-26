@@ -1,0 +1,29 @@
+﻿<UserControl
+	x:Uid="UserControl_1" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2006" 
+    xmlns:UtnEmall.ServerManager="clr-namespace:UtnEmall.ServerManager"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+	x:Class="UtnEmall.ServerManager.CategorySelector"
+	Width="500" Height="300">
+
+	<Grid x:Uid="Grid_1" Width="500" Height="300">
+		<TreeView x:Uid="available" HorizontalAlignment="Left" Margin="8,8,0,8" Width="200" x:Name="available" Background="#44FFFFFF" KeyUp="OnKeyPressed" d:LayoutOverrides="HorizontalAlignment, GridBox"/>
+		<Button x:Uid="add" Margin="135,8,143,0" VerticalAlignment="Top" Height="36" x:Name="add" Width="36" ToolTip="{x:Static UtnEmall.ServerManager:UIResources.AddCategory}" Click="OnAddClicked">
+			<Image x:Uid="Image_1" Source="imgs\arrow_right.png" Stretch="Fill" Height="32" Width="32"/>
+		</Button>
+		<Button x:Uid="remove" Margin="143,52,151,0" VerticalAlignment="Top" Height="36" x:Name="remove" Width="36" ToolTip="{x:Static UtnEmall.ServerManager:UIResources.RemoveCategory}" Click="OnRemoveClicked">
+			<Image x:Uid="Image_2" Source="imgs\arrow_left.png" Stretch="Fill" Height="32" Width="32"/>
+		</Button>
+		<Button x:Uid="clear" Margin="143,0,151,8" x:Name="clear" Width="36" VerticalAlignment="Bottom" Height="36" ToolTip="{x:Static UtnEmall.ServerManager:UIResources.RemoveAll}" Click="OnRemoveAllClicked">
+			<Image x:Uid="Image_3" Source="imgs\trash.png" Stretch="Fill" Height="32" Width="32"/>
+		</Button>
+		<ListView x:Uid="selected" IsSynchronizedWithCurrentItem="True" Margin="0,8,8,8" Background="#44FFFFFF" KeyUp="OnKeyPressed" x:Name="selected" HorizontalAlignment="Right" Width="210" d:LayoutOverrides="HorizontalAlignment">
+			<ListView.View>
+				<GridView x:Uid="GridView_1">
+					<GridViewColumn x:Uid="GridViewColumn_1"/>
+				</GridView>
+			</ListView.View>
+		</ListView>
+	</Grid>
+</UserControl>

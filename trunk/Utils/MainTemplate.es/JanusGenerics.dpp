@@ -1,0 +1,250 @@
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "LayerD.CodeDOM", "platform=DotNET", "ns=DotNET", "assembly=lib_layerd_xpl_codedom_net";
+import "LayerD.ZOECompiler", "platform=DotNET", "ns=DotNET", "assembly=lib_zoec_core";
+using DotNET::System;
+using DotNET::System::Collections;
+
+using Zoe;
+using DotNET::LayerD::CodeDOM;
+using DotNET::LayerD::ZOECompiler;
+
+namespace UtnEmall::Utils
+{
+
+	public factory class FaultException
+	{
+		static Hashtable^ insertedTypes = new Hashtable();
+		static XplNamespace^ systemServiceModelNS;
+	public:
+		static XplNode^ New(iname void exceptionTypeName, type TDetail){
+			string^ fullTypeString = "DotNET.System.ServiceModel." + exceptionTypeName.Identifier;
+			if(compiler.LastTypesTable[fullTypeString] != null || insertedTypes[fullTypeString] != null){				
+				return null;
+			}
+			if(systemServiceModelNS == null){
+				//Creo el espacio de nombres la primera vez
+				systemServiceModelNS = (XplNamespace^) writecode{
+					namespace DotNET::System::ServiceModel{ }
+				}.Children().FirstNode();
+				//Busco el cuerpo del programa para inyectarlo
+				XplNode^ body = context;
+				while(body.get_TypeName()!="XplDocumentBody") body = body.get_Parent();
+				//Lo inyecto en el cuerpo del programa
+				body.Children().InsertBefore( systemServiceModelNS, ((XplDocumentBody^)body).get_NamespaceNodeList().FirstNode() );
+			}
+			XplType^ typeOfList = new XplType();
+			typeOfList.set_typename( exceptionTypeName.Identifier );
+			
+			XplClass^ listClass = 
+				writecode{
+					public extern class $exceptionTypeName inherits DotNET::System::Exception{
+					public:
+						$exceptionTypeName($TDetail info);
+					}
+				};
+
+			while(TDetail.get_typename() == ""){
+				TDetail = TDetail.get_dt();
+			}
+			listClass.set_externalname("FaultException<Key,Value>");
+			listClass.set_lddata("$NET_GENERIC[System.ServiceModel.FaultException<"+ List::GetNETTypeName( TDetail ) + ">]$");
+			Console::WriteLine("Tipo generico insertado: " + listClass.get_lddata() );
+
+			systemServiceModelNS.Children().InsertAtEnd( listClass );
+			insertedTypes.Add(fullTypeString, true);
+
+			return null;
+		}
+	}
+
+	public factory class Dictionary
+	{
+		static Hashtable^ insertedTypes = new Hashtable();
+		static XplNamespace^ systemGenericsNS;
+	public:
+		static XplNode^ New(iname void listTypeName, type typeOfKey, type typeOfElements){
+			string^ fullTypeString = "DotNET.System.Collections.Generic." + listTypeName.Identifier;
+			if(compiler.LastTypesTable[fullTypeString] != null || insertedTypes[fullTypeString] != null){				
+				return null;
+			}
+			if(systemGenericsNS == null){
+				//Creo el espacio de nombres la primera vez
+				systemGenericsNS = (XplNamespace^) writecode{
+					namespace DotNET::System::Collections::Generic{ }
+				}.Children().FirstNode();
+				//Busco el cuerpo del programa para inyectarlo
+				XplNode^ body = context;
+				while(body.get_TypeName()!="XplDocumentBody") body = body.get_Parent();
+				//Lo inyecto en el cuerpo del programa
+				body.Children().InsertBefore( systemGenericsNS , ((XplDocumentBody^)body).get_NamespaceNodeList().FirstNode() );
+			}
+			XplType^ typeOfList = new XplType();
+			typeOfList.set_typename( listTypeName.Identifier );
+			
+			XplClass^ listClass = 
+				writecode{
+					public extern class $listTypeName inherits DotNET::System::Collections::Hashtable{
+					public:
+						extern void Add($typeOfKey key, $typeOfElements item);
+						extern bool ContainsValue($typeOfElements item);
+						extern bool ContainsKey($typeOfKey item);
+						extern void Clear();
+						static extern bool operator == ($typeOfList^ arg1, $typeOfList^ arg2);
+						extern $typeOfElements indexer($typeOfKey index){
+							get;
+							set;
+						}
+						extern int property Count{
+							get;
+						}
+					}
+				};
+
+			while(typeOfElements.get_typename() == ""){
+				typeOfElements = typeOfElements.get_dt();
+			}
+			listClass.set_externalname("Dictionary<Key,Value>");
+			listClass.set_lddata("$NET_GENERIC[System.Collections.Generic.Dictionary<"+ List::GetNETTypeName( typeOfKey ) + "," + List::GetNETTypeName( typeOfElements ) + ">]$");
+			Console::WriteLine("Tipo generico insertado: " + listClass.get_lddata() );
+
+			systemGenericsNS.Children().InsertAtEnd( listClass );
+			insertedTypes.Add(fullTypeString, true);
+
+			return null;
+		}
+	}
+
+	public factory class List
+	{
+		static Hashtable^ insertedTypes = new Hashtable();
+		static XplNamespace^ systemGenericsNS;
+		static XplNamespace^ systemGenericsCollectionsNS;
+	public:
+		static XplNode^ NewCollection(iname void listTypeName, type typeOfElements){
+			string^ fullTypeString = "DotNET.System.Collections.ObjectModel." + listTypeName.Identifier;
+			if(compiler.LastTypesTable[fullTypeString] != null || insertedTypes[fullTypeString] != null){				
+				return null;
+			}
+			if(systemGenericsCollectionsNS == null){
+				//Creo el espacio de nombres la primera vez
+				systemGenericsCollectionsNS = (XplNamespace^) writecode{
+					namespace DotNET::System::Collections::ObjectModel{ }
+				}.Children().FirstNode();
+				//Busco el cuerpo del programa para inyectarlo
+				XplNode^ body = context;
+				while(body.get_TypeName()!="XplDocumentBody") body = body.get_Parent();
+				//Lo inyecto en el cuerpo del programa
+				//body.Children().InsertAtBegin( systemGenericsNS );
+				body.Children().InsertBefore( systemGenericsCollectionsNS, ((XplDocumentBody^)body).get_NamespaceNodeList().FirstNode() );
+			}
+			XplType^ typeOfList = new XplType();
+			typeOfList.set_typename( listTypeName.Identifier );
+			XplClass^ listClass = 
+				writecode{
+					public extern class $listTypeName inherits DotNET::System::Collections::ArrayList{
+					public:
+						extern void Add($typeOfElements item);
+						extern bool Contains($typeOfElements item);
+						extern void Clear();
+						static extern bool operator == ($typeOfList^ arg1, $typeOfList^ arg2);
+						extern $typeOfElements indexer(int index){
+							get;
+							set;
+						}
+						extern int property Count{
+							get;
+						}
+						extern $typeOfElements[] ToArray();
+					}
+				};
+
+			while(typeOfElements.get_typename() == ""){
+				typeOfElements = typeOfElements.get_dt();
+			}
+			listClass.set_externalname("List<T>");
+			listClass.set_lddata("$NET_GENERIC[System.Collections.ObjectModel.Collection<"+ GetNETTypeName( typeOfElements ) +">]$");
+			Console::WriteLine("Tipo generico insertado: " + listClass.get_lddata() );
+
+			systemGenericsCollectionsNS.Children().InsertAtEnd( listClass );
+			insertedTypes.Add(fullTypeString, true);
+
+			return null;
+		}
+
+		static XplNode^ New(iname void listTypeName, type typeOfElements){
+			string^ fullTypeString = "DotNET.System.Collections.Generic." + listTypeName.Identifier;
+			if(compiler.LastTypesTable[fullTypeString] != null || insertedTypes[fullTypeString] != null){				
+				return null;
+			}
+			if(systemGenericsNS == null){
+				//Creo el espacio de nombres la primera vez
+				systemGenericsNS = (XplNamespace^) writecode{
+					namespace DotNET::System::Collections::Generic{ }
+				}.Children().FirstNode();
+				//Busco el cuerpo del programa para inyectarlo
+				XplNode^ body = context;
+				while(body.get_TypeName()!="XplDocumentBody") body = body.get_Parent();
+				//Lo inyecto en el cuerpo del programa
+				//body.Children().InsertAtBegin( systemGenericsNS );
+				body.Children().InsertBefore( systemGenericsNS , ((XplDocumentBody^)body).get_NamespaceNodeList().FirstNode() );
+			}
+			XplType^ typeOfList = new XplType();
+			typeOfList.set_typename( listTypeName.Identifier );
+			XplClass^ listClass = 
+				writecode{
+					public extern class $listTypeName inherits DotNET::System::Collections::ArrayList{
+					public:
+						extern void Add($typeOfElements item);
+						extern bool Contains($typeOfElements item);
+						extern void Clear();
+						static extern bool operator == ($typeOfList^ arg1, $typeOfList^ arg2);
+						extern $typeOfElements indexer(int index){
+							get;
+							set;
+						}
+						extern int property Count{
+							get;
+						}
+						extern $typeOfElements[] ToArray();
+					}
+				};
+
+			while(typeOfElements.get_typename() == ""){
+				typeOfElements = typeOfElements.get_dt();
+			}
+			listClass.set_externalname("List<T>");
+			listClass.set_lddata("$NET_GENERIC[System.Collections.Generic.List<"+ GetNETTypeName( typeOfElements ) +">]$");
+			Console::WriteLine("Tipo generico insertado: " + listClass.get_lddata() );
+
+			systemGenericsNS.Children().InsertAtEnd( listClass );
+			insertedTypes.Add(fullTypeString, true);
+
+			return null;
+		}
+		static string^ GetNETTypeName(XplType^ zoeType){
+			if(zoeType.get_ispointer())
+				zoeType = zoeType.get_dt();
+			string^ zoeTypeName = zoeType.get_typename();
+
+			switch(zoeTypeName){
+				case "$OBJECT$":
+					return "object";
+				case "^_" + NativeTypes::String:
+				case NativeTypes::String:
+					return "string";
+				case NativeTypes::Boolean:
+					return "bool";
+				case NativeTypes::Integer:
+					return "int";
+				case NativeTypes::Long:
+					return "long";
+				case NativeTypes::Char:
+					return "char";
+			}
+			if(zoeTypeName.IndexOf("DotNET.") == 0)
+				zoeTypeName = zoeTypeName.Substring(7);
+			return zoeTypeName;
+		}
+	}
+
+}

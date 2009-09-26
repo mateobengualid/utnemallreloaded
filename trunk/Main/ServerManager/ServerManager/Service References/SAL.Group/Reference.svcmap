@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="0fe7daaf-c7fa-4080-85a1-68581c347963" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8081/Group" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Group.disco" MetadataType="Disco" ID="6695cb28-3f64-4aa9-b611-d81c1ed61f16" SourceId="1" SourceUrl="http://cpu12:8081/Group?disco" />
+    <MetadataFile FileName="Group.xsd" MetadataType="Schema" ID="be7c68c9-e991-40ca-98a4-52ffc7a2c3e1" SourceId="1" SourceUrl="http://cpu12:8081/Group?xsd=xsd1" />
+    <MetadataFile FileName="Group1.xsd" MetadataType="Schema" ID="7232e42e-72b5-4fd5-a2cc-529ed88a0456" SourceId="1" SourceUrl="http://cpu12:8081/Group?xsd=xsd2" />
+    <MetadataFile FileName="Group2.xsd" MetadataType="Schema" ID="6f4d6ac3-1f69-4b4b-935b-d57d9795bc7e" SourceId="1" SourceUrl="http://cpu12:8081/Group?xsd=xsd3" />
+    <MetadataFile FileName="Group.wsdl" MetadataType="Wsdl" ID="332935a9-2c1c-479b-bc80-303d2525e2a6" SourceId="1" SourceUrl="http://cpu12:8081/Group?wsdl" />
+    <MetadataFile FileName="Group4.xsd" MetadataType="Schema" ID="1ee31777-6288-453d-9951-288333141209" SourceId="1" SourceUrl="http://cpu12:8081/Group?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ComponentEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="Height" type="xs:double" />
+      <xs:element minOccurs="0" name="Width" type="xs:double" />
+      <xs:element minOccurs="0" name="HeightFactor" type="xs:double" />
+      <xs:element minOccurs="0" name="WidthFactor" type="xs:double" />
+      <xs:element minOccurs="0" name="XCoordinateRelativeToParent" type="xs:double" />
+      <xs:element minOccurs="0" name="YCoordinateRelativeToParent" type="xs:double" />
+      <xs:element minOccurs="0" name="XFactorCoordinateRelativeToParent" type="xs:double" />
+      <xs:element minOccurs="0" name="YFactorCoordinateRelativeToParent" type="xs:double" />
+      <xs:element minOccurs="0" name="Bold" type="xs:boolean" />
+      <xs:element minOccurs="0" name="FontColor" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FontName" type="xs:int" />
+      <xs:element minOccurs="0" name="FontSize" type="xs:int" />
+      <xs:element minOccurs="0" name="Italic" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Underline" type="xs:boolean" />
+      <xs:element minOccurs="0" name="TextAlign" type="xs:int" />
+      <xs:element minOccurs="0" name="BackgroundColor" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Text" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DataTypes" type="xs:int" />
+      <xs:element minOccurs="0" name="TypeOrder" type="xs:int" />
+      <xs:element minOccurs="0" name="Title" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StringHelp" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DescriptiveText" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ComponentType" type="xs:int" />
+      <xs:element minOccurs="0" name="FinalizeService" type="xs:boolean" />
+      <xs:element minOccurs="0" name="CustomerServiceData" nillable="true" type="tns:CustomerServiceDataEntity" />
+      <xs:element minOccurs="0" name="IdCustomerServiceData" type="xs:int" />
+      <xs:element minOccurs="0" name="TemplateListFormDocument" nillable="true" type="tns:CustomerServiceDataEntity" />
+      <xs:element minOccurs="0" name="IdTemplateListFormDocument" type="xs:int" />
+      <xs:element minOccurs="0" name="MenuItems" nillable="true" type="tns:ArrayOfComponentEntity" />
+      <xs:element minOccurs="0" name="ParentComponent" nillable="true" type="tns:ComponentEntity" />
+      <xs:element minOccurs="0" name="IdParentComponent" type="xs:int" />
+      <xs:element minOccurs="0" name="InputConnectionPoint" nillable="true" type="tns:ConnectionPointEntity" />
+      <xs:element minOccurs="0" name="IdInputConnectionPoint" type="xs:int" />
+      <xs:element minOccurs="0" name="OutputConnectionPoint" nillable="true" type="tns:ConnectionPointEntity" />
+      <xs:element minOccurs="0" name="IdOutputConnectionPoint" type="xs:int" />
+      <xs:element minOccurs="0" name="OutputDataContext" nillable="true" type="tns:TableEntity" />
+      <xs:element minOccurs="0" name="IdOutputDataContext" type="xs:int" />
+      <xs:element minOccurs="0" name="InputDataContext" nillable="true" type="tns:TableEntity" />
+      <xs:element minOccurs="0" name="IdInputDataContext" type="xs:int" />
+      <xs:element minOccurs="0" name="RelatedTable" nillable="true" type="tns:TableEntity" />
+      <xs:element minOccurs="0" name="IdRelatedTable" type="xs:int" />
+      <xs:element minOccurs="0" name="FieldToOrder" nillable="true" type="tns:FieldEntity" />
+      <xs:element minOccurs="0" name="IdFieldToOrder" type="xs:int" />
+      <xs:element minOccurs="0" name="FieldAssociated" nillable="true" type="tns:FieldEntity" />
+      <xs:element minOccurs="0" name="IdFieldAssociated" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ComponentEntity" nillable="true" type="tns:ComponentEntity" />
+  <xs:complexType name="ArrayOfError">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="tns:Error" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfError" nillable="true" type="tns:ArrayOfError" />
+  <xs:complexType name="Error">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Property" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Error" nillable="true" type="tns:Error" />
+  <xs:complexType name="CustomerServiceDataEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="CustomerServiceDataType" type="xs:int" />
+      <xs:element minOccurs="0" name="Components" nillable="true" type="tns:ArrayOfComponentEntity" />
+      <xs:element minOccurs="0" name="Connections" nillable="true" type="tns:ArrayOfConnectionWidgetEntity" />
+      <xs:element minOccurs="0" name="DataModel" nillable="true" type="tns:DataModelEntity" />
+      <xs:element minOccurs="0" name="IdDataModel" type="xs:int" />
+      <xs:element minOccurs="0" name="InitComponent" nillable="true" type="tns:ComponentEntity" />
+      <xs:element minOccurs="0" name="IdInitComponent" type="xs:int" />
+      <xs:element minOccurs="0" name="Service" nillable="true" type="tns:ServiceEntity" />
+      <xs:element minOccurs="0" name="IdService" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomerServiceDataEntity" nillable="true" type="tns:CustomerServiceDataEntity" />
+  <xs:complexType name="ArrayOfComponentEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ComponentEntity" nillable="true" type="tns:ComponentEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfComponentEntity" nillable="true" type="tns:ArrayOfComponentEntity" />
+  <xs:complexType name="ArrayOfConnectionWidgetEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ConnectionWidgetEntity" nillable="true" type="tns:ConnectionWidgetEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfConnectionWidgetEntity" nillable="true" type="tns:ArrayOfConnectionWidgetEntity" />
+  <xs:complexType name="ConnectionWidgetEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="IndexSource" type="xs:int" />
+      <xs:element minOccurs="0" name="IndexTarget" type="xs:int" />
+      <xs:element minOccurs="0" name="Target" nillable="true" type="tns:ConnectionPointEntity" />
+      <xs:element minOccurs="0" name="IdTarget" type="xs:int" />
+      <xs:element minOccurs="0" name="Source" nillable="true" type="tns:ConnectionPointEntity" />
+      <xs:element minOccurs="0" name="IdSource" type="xs:int" />
+      <xs:element minOccurs="0" name="CustomerServiceData" nillable="true" type="tns:CustomerServiceDataEntity" />
+      <xs:element minOccurs="0" name="IdCustomerServiceData" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ConnectionWidgetEntity" nillable="true" type="tns:ConnectionWidgetEntity" />
+  <xs:complexType name="ConnectionPointEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="ConnectionType" type="xs:int" />
+      <xs:element minOccurs="0" name="XCoordinateRelativeToParent" type="xs:double" />
+      <xs:element minOccurs="0" name="YCoordinateRelativeToParent" type="xs:double" />
+      <xs:element minOccurs="0" name="ParentComponent" nillable="true" type="tns:ComponentEntity" />
+      <xs:element minOccurs="0" name="IdParentComponent" type="xs:int" />
+      <xs:element minOccurs="0" name="Component" nillable="true" type="tns:ComponentEntity" />
+      <xs:element minOccurs="0" name="IdComponent" type="xs:int" />
+      <xs:element minOccurs="0" name="ConnectionWidget" nillable="true" type="tns:ConnectionWidgetEntity" />
+      <xs:element minOccurs="0" name="IdConnectionWidget" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ConnectionPointEntity" nillable="true" type="tns:ConnectionPointEntity" />
+  <xs:complexType name="DataModelEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="ServiceAssemblyFileName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Deployed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Updated" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Tables" nillable="true" type="tns:ArrayOfTableEntity" />
+      <xs:element minOccurs="0" name="Relations" nillable="true" type="tns:ArrayOfRelationEntity" />
+      <xs:element minOccurs="0" name="Mall" nillable="true" type="tns:MallEntity" />
+      <xs:element minOccurs="0" name="IdMall" type="xs:int" />
+      <xs:element minOccurs="0" name="Store" nillable="true" type="tns:StoreEntity" />
+      <xs:element minOccurs="0" name="IdStore" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DataModelEntity" nillable="true" type="tns:DataModelEntity" />
+  <xs:complexType name="ArrayOfTableEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TableEntity" nillable="true" type="tns:TableEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTableEntity" nillable="true" type="tns:ArrayOfTableEntity" />
+  <xs:complexType name="TableEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsStorage" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Fields" nillable="true" type="tns:ArrayOfFieldEntity" />
+      <xs:element minOccurs="0" name="DataModel" nillable="true" type="tns:DataModelEntity" />
+      <xs:element minOccurs="0" name="IdDataModel" type="xs:int" />
+      <xs:element minOccurs="0" name="Component" nillable="true" type="tns:ComponentEntity" />
+      <xs:element minOccurs="0" name="IdComponent" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TableEntity" nillable="true" type="tns:TableEntity" />
+  <xs:complexType name="ArrayOfFieldEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FieldEntity" nillable="true" type="tns:FieldEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFieldEntity" nillable="true" type="tns:ArrayOfFieldEntity" />
+  <xs:complexType name="FieldEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DataType" type="xs:int" />
+      <xs:element minOccurs="0" name="Table" nillable="true" type="tns:TableEntity" />
+      <xs:element minOccurs="0" name="IdTable" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FieldEntity" nillable="true" type="tns:FieldEntity" />
+  <xs:complexType name="ArrayOfRelationEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RelationEntity" nillable="true" type="tns:RelationEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRelationEntity" nillable="true" type="tns:ArrayOfRelationEntity" />
+  <xs:complexType name="RelationEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="RelationType" type="xs:int" />
+      <xs:element minOccurs="0" name="Target" nillable="true" type="tns:TableEntity" />
+      <xs:element minOccurs="0" name="IdTarget" type="xs:int" />
+      <xs:element minOccurs="0" name="Source" nillable="true" type="tns:TableEntity" />
+      <xs:element minOccurs="0" name="IdSource" type="xs:int" />
+      <xs:element minOccurs="0" name="DataModel" nillable="true" type="tns:DataModelEntity" />
+      <xs:element minOccurs="0" name="IdDataModel" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RelationEntity" nillable="true" type="tns:RelationEntity" />
+  <xs:complexType name="MallEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="ServerName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MallName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Service" nillable="true" type="tns:ArrayOfServiceEntity" />
+      <xs:element minOccurs="0" name="Store" nillable="true" type="tns:ArrayOfStoreEntity" />
+      <xs:element minOccurs="0" name="Customer" nillable="true" type="tns:ArrayOfCustomerEntity" />
+      <xs:element minOccurs="0" name="DataModel" nillable="true" type="tns:ArrayOfDataModelEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MallEntity" nillable="true" type="tns:MallEntity" />
+  <xs:complexType name="ArrayOfServiceEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ServiceEntity" nillable="true" type="tns:ServiceEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfServiceEntity" nillable="true" type="tns:ArrayOfServiceEntity" />
+  <xs:complexType name="ServiceEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WebAccess" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RelativePathAssembly" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PathAssemblyServer" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Active" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Global" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Image" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Website" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Deployed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Updated" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Mall" nillable="true" type="tns:MallEntity" />
+      <xs:element minOccurs="0" name="IdMall" type="xs:int" />
+      <xs:element minOccurs="0" name="Store" nillable="true" type="tns:StoreEntity" />
+      <xs:element minOccurs="0" name="IdStore" type="xs:int" />
+      <xs:element minOccurs="0" name="ServiceCategory" nillable="true" type="tns:ArrayOfServiceCategoryEntity" />
+      <xs:element minOccurs="0" name="CustomerServiceData" nillable="true" type="tns:CustomerServiceDataEntity" />
+      <xs:element minOccurs="0" name="IdCustomerServiceData" type="xs:int" />
+      <xs:element minOccurs="0" name="StartDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="StopDate" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ServiceEntity" nillable="true" type="tns:ServiceEntity" />
+  <xs:complexType name="StoreEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TelephoneNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InternalPhoneNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContactName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OwnerName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WebAddress" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LocalNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StoreCategory" nillable="true" type="tns:ArrayOfStoreCategoryEntity" />
+      <xs:element minOccurs="0" name="Service" nillable="true" type="tns:ArrayOfServiceEntity" />
+      <xs:element minOccurs="0" name="Mall" nillable="true" type="tns:MallEntity" />
+      <xs:element minOccurs="0" name="IdMall" type="xs:int" />
+      <xs:element minOccurs="0" name="DataModel" nillable="true" type="tns:ArrayOfDataModelEntity" />
+      <xs:element minOccurs="0" name="User" nillable="true" type="tns:ArrayOfUserEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StoreEntity" nillable="true" type="tns:StoreEntity" />
+  <xs:complexType name="ArrayOfStoreCategoryEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="StoreCategoryEntity" nillable="true" type="tns:StoreCategoryEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStoreCategoryEntity" nillable="true" type="tns:ArrayOfStoreCategoryEntity" />
+  <xs:complexType name="StoreCategoryEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="Category" nillable="true" type="tns:CategoryEntity" />
+      <xs:element minOccurs="0" name="IdCategory" type="xs:int" />
+      <xs:element minOccurs="0" name="Store" nillable="true" type="tns:StoreEntity" />
+      <xs:element minOccurs="0" name="IdStore" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StoreCategoryEntity" nillable="true" type="tns:StoreCategoryEntity" />
+  <xs:complexType name="CategoryEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Childs" nillable="true" type="tns:ArrayOfCategoryEntity" />
+      <xs:element minOccurs="0" name="ParentCategory" nillable="true" type="tns:CategoryEntity" />
+      <xs:element minOccurs="0" name="IdParentCategory" type="xs:int" />
+      <xs:element minOccurs="0" name="Preference" nillable="true" type="tns:ArrayOfPreferenceEntity" />
+      <xs:element minOccurs="0" name="ServiceCategory" nillable="true" type="tns:ArrayOfServiceCategoryEntity" />
+      <xs:element minOccurs="0" name="StoreCategory" nillable="true" type="tns:ArrayOfStoreCategoryEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CategoryEntity" nillable="true" type="tns:CategoryEntity" />
+  <xs:complexType name="ArrayOfCategoryEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CategoryEntity" nillable="true" type="tns:CategoryEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCategoryEntity" nillable="true" type="tns:ArrayOfCategoryEntity" />
+  <xs:complexType name="ArrayOfPreferenceEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PreferenceEntity" nillable="true" type="tns:PreferenceEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPreferenceEntity" nillable="true" type="tns:ArrayOfPreferenceEntity" />
+  <xs:complexType name="PreferenceEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="Active" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Level" type="xs:double" />
+      <xs:element minOccurs="0" name="Customer" nillable="true" type="tns:CustomerEntity" />
+      <xs:element minOccurs="0" name="IdCustomer" type="xs:int" />
+      <xs:element minOccurs="0" name="Category" nillable="true" type="tns:CategoryEntity" />
+      <xs:element minOccurs="0" name="IdCategory" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PreferenceEntity" nillable="true" type="tns:PreferenceEntity" />
+  <xs:complexType name="CustomerEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Surname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Preferences" nillable="true" type="tns:ArrayOfPreferenceEntity" />
+      <xs:element minOccurs="0" name="Mall" nillable="true" type="tns:MallEntity" />
+      <xs:element minOccurs="0" name="IdMall" type="xs:int" />
+      <xs:element minOccurs="0" name="DeviceProfile" nillable="true" type="tns:ArrayOfDeviceProfileEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomerEntity" nillable="true" type="tns:CustomerEntity" />
+  <xs:complexType name="ArrayOfDeviceProfileEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DeviceProfileEntity" nillable="true" type="tns:DeviceProfileEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDeviceProfileEntity" nillable="true" type="tns:ArrayOfDeviceProfileEntity" />
+  <xs:complexType name="DeviceProfileEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="DeviceType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DeviceModel" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MacAddress" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WindowsMobileVersion" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Customer" nillable="true" type="tns:CustomerEntity" />
+      <xs:element minOccurs="0" name="IdCustomer" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DeviceProfileEntity" nillable="true" type="tns:DeviceProfileEntity" />
+  <xs:complexType name="ArrayOfServiceCategoryEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ServiceCategoryEntity" nillable="true" type="tns:ServiceCategoryEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfServiceCategoryEntity" nillable="true" type="tns:ArrayOfServiceCategoryEntity" />
+  <xs:complexType name="ServiceCategoryEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="Service" nillable="true" type="tns:ServiceEntity" />
+      <xs:element minOccurs="0" name="IdService" type="xs:int" />
+      <xs:element minOccurs="0" name="Category" nillable="true" type="tns:CategoryEntity" />
+      <xs:element minOccurs="0" name="IdCategory" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ServiceCategoryEntity" nillable="true" type="tns:ServiceCategoryEntity" />
+  <xs:complexType name="ArrayOfDataModelEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DataModelEntity" nillable="true" type="tns:DataModelEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDataModelEntity" nillable="true" type="tns:ArrayOfDataModelEntity" />
+  <xs:complexType name="ArrayOfUserEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserEntity" nillable="true" type="tns:UserEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserEntity" nillable="true" type="tns:ArrayOfUserEntity" />
+  <xs:complexType name="UserEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Surname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsUserActive" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Charge" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserGroup" nillable="true" type="tns:ArrayOfUserGroupEntity" />
+      <xs:element minOccurs="0" name="Store" nillable="true" type="tns:StoreEntity" />
+      <xs:element minOccurs="0" name="IdStore" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserEntity" nillable="true" type="tns:UserEntity" />
+  <xs:complexType name="ArrayOfUserGroupEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserGroupEntity" nillable="true" type="tns:UserGroupEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserGroupEntity" nillable="true" type="tns:ArrayOfUserGroupEntity" />
+  <xs:complexType name="UserGroupEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="Group" nillable="true" type="tns:GroupEntity" />
+      <xs:element minOccurs="0" name="IdGroup" type="xs:int" />
+      <xs:element minOccurs="0" name="User" nillable="true" type="tns:UserEntity" />
+      <xs:element minOccurs="0" name="IdUser" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserGroupEntity" nillable="true" type="tns:UserGroupEntity" />
+  <xs:complexType name="GroupEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsGroupActive" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Permissions" nillable="true" type="tns:ArrayOfPermissionEntity" />
+      <xs:element minOccurs="0" name="UserGroup" nillable="true" type="tns:ArrayOfUserGroupEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GroupEntity" nillable="true" type="tns:GroupEntity" />
+  <xs:complexType name="ArrayOfPermissionEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PermissionEntity" nillable="true" type="tns:PermissionEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPermissionEntity" nillable="true" type="tns:ArrayOfPermissionEntity" />
+  <xs:complexType name="PermissionEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Changed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Timestamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
+      <xs:element minOccurs="0" name="AllowRead" type="xs:boolean" />
+      <xs:element minOccurs="0" name="AllowUpdate" type="xs:boolean" />
+      <xs:element minOccurs="0" name="AllowNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="AllowDelete" type="xs:boolean" />
+      <xs:element minOccurs="0" name="BusinessClassName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Group" nillable="true" type="tns:GroupEntity" />
+      <xs:element minOccurs="0" name="IdGroup" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PermissionEntity" nillable="true" type="tns:PermissionEntity" />
+  <xs:complexType name="ArrayOfStoreEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="StoreEntity" nillable="true" type="tns:StoreEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStoreEntity" nillable="true" type="tns:ArrayOfStoreEntity" />
+  <xs:complexType name="ArrayOfCustomerEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomerEntity" nillable="true" type="tns:CustomerEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCustomerEntity" nillable="true" type="tns:ArrayOfCustomerEntity" />
+</xs:schema>

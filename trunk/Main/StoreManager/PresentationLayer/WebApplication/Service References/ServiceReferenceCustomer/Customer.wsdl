@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:tns="http://tempuri.org/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" name="Customer" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://cpu11:8081/Customer?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://cpu11:8081/Customer?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://cpu11:8081/Customer?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Janus.Server.EntityModel" />
+      <xsd:import schemaLocation="http://cpu11:8081/Customer?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Janus.Server.Base" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ICustomer_Save_InputMessage">
+    <wsdl:part name="parameters" element="tns:Save" />
+  </wsdl:message>
+  <wsdl:message name="ICustomer_Save_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICustomer_Delete_InputMessage">
+    <wsdl:part name="parameters" element="tns:Delete" />
+  </wsdl:message>
+  <wsdl:message name="ICustomer_Delete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICustomer_GetCustomer_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomer" />
+  </wsdl:message>
+  <wsdl:message name="ICustomer_GetCustomer_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICustomer_GetAllCustomer_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllCustomer" />
+  </wsdl:message>
+  <wsdl:message name="ICustomer_GetAllCustomer_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICustomer_GetCustomerWhere_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerWhere" />
+  </wsdl:message>
+  <wsdl:message name="ICustomer_GetCustomerWhere_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerWhereResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICustomer_GetCustomerWhereEqual_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerWhereEqual" />
+  </wsdl:message>
+  <wsdl:message name="ICustomer_GetCustomerWhereEqual_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerWhereEqualResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICustomer_Validate_InputMessage">
+    <wsdl:part name="parameters" element="tns:Validate" />
+  </wsdl:message>
+  <wsdl:message name="ICustomer_Validate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ICustomer">
+    <wsdl:operation name="Save">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICustomer/Save" message="tns:ICustomer_Save_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICustomer/SaveResponse" message="tns:ICustomer_Save_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Delete">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICustomer/Delete" message="tns:ICustomer_Delete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICustomer/DeleteResponse" message="tns:ICustomer_Delete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomer">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICustomer/GetCustomer" message="tns:ICustomer_GetCustomer_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICustomer/GetCustomerResponse" message="tns:ICustomer_GetCustomer_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllCustomer">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICustomer/GetAllCustomer" message="tns:ICustomer_GetAllCustomer_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICustomer/GetAllCustomerResponse" message="tns:ICustomer_GetAllCustomer_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerWhere">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICustomer/GetCustomerWhere" message="tns:ICustomer_GetCustomerWhere_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICustomer/GetCustomerWhereResponse" message="tns:ICustomer_GetCustomerWhere_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerWhereEqual">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICustomer/GetCustomerWhereEqual" message="tns:ICustomer_GetCustomerWhereEqual_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICustomer/GetCustomerWhereEqualResponse" message="tns:ICustomer_GetCustomerWhereEqual_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Validate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICustomer/Validate" message="tns:ICustomer_Validate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICustomer/ValidateResponse" message="tns:ICustomer_Validate_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ICustomer" type="tns:ICustomer">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Save">
+      <soap:operation soapAction="http://tempuri.org/ICustomer/Save" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Delete">
+      <soap:operation soapAction="http://tempuri.org/ICustomer/Delete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomer">
+      <soap:operation soapAction="http://tempuri.org/ICustomer/GetCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllCustomer">
+      <soap:operation soapAction="http://tempuri.org/ICustomer/GetAllCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerWhere">
+      <soap:operation soapAction="http://tempuri.org/ICustomer/GetCustomerWhere" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerWhereEqual">
+      <soap:operation soapAction="http://tempuri.org/ICustomer/GetCustomerWhereEqual" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Validate">
+      <soap:operation soapAction="http://tempuri.org/ICustomer/Validate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Customer">
+    <wsdl:port name="BasicHttpBinding_ICustomer" binding="tns:BasicHttpBinding_ICustomer">
+      <soap:address location="http://cpu11:8081/Customer" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="LogicalLibrary.Component">
+    <Position X="10.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>MAAACAAABAQAAAQUQAAAAEAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Component.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.DataModelDocument">
+    <Position X="17.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAEABAQAAAAAAAAAAACAAAAIAAAAAAAgAAAAAAQ=</HashCode>
+      <FileName>DataModelDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.Widget">
+    <Position X="7" Y="4.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ARAAIAAAAAAAAAAAAAAAIAAAAAADABAAAgAQAAAEAAA=</HashCode>
+      <FileName>Widget.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.EnterSingleDataForm">
+    <Position X="8" Y="13" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AABAAgAAAAIAAAAAAAAACAAAAAgEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Widgets\EnterSingleDataForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.ListForm">
+    <Position X="10.25" Y="13" Width="2.25" />
+    <InheritanceLine Type="LogicalLibrary.ServerDesignerClasses.Form" FixedToPoint="true">
+      <Path>
+        <Point X="8.125" Y="12.223" />
+        <Point X="8.125" Y="12.625" />
+        <Point X="11.25" Y="12.625" />
+        <Point X="11.25" Y="13" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Widgets\ListForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.MenuForm">
+    <Position X="3.5" Y="13" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAQAACAAAAAAAAAgAEAAAAAAAA=</HashCode>
+      <FileName>Widgets\MenuForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.ShowDataForm">
+    <Position X="5.75" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Widgets\ShowDataFrom.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.DataModelClasses.DataModel">
+    <Position X="26" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAABABAAAAARAAAAAaASAAQgABAAAAIAgAAAAAAQ=</HashCode>
+      <FileName>DataModelClasses\DataModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.DataModelClasses.Field">
+    <Position X="24.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAABAAAIAAAAEgAAAQAQCAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataModelClasses\Field.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.DataModelClasses.Relation">
+    <Position X="17.25" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAIAIEAAACAAIQAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>DataModelClasses\Relation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.DataModelClasses.Table">
+    <Position X="1.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAABAAggAAAAAQAAQCAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>DataModelClasses\Table.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.ServerDesignerClasses.Connection">
+    <Position X="19.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQAAAAAAgAAAAIAIAAAACAAAAAAAAAAAAAAAAAUAAA=</HashCode>
+      <FileName>ServerDesignerClasses\Connection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.ServerDesignerClasses.ConnectionPoint">
+    <Position X="21.5" Y="0.5" Width="2.5" />
+    <NestedTypes>
+      <Enum Name="LogicalLibrary.ServerDesignerClasses.ConnectionPoint.ConnectionPointType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ServerDesignerClasses\ConnectionPoint.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>IAAACAAAAAQAAABEAAAAQAAIAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ServerDesignerClasses\ConnectionPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.ServerDesignerClasses.Form">
+    <Position X="7" Y="9" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAEAQAAQgUAAEIEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ServerDesignerClasses\Form.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.ServerDesignerClasses.FormMenuItem">
+    <Position X="19.5" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAAAYIAAACAgCBWAIQgUgAEAAAAAAAIAAAACAAAAAE=</HashCode>
+      <FileName>ServerDesignerClasses\FormMenuItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.ServerDesignerClasses.ServiceDocument">
+    <Position X="0.5" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQCAAAAAAAAgAAAABAAAAAAAAIAAAACAAAAA=</HashCode>
+      <FileName>ServerDesignerClasses\ServiceDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.ServerDesignerClasses.TemplateListFormDocument">
+    <Position X="2.75" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ServerDesignerClasses\TemplateListFormDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.ServerDesignerClasses.TemplateListItem">
+    <Position X="15" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BgAAA4YAAAKAgCACAIAgAgAAAAAAAAgAAAAIAAAAAAE=</HashCode>
+      <FileName>ServerDesignerClasses\TemplateListItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PresentationLayer.ServerDesignerClasses.Document">
+    <Position X="2" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAABAEAAAAAAIAACACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ServerDesignerClasses\Document.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogicalLibrary.Widgets.DataSource">
+    <Position X="12.75" Y="9" Width="2" />
+    <NestedTypes>
+      <Enum Name="LogicalLibrary.Widgets.DataSource.OrderType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Widgets\DataSource.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAQAEAAUATAAEAAAAAABAAAAAQAEAA=</HashCode>
+      <FileName>Widgets\DataSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="PresentationLayer.ServerDesignerClasses.DataType">
+    <Position X="22" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAACAAAAAAQAAAAACAAAAAA=</HashCode>
+      <FileName>ServerDesignerClasses\Document.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PresentationLayer.ServerDesignerClasses.RelationType">
+    <Position X="23.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ServerDesignerClasses\Document.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PresentationLayer.ServerDesignerClasses.FontNames">
+    <Position X="23.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAABAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>ServerDesignerClasses\Document.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PresentationLayer.ServerDesignerClasses.TextAlign">
+    <Position X="22" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAIAAA=</HashCode>
+      <FileName>ServerDesignerClasses\Document.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

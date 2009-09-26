@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XPLDocument>
+  <DocumentData DocumentType="layerd_xpl_prog" DocumentVersion="1.0">
+    <Title>ZOE Base Library</Title>
+    <Config>
+      <LayerD_XPL_Program_Config name="ZOEBaseLib" defaultPlatform="ALL"  defaultOutputFileName="ZOEBaseLib.dll" moduleType="dynamic_lib">
+        <SourceFile fileName="ZOENativeTypes.xpl"/>
+        <!--
+        <SourceFile fileName="ZOEFactoryTypesBase.xpl"/>
+        -->
+      </LayerD_XPL_Program_Config>
+    </Config>
+  </DocumentData>
+  <DocumentBody>
+  </DocumentBody>
+</XPLDocument>

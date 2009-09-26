@@ -1,0 +1,77 @@
+﻿<Window
+    x:Uid="Window_1" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ServerManager="clr-namespace:UtnEmall.ServerManager"
+    MinHeight="700" MinWidth="800"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    x:Class="PresentationLayer.ServerDesigner.WindowDesigner"
+    Icon="..\..\UtnEmall.ico"
+    Title="{x:Static ServerManager:UIResources.ServiceDesigner}" Height="700" Width="900" Background="#FF432A14" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Storyboard x:Uid="Storyboard_1" x:Key="OnMouseEnter1"/>
+        <Storyboard x:Uid="Storyboard_2" x:Key="OnMouseLeave1"/>
+    </Window.Resources>
+	<Grid x:Uid="rootContentPane" x:Name="rootContentPane" Background="#FF8A9FB4" Height="Auto" Width="Auto" >
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition x:Uid="ColumnDefinition_1" Width="11" />
+			<ColumnDefinition x:Uid="ColumnDefinition_2" Width="182.907" />
+			<ColumnDefinition x:Uid="ColumnDefinition_7" Width="1324*"/>
+		</Grid.ColumnDefinitions>
+		<Image x:Name="imageBack" x:Uid="imageBack" Grid.Column="2" Source="..\..\imgs\background.jpg" Stretch="Fill" />
+		<Image x:Uid="Image_1" Margin="0,80,8,0" Grid.Column="2" Source="..\..\imgs\services_mono.png" Stretch="Fill" HorizontalAlignment="Right" Width="376.093" Height="382" VerticalAlignment="Top" />
+        <Canvas x:Uid="canvasDrawPrincipal" ClipToBounds="True" Margin="0,68,8,75.2" x:Name="canvasDrawPrincipal" Background="Transparent" RenderTransformOrigin="0.5,0.5" Grid.Column="2">
+		<Canvas x:Uid="canvasDraw" Margin="0,0,8,75.2" x:Name="canvasDraw" Background="Transparent" RenderTransformOrigin="0.5,0.5" Grid.Column="2" Grid.ColumnSpan="5">
+			<Canvas.RenderTransform>
+				<TransformGroup x:Uid="TransformGroup_1">
+					<ScaleTransform x:Uid="ScaleTransform_1" ScaleX="{Binding Path=Value, ElementName=sliderZoom}" ScaleY="{Binding Path=Value, ElementName=sliderZoom}"/>
+					<SkewTransform x:Uid="SkewTransform_1" AngleX="0" AngleY="0"/>
+					<RotateTransform x:Uid="RotateTransform_1" Angle="0"/>
+					<TranslateTransform x:Uid="TranslateTransform_1" X="0" Y="0"/>
+				</TransformGroup>
+			</Canvas.RenderTransform>
+		</Canvas>
+        </Canvas>
+		<Canvas x:Uid="canvasDataModel" x:Name="canvasDataModel" Background="#88535E80" VerticalAlignment="Bottom" Height="62.2" Grid.Column="2">
+			<ComboBox x:Uid="comboBoxDataModels" Canvas.Left="19" Canvas.Top="19" Height="25" x:Name="comboBoxDataModels" Width="130" OpacityMask="#FF000000" />
+			<Button x:Uid="buttonAddWidgetDataModel" Canvas.Left="168" Canvas.Top="19" Height="25" x:Name="buttonAddWidgetDataModel" Width="75" Click="ButtonAddWidgetDataModel_Click" Content="{x:Static ServerManager:UIResources.Add}"/>
+			<Button x:Uid="buttonSave" Height="25.553" x:Name="buttonSave" Content="{x:Static ServerManager:UIResources.Done}" Click="ButtonSave_Click" RenderTransformOrigin="0.904,0.568" Width="75.548" HorizontalAlignment="Right" Canvas.Right="50" Canvas.Top="21.109">
+				<Button.RenderTransform>
+					<TransformGroup x:Uid="TransformGroup_7">
+						<ScaleTransform x:Uid="ScaleTransform_7" ScaleX="1" ScaleY="1"/>
+						<SkewTransform x:Uid="SkewTransform_7" AngleX="0" AngleY="0"/>
+						<RotateTransform x:Uid="RotateTransform_7" Angle="0"/>
+						<TranslateTransform x:Uid="TranslateTransform_7" X="0" Y="0"/>
+					</TransformGroup>
+				</Button.RenderTransform>
+			</Button>
+		</Canvas>
+		<TextBlock x:Uid="textBlockStatusBar" Height="22.96" TextWrapping="Wrap" TextAlignment="Left" Foreground="#FFFFFFFF" FontWeight="Normal" FontSize="11" x:Name="textBlockStatusBar" VerticalAlignment="Bottom" Opacity="0.75" RenderTransformOrigin="0.5,0.5" Grid.Column="5" Margin="494.709,0,8,67.2" Text="" Grid.ColumnSpan="2">
+			<TextBlock.BitmapEffect>
+				<DropShadowBitmapEffect x:Uid="DropShadowBitmapEffect_1"/>
+			</TextBlock.BitmapEffect>
+			<TextBlock.RenderTransform>
+				<TransformGroup x:Uid="TransformGroup_8">
+					<ScaleTransform x:Uid="ScaleTransform_8" ScaleX="1" ScaleY="1"/>
+					<SkewTransform x:Uid="SkewTransform_8" AngleX="0" AngleY="0"/>
+					<RotateTransform x:Uid="RotateTransform_8" Angle="0"/>
+					<TranslateTransform x:Uid="TranslateTransform_8" X="0" Y="0"/>
+				</TransformGroup>
+			</TextBlock.RenderTransform>
+		</TextBlock>
+		<ServerManager:Button x:Uid="List" Margin="1,147,0,0" x:Name="List" VerticalAlignment="Top" Height="41" Text="{x:Static ServerManager:UIResources.List}" Image="..\..\imgs\list.png" Clicked="OnListClicked" Grid.ColumnSpan="2" />
+		<ServerManager:Button x:Uid="ShowData" Margin="1,192,0,0" x:Name="ShowData" VerticalAlignment="Top" Height="41" Text="{x:Static ServerManager:UIResources.ShowData}" Image="..\..\imgs\showdata.png" Clicked="OnShowDataClicked" Grid.ColumnSpan="2" />
+		<ServerManager:Button x:Uid="Menu" Margin="1,237,0,0" x:Name="Menu" VerticalAlignment="Top" Height="41" Text="{x:Static ServerManager:UIResources.Menu}" Image="..\..\imgs\menu.png" Clicked="OnMenuClicked" Grid.ColumnSpan="2" />
+		<ServerManager:Button x:Uid="Input" Margin="1,282,0,0" x:Name="Input" VerticalAlignment="Top" Height="41" Text="{x:Static ServerManager:UIResources.Input}" Image="..\..\imgs\input.png" Clicked="OnInputClicked" Grid.ColumnSpan="2" />
+		<ServerManager:Button x:Uid="Connection" Margin="1,326.732,0,0" x:Name="Connection" VerticalAlignment="Top" Height="41" Text="{x:Static ServerManager:UIResources.Connection}" Image="..\..\imgs\connection.png" Clicked="OnConnectionClicked" Grid.ColumnSpan="2" />
+        <Label x:Uid="labelStartForm" Height="29" Margin="0,392,0,0" x:Name="labelStartForm" Content="{x:Static ServerManager:UIResources.SetStartForm}" VerticalAlignment="Top" Grid.Column="1" />
+        <ComboBox x:Uid="comboBoxForms" Height="25" x:Name="comboBoxForms" OpacityMask="#FF000000" Margin="7.994,421,0,0" VerticalAlignment="Top" MouseEnter="comboBoxForms_MouseEnter" Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Left" Width="157.915" />
+        
+        <TextBlock x:Uid="TextBlock_1" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" TextAlignment="Left" Margin="0,80,0,0" HorizontalAlignment="Left" Width="165.909" Grid.Column="1" Text="{x:Static ServerManager:UIResources.Service}"></TextBlock>
+
+        <TextBlock x:Uid="textBoxServiceName" Margin="7.994,100,7.91,0" VerticalAlignment="Top" Height="30" Text="" TextWrapping="Wrap" x:Name="textBoxServiceName" Foreground="#FFFFFFFF" FontSize="14" TextAlignment="Center" Grid.Column="1" />
+        <Image x:Uid="Image_2" VerticalAlignment="Top" Height="70" Source="..\..\imgs\header.png" Stretch="Fill" Grid.ColumnSpan="7" />
+        <Image x:Uid="Image_3" Source="..\..\imgs\logo.png" Margin="0,11,16,0" Grid.Column="2" Height="68.4" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150.75" />
+        <Label x:Uid="label1" Margin="52,25,0,0" Name="label1" FontSize="10" FontWeight="Bold" Height="27" VerticalAlignment="Top" Grid.Column="1" HorizontalAlignment="Left" Width="70.907" Content="{x:Static ServerManager:UIResources.Version}" />
+        <Slider x:Uid="sliderZoom" Margin="261,0,182.629,15" VerticalAlignment="Bottom" Height="24.8" Grid.Column="2" Opacity="0.5" Value="1" SmallChange="0.5" Cursor="Hand" Maximum="1.5" LargeChange="0.5" Minimum="0.5" TickPlacement="BottomRight" Orientation="Horizontal" TickFrequency="0.166" x:Name="sliderZoom"/>
+	</Grid>
+</Window>

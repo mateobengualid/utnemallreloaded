@@ -1,0 +1,17 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="SilverlightVisualDesigners.TextField"
+	d:DesignWidth="90.8" d:DesignHeight="46" Width="Auto" Height="Auto" >
+	<Grid x:Name="LayoutRoot" Height="Auto" Width="Auto">
+        <Rectangle Margin="0,0,0,0" Width="Auto" Height="Auto" x:Name="rectanglePrincipal" Fill="Transparent" Stroke="Black" StrokeDashArray="3" StrokeThickness="2"/>
+		<Border x:Name="border" BorderBrush="#FFFF0000" Margin="0,0,0,0" Background="Transparent" Opacity="1">
+			<TextBlock Height="26" Width="91.2" Text="Hola" TextWrapping="Wrap" x:Name="label" FontSize="12" FontFamily="Verdana" TextAlignment="Center"/>
+		</Border>
+		<Image HorizontalAlignment="Right" Cursor="Hand" Margin="0,-0.402999997138977,0,0" Width="11.403" Source="../imgs/Cerrar.png" Stretch="Fill" VerticalAlignment="Top" Height="11.403" Opacity="0.5" x:Name="imageCerrar"/>
+        <Rectangle Cursor="Hand" HorizontalAlignment="Right" Fill="Transparent" Stroke="Black" Margin="0,-0.402999997138977,0,0" Width="11.403" Stretch="Fill" VerticalAlignment="Bottom" Height="11.403" Opacity="0.5" x:Name="rectangleResize"/>
+	</Grid>
+</UserControl>

@@ -1,0 +1,923 @@
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "LayerD.CodeDOM", "platform=DotNET", "ns=DotNET", "assembly=lib_layerd_xpl_codedom_net";
+import "LayerD.ZOECompiler", "platform=DotNET", "ns=DotNET", "assembly=lib_zoec_core";
+using Zoe;
+using DotNET::LayerD::ZOECompiler;
+using DotNET::LayerD::CodeDOM;
+using DotNET::System::Collections;
+using DotNET::System::Collections::ObjectModel;
+using DotNET::System;
+
+//Utils::DefaultNetImports();
+
+namespace UtnEmall::Utils
+{
+	// Clase factory para el modelo de negocio(classEntity) y de datos(DataAccessEntity).
+	public factory class ModelBusiness
+	{
+		static XplFunctionBody^ fieldsBlock;
+
+		static XplIName^ businessClassName = null;
+		static XplIName^ varBusiness = null;
+		
+		static XplType^ entityType = null;
+		static XplIName^ varEntity = null;
+		
+		static XplType^ dataAccessType = null;
+		static XplIName^ varDataAccess = null;
+
+		static XplIName^ getAllFunctionName = null;
+		static XplIName^ getWhereFunctionName = null;
+		static XplIName^ getWhereEqualFunctionName = null;
+		static XplIName^ getEntityFunctionName = null;
+		
+		//ArrayList que almacena los campos de las entityclass.
+		static ArrayList^ listaCampos = new ArrayList();
+		// ArrayList que almacena los tipos de los campos de las entityclass.		
+		static ArrayList^ listaTipos = new ArrayList(); 
+		// Tabla con los bloques custom save
+		static Hashtable^ customSaves = new Hashtable(); 
+		// Tabla con los bloques custom delete
+		static Hashtable^ customDeletes = new Hashtable(); 
+		
+		static bool isWindowsMobile, generateServiceAccessLayerForMobile;
+		static string^ webServiceEntityNamespace;
+		static XplNamespace^ proxiesNamespace = null;
+	public:
+		static exp void SetProxiesNamespace(iname void newProxiesNamespace){
+			proxiesNamespace = (XplNamespace^)writecode{
+				namespace $newProxiesNamespace{
+				}
+			}.Children().FirstNode();
+			context.CurrentDocumentBody.Children().InsertAtEnd(proxiesNamespace);
+			return null;
+		}
+		static exp void SetMobileWebServiceEntityNamespace(string^ namespaceStr){
+			webServiceEntityNamespace = namespaceStr;
+			return null;
+		}
+		static exp void IsWindowsMobile(bool isMobile, bool generateServiceAccessLayer)
+		{
+			generateServiceAccessLayerForMobile = generateServiceAccessLayer;
+			isWindowsMobile = isMobile;
+			return null;
+		}
+		static exp void IsWindowsMobile(bool isMobile)
+		{
+			isWindowsMobile = isMobile;
+			generateServiceAccessLayerForMobile = true;
+			return null;
+		}
+		// Define las clases Entity y DataAccess para cada clase del modelo.
+		static XplNode^ Define(iname void modelName, block modelData){
+			return Define(modelName, false, modelData);
+		}
+		static XplNode^ Define(iname void modelName, bool addPreserveReferenceAttribute, block modelData)
+		{
+			XplIName^ wsInterfaceName = new XplIName("I"+modelName.Identifier);
+			XplType^ wsInterfaceType = new XplType();
+			wsInterfaceType.set_typename(wsInterfaceName.Identifier);
+
+			fieldsBlock = new XplFunctionBody();
+
+			XplClass^ clase = null;
+			businessClassName = new XplIName(modelName.Identifier);
+			varBusiness = new XplIName(modelName.Identifier.Substring(0,1).ToLower() + modelName.Identifier.Substring(1));
+
+			entityType = new XplType();
+			entityType.set_typename(modelName.Identifier + "Entity");
+			varEntity = new XplIName(modelName.Identifier.Substring(0,1).ToLower() + modelName.Identifier.Substring(1)+ "Entity");
+			string^ varEntityStr = varEntity.Identifier;
+
+			dataAccessType = new XplType();
+			dataAccessType.set_typename(modelName.Identifier+ "DataAccess");
+			varDataAccess = new XplIName(modelName.Identifier.ToLower()+ "DataAccess");
+			string^ className = modelName.Identifier;
+
+			getAllFunctionName = new XplIName("GetAll" + modelName.Identifier);
+			getEntityFunctionName= new XplIName("Get" + modelName.Identifier);
+			getWhereFunctionName = new XplIName("Get"+modelName.Identifier+"Where");
+			getWhereEqualFunctionName = new XplIName("Get"+modelName.Identifier+"WhereEqual");
+
+			//Tipos para lista
+			XplType^ listOfType = new XplType();
+			listOfType.set_typename( "CollectionOf" + entityType.get_typename() );
+			XplIName^ listOfTypesName = new XplIName( listOfType.get_typename() );
+
+			if(!isWindowsMobile){
+				context.CurrentNamespace.Children().InsertAtEnd(
+						writecode(Zoe::Attribute::Add("System.ServiceModel.ServiceContract"))
+					);
+			}
+			XplExpression^ methodAttExp = null, preserverReferenceExp = null;
+			
+			preserverReferenceExp = new XplExpression();
+			preserverReferenceExp.set_Content(XplExpression::new_empty());
+			
+			if(!isWindowsMobile)
+			{
+				methodAttExp = writecode(Zoe::Attribute::Add("System.ServiceModel.OperationContract"));
+				
+				if(addPreserveReferenceAttribute){
+					Console::WriteLine("Preserve Reference");
+					preserverReferenceExp = writecode(Zoe::Attribute::Add("UtnEmall.Server.Core.ReferencePreservingDataContractFormat"));
+				}
+			}
+			else
+			{
+				methodAttExp = new XplExpression();
+				methodAttExp.set_Content(XplExpression::new_empty());
+			}
+			
+			Console::WriteLine("Interfaz: "+wsInterfaceName.Identifier);
+
+			clase = writecode{
+				 // <summary>
+				 //   The <c>$wsInterfaceName$</c> business contract to process $entityType$,
+				 //	  saving, updating, deleting and validating entity data.
+				 // </summary>
+				public interface $wsInterfaceName
+				{
+
+					// <summary>
+					// Function to save a $entityType$ to the database. 
+					// </summary>
+					// <param name="$varEntity$">$entityType$ to save</param>
+					// <param name="session">User's session identifier.</param>
+					// <returns>null if the $entityType$ was saved successfully, the same $entityType$ otherwise</returns>
+					// <exception cref="ArgumentNullException">
+					// if <paramref name="$varEntity$"/> is null.
+					// </exception>
+					// <exception cref="UtnEmallBusinessLogicException">
+					// If an UtnEmallDataAccessException occurs in DataModel.
+					// </exception>
+					$preserverReferenceExp;
+					$methodAttExp;
+					$entityType^ Save($entityType^ $varEntity, string^ session);
+
+					// <summary>
+					// Function to delete a $entityType$ from database. 
+					// </summary>
+					// <param name="$varEntity$">$entityType$ to delete</param>
+					// <param name="session">User's session identifier.</param>
+					// <returns>null if the $entityType$ was deleted successfully, the same $entityType$ otherwise</returns>
+					// <exception cref="ArgumentNullException">
+					// if <paramref name="$varEntity$"/> is null.
+					// </exception>
+					// <exception cref="UtnEmallBusinessLogicException">
+					// If an UtnEmallDataAccessException occurs in DataModel.
+					// </exception>
+					$preserverReferenceExp;
+					$methodAttExp;
+			        $entityType^ Delete($entityType^ $varEntity, string^ session);
+
+					// <summary>
+					// Get an specific $varEntity$
+					// </summary>
+					// <param name="id">id of the $entityType$ to load</param>
+					// <param name="loadRelation">true to load the relations</param>
+					// <param name="session">User's session identifier.</param>
+					// <returns>A $entityType$</returns>
+					// <exception cref="ArgumentNullException">
+					// if <paramref name="$varEntity$"/> is null.
+					// </exception>
+					// <exception cref="UtnEmallBusinessLogicException">
+					// If an UtnEmallDataAccessException occurs in DataModel.
+					// </exception>
+					$preserverReferenceExp;
+					$methodAttExp;
+					$entityType^ $getEntityFunctionName(int id, bool loadRelation, string^ session);
+
+
+					// <summary>
+					// Get collection of all $varEntity$
+					// </summary>
+					// <param name="loadRelation">true to load the relations</param>
+					// <param name="session">User's session identifier.</param>
+					// <returns>Collection of all $entityType$</returns>
+					// <exception cref="UtnEmallBusinessLogicException">
+					// If an UtnEmallDataAccessException occurs in DataModel.
+					// </exception>
+					$preserverReferenceExp;
+					$methodAttExp;
+					$listOfType^ $getAllFunctionName(bool loadRelation, string^ session);
+
+					// <summary>
+					// Get collection of all $varEntity$ that comply with certain pattern
+					// </summary>
+					// <param name="propertyName">property of $varEntity$</param>
+					// <param name="expValue">pattern</param>
+					// <param name="loadRelation">true to load the relations</param>
+					// <param name="session">User's session identifier.</param>
+					// <returns>Collection of $entityType$</returns>
+					// <exception cref="ArgumentNullException">
+					// if <paramref name="propertyName"/> is null or empty.
+					// <exception cref="ArgumentNullException">
+					// if <paramref name="expValue"/> is null or empty.
+					// </exception>
+					// <exception cref="UtnEmallBusinessLogicException">
+					// If an UtnEmallDataAccessException occurs in DataModel.
+					// </exception>
+					$preserverReferenceExp;
+					$methodAttExp;
+					$listOfType^ $getWhereFunctionName(string^ propertyName, object^ expValue, bool loadRelation, OperatorType operatorType, string^ session);
+
+					// <summary>
+					// Get collection of all $varEntity$ that comply with certain pattern
+					// </summary>
+					// <param name="propertyName">property of $varEntity$</param>
+					// <param name="expValue">pattern</param>
+					// <param name="loadRelation">true to load the relations</param>
+					// <param name="session">User's session identifier.</param>
+					// <returns>Collection of $entityType$</returns>
+					// <exception cref="ArgumentNullException">
+					// if <paramref name="propertyName"/> is null or empty.
+					// <exception cref="ArgumentNullException">
+					// if <paramref name="expValue"/> is null or empty.
+					// </exception>
+					// <exception cref="UtnEmallBusinessLogicException">
+					// If an UtnEmallDataAccessException occurs in DataModel.
+					// </exception>
+					$preserverReferenceExp;
+					$methodAttExp;
+					$listOfType^ $getWhereEqualFunctionName(string^ propertyName, object^ expValue, bool loadRelation, string^ session);
+
+					// <summary>
+					// Function to validate a $entityType$ before it's saved. 
+					// </summary>
+					// <param name="$varEntity$">$entityType$ to validate</param>
+					// <param name="session">User's session identifier.</param>
+					// <returns>null if the $entityType$ was deleted successfully, the same $entityType$ otherwise</returns>
+					// <exception cref="ArgumentNullException">
+					// if <paramref name="$varEntity$"/> is null.
+					// </exception>
+					// <exception cref="UtnEmallBusinessLogicException">
+					// If an UtnEmallDataAccessException occurs in DataModel.
+					// </exception>
+					$preserverReferenceExp;
+					$methodAttExp;
+					bool Validate($entityType*ref $varBusiness);
+				}
+			};
+
+			
+			//Si es un mobil genero los proxies
+			if(webServiceEntityNamespace==null) webServiceEntityNamespace = "http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel";
+			if(isWindowsMobile && generateServiceAccessLayerForMobile){
+				clase.Children().InsertAtBegin(
+					writecode( 
+						UtnEmall::Utils::SALGenerator::GenerateWSProxy( 
+							"http://tempuri.org/" , 
+							$webServiceEntityNamespace ) 
+					)
+				);
+				clase.Children().InsertAtBegin(
+					writecode( 
+						UtnEmall::Utils::SCLGenerator::GenerateAccessFacades( 
+							"http://tempuri.org/" , 
+							$webServiceEntityNamespace ) 
+					)
+				);
+			}
+			
+			// Si hay definido un espacio de nombres para los proxies lo inserto alli, sino lo inserto en
+			// el espacion de nombres indicado
+			if(proxiesNamespace==null)
+				context.CurrentNamespace.Children().InsertAtEnd(clase);
+			else
+				proxiesNamespace.Children().InsertAtEnd(clase);
+
+			// Defino el bloque de save
+			XplFunctionBody^ saveLogicBody = writecode{
+				// Save $varEntity$ using data access object
+				$varDataAccess.Save($varEntity);
+				return null;
+			};
+			if(customSaves.ContainsKey(modelName.Identifier))
+				saveLogicBody = (XplFunctionBody^)customSaves[modelName.Identifier];
+			
+			// Defino el bloque de delete
+			XplFunctionBody^ deleteLogicBody = writecode{
+				// Delete $varEntity$ using data access object
+				$varDataAccess.Delete($varEntity);
+				return null;
+			};
+			if(customDeletes.ContainsKey(modelName.Identifier))
+				deleteLogicBody = (XplFunctionBody^)customDeletes[modelName.Identifier];
+			
+			if(isWindowsMobile)
+			{
+				clase = writecode{
+					 // <summary>
+					 //   The <c>$businessClassName$</c> implement business logic to process $entityType$,
+					 //	  saving, updating, deleting and validating entity data.
+					 // </summary>
+					public class $businessClassName 
+					{
+						UtnEmall::Utils::List::NewCollection( $listOfTypesName , gettype($entityType^) );
+
+						$dataAccessType^ $varDataAccess;
+						public:
+							
+							 // <summary>
+							 //   The <c>$businessClassName$</c> constructor
+							 // </summary>
+							$businessClassName()
+							{
+								 $varDataAccess = new $dataAccessType();
+							}
+
+							// <summary>
+							// Function to save a $entityType$ to the database. 
+							// </summary>
+							// <param name="$varEntity$">$entityType$ to save</param>
+							// <param name="session">User's session identifier.</param>
+							// <returns>null if the $entityType$ was saved successfully, the same $entityType$ otherwise</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="$varEntity$"/> is null.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$entityType^ Save($entityType^ $varEntity)
+							{
+								if($varEntity == null)
+								{
+									throw new ArgumentException("The entity can't be null", $varEntityStr);
+								}
+								// Validate $entityType$
+								if (!Validate($varEntity))
+								{
+									return $varEntity;
+								}
+					            
+								try
+								{
+									$saveLogicBody;
+								}
+								catch(UtnEmallDataAccessException^ utnEmallDataAccessException)
+								{
+									// Rethrow as custom exception
+									throw new UtnEmallBusinessLogicException(utnEmallDataAccessException.Message, utnEmallDataAccessException);
+								}
+							}
+
+							// <summary>
+							// Function to delete a $entityType$ from database. 
+							// </summary>
+							// <param name="$varEntity$">$entityType$ to delete</param>
+							// <param name="session">User's session identifier.</param>
+							// <returns>null if the $entityType$ was deleted successfully, the same $entityType$ otherwise</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="$varEntity$"/> is null.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$entityType^ Delete($entityType^ $varEntity)
+							{
+								if ($varEntity == null)
+								{
+									throw new ArgumentException("The argument can't be null", $varEntityStr);
+								}
+								try
+								{
+									$deleteLogicBody;
+								}
+								catch(UtnEmallDataAccessException^ utnEmallDataAccessException)
+								{
+									// Rethrow as custom exception
+									throw new UtnEmallBusinessLogicException(utnEmallDataAccessException.Message, utnEmallDataAccessException);
+								}
+							}
+
+
+							// <summary>
+							// Get an specific $varEntity$
+							// </summary>
+							// <param name="id">id of the $entityType$ to load</param>
+							// <returns>A $entityType$</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="$varEntity$"/> is null.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$entityType^ $getEntityFunctionName(int id)
+							{
+								return $getEntityFunctionName(id, true);
+							}
+
+							// <summary>
+							// Get an specific $varEntity$
+							// </summary>
+							// <param name="id">id of the $entityType$ to load</param>
+							// <param name="loadRelation">true to load the relations</param>
+							// <returns>A $entityType$</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="$varEntity$"/> is null.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$entityType^ $getEntityFunctionName(int id, bool loadRelation)
+							{
+								try
+								{
+									return $varDataAccess.Load(id, loadRelation);
+								}
+								catch(UtnEmallDataAccessException^ utnEmallDataAccessException)
+								{
+									throw new UtnEmallBusinessLogicException(utnEmallDataAccessException.Message, utnEmallDataAccessException);
+								}
+							}
+
+							// <summary>
+							// Get collection of all $varEntity$
+							// </summary>
+							// <returns>Collection of all $entityType$</returns>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$listOfType^ $getAllFunctionName()
+							{
+								return $getAllFunctionName(true);
+							}
+
+							// <summary>
+							// Get collection of all $varEntity$
+							// </summary>
+							// <param name="loadRelation">true to load the relations</param>
+							// <returns>Collection of all $entityType$</returns>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$listOfType^ $getAllFunctionName(bool loadRelation)
+							{
+								try
+								{
+									return $varDataAccess.LoadAll(loadRelation);
+								}
+								catch(UtnEmallDataAccessException^ utnEmallDataAccessException)
+								{
+									throw new UtnEmallBusinessLogicException(utnEmallDataAccessException.Message, utnEmallDataAccessException);
+								}
+							}
+
+							// <summary>
+							// Get collection of all $varEntity$ that comply with certain pattern
+							// </summary>
+							// <param name="propertyName">property of $varEntity$</param>
+							// <param name="expValue">pattern</param>
+							// <returns>Collection of $entityType$</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="propertyName"/> is null or empty.
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="expValue"/> is null or empty.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$listOfType^ $getWhereFunctionName(string^ propertyName, object^ expValue, OperatorType operatorType)
+							{
+								return $getWhereFunctionName(propertyName, expValue, true, operatorType);
+							}
+							
+							// <summary>
+							// Get collection of all $varEntity$ that comply with certain pattern
+							// </summary>
+							// <param name="propertyName">property of $varEntity$</param>
+							// <param name="expValue">pattern</param>
+							// <param name="loadRelation">true to load the relations</param>
+							// <returns>Collection of $entityType$</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="propertyName"/> is null or empty.
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="expValue"/> is null or empty.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$listOfType^ $getWhereFunctionName(string^ propertyName, object^ expValue, bool loadRelation, OperatorType operatorType)
+							{
+								try
+								{
+									return $varDataAccess.LoadWhere(propertyName, expValue, loadRelation, operatorType);
+								}
+								catch(UtnEmallDataAccessException^ utnEmallDataAccessException)
+								{
+									throw new UtnEmallBusinessLogicException(utnEmallDataAccessException.Message, utnEmallDataAccessException);
+								}
+							}
+							
+							// <summary>
+							// Get collection of all $varEntity$ that comply with certain pattern
+							// </summary>
+							// <param name="propertyName">property of $varEntity$</param>
+							// <param name="expValue">pattern</param>
+							// <returns>Collection of $entityType$</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="propertyName"/> is null or empty.
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="expValue"/> is null or empty.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$listOfType^ $getWhereEqualFunctionName(string^ propertyName, object^ expValue)
+							{
+								return $getWhereFunctionName(propertyName, expValue, true, OperatorType::Equal);
+							}
+							
+							// <summary>
+							// Get collection of all $varEntity$ that comply with certain pattern
+							// </summary>
+							// <param name="propertyName">property of $varEntity$</param>
+							// <param name="expValue">pattern</param>
+							// <param name="loadRelation">true to load the relations</param>
+							// <returns>Collection of $entityType$</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="propertyName"/> is null or empty.
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="expValue"/> is null or empty.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$listOfType^ $getWhereEqualFunctionName(string^ propertyName, object^ expValue, bool loadRelation)
+							{
+								try
+								{
+									return $getWhereFunctionName(propertyName, expValue, loadRelation, OperatorType::Equal);
+								}
+								catch(UtnEmallDataAccessException^ utnEmallDataAccessException)
+								{
+									throw new UtnEmallBusinessLogicException(utnEmallDataAccessException.Message, utnEmallDataAccessException);
+								}
+							}
+							
+							// <summary>
+							// Function to validate a $entityType$ . 
+							// </summary>
+							// <param name="$varBusiness$">$entityType$ to validate</param>
+							// <returns>true</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="$varBusiness$"/> is null.
+							// </exception>
+							bool Validate($entityType^ $varBusiness)
+							{
+								bool result = true;
+
+								if ($varBusiness == null)
+								{
+									throw new ArgumentException("The argument can't be null");
+								}
+
+								// Check entity data							
+								$modelData;
+								
+								return result;
+							}										
+					}
+
+				};
+				//ESTO ES POR UN ERROR EN EL WRITECODE DE ZOE
+				//((XplImplement^)clase.FindNode("/@XplImplement")).set_name(wsInterfaceName.Identifier);
+			}
+			else
+			{
+				clase = writecode{
+					 // <summary>
+					 //   The <c>$businessClassName$</c> implement business logic to process $entityType$,
+					 //	  saving, updating, deleting and validating entity data.
+					 // </summary>
+					public class $businessClassName implements $wsInterfaceType
+					{
+						UtnEmall::Utils::List::NewCollection( $listOfTypesName , gettype($entityType^) );
+						UtnEmall::Utils::FaultException::New(FaultExceptionExceptionDetail, gettype(ExceptionDetail^));
+
+						$dataAccessType^ $varDataAccess;
+
+						public:							
+							$businessClassName()
+							{
+								 $varDataAccess = new $dataAccessType();
+							}
+
+							// <summary>
+							// Function to save a $entityType$ to the database. 
+							// </summary>
+							// <param name="$varEntity$">$entityType$ to save</param>
+							// <param name="session">User's session identifier.</param>
+							// <returns>null if the $entityType$ was saved successfully, the same $entityType$ otherwise</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="$varEntity$"/> is null.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$entityType^ Save($entityType^ $varEntity, string^ session)
+							{
+								bool permited = ValidationService::Instance.ValidatePermission(session, "save", $className);
+								if (!permited)
+								{
+									ExceptionDetail^ detail = new ExceptionDetail(new UtnEmallPermissionException("The user hasn't permissions to save an entity"));
+									throw new FaultExceptionExceptionDetail(detail);
+								}
+
+								if (!Validate($varEntity))
+								{
+									return $varEntity;
+								}
+					            
+								try
+								{
+									$saveLogicBody;
+								}
+								catch(UtnEmallDataAccessException^ utnEmallDataAccessException)
+								{
+									throw new UtnEmallBusinessLogicException(utnEmallDataAccessException.Message, utnEmallDataAccessException);
+								}
+							}
+
+							// <summary>
+							// Function to delete a $entityType$ from database. 
+							// </summary>
+							// <param name="$varEntity$">$entityType$ to delete</param>
+							// <param name="session">User's session identifier.</param>
+							// <returns>null if the $entityType$ was deleted successfully, the same $entityType$ otherwise</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="$varEntity$"/> is null.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$entityType^ Delete($entityType^ $varEntity, string^ session)
+							{
+								bool permited = ValidationService::Instance.ValidatePermission(session, "delete", $className);
+								if (!permited)
+								{
+									ExceptionDetail^ detail = new ExceptionDetail(new UtnEmallPermissionException("The user hasn't permissions to delete an entity"));
+									throw new FaultExceptionExceptionDetail(detail);
+								}
+
+								if ($varEntity == null)
+								{
+									throw new ArgumentException("The argument can not be null or be empty");
+								}
+								try
+								{
+									$deleteLogicBody;
+								}
+								catch(UtnEmallDataAccessException^ utnEmallDataAccessException)
+								{
+									throw new UtnEmallBusinessLogicException(utnEmallDataAccessException.Message, utnEmallDataAccessException);
+								}
+							}
+
+							// <summary>
+							// Get an specific $varEntity$
+							// </summary>
+							// <param name="id">id of the $entityType$ to load</param>
+							// <param name="session">User's session identifier.</param>
+							// <returns>A $entityType$</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="$varEntity$"/> is null.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$entityType^ $getEntityFunctionName(int id, string^ session)
+							{
+								return $getEntityFunctionName(id, true, session);
+							}
+
+							// <summary>
+							// Get an specific $varEntity$
+							// </summary>
+							// <param name="id">id of the $entityType$ to load</param>
+							// <param name="loadRelation">true to load the relations</param>
+							// <param name="session">User's session identifier.</param>
+							// <returns>A $entityType$</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="$varEntity$"/> is null.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$entityType^ $getEntityFunctionName(int id, bool loadRelation, string^ session)
+							{
+								bool permited = ValidationService::Instance.ValidatePermission(session, "read", $className);
+								if (!permited)
+								{
+									ExceptionDetail^ detail = new ExceptionDetail(new UtnEmallPermissionException("The user hasn't permissions to read an entity"));
+									throw new FaultExceptionExceptionDetail(detail);
+								}
+								try
+								{
+									return $varDataAccess.Load(id, loadRelation);
+								}
+								catch(UtnEmallDataAccessException^ utnEmallDataAccessException)
+								{
+									throw new UtnEmallBusinessLogicException(utnEmallDataAccessException.Message, utnEmallDataAccessException);
+								}
+							}
+
+							
+							// <summary>
+							// Get collection of all $varEntity$
+							// </summary>
+							// <param name="session">User's session identifier.</param>
+							// <returns>Collection of all $entityType$</returns>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$listOfType^ $getAllFunctionName(string^ session)
+							{
+								return $getAllFunctionName(true, session);
+							}
+
+							
+							// <summary>
+							// Get collection of all $varEntity$
+							// </summary>
+							// <param name="loadRelation">true to load the relations</param>
+							// <param name="session">User's session identifier.</param>
+							// <returns>Collection of all $entityType$</returns>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$listOfType^ $getAllFunctionName(bool loadRelation, string^ session)
+							{
+								bool permited = ValidationService::Instance.ValidatePermission(session, "read", $className);
+								if (!permited)
+								{
+									ExceptionDetail^ detail = new ExceptionDetail(new UtnEmallPermissionException("The user hasn't permissions to read an entity"));
+									throw new FaultExceptionExceptionDetail(detail);
+								}
+								try
+								{
+									return $varDataAccess.LoadAll(loadRelation);
+								}
+								catch(UtnEmallDataAccessException^ utnEmallDataAccessException)
+								{
+									throw new UtnEmallBusinessLogicException(utnEmallDataAccessException.Message, utnEmallDataAccessException);
+								}
+							}
+
+							
+							// <summary>
+							// Get collection of all $varEntity$ that comply with certain pattern
+							// </summary>
+							// <param name="propertyName">property of $varEntity$</param>
+							// <param name="expValue">pattern</param>
+							// <param name="session">User's session identifier.</param>
+							// <returns>Collection of $entityType$</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="propertyName"/> is null or empty.
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="expValue"/> is null or empty.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$listOfType^ $getWhereFunctionName(string^ propertyName, object^ expValue, OperatorType operatorType, string^ session)
+							{
+								return $getWhereFunctionName(propertyName, expValue, true, operatorType,  session);
+							}
+			
+							// <summary>
+							// Get collection of all $varEntity$ that comply with certain pattern
+							// </summary>
+							// <param name="propertyName">property of $varEntity$</param>
+							// <param name="expValue">pattern</param>
+							// <param name="loadRelation">true to load the relations</param>
+							// <param name="session">User's session identifier.</param>
+							// <returns>Collection of $entityType$</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="propertyName"/> is null or empty.
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="expValue"/> is null or empty.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$listOfType^ $getWhereFunctionName(string^ propertyName, object^ expValue, bool loadRelation, OperatorType operatorType, string^ session)
+							{
+					            
+								bool permited = ValidationService::Instance.ValidatePermission(session, "read", $className);
+								if (!permited)
+								{
+									ExceptionDetail^ detail = new ExceptionDetail(new UtnEmallPermissionException("The user hasn't permissions to read an entity"));
+									throw new FaultExceptionExceptionDetail(detail);
+								}
+								try
+								{
+									return $varDataAccess.LoadWhere(propertyName, expValue, loadRelation, operatorType);
+								}
+								catch(UtnEmallDataAccessException^ utnEmallDataAccessException)
+								{
+									throw new UtnEmallBusinessLogicException(utnEmallDataAccessException.Message, utnEmallDataAccessException);
+								}
+							}
+
+							// <summary>
+							// Get collection of all $varEntity$ that comply with certain pattern
+							// </summary>
+							// <param name="propertyName">property of $varEntity$</param>
+							// <param name="expValue">pattern</param>
+							// <param name="session">User's session identifier.</param>
+							// <returns>Collection of $entityType$</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="propertyName"/> is null or empty.
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="expValue"/> is null or empty.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$listOfType^ $getWhereEqualFunctionName(string^ propertyName, object^ expValue, string^ session)
+							{
+								return $getWhereFunctionName(propertyName, expValue, true, OperatorType::Equal, session);
+							}
+			
+							// <summary>
+							// Get collection of all $varEntity$ that comply with certain pattern
+							// </summary>
+							// <param name="propertyName">property of $varEntity$</param>
+							// <param name="expValue">pattern</param>
+							// <param name="loadRelation">true to load the relations</param>
+							// <param name="session">User's session identifier.</param>
+							// <returns>Collection of $entityType$</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="propertyName"/> is null or empty.
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="expValue"/> is null or empty.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							$listOfType^ $getWhereEqualFunctionName(string^ propertyName, object^ expValue, bool loadRelation, string^ session)
+							{
+					            return $getWhereFunctionName(propertyName, expValue, loadRelation, OperatorType::Equal, session);															}
+							
+							// <summary>
+							// Function to validate a $entityType$ before it's saved. 
+							// </summary>
+							// <param name="$varEntity$">$entityType$ to validate</param>
+							// <param name="session">User's session identifier.</param>
+							// <returns>null if the $entityType$ was deleted successfully, the same $entityType$ otherwise</returns>
+							// <exception cref="ArgumentNullException">
+							// if <paramref name="$varEntity$"/> is null.
+							// </exception>
+							// <exception cref="UtnEmallBusinessLogicException">
+							// If an UtnEmallDataAccessException occurs in DataModel.
+							// </exception>
+							bool Validate($entityType^ $varBusiness)
+							{
+								bool result = true;
+
+								if ($varBusiness == null)
+								{
+									throw new ArgumentException("The argument can not be null or be empty");
+								}
+								// Check entity data
+								$modelData;
+								return result;
+							}										
+							
+					}
+
+				};
+
+				//ESTO ES POR UN ERROR EN EL WRITECODE DE ZOE
+				((XplImplement^)clase.FindNode("/@XplImplement")).set_name(wsInterfaceName.Identifier);
+			}
+
+			return clase;
+		}
+
+		static XplNode^ CustomSave(iname void businessClassName, block customBlock){
+			if(!customSaves.ContainsKey(businessClassName.Identifier)){
+				customSaves.Add(businessClassName.Identifier, customBlock);
+			}
+			else{
+				Error^ newError = new Error("Bloque custom save " + businessClassName.Identifier + " ya agregado");
+				newError.set_PersistentError(true);
+				compiler.Errors.AddError(newError);
+			}
+			return null;
+		}
+		static XplNode^ CustomDelete(iname void businessClassName, block customBlock){
+			if(!customDeletes.ContainsKey(businessClassName.Identifier)){
+				customDeletes.Add(businessClassName.Identifier, customBlock);
+			}
+			else{
+				Error^ newError = new Error("Bloque custom delete " + businessClassName.Identifier + " ya agregado");
+				newError.set_PersistentError(true);
+				compiler.Errors.AddError(newError);
+			}
+			return null;
+		}
+	}
+}

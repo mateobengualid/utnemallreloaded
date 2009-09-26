@@ -1,0 +1,49 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="SilverlightVisualDesigners.EnterSingleDataFormSilverlight"
+	d:DesignWidth="640" d:DesignHeight="480">
+
+	<Grid x:Name="LayoutRoot" Background="#00000000" Width="130" Height="115" >
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="0.501*"/>
+			<ColumnDefinition Width="0.499*"/>
+		</Grid.ColumnDefinitions>
+		<Canvas Height="11.8" HorizontalAlignment="Left" Margin="0.0270000007003546,0.324999988079071,0,0" VerticalAlignment="Top" Width="14.063" d:LayoutOverrides="Width, Height" x:Name="CanvasConnectionPointInput">
+			<Path Height="11.8" x:Name="circle" Width="14.063" Fill="#55FFFFFF" Stretch="Fill" Data="M5.8000002,0 C7.9310822,7.1198144E-08 9.7937222,1.1691551 10.717732,2.96 L14.063,2.96 L14.063,8.5880003 L10.884755,8.5880003 C9.9812107,10.509748 8.0387287,11.8 5.8000002,11.8 C2.5967486,11.8 8.8817842E-16,9.1584806 0,5.9000001 C8.8817842E-16,2.64152 2.5967486,7.1198144E-08 5.8000002,0 z" d:LayoutOverrides="Height" x:Uid="circle"/>
+			<Ellipse x:Uid="circle" Width="7.065" Height="6.692" Fill="#55000000" x:Name="circle_Copy" Canvas.Left="2.294" Canvas.Top="2.502" d:LayoutOverrides="Width, Height"/>
+		</Canvas>
+		<Canvas Height="11.8" HorizontalAlignment="Right" Margin="0,0,-0.795000016689301,0.435000002384186" VerticalAlignment="Bottom" Width="15.721" d:LayoutOverrides="Width, Height" x:Name="CanvasConnectionPointOutput" Grid.Column="1">
+			<Path Height="11.8" Width="15.721" Fill="#55FFFFFF" Stretch="Fill" Data="M0,2.668 L4.9460001,2.668 L4.9460001,9.2360001 L0,9.2360001 L0,2.668 z M4.9466515,0 L15.721002,5.9000001 L4.946002,11.800001 L4.9466515,0 z" d:LayoutOverrides="Height"/>
+			<Path Width="6.448" Height="7.838" Fill="#55000000" Stretch="Fill" Data="M2.1875,20.225 L2.1870353,30.225 9.8939173,25.225 z" Canvas.Left="6.249" Canvas.Top="2.03" d:LayoutOverrides="Width, Height"/>
+		</Canvas>
+		<Canvas Margin="14.0590000152588,0,14.9259996414185,0.435000002384186" Grid.ColumnSpan="2" x:Name="canvasWidget">
+			<Rectangle Fill="#55FFFFFF" RadiusX="3.529" RadiusY="3.529" Height="114.564999997616" Width="101.015000343323"/>
+			<Canvas Height="16.848" d:LayoutOverrides="Height" Width="97.9289999008179" Canvas.Left="1.883" Canvas.Top="2.442">
+				<Rectangle Height="16.848" Width="97.929" RadiusX="3.529" RadiusY="3.529" Fill="#FFFFFFFF" Stroke="#FF5F3A74" d:LayoutOverrides="Height"/>
+				<Rectangle Height="10.164" Width="95.544" Canvas.Left="1.206" Canvas.Top="0.999" RadiusX="2.713" RadiusY="2.713" Fill="#FFBAB3D6"/>
+				<Rectangle Height="7.503" RadiusX="2.713" RadiusY="2.713" Fill="#FF6D609E" Width="95.544" Canvas.Left="1.206" Canvas.Top="8.381" d:LayoutOverrides="Height"/>
+				<Rectangle Height="3.844" RadiusX="0" RadiusY="0" Fill="#FF6D609E" Width="95.544" Canvas.Left="1.206" Canvas.Top="8.215" d:LayoutOverrides="Height"/>
+			</Canvas>
+			<Canvas Height="15.734" d:LayoutOverrides="Height" Width="46.1969969272614" Canvas.Left="1.89" Canvas.Top="96.497">
+				<Rectangle Height="13.181" Width="46.197" RadiusX="3.529" RadiusY="3.529" Fill="#FFFFFFFF" Stroke="#FF5F3A74" Canvas.Top="2.56"/>
+				<Rectangle Height="7.952" Width="44.097" Canvas.Top="3.341" RadiusX="2.713" RadiusY="2.713" Fill="#FFBAB3D6" Canvas.Left="1.099"/>
+				<Rectangle Height="5.87" RadiusX="2.713" RadiusY="2.713" Fill="#FF6D609E" Width="44.097" Canvas.Top="9.116" Canvas.Left="1.099"/>
+				<Rectangle Height="3.007" RadiusX="0" RadiusY="0" Fill="#FF6D609E" Width="44.097" Canvas.Top="8.987" Canvas.Left="1.099"/>
+			</Canvas>
+			<Canvas Height="15.734" d:LayoutOverrides="Height" Width="46.5920035839081" Canvas.Left="52.087" Canvas.Top="96.497">
+				<Rectangle Height="13.181" Width="46.592" RadiusX="3.529" RadiusY="3.529" Fill="#FFFFFFFF" Stroke="#FF5F3A74" Canvas.Top="2.56"/>
+				<Rectangle Height="7.952" Width="44.474" Canvas.Top="3.341" RadiusX="2.713" RadiusY="2.713" Fill="#FFBAB3D6" Canvas.Left="1.11"/>
+				<Rectangle Height="5.87" RadiusX="2.713" RadiusY="2.713" Fill="#FF6D609E" Width="44.474" Canvas.Top="9.116" Canvas.Left="1.11"/>
+				<Rectangle Height="3.007" RadiusX="0" RadiusY="0" Fill="#FF6D609E" Width="44.474" Canvas.Top="8.987" Canvas.Left="1.11"/>
+			</Canvas>
+			<Rectangle RadiusX="2.71" RadiusY="2.71" Fill="#88FFFFFF" Height="77.2070007324219" Width="97.4370002746582" Canvas.Left="1.885" Canvas.Top="20.57"/>
+			<TextBlock Height="9.734" FontFamily="Trebuchet MS" FontSize="8" Foreground="#FFFFFFFF" Text="Back" TextAlignment="Center" TextWrapping="Wrap" d:LayoutOverrides="Height" Width="46.1969969272614" Canvas.Left="1.89" Canvas.Top="100.747"/>
+			<TextBlock Height="10.734" FontFamily="Trebuchet MS" FontSize="8" Foreground="#FFFFFFFF" Text="Option" TextAlignment="Center" TextWrapping="Wrap" d:LayoutOverrides="Height" Width="46.44400203228" Canvas.Left="52.085" Canvas.Top="100.497"/>
+			<TextBlock Height="12.848" FontFamily="Trebuchet MS" FontSize="10" Foreground="#FFFFFFFF" x:Name="Title" Text="Input" TextAlignment="Center" TextWrapping="Wrap" d:LayoutOverrides="Height" Width="96.5470008850098" Canvas.Left="2.133" Canvas.Top="4.692"/>
+		</Canvas>
+	</Grid>
+</UserControl>

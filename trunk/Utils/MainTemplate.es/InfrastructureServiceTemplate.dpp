@@ -1,0 +1,1184 @@
+import "Microsoft", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "System", "platform=DotNET", "ns=DotNET", "assembly=mscorlib";
+import "LayerD.CodeDOM", "platform=DotNET", "ns=DotNET", "assembly=lib_layerd_xpl_codedom_net";
+import "LayerD.ZOECompiler", "platform=DotNET", "ns=DotNET", "assembly=lib_zoec_core";
+using DotNET::System;
+using DotNET::System::IO;
+using DotNET::System::Collections;
+using DotNET::LayerD::CodeDOM;
+using DotNET::LayerD::ZOECompiler;
+
+namespace UtnEmall::Utils{
+
+/*
+Tipos internos para guardar los datos del DSL
+*/
+factory class Table{
+public:
+	string^ Name;
+	bool IsStorage;
+	ArrayList^ Fields = new ArrayList();
+}
+factory class Field{
+public:
+	string^ Name, Type, Description;
+}
+factory class Relation{
+public:
+	string^ Source, Target, Type, TypeName;
+	XplIName^ FieldHolderName;
+}
+
+public factory class InfTest{
+	static int counter;
+public:
+	static XplNode^ Repeat(int count, block bloque){
+		if(bloque==null){
+			Console::WriteLine("Error InfTest.Repeat llamado incorrectamente con bloque nulo.");
+			return null;
+		}
+		XplFunctionBody^ retBlock = XplFunctionBody::new_bk();
+		for(int n=0;n<count;n++){
+			retBlock.Children().InsertAtEnd(
+				bloque.Clone().Children()
+			);
+		}
+		return retBlock;
+	}
+	static exp void Field(iname void entityName, iname void fieldName, string^ fieldType){
+		XplExpression^ fieldValue = GetFieldValue(fieldType, fieldName);
+		return writecode( $entityName.$fieldName = $fieldValue );
+	}
+	static exp GetFieldValue(string^ fieldType, iname void fieldName){
+		counter++;
+		
+		switch(fieldType){
+			case "String":
+				string^ strVal = fieldName.Identifier + " " + counter.ToString();
+				return writecode($strVal);
+			case "Integer":
+				return writecode($counter);
+				break;
+			case "Float":
+				float floatVal = 5.23f * counter;
+				return writecode($floatVal);
+			case "Image":
+				return writecode("");
+			case "DateTime":
+				return writecode(zoe::lang::DateTime::Now);
+			case "Boolean":
+				return writecode(false);
+			default:
+				return writecode("");
+		}
+	}
+}
+
+public factory class InfService{
+	/*
+		Algoritmo del DSL:
+			Al llamar a New inserto un "ProcessModel" al final del bloque.
+			En el ProcessModel con la estructura cargada en memoria la proceso,
+			generando las clases de entidad, acceso a datos y negocios indicadas
+			por el modelo.
+	*/
+	static XplIName^ serviceName;
+	static int storeID;
+	static string^ description;
+	static ArrayList^ tables = new ArrayList(), relations = new ArrayList();
+	static bool isMobil;
+
+	static Table^ currentTable;
+
+	static XplType^ GetFieldType(string^ fieldType){
+		XplType^ retType = new XplType();
+		
+		switch(fieldType){
+			case "String":
+				retType.set_typename(NativeTypes::String);
+				break;
+			case "Integer":
+				retType.set_typename(NativeTypes::Integer);
+				break;
+			case "Float":
+				retType.set_typename(NativeTypes::Float);
+				break;
+			case "DateTime":
+				retType.set_typename("zoe::lang::DateTime");
+				break;
+			case "Boolean":
+				retType.set_typename(NativeTypes::Boolean);
+				break;
+			case "UtnEmall::Utils::Image":
+				retType.set_typename("UtnEmall.Utils.Image");
+				break;
+			default:
+				Console::WriteLine("TIPO DE DATO NO RECONOCIDO -> " + fieldType);
+				retType.set_typename(NativeTypes::String);
+				break;
+		}
+		return retType;
+	}
+
+public:
+	static exp void IsMobil(bool isMobilVersion){
+		isMobil = isMobilVersion;
+		return null;
+	}
+
+	// En este metodo hago todo el procesamiento principal
+	//
+	static exp void ProcessModel2(){
+		XplIName^ tableName = null, internalTableName = null;
+		for(Table^ table in tables){
+			internalTableName = new XplIName("Store" + storeID.ToString() + "_" + table.Name);
+			tableName = new XplIName(table.Name);
+			XplFunctionBody^ bloque = new XplFunctionBody();
+			for(Field^ field in table.Fields){
+				XplIName^ fieldName = new XplIName(field.Name);
+				XplType^ fieldType = GetFieldType(field.Type);
+				bloque.Children().InsertAtEnd(
+					writecode(Model::Field($fieldName, gettype($fieldType)))
+				);
+			}
+			// Agrego los campos para las relaciones
+			for(Relation^ relation in relations){
+				XplIName^ relationField = new XplIName();
+				if(relation.Source==table.Name){
+					switch(relation.Type){
+						case "OneToOne":
+							relationField.Identifier = relation.Target + "Id";
+							bloque.Children().InsertAtEnd(
+								writecode(Model::Field($relationField, gettype(int)))
+							);
+							break;
+						case "OneToMany":
+							break;
+						case "ManyToMany":
+							XplIName^ manyToManyRelationEntityName = new XplIName( relation.TypeName );
+							XplIName^ manyToManyFieldHolder = relation.FieldHolderName;
+							bloque.Children().InsertAtEnd(
+								writecode(
+									UtnEmall::Utils::Model::Relations($manyToManyFieldHolder, $manyToManyRelationEntityName, UtnEmall::Utils::RelationTypes::UnoAUno, true, true, true, true){}
+								)
+							);
+							break;
+					}
+				}
+				else if(relation.Target==table.Name){
+					switch(relation.Type)
+						{
+							case "OneToOne":
+								break;
+							case "OneToMany":
+								relationField.Identifier = relation.Source + "Id";
+								bloque.Children().InsertAtEnd(
+									writecode(Model::Field($relationField, gettype(int)))
+								);
+								break;
+							case "ManyToMany":
+								XplIName^ manyToManyRelationEntityName = new XplIName( relation.TypeName );
+								XplIName^ manyToManyFieldHolder = relation.FieldHolderName;								
+								bloque.Children().InsertAtEnd(
+									writecode(
+										UtnEmall::Utils::Model::Relations($manyToManyFieldHolder, $manyToManyRelationEntityName, UtnEmall::Utils::RelationTypes::UnoAUno, true, true, true, true){}
+									)
+								);
+								break;
+						}
+				}
+			}
+			if(table.IsStorage){
+				// Agrego el modelo
+				context.CurrentNamespace.Children().InsertAtEnd(
+						writecode(
+							Model::Define($tableName,$internalTableName,false){
+								Model::Field(CustomerId, gettype(int));
+								Model::Field(TableRelated, gettype(string));
+								Model::Field(OnTableId, gettype(int));
+								Model::Field(StorageKey, gettype(string));
+								Model::Field(NumericValue, gettype(float));
+								Model::Field(BooleanValue, gettype(bool));
+								Model::Field(DateTimeValue, gettype(DateTime));
+								Model::Field(StringValue, gettype(string));
+								Model::Field(Deleted, gettype(bool));
+							}
+						)
+					);
+			}
+			else{
+				// Add this field to persist deleted fields
+				bloque.Children().InsertAtEnd(
+					writecode(
+						Model::Field(Deleted, gettype(bool))
+					)
+				);
+				// Agrego el modelo
+				context.CurrentNamespace.Children().InsertAtEnd(
+						writecode(
+							Model::Define($tableName,$internalTableName,false){
+								$bloque;
+							}
+						)
+					);
+			}
+		}
+		// Termine de procesar las tablas
+		// proceso las relaciones muchos a muchos
+		for(Relation^ relation in relations){
+			switch(relation.Type){
+				case "ManyToMany":					
+					internalTableName.Identifier = "Store" + storeID.ToString() + "_" + relation.TypeName;
+					tableName.Identifier = relation.TypeName;
+					XplIName^ sourceField = new XplIName(relation.Source + "Id"), targetField = new XplIName(relation.Target + "Id");
+					context.CurrentNamespace.Children().InsertAtEnd(
+							writecode(
+								Model::Define($tableName,$internalTableName,false){
+									Model::Field($sourceField, gettype(int));
+									Model::Field($targetField, gettype(int));
+									Model::Field(Deleted, gettype(bool));
+								}
+							)
+						);
+					break;
+			}
+		}
+			
+		//Agrego el modelo de Negocios
+		return writecode( InfService::InsertBusinessModel() );
+	}
+	
+	static XplFunctionBody^ BuildTestBlock(){
+		XplFunctionBody^ retBlock = new XplFunctionBody();		
+		XplIName^ tableName = null, entityName = null;
+		XplIName^ tableDataAccess = null, dataAccessVar = null;
+		
+		for(Table^ table in tables){
+			// Nombres de los tipos de la tabla y collecion
+			tableName = new XplIName(table.Name + "Entity");
+			tableDataAccess = new XplIName(table.Name + "DataAccess");
+			// Nombre de las variables para la entidad y la coleccion
+			entityName = new XplIName(table.Name.ToLower());
+			dataAccessVar = new XplIName(entityName.Identifier + "DataAccess");
+			
+			XplFunctionBody^ bloque = new XplFunctionBody();
+			for(Field^ field in table.Fields){
+				XplIName^ fieldName = new XplIName(field.Name);
+				string^ fieldType = field.Type;
+				bloque.Children().InsertAtEnd(
+					writecode(InfTest::Field($entityName, $fieldName, $fieldType))
+				);
+			}
+			
+			// Agrego los campos para las relaciones
+			for(Relation^ relation in relations){
+				XplIName^ relationField = new XplIName();
+				if(relation.Source==table.Name){
+					switch(relation.Type){
+						case "OneToOne":
+							relationField.Identifier = relation.Target + "Id";
+							bloque.Children().InsertAtEnd(
+								writecode( $entityName.$relationField = random.Next(1,10) )
+							);
+							break;
+						case "OneToMany":
+							break;
+						case "ManyToMany":
+							break;
+						default:
+							Console::WriteLine("Error en generacion de test");
+							break;
+					}
+				}
+				else if(relation.Target==table.Name){
+					switch(relation.Type)
+						{
+							case "OneToOne":
+								break;
+							case "OneToMany":
+								relationField.Identifier = relation.Source + "Id";
+								bloque.Children().InsertAtEnd(
+									writecode( $entityName.$relationField = random.Next(1,10) )
+								);
+								break;
+							case "ManyToMany":
+								break;
+						}
+				}
+			}
+			
+			retBlock.Children().InsertAtEnd(
+				writecode{
+					$tableName^ $entityName = null;
+					$tableDataAccess^ $dataAccessVar = new $tableDataAccess();
+					n = 1;
+					InfTest::Repeat(10){
+						$entityName = new $tableName();
+						//$entityName.Id = n++;
+						$bloque;
+						$dataAccessVar.Save( $entityName );
+					};
+					
+				}.Children()
+			);
+			
+		}
+		
+		
+		// Termine de procesar las tablas
+		// proceso las relaciones muchos a muchos
+		for(Relation^ relation in relations){
+			switch(relation.Type){
+				case "ManyToMany":
+					//internalTableName.Identifier = "Store" + storeID.ToString() + "_" + relation.TypeName;
+					tableName.Identifier = relation.TypeName + "Entity";
+					tableDataAccess = new XplIName( relation.TypeName + "DataAccess" );
+					// Nombre de las variables para la entidad y la coleccion
+					entityName = new XplIName( tableName.Identifier.ToLower() );
+					dataAccessVar = new XplIName( entityName.Identifier + "DataAccess" );
+					
+					XplIName^ sourceField = new XplIName(relation.Source + "Id"), targetField = new XplIName(relation.Target + "Id");
+					
+					retBlock.Children().InsertAtEnd(
+						writecode{
+							$tableName^ $entityName = null;
+							$tableDataAccess^ $dataAccessVar = new $tableDataAccess();
+							n = 1;
+							InfTest::Repeat(20){
+								$entityName = new $tableName();
+								//$entityName.Id = n++;
+								$entityName.$sourceField = random.Next(1,5) ;
+								$entityName.$targetField = random.Next(1,5) ;
+								$dataAccessVar.Save( $entityName );
+							};							
+						}.Children()
+					);
+					
+					break;
+					
+				default:
+					break;
+			}
+		}
+		
+		return retBlock;
+	}
+	
+	static exp void InsertBusinessModel(){
+		//Creo la clase de negocios
+		XplIName^ bsClassName = new XplIName("Store"+ storeID.ToString() + "InfrastructureService");
+		XplFunctionBody^ testBlock = BuildTestBlock();
+		
+		XplClass^ bsClass = writecode{
+			public class $bsClassName implements _iii {
+			public:	
+				static void RunTest(){					
+					int n;
+					DotNET::System::Random^ random = new DotNET::System::Random(); 
+					$testBlock;
+				}
+			}
+		};
+		XplIName^ bsInterfaceName = new XplIName("IStore"+ storeID.ToString() + "InfrastructureService");
+		XplClass^ bsInterface = writecode{
+			public interface $bsInterfaceName{
+			public:
+			}
+		};
+
+		((XplImplement^)bsClass.FindNode("/@XplImplement")).set_name( bsInterfaceName.Identifier );
+
+		if(!isMobil){
+			//Inserto la clase e interface de negocios
+			context.CurrentNamespace.Children().InsertAtEnd(
+					writecode( Zoe::Attribute::Add("System.ServiceModel.ServiceContract") )
+				);
+		}
+		context.CurrentNamespace.Children().InsertAtEnd(bsInterface);					
+		context.CurrentNamespace.Children().InsertAtEnd(bsClass);
+
+		for(Table^ table in tables){
+			//Agrego los miembros para la tabla a la clase
+			bsClass.Children().InsertAtEnd( 
+
+				MakeBusinessFunctions(table.Name)
+			);
+			bsInterface.Children().InsertAtEnd( 
+				MakeInterfaceBusinessFunctions(table.Name)
+			);
+		}
+		//Para las tablas de relaciones muchos a muchos
+		for(Relation^ relation in relations){
+			switch(relation.Type){
+
+				case "ManyToMany":
+					//Agrego los miembros para la tabla a la clase
+					bsClass.Children().InsertAtEnd( 
+						MakeBusinessFunctions(relation.TypeName)
+					);
+					bsInterface.Children().InsertAtEnd( 
+						MakeInterfaceBusinessFunctions(relation.TypeName)
+					);
+					break;
+			}
+		}
+
+		// This was added by Mateo to incorporate the new GetCollectionOf functions
+		InfService::AddGetListInterfaces(bsInterface);
+		InfService::AddGetListMethods(bsClass);		
+		
+		return null;
+	}
+
+	static XplNodeList^ MakeInterfaceBusinessFunctions(string^ tableName){
+		//Preparo los tipos
+		XplType^ typeOfTable = new XplType();
+		typeOfTable.set_typename(tableName+"Entity");
+		XplType^ dataAccessType = new XplType();
+		dataAccessType.set_typename( tableName + "DataAccess" );
+		XplType^ typeListOfTable = new XplType();
+		typeListOfTable.set_typename("CollectionOf"+typeOfTable.get_typename());
+		XplIName^ listOfTypesName = new XplIName( typeListOfTable.get_typename() );
+
+		XplType^ typeListOfInt = new XplType();
+		typeListOfInt.set_typename("ListOfInt");
+		//Preparo los INames
+		XplIName^ updateName = new XplIName("Update"+tableName);
+		XplIName^ getListName = new XplIName("GetCollectionOf"+tableName);
+		XplIName^ deleteName = new XplIName("Delete"+tableName);
+
+		XplExpression^ attributeExpression = writecode( Zoe::Attribute::Add("System.ServiceModel.OperationContract") );
+		if(isMobil){
+			attributeExpression.set_Content( XplExpression::new_empty() );
+		}
+		//Creo las funciones
+		//PENDIENTE : chequear la session sea valida
+		return writecode{%
+			UtnEmall::Utils::List::NewCollection( $listOfTypesName , gettype($typeOfTable^) );
+			UtnEmall::Utils::List::New( ListOfInt , gettype(int) );
+			$attributeExpression;
+			bool $updateName ($typeListOfTable^ items, string^ sessionId);
+			$attributeExpression;
+			$typeListOfTable^ $getListName(string^ sessionId);
+			$attributeExpression;
+			bool $deleteName(ListOfInt^ itemsId, string^ sessionId);
+		%}.Children();
+	}
+
+	static XplNodeList^ MakeBusinessFunctions(string^ tableName){
+		//Puntos de entrada que debo crear por cada tabla:
+		//	-	bool UpdateLibros(List<Libros> libros);
+		//	-	List<Libros> GetListOfLibros();
+		//	-	bool DeleteLibros(List<int> librosId);
+		
+		//Preparo los tipos
+		XplType^ typeOfTable = new XplType();
+		typeOfTable.set_typename(tableName+"Entity");
+		XplType^ dataAccessType = new XplType();
+		dataAccessType.set_typename( tableName + "DataAccess" );
+		XplType^ typeListOfTable = new XplType();
+		typeListOfTable.set_typename("CollectionOf"+typeOfTable.get_typename());
+		XplIName^ listOfTypesName = new XplIName( typeListOfTable.get_typename() );
+
+		XplType^ typeListOfInt = new XplType();
+		typeListOfInt.set_typename("ListOfInt");
+		//Preparo los INames
+		XplIName^ updateName = new XplIName("Update"+tableName);
+		XplIName^ getListName = new XplIName("GetCollectionOf"+tableName);
+		XplIName^ deleteName = new XplIName("Delete"+tableName);
+		//Creo las funciones
+		//PENDIENTE : chequear la session sea valida
+		return 
+		writecode{%
+			public:
+			UtnEmall::Utils::List::NewCollection( $listOfTypesName , gettype($typeOfTable^) );
+			UtnEmall::Utils::List::New( ListOfInt , gettype(int) );
+
+			bool $updateName ($typeListOfTable^ items, string^ sessionId){
+				$dataAccessType^ accessObj = new $dataAccessType();
+				for($typeOfTable^ item in items){
+					try{
+						accessObj.Save( item );
+					}
+					catch(Exception^ error){
+						return false;
+					}
+				}
+				return true;
+			}
+			$typeListOfTable^ $getListName(string^ sessionId){
+				$dataAccessType^ accessObj = new $dataAccessType();
+				return accessObj.LoadAll(false);
+			}
+			bool $deleteName(ListOfInt^ itemsId, string^ sessionId){
+				$dataAccessType^ accessObj = new $dataAccessType();
+				for(int itemId in itemsId){
+					try{
+						// accessObj.Delete( accessObj.Load( itemId ) );
+						$typeOfTable^ item = accessObj.Load( itemId );
+						item.Deleted = true;
+						accessObj.Save( item );
+					}
+					catch(Exception^ error){
+						return false;
+					}
+				}
+				return true;
+			}
+		%}.Children();
+	}
+
+	//----------------------------------------------------------------------------
+	//Funciones de utilidad para leer los datos
+	//
+	static exp void ProcessModel(){
+		context.CurrentNamespace.Children().InsertAtEnd(
+			writecode(InfService::ProcessModel2())
+			);
+		return null;
+	}
+	//Metodo principal para declarar un servicio de soporte
+	static XplNamespace^ New(iname void ServiceName, int StoreID, string^ Description, block serviceData){
+		XplIName^ serviceName = new XplIName("Store"+StoreID.ToString());
+		XplNamespace^ serviceNS = (XplNamespace^)writecode{
+			namespace $serviceName{
+			}
+		}.Children().FirstNode();
+
+		//serviceNS.Children().InsertAtEnd(serviceData.Children());
+		serviceNS.Children().InsertAtEnd(
+				writecode(InfService::New($ServiceName, $StoreID, $Description))
+			);
+		serviceNS.Children().InsertAtEnd(serviceData.Children());
+		serviceNS.Children().InsertAtEnd(
+				writecode(InfService::ProcessModel())
+			);
+
+		//context.CurrentNamespace.Children().InsertAtEnd(serviceNS);
+		return serviceNS;
+	}
+	static XplNode^ New(iname void ServiceName, int StoreID, string^ Description){
+		return writecode(InfService::New2($ServiceName, $StoreID, $Description));
+	}
+	static XplNode^ New2(iname void ServiceName, int StoreID, string^ Description){
+		serviceName = ServiceName;		
+		storeID = StoreID;
+		description = Description;
+		return null;
+	}
+	//Define una nueva tabla
+	static exp void Table(iname void Name, block tableData){
+		return Table(Name, false, tableData);
+	}
+	static exp void Table(iname void Name, bool isStorage){
+		Table^ newTable = new Table();
+		currentTable = newTable;
+		newTable.Name = Name.Identifier;
+		newTable.IsStorage = isStorage;
+		int tableCount = tables.Count;
+		tables.Add(newTable);
+		return null;
+	}
+	static exp void Table(iname void Name, bool isStorage, block tableData){
+		//context.CurrentNamespace.Children().InsertAtBegin(tableData.Children());
+		XplExpression^ isStorageExp;
+		if(isStorage)
+			isStorageExp = writecode(true);
+		else
+			isStorageExp = writecode(false);
+		
+		context.CurrentNamespace.Children().InsertAtEnd(
+				writecode(InfService::Table($Name, $isStorageExp))
+			);
+		context.CurrentNamespace.Children().InsertAtEnd(
+				tableData.Children()
+			);
+		return null;
+	}
+	//Establece una relacion entre las tablas Source y Target
+	//
+	//Type : UnoAUno, UnoAMuchos, MuchosAUno, MuchosAMuchos
+	static exp void Relation2(iname void Source, iname void Target, iname void Type){
+		Relation^ relation = new Relation();
+		relation.Source = Source.Identifier;
+		relation.Target = Target.Identifier;
+		relation.Type = Type.Identifier;
+		relation.TypeName = relation.Source + "_To_" + relation.Target;
+		relation.FieldHolderName = new XplIName("RelationHolder_" + relation.TypeName);
+		relations.Add(relation);
+		return null;
+	}
+	static exp void Relation(iname void Source, iname void Target, iname void Type){
+		context.CurrentNamespace.Children().InsertAtEnd(
+				writecode(InfService::Relation2($Source, $Target, $Type))
+			);
+		return null;
+	}
+
+	//Metodos internos para tablas
+	static exp void Field(iname void Name, iname void Type, string^ Description){
+		Field^ field = new Field();
+		field.Name = Name.Identifier;
+		field.Type = Type.Identifier;
+		field.Description = Description;
+		currentTable.Fields.Add(field);
+		return null;
+	}
+
+	static exp void AddGetListMethods(XplClass^ businessClass)
+	{
+		for(Table^ table in tables)
+		{
+			for(Relation^ relation in relations)
+			{
+				XplClassMembersList^ getListFunction = null;
+				if(relation.Target==table.Name)
+				{
+					switch(relation.Type)
+					{
+						case "OneToOne":
+						{
+							// Establish the parameters for the load of "many" entities
+							XplIName^ sourceEntityType = new XplIName(relation.Source+"Entity");
+							XplIName^ listOfSourceType = new XplIName("CollectionOf" + sourceEntityType.Identifier);
+							XplIName^ dataAccessSource = new XplIName(relation.Source+"DataAccess");
+							XplIName^ idExternOTM = new XplIName( sourceEntityType.Identifier + "::DB" +relation.Target + "Id");
+							// Establish the method name, parameters
+							XplIName^ functionNameOTM = new XplIName("GetCollectionOf"+relation.Source+"By"+relation.Target);
+							
+							// Inject code inside the class
+							getListFunction = writecode
+							{%
+								UtnEmall::Utils::List::NewCollection($listOfSourceType,gettype($sourceEntityType^));
+								public:
+								$listOfSourceType^ $functionNameOTM(int id)
+								{
+									$dataAccessSource^ damTarget= new $dataAccessSource();
+									return damTarget.LoadWhere($idExternOTM, id.ToString(), false, OperatorType::Equal);
+								}
+							%};
+						}break;
+							
+						case "OneToMany":
+						{
+							// Establish the generic for the "many" class
+							XplIName^ listOfManyOTMName = new XplIName("CollectionOf"+relation.Source+"Entity");
+							XplIName^ listOfManyOTMType = new XplIName("CollectionOf"+relation.Source+"Entity");
+							
+							XplType^ manyEntityOTMType = new XplType();
+							manyEntityOTMType.set_typename(relation.Source+"Entity");
+
+							XplType^ entityTarget = new XplType();
+							entityTarget.set_typename(relation.Target+"Entity");
+							
+							// Establish the data access for the "many" class
+							XplType^ dataAccessSource = new XplType();
+							dataAccessSource.set_typename(relation.Target+"DataAccess");
+
+							// Establish the data access for the "many" class
+							XplType^ dataAccessTarget = new XplType();
+							dataAccessTarget.set_typename(relation.Source+"DataAccess");
+
+							// Establish the method name, parameters
+							XplIName^ functionNameOTM = new XplIName("GetCollectionOf"+relation.Source+"By"+relation.Target);
+							XplIName^ idNameTarget = new XplIName("Id"+relation.Target);
+							XplIName^ idNameSource = new XplIName(relation.Source+ "Id");
+
+							// Establish the parameters for the load of "many" entities
+							XplIName^ idExternOTM = new XplIName( manyEntityOTMType.get_typename() + "::DBId" +relation.Source + "");
+
+							// Inject code inside the class
+							getListFunction = writecode
+							{%
+								UtnEmall::Utils::List::NewCollection($listOfManyOTMType,gettype($manyEntityOTMType^));
+								public:
+								$listOfManyOTMType^ $functionNameOTM(int $idNameTarget)
+								{
+									$dataAccessSource^ dam= new $dataAccessSource();
+									$entityTarget rel = dam.Load($idNameTarget,false);
+
+									$dataAccessTarget^ damTarget= new $dataAccessTarget();
+									return damTarget.LoadWhere($idExternOTM, rel.$idNameSource.ToString(), false, OperatorType::Equal);
+								}
+							%};
+						}
+						break;
+					}
+					
+				}
+				if(relation.Source==table.Name)
+				{
+					switch(relation.Type)
+					{
+						case "OneToOne":
+						{
+							// Establish the parameters for the load of "many" entities
+							XplIName^ targetEntityType = new XplIName(relation.Target+"Entity");
+							XplIName^ listOfTargetType = new XplIName("CollectionOf" + targetEntityType.Identifier);
+							
+							XplIName^ dataAccessSource = new XplIName(relation.Source+"DataAccess");
+							XplIName^ dataAccessTarget = new XplIName(relation.Target+"DataAccess");
+							
+							XplIName^ idFieldTarget = new XplIName( targetEntityType.Identifier + "::DBId" +relation.Target);
+							XplIName^ idTarget = new XplIName( relation.Target + "Id");
+							
+							// Establish the method name, parameters
+							XplIName^ functionNameOTM = new XplIName("GetCollectionOf"+relation.Target+"By"+relation.Source);
+							
+							// Inject code inside the class
+							getListFunction = writecode
+							{%
+								UtnEmall::Utils::List::NewCollection($listOfTargetType, gettype($targetEntityType^));
+								public:
+								$listOfTargetType^ $functionNameOTM(int id)
+								{
+									$dataAccessSource^ daSource = new $dataAccessSource();
+									$dataAccessTarget^ daTarget = new $dataAccessTarget();
+									
+									return daTarget.LoadWhere($idFieldTarget, daSource.Load(id, false).$idTarget.ToString(DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) , false, OperatorType::Equal);
+								}
+							%};
+						}break;
+							
+						case "OneToMany":
+						{
+							// Establish the generic for the "many" class
+							XplIName^ listOfManyOTMName = new XplIName("CollectionOf"+relation.Target+"Entity");
+							XplIName^ listOfManyOTMType = new XplIName("CollectionOf"+relation.Target+"Entity");
+							XplType^ manyEntityOTMType = new XplType();
+							manyEntityOTMType.set_typename(relation.Target+"Entity");							
+							
+							// Establish the data access for the "many" class
+							XplType^ dataAccessManyOTMType = new XplType();
+							dataAccessManyOTMType.set_typename(relation.Target+"DataAccess");
+
+							// Establish the method name, parameters
+							XplIName^ functionNameOTM = new XplIName("GetCollectionOf"+relation.Target+"By"+relation.Source);
+							XplIName^ idNameOTM = new XplIName("Id"+relation.Source);
+
+							// Establish the parameters for the load of "many" entities
+							XplIName^ idExternOTM = new XplIName( manyEntityOTMType.get_typename() + "::DB" + relation.Source + "Id");
+
+							// Inject code inside the class
+							getListFunction = writecode
+							{%
+								UtnEmall::Utils::List::NewCollection($listOfManyOTMType,gettype($manyEntityOTMType^));
+								public:
+								$listOfManyOTMType^ $functionNameOTM(int $idNameOTM)
+								{
+									$dataAccessManyOTMType^ dam= new $dataAccessManyOTMType();
+									return dam.LoadWhere($idExternOTM,$idNameOTM.ToString(),false, OperatorType::Equal);
+								}
+							%};
+						}break;
+							
+						case "ManyToMany":
+						{
+							// Establish the generic for the "many" classes
+							XplIName^ listOfManyAName = new XplIName("CollectionOf"+relation.Source);
+							XplType^ listOfManyAType = new XplType();
+							listOfManyAType.set_typename("CollectionOf"+relation.Source);
+							XplType^ manyEntityAType = new XplType();
+							manyEntityAType.set_typename(relation.Source+"Entity");
+
+							XplIName^ listOfManyBName = new XplIName("CollectionOf" + relation.Target);
+							XplType^ listOfManyBType = new XplType();
+							listOfManyBType.set_typename("CollectionOf" + relation.Target);
+							XplType^ manyEntityBType = new XplType();
+							manyEntityBType.set_typename(relation.Target + "Entity");
+
+							// Establish the data access for the "many" class
+							XplType^ dataAccessManyAType = new XplType();
+							dataAccessManyAType.set_typename(relation.Source + "DataAccess");
+							XplType^ dataAccessManyBType = new XplType();
+							dataAccessManyBType.set_typename(relation.Target + "DataAccess");
+
+							// Establish the method name, parameters
+							XplIName^ functionNameA = new XplIName("GetCollectionOf"+relation.Source+"By"+relation.Target);
+							XplIName^ idNameA = new XplIName("Id"+relation.Source);
+							XplIName^ functionNameB = new XplIName("GetCollectionOf"+relation.Target+"By"+relation.Source);
+							XplIName^ idNameB = new XplIName("Id"+relation.Target);
+
+							// Establish the parameters for the load of "many" entities
+							XplIName^ idExternA = new XplIName( relation.TypeName+"Entity::DB" + relation.Source + "Id" );
+							XplIName^ idAForAssociative = new XplIName(relation.Source+"Id");
+							XplIName^ idExternB = new XplIName( relation.TypeName+"Entity::DB" + relation.Target + "Id" );
+							XplIName^ idBForAssociative = new XplIName(relation.Target+"Id");
+
+							// Establish the associative class, data access, and generic list for it
+							XplIName^ associativeListName = new XplIName("CollectionOf"+relation.TypeName);
+							XplType^ associativeClassType = new XplType();
+							associativeClassType.set_typename(relation.TypeName+"Entity");
+							XplType^ associativeClassDAType = new XplType();
+							associativeClassDAType.set_typename(relation.TypeName+"DataAccess");
+							XplType^ associativeListType = new XplType();
+							associativeListType.set_typename("CollectionOf"+relation.TypeName);
+							// The field that holds the intermediate entity
+							XplIName^ manyToManyFieldHolder = relation.FieldHolderName;
+							
+							// Inject code inside the class
+							getListFunction = writecode
+							{%
+								UtnEmall::Utils::List::NewCollection($associativeListName, gettype($associativeClassType^));
+								UtnEmall::Utils::List::NewCollection($listOfManyAName, gettype($manyEntityAType^));
+								UtnEmall::Utils::List::NewCollection($listOfManyBName, gettype($manyEntityBType^));
+							
+								public:
+								$listOfManyAType^ $functionNameA(int $idNameB)
+								{
+									$associativeClassDAType^ associativeDA = new $associativeClassDAType();
+									$dataAccessManyAType^ manyDA = new $dataAccessManyAType();
+									$listOfManyAType^ result = new $listOfManyAType();
+
+									$associativeListType^ associativeList = associativeDA.LoadWhere($idExternB,$idNameB.ToString(), false, OperatorType::Equal);
+									for($associativeClassType^ associativeEntity in associativeList)
+									{
+										$manyEntityAType^ entity = manyDA.Load(associativeEntity.$idAForAssociative, false);
+										entity.$manyToManyFieldHolder = associativeEntity;
+										result.Add(entity);
+									}
+
+									return result;
+								}
+								public:
+								$listOfManyBType^ $functionNameB(int $idNameA)
+								{
+									$associativeClassDAType^ associativeDA = new $associativeClassDAType();
+									$dataAccessManyBType^ manyDA = new $dataAccessManyBType();
+									$listOfManyBType^ result = new $listOfManyBType();
+
+									$associativeListType^ associativeList = associativeDA.LoadWhere($idExternA, $idNameA.ToString(), false, OperatorType::Equal);
+									for($associativeClassType^ associativeEntity in associativeList)
+									{
+										$manyEntityBType^ entity = manyDA.Load(associativeEntity.$idBForAssociative, false);
+										entity.$manyToManyFieldHolder = associativeEntity;
+										result.Add(entity);
+									}
+									return result;
+								}
+							%};
+						}break;
+					}
+				}
+				if(getListFunction!=null)
+					businessClass.Children().InsertAtEnd(getListFunction.Children());
+			}
+		}
+
+		return null;
+	}
+
+	static exp void AddGetListInterfaces(XplClass^ businessInterface)
+	{
+		XplExpression^ attributeExpression = writecode( Zoe::Attribute::Add("System.ServiceModel.OperationContract") );
+		if(isMobil){
+			attributeExpression.set_Content( XplExpression::new_empty() );
+		}
+
+		for(Table^ table in tables)
+		{
+			for(Relation^ relation in relations)
+			{
+				XplClassMembersList^ getListFunction = null;
+				if(relation.Target==table.Name)
+				{
+					switch(relation.Type)
+					{
+						case "OneToOne":
+						{
+							// Establish the parameters for the load of "many" entities
+							XplIName^ sourceEntityType = new XplIName(relation.Source+"Entity");
+							XplIName^ listOfSourceType = new XplIName("CollectionOf" + sourceEntityType.Identifier);
+							XplIName^ dataAccessSource = new XplIName(relation.Source+"DataAccess");
+							XplIName^ idExternOTM = new XplIName( sourceEntityType.Identifier + "::DB" +relation.Target + "Id");
+							// Establish the method name, parameters
+							XplIName^ functionNameOTM = new XplIName("GetCollectionOf"+relation.Source+"By"+relation.Target);
+							
+							// Inject code inside the class
+							getListFunction = writecode
+							{%
+								UtnEmall::Utils::List::NewCollection($listOfSourceType,gettype($sourceEntityType^));
+								public:
+								$attributeExpression;
+								$listOfSourceType^ $functionNameOTM(int id);
+							%};
+							// businessClass.Children().InsertAtEnd(getListFunction.Children());
+						}break;
+						case "OneToMany":
+						{
+							// Establish the generic for the "many" class
+							XplIName^ listOfManyOTMName = new XplIName("CollectionOf"+relation.Source+"Entity");
+							XplIName^ listOfManyOTMType = new XplIName("CollectionOf"+relation.Source+"Entity");
+							
+							XplType^ manyEntityOTMType = new XplType();
+							manyEntityOTMType.set_typename(relation.Source+"Entity");
+
+							XplType^ entityTarget = new XplType();
+							entityTarget.set_typename(relation.Target+"Entity");
+							
+							// Establish the data access for the "many" class
+							XplType^ dataAccessSource = new XplType();
+							dataAccessSource.set_typename(relation.Target+"DataAccess");
+
+							// Establish the data access for the "many" class
+							XplType^ dataAccessTarget = new XplType();
+							dataAccessTarget.set_typename(relation.Source+"DataAccess");
+
+							// Establish the method name, parameters
+							XplIName^ functionNameOTM = new XplIName("GetCollectionOf"+relation.Source+"By"+relation.Target);
+							XplIName^ idNameTarget = new XplIName("Id"+relation.Target);
+							XplIName^ idNameSource = new XplIName(relation.Source+ "Id");
+
+							// Establish the parameters for the load of "many" entities
+							XplIName^ idExternOTM = new XplIName( manyEntityOTMType.get_typename() + "::DBId" +relation.Source + "");
+
+							// Inject code inside the class
+							getListFunction = writecode
+							{%
+								UtnEmall::Utils::List::NewCollection($listOfManyOTMType,gettype($manyEntityOTMType^));
+								public:
+								$attributeExpression;
+								$listOfManyOTMType^ $functionNameOTM(int $idNameTarget);								
+							%};
+							// businessClass.Children().InsertAtEnd(getListFunction.Children());
+						}break;
+					}
+					
+				}
+				if(relation.Source==table.Name)
+				{
+					switch(relation.Type)
+					{
+						case "OneToOne":
+						{
+							// Establish the parameters for the load of "many" entities
+							XplIName^ targetEntityType = new XplIName(relation.Target+"Entity");
+							XplIName^ listOfTargetType = new XplIName("CollectionOf" + targetEntityType.Identifier);
+							
+							XplIName^ dataAccessSource = new XplIName(relation.Source+"DataAccess");
+							XplIName^ dataAccessTarget = new XplIName(relation.Target+"DataAccess");
+							
+							XplIName^ idFieldTarget = new XplIName( targetEntityType.Identifier + "::DBId" +relation.Target);
+							XplIName^ idTarget = new XplIName( relation.Target + "Id" );
+							
+							// Establish the method name, parameters
+							XplIName^ functionNameOTM = new XplIName("GetCollectionOf"+relation.Target+"By"+relation.Source);
+							
+							// Inject code inside the class
+							getListFunction = writecode
+							{%
+								UtnEmall::Utils::List::NewCollection($listOfTargetType, gettype($targetEntityType^));
+								public:
+								$attributeExpression;
+								$listOfTargetType^ $functionNameOTM(int id);
+							%};
+							// businessClass.Children().InsertAtEnd(getListFunction.Children());
+						}break;
+							
+						case "OneToMany":
+						{
+							// Establish the generic for the "many" class
+							XplIName^ listOfManyOTMName = new XplIName("CollectionOf"+relation.Target+"Entity");
+							XplIName^ listOfManyOTMType = new XplIName("CollectionOf"+relation.Target+"Entity");
+							XplType^ manyEntityOTMType = new XplType();
+							manyEntityOTMType.set_typename(relation.Target+"Entity");							
+							
+							// Establish the data access for the "many" class
+							XplType^ dataAccessManyOTMType = new XplType();
+							dataAccessManyOTMType.set_typename(relation.Target+"DataAccess");
+
+							// Establish the method name, parameters
+							XplIName^ functionNameOTM = new XplIName("GetCollectionOf"+relation.Target+"By"+relation.Source);
+							XplIName^ idNameOTM = new XplIName("Id"+relation.Source);
+
+							// Establish the parameters for the load of "many" entities
+							XplIName^ idExternOTM = new XplIName( manyEntityOTMType.get_typename() + "::DB" + relation.Source + "Id");
+
+							// Inject code inside the class
+							getListFunction = writecode
+							{%
+								UtnEmall::Utils::List::NewCollection($listOfManyOTMType,gettype($manyEntityOTMType^));
+								public:
+								$attributeExpression;
+								$listOfManyOTMType^ $functionNameOTM(int $idNameOTM);
+							%};
+						}break;
+						case "ManyToMany":
+						{
+							// Establish the generic for the "many" classes
+							XplIName^ listOfManyAName = new XplIName("CollectionOf"+relation.Source);
+							XplType^ listOfManyAType = new XplType();
+							listOfManyAType.set_typename("CollectionOf"+relation.Source);
+							XplType^ manyEntityAType = new XplType();
+							manyEntityAType.set_typename(relation.Source+"Entity");
+
+							XplIName^ listOfManyBName = new XplIName("CollectionOf" + relation.Target);
+							XplType^ listOfManyBType = new XplType();
+							listOfManyBType.set_typename("CollectionOf" + relation.Target);
+							XplType^ manyEntityBType = new XplType();
+							manyEntityBType.set_typename(relation.Target + "Entity");
+
+							// Establish the data access for the "many" class
+							XplType^ dataAccessManyAType = new XplType();
+							dataAccessManyAType.set_typename(relation.Source + "DataAccess");
+							XplType^ dataAccessManyBType = new XplType();
+							dataAccessManyBType.set_typename(relation.Target + "DataAccess");
+
+							// Establish the method name, parameters
+							XplIName^ functionNameA = new XplIName("GetCollectionOf"+relation.Source+"By"+relation.Target);
+							XplIName^ idNameA = new XplIName("Id"+relation.Source);
+							XplIName^ functionNameB = new XplIName("GetCollectionOf"+relation.Target+"By"+relation.Source);
+							XplIName^ idNameB = new XplIName("Id"+relation.Target);
+
+							// Establish the parameters for the load of "many" entities
+							XplIName^ idExternA = new XplIName( relation.TypeName+"Entity::DB" + relation.Source + "Id" );
+							XplIName^ idAForAssociative = new XplIName(relation.Source+"Id");
+							XplIName^ idExternB = new XplIName( relation.TypeName+"Entity::DB" + relation.Target + "Id" );
+							XplIName^ idBForAssociative = new XplIName(relation.Target+"Id");
+
+							// Establish the associative class, data access, and generic list for it
+							XplIName^ associativeListName = new XplIName("CollectionOf"+relation.TypeName);
+							XplType^ associativeClassType = new XplType();
+							associativeClassType.set_typename(relation.TypeName+"Entity");
+							XplType^ associativeClassDAType = new XplType();
+							associativeClassDAType.set_typename(relation.TypeName+"DataAccess");
+							XplType^ associativeListType = new XplType();
+							associativeListType.set_typename("CollectionOf"+relation.TypeName);
+							// The field that holds the intermediate entity
+							XplIName^ manyToManyFieldHolder = relation.FieldHolderName;
+							
+							// Inject code inside the class
+							getListFunction = writecode
+							{%
+								UtnEmall::Utils::List::NewCollection($associativeListName, gettype($associativeClassType^));
+								UtnEmall::Utils::List::NewCollection($listOfManyAName, gettype($manyEntityAType^));
+								UtnEmall::Utils::List::NewCollection($listOfManyBName, gettype($manyEntityBType^));
+							
+								public:
+								$attributeExpression;
+								$listOfManyAType^ $functionNameA(int $idNameB);
+								public:
+								$attributeExpression;
+								$listOfManyBType^ $functionNameB(int $idNameA);
+							%};
+						}break;
+					}
+					// businessClass.Children().InsertAtEnd(getListFunction.Children());
+				}
+				if(getListFunction!=null)
+					businessInterface.Children().InsertAtEnd(getListFunction.Children());
+			}
+		}
+
+		return null;
+		//--------------------------------------------------------
+		/*
+		for(Table^ table in tables){
+			for(Relation^ relation in relations){
+				if(relation.Source==table.Name){
+					XplClassMembersList^ getListFunction = null;
+					switch(relation.Type){
+						case "OneToOne":
+							getListFunction = writecode
+							{%
+						
+								public:
+								
+							%};
+						break;
+						case "OneToMany":
+							// Establish the generic for the "many" class
+							XplIName^ listOfManyOTMName = new XplIName("CollectionOf"+relation.Target+"Entity");
+							XplType^ listOfManyOTMType = new XplType();
+							listOfManyOTMType.set_typename("CollectionOf"+relation.Target+"Entity");
+							XplType^ manyEntityOTMType = new XplType();
+							manyEntityOTMType.set_typename(relation.Target+"Entity");
+
+							// Establish the method name, parameters
+							XplIName^ functionNameOTM = new XplIName("GetCollectionOf"+relation.Target+"By"+relation.Source);
+							XplIName^ idNameOTM = new XplIName("Id"+relation.Target);
+
+							// Inject code inside the class
+							getListFunction = writecode
+							{%
+								UtnEmall::Utils::List::NewCollection($listOfManyOTMName,gettype($manyEntityOTMType^));
+								public:
+								$attributeExpression;
+								$listOfManyOTMType^ $functionNameOTM(int $idNameOTM);
+							%};
+						break;
+						case "ManyToOne":
+							// Establish the generic for the "many" class
+							XplIName^ listOfManyName = new XplIName("CollectionOf"+relation.Source);
+							XplType^ listOfManyType = new XplType();
+							listOfManyType.set_typename("CollectionOf"+relation.Source);
+							XplType^ manyEntityType = new XplType();
+							manyEntityType.set_typename(relation.Source+"Entity");
+
+							// Establish the method name, parameters
+							XplIName^ functionName = new XplIName("GetCollectionOf"+relation.Source+"By"+relation.Target);
+							XplIName^ idName = new XplIName("Id"+relation.Source);
+
+							// Inject code inside the class
+							getListFunction = writecode
+							{%
+								UtnEmall::Utils::List::NewCollection($listOfManyType,gettype($manyEntityType^));
+								public:
+								$attributeExpression;
+								$listOfManyType^ $functionName(int $idName);
+							%};
+						break;
+						case "ManyToMany":
+							// Establish the generic for the "many" classes
+							XplIName^ listOfManyAName = new XplIName("CollectionOf"+relation.Source);
+							XplType^ listOfManyAType = new XplType();
+							listOfManyAType.set_typename("CollectionOf"+relation.Source);
+							XplType^ manyEntityAType = new XplType();
+							manyEntityAType.set_typename(relation.Source+"Entity");
+
+							XplIName^ listOfManyBName = new XplIName("CollectionOf"+relation.Target);
+							XplType^ listOfManyBType = new XplType();
+							listOfManyBType.set_typename("CollectionOf"+relation.Target);
+							XplType^ manyEntityBType = new XplType();
+							manyEntityBType.set_typename(relation.Target+"Entity");
+
+							// Establish the method name, parameters
+							XplIName^ functionNameA = new XplIName("GetCollectionOf"+relation.Source+"By"+relation.Target);
+							XplIName^ idNameA = new XplIName("Id"+relation.Source);
+							XplIName^ functionNameB = new XplIName("GetCollectionOf"+relation.Target+"By"+relation.Source);
+							XplIName^ idNameB = new XplIName("Id"+relation.Target);
+
+							// Establish the associative class, data access, and generic list for it
+							XplIName^ associativeListName = new XplIName("CollectionOf"+relation.TypeName);
+							XplType^ associativeClassType = new XplType();
+							associativeClassType.set_typename(relation.TypeName+"Entity");
+							XplType^ associativeListType = new XplType();
+							associativeListType.set_typename("CollectionOf"+relation.TypeName);
+
+							// Inject code inside the class
+							getListFunction = writecode
+							{%
+								UtnEmall::Utils::List::NewCollection($associativeListName,gettype($associativeClassType^));
+								UtnEmall::Utils::List::NewCollection($listOfManyAName,gettype($manyEntityAType^));
+								UtnEmall::Utils::List::NewCollection($listOfManyBName,gettype($manyEntityBType^));
+
+								public:								
+								$attributeExpression;
+								$listOfManyAType^ $functionNameA(int $idNameB);
+
+								public:
+								$attributeExpression;
+								$listOfManyBType^ $functionNameB(int $idNameA);
+							%};
+						break;
+					}
+					businessInterface.Children().InsertAtEnd(getListFunction.Children());
+				}
+			}
+		}
+
+		return null;*/
+	}
+}
+
+}

@@ -1,0 +1,17 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:Janus="clr-namespace:Janus"
+	x:Class="Janus.StatisticsManager"
+	Width="640" Height="480">
+
+	<Grid Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+		<Image Margin="0,0,8,8" Source="..\imgs\Monitor.png" Stretch="Fill" HorizontalAlignment="Right" Width="256" Opacity="0.5" Height="256" VerticalAlignment="Bottom"/>		
+		<Label HorizontalAlignment="Left" Margin="8,8,0,0" VerticalAlignment="Top" Width="292" Height="37" Content="View statistics" FontSize="20" Foreground="#FF05901C"/>		
+		<ComboBox HorizontalAlignment="Left" Margin="104,0,0,182" x:Name="comboBox1" Width="183" VerticalAlignment="Bottom" Height="23" />
+		<ComboBox HorizontalAlignment="Left" Margin="104,0,0,143" x:Name="comboBox2" Width="183" VerticalAlignment="Bottom" Height="23" />
+		<Button Margin="104,0,0,86" x:Name="button1" Content="View Service Statistics" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="183" Height="41"/>
+		<Button Height="34" Margin="104,106,0,0" x:Name="button2" VerticalAlignment="Top" HorizontalAlignment="Left" Width="183" Content="View Global Statistics Analysis"/>
+		<Label Height="28" Margin="8,165,0,0" x:Name="label1" VerticalAlignment="Top" Content="Esto està como el orto, arreglar para que quede lindo" HorizontalAlignment="Left" Width="292"/>
+	</Grid>
+</UserControl>
