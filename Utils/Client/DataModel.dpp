@@ -268,6 +268,36 @@ namespace DotNET::UtnEmall::Server::DataModel
 		// The relation with ConnectionWidget
 		Model::Relations(ConnectionWidget, ConnectionWidget, RelationTypes::UnoAUno, true, false, false){};
 	};
+	
+	Model::Define(Campaign, true, true){
+		Model::Field(Description, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(Description, "Description can't be empty");
+		};
+
+		Model::Field(Name, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(Name,"Name can't be empty");
+			Rules::PropertyUnique(Name, "Duplicated name for campaign", Campaign);
+		};
+		
+		Model::Field(StartDate, gettype(DateTime))
+		{
+			Rules::PropertyNotNull(StartDate, "Start date can't be null");
+		};
+
+		Model::Field(StopDate, gettype(DateTime))
+		{
+			Rules::PropertyDateTimeLowerThan(StopDate, StartDate, "Stop date can't be lower than start date");
+			Rules::PropertyNotNull(StopDate, "Stop date can't be null");
+		};
+		
+		Model::Relations(User, User, User, RelationTypes::MuchosAUno, true, false, false, true, true){};
+		Model::Relations(ServiceCampaign, ServiceCampaign, RelationTypes::UnoAMuchos, false, false){};
+		
+		// Deletion restrictions
+		Model::DeleteRestriction(ServiceCampaign, Campaign, "There are services associated to this campaign.");
+	};
 
 	Model::Define(Category, true, true){
 		Model::Field(Description, gettype(string))
@@ -315,6 +345,13 @@ namespace DotNET::UtnEmall::Server::DataModel
 		{
 			Rules::PropertyStringNotEmpty(PhoneNumber, "Phone Number can't be empty");
 		};
+		Model::Field(Birthday, gettype(DateTime))
+		{
+			Rules::PropertyNotNull(Birthday, "Birthday can't be null");
+		};
+		Model::Field(HowManyChildren, gettype(int)){};
+		Model::Field(Gender, gettype(int)){};
+		Model::Field(CivilState, gettype(int)){};
 		Model::Field(UserName, gettype(string))
 		{
 			Rules::PropertyStringNotEmpty(UserName, "UserName can't be empty");
@@ -605,6 +642,12 @@ namespace DotNET::UtnEmall::Server::DataModel
 			Rules::PropertyDateTimeLowerThan(StopDate, StartDate, "Stop date can't be lower than start date");
 			Rules::PropertyNotNull(StopDate, "Stop date can't be null");
 		};
+	};
+
+	Model::Define(ServiceCampaign, false){
+		Model::Relations(Service, Service, RelationTypes::MuchosAUno, false, false, false, true){};
+		Model::Relations(Campaign, Campaign, RelationTypes::MuchosAUno, true, false, false, true){};
+		
 	};
 
 	Model::Define(ServiceCategory, false){
