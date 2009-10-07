@@ -269,6 +269,36 @@ namespace DotNET::UtnEmall::Server::DataModel
 		Model::Relations(ConnectionWidget, ConnectionWidget, RelationTypes::UnoAUno, true, false, false){};
 	};
 
+	Model::Define(Campaign, true, true){
+		Model::Field(Description, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(Description, "Description can't be empty");
+		};
+
+		Model::Field(Name, gettype(string))
+		{
+			Rules::PropertyStringNotEmpty(Name,"Name can't be empty");
+			Rules::PropertyUnique(Name, "Duplicated name for campaign", Campaign);
+		};
+		
+		Model::Field(StartDate, gettype(DateTime))
+		{
+			Rules::PropertyNotNull(StartDate, "Start date can't be null");
+		};
+
+		Model::Field(StopDate, gettype(DateTime))
+		{
+			Rules::PropertyDateTimeLowerThan(StopDate, StartDate, "Stop date can't be lower than start date");
+			Rules::PropertyNotNull(StopDate, "Stop date can't be null");
+		};
+		
+		Model::Relations(User, User, User, RelationTypes::MuchosAUno, true, false, false, true, true){};
+		Model::Relations(ServiceCampaign, ServiceCampaign, RelationTypes::UnoAMuchos, false, false){};
+		
+		// Deletion restrictions
+		Model::DeleteRestriction(ServiceCampaign, Campaign, "There are services associated to this campaign.");
+	};
+
 	Model::Define(Category, true, true){
 		Model::Field(Description, gettype(string))
 		{
@@ -469,8 +499,6 @@ namespace DotNET::UtnEmall::Server::DataModel
 		};
 
 		Model::Relations(UserGroup, UserGroup, RelationTypes::UnoAMuchos, false, false){};
-
-
 		// Deletion restrictions
 		Model::DeleteRestriction(UserGroup, Group, "Ya existen usuarios asociados a este grupo.");
 	};
@@ -610,9 +638,13 @@ namespace DotNET::UtnEmall::Server::DataModel
 	Model::Define(ServiceCategory, false){
 		Model::Relations(Service, Service, RelationTypes::MuchosAUno, false, false, false, true){};
 		Model::Relations(Category, Category, RelationTypes::MuchosAUno, true, false, false, true){};
-
 	};
 
+	Model::Define(ServiceCampaign, false){
+		Model::Relations(Service, Service, RelationTypes::MuchosAUno, false, false, false, true){};
+		Model::Relations(Campaign, Campaign, RelationTypes::MuchosAUno, true, false, false, true){};
+	};
+	
 	Model::Define(Store, true, true){
 		Model::Field(Name, gettype(string))
 		{
