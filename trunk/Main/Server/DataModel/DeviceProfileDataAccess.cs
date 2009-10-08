@@ -12,8 +12,9 @@ namespace UtnEmall.Server.DataModel
 {
 
 	/// <summary>
-	/// El <c>DeviceProfileDataAccess</c> es una clase
-	/// que provee acceso a la base de datos para la tabla correspondiente.
+	/// The <c>DeviceProfileDataAccess</c> is a class
+	/// that provides access to the modelName stored on
+	/// the database.
 	/// </summary>
 	public class DeviceProfileDataAccess
 	{
@@ -25,12 +26,13 @@ namespace UtnEmall.Server.DataModel
 		private static Dictionary<string,Type> properties; 
 		private static bool dbChecked; 
 		/// <summary>
-		/// Inicializa una nueva instancia de
-		/// <c>DeviceProfileDataAccess</c>.
-		/// Chequea si la tabla y los procedimientos almacenados
-		/// ya existen en la base de datos, si no, los crea
-		/// Establece las propiedades que permite realizar consultas
-		/// llamando los metodos LoadWhere.
+		/// Initializes a new instance of a
+		/// <c>DeviceProfileDataAccess</c> type.
+		/// It checks if the table and stored procedure
+		/// are already on the database, if not, it creates
+		/// them.
+		/// Sets the properties that allows to make queries
+		/// by calling the LoadWhere method.
 		/// </summary>
 		public  DeviceProfileDataAccess()
 		{
@@ -49,12 +51,13 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Establece la conexión y la transacción en el caso de que una transacción global se este ejecutando
+		/// set the connection and the transaction to the object, in the case
+		/// that a global transaction is running.
 		/// </summary>
-		/// <param name="connection">La conexión IDbConnection</param>
-		/// <param name="transaction">La transacción global IDbTransaction</param>
+		/// <param name="connection">The IDbConnection connection to the database</param>
+		/// <param name="transaction">The global IDbTransaction transaction</param>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void SetConnectionObjects(IDbConnection connection, IDbTransaction transaction)
 		{
@@ -64,27 +67,29 @@ namespace UtnEmall.Server.DataModel
 			}
 			this.dbConnection = connection;
 			this.dbTransaction = transaction;
+			// FIXME : The name of this flag is not always apropiated
+
 			this.isGlobalTransaction = true;
 		} 
 
 		/// <summary>
-		/// Función para cargar un DeviceProfileEntity desde la base de datos.
+		/// Function to load a DeviceProfileEntity from database.
 		/// </summary>
-		/// <param name="id">El id del registro a cargar</param>
-		/// <param name="loadRelation">Si es true carga las relaciones</param>
-		/// <param name="scope">Estructura interna usada para evitar la referencia circular, debe ser proveida si es llamada desde otro data access</param>
-		/// <returns>La instancia de la entidad</returns>
+		/// <param name="id">The ID of the record to load</param>
+		/// <param name="loadRelation">if is true load the relation</param>
+		/// <param name="scope">Internal structure used to avoid circular reference locks, must be provided if calling from other data access object</param>
+		/// <returns>The entity instance</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs while accessing the database.
 		/// </exception>
 		public DeviceProfileEntity Load(int id, bool loadRelation, Dictionary<string,IEntity> scope)
 		{
-			// Crea una clave para el objeto de scope interno
+			// Build a key for internal scope object
 			string scopeKey = id.ToString(NumberFormatInfo.InvariantInfo) + "DeviceProfile";
 			if (scope != null)
 			{
-				// Si el scope contiene el objeto, este ya fue cargado
-				// retorna el objeto situado en el scope para evitar referencias circulares
+				// If scope contains the object it was already loaded,
+				// return it to avoid circular references
 				if (scope.ContainsKey(scopeKey))
 				{
 					return ((DeviceProfileEntity)scope[scopeKey]);
@@ -92,18 +97,18 @@ namespace UtnEmall.Server.DataModel
 			}
 			else 
 			{
-				// Si no existe un scope, crear uno
+				// If there isn't a current scope create one
 				scope = new Dictionary<string,IEntity>();
 			}
 
 			DeviceProfileEntity deviceProfile = null;
-			// Chequear si la entidad fue ya cargada por el data access actual
-			// y retornar si fue ya cargada
+			// Check if the entity was already loaded by current data access object
+			// and return it if that is the case
 
 			if (inMemoryEntities.ContainsKey(id))
 			{
 				deviceProfile = inMemoryEntities[id];
-				// Agregar el objeto actual al scope
+				// Add current object to current load scope
 
 				scope.Add(scopeKey, deviceProfile);
 			}
@@ -112,7 +117,7 @@ namespace UtnEmall.Server.DataModel
 				bool closeConnection = false;
 				try 
 				{
-					// Abrir una nueva conexión si no es una transaccion
+					// Open a new connection if it isn't on a transaction
 					if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 					{
 						closeConnection = true;
@@ -121,22 +126,22 @@ namespace UtnEmall.Server.DataModel
 					}
 
 					string cmdText = "SELECT idDeviceProfile, deviceType, deviceModel, macAddress, windowsMobileVersion, idCustomer, timestamp FROM [DeviceProfile] WHERE idDeviceProfile = @idDeviceProfile";
-					// Crea el command
+					// Create the command
 
 					IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-					// Crear el parametro id para la consulta
+					// Create the Id parameter for the query
 
 					IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idDeviceProfile", DbType.Int32);
 					parameter.Value = id;
 					sqlCommand.Parameters.Add(parameter);
-					// Usar el datareader para cargar desde la base de datos
+					// Use a DataReader to get data from db
 
 					IDataReader reader = sqlCommand.ExecuteReader();
 					deviceProfile = new DeviceProfileEntity();
 
 					if (reader.Read())
 					{
-						// Cargar las filas de la entidad
+						// Load fields of entity
 						deviceProfile.Id = reader.GetInt32(0);
 
 						if (!reader.IsDBNull(1))
@@ -157,21 +162,21 @@ namespace UtnEmall.Server.DataModel
 						}
 
 						deviceProfile.IdCustomer = reader.GetInt32(5);
-						// Agregar el objeto actual al scope
+						// Add current object to the scope
 
 						scope.Add(scopeKey, deviceProfile);
-						// Agregar el objeto a la cahce de entidades cargadas
+						// Add current object to cache of loaded entities
 
 						inMemoryEntities.Add(deviceProfile.Id, deviceProfile);
-						// Lee el timestamp y establece las propiedades nuevo y cambiado
+						// Read the timestamp and set new and changed properties
 
 						deviceProfile.Timestamp = reader.GetDateTime(6);
 						deviceProfile.IsNew = false;
 						deviceProfile.Changed = false;
-						// Cerrar el Reader
+						// Close the reader
 
 						reader.Close();
-						// Carga los objetos relacionadoss if required
+						// Load related objects if required
 
 						if (loadRelation)
 						{
@@ -184,29 +189,29 @@ namespace UtnEmall.Server.DataModel
 				}
 				catch (DbException dbException)
 				{
-					// Relanza la excepcion como una excepcion personalizada
+					// Catch DBException and rethrow as custom exception
 					throw new UtnEmallDataAccessException(dbException.Message, dbException);
 				}
 				finally 
 				{
-					// Cierra la conexión si fue creada dentro de la Función
+					// Close connection if it was opened by ourself
 					if (closeConnection)
 					{
 						dbConnection.Close();
 					}
 				}
 			}
-			// Retorna la entidad cargada
+			// Return the loaded entity
 			return deviceProfile;
 		} 
 
 		/// <summary>
-		/// Función para cargar un DeviceProfileEntity desde la base de datos
+		/// Function to load a DeviceProfileEntity from database.
 		/// </summary>
-		/// <param name="id">El id del registro a cargar</param>
-		/// <returns>La instancia de la entidad</returns>
+		/// <param name="id">The ID of the record to load</param>
+		/// <returns>the entity instance</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs while accessing the database.
 		/// </exception>
 		public DeviceProfileEntity Load(int id)
 		{
@@ -214,13 +219,13 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función para cargar un DeviceProfileEntity desde la base de datos
+		/// Function to load a DeviceProfileEntity from database.
 		/// </summary>
-		/// <param name="id">El id del registro a cargar</param>
-		/// <param name="loadRelation">Si es true carga la relacion</param>
-		/// <returns>La instancia de la entidad</returns>
+		/// <param name="id">The ID of the record to load</param>
+		/// <param name="loadRelation">if is true load the relation</param>
+		/// <returns>the entity instance</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs while accessing the database.
 		/// </exception>
 		public DeviceProfileEntity Load(int id, bool loadRelations)
 		{
@@ -228,13 +233,13 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función para cargar un DeviceProfileEntity desde la base de datos
+		/// Function to load a DeviceProfileEntity from database.
 		/// </summary>
-		/// <param name="id">El id del registro a cargar</param>
-		/// <param name="scope">Estructura interna usada para evitar la referencia circular, debe ser proveida si es llamada desde otro data access</param>
-		/// <returns>La instancia de la entidad</returns>
+		/// <param name="id">The ID of the record to load</param>
+		/// <param name="scope">Internal structure used to avoid circular reference locks, must be provided if calling from other data access object</param>
+		/// <returns>the entity instance</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs while accessing the database.
 		/// </exception>
 		public DeviceProfileEntity Load(int id, Dictionary<string,IEntity> scope)
 		{
@@ -242,7 +247,7 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que controla y crea la tabla y los procedimientos almacenados para esta clase.
+		/// Function to check and create table and stored procedures for this class.
 		/// </summary>
 		private static void DbChecked()
 		{
@@ -327,14 +332,14 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que guarda un DeviceProfileEntity en la base de datos.
+		/// Function to Save a DeviceProfileEntity in the database.
 		/// </summary>
-		/// <param name="deviceProfile">DeviceProfileEntity a guardar</param>
+		/// <param name="deviceProfile">DeviceProfileEntity to save</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="deviceProfile"/> no es un <c>DeviceProfileEntity</c>.
+		/// if <paramref name="deviceProfile"/> is not a <c>DeviceProfileEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void Save(DeviceProfileEntity deviceProfile)
 		{
@@ -342,15 +347,15 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que guarda un DeviceProfileEntity en la base de datos.
+		/// Function to Save a DeviceProfileEntity in the database.
 		/// </summary>
-		/// <param name="deviceProfile">DeviceProfileEntity a guardar</param>
-		/// <param name="scope">Estructura interna para evitar problemas con referencias circulares</param>
+		/// <param name="deviceProfile">DeviceProfileEntity to save</param>
+		/// <param name="scope">Interna structure to avoid circular reference locks. Provide an instance when calling from other data access object.</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="deviceProfile"/> no es un <c>DeviceProfileEntity</c>.
+		/// If <paramref name="deviceProfile"/> is not a <c>DeviceProfileEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void Save(DeviceProfileEntity deviceProfile, Dictionary<string,IEntity> scope)
 		{
@@ -358,11 +363,11 @@ namespace UtnEmall.Server.DataModel
 			{
 				throw new ArgumentException("The argument can't be null");
 			}
-			// Crear una clave unica para identificar el objeto dentro del scope interno
+			// Create a unique key to identify the object in the internal scope
 			string scopeKey = deviceProfile.Id.ToString(NumberFormatInfo.InvariantInfo) + "DeviceProfile";
 			if (scope != null)
 			{
-				// Si se encuentra dentro del scope lo retornamos
+				// If it's on the scope return it, don't save again
 				if (scope.ContainsKey(scopeKey))
 				{
 					return;
@@ -370,13 +375,13 @@ namespace UtnEmall.Server.DataModel
 			}
 			else 
 			{
-				// Crea un nuevo scope si este no fue enviado
+				// Create a new scope if it's not provided
 				scope = new Dictionary<string,IEntity>();
 			}
 
 			try 
 			{
-				// Crea una nueva conexion y una nueva transaccion si no hay una a nivel superior
+				// Open a DbConnection and a new transaction if it isn't on a higher level one
 				if (!isGlobalTransaction)
 				{
 					dbConnection = dataAccess.GetNewConnection();
@@ -386,7 +391,7 @@ namespace UtnEmall.Server.DataModel
 
 				string commandName = "";
 				bool isUpdate = false;
-				// Verifica si se debe hacer una actualización o una inserción
+				// Check if it is an insert or update command
 
 				if (deviceProfile.IsNew || !DataAccessConnection.ExistsEntity(deviceProfile.Id, "DeviceProfile", "idDeviceProfile", dbConnection, dbTransaction))
 				{
@@ -397,10 +402,10 @@ namespace UtnEmall.Server.DataModel
 					isUpdate = true;
 					commandName = "UpdateDeviceProfile";
 				}
-				// Se crea un command
+				// Create a db command
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(commandName, dbConnection, dbTransaction);
 				sqlCommand.CommandType = CommandType.StoredProcedure;
-				// Agregar los parametros del command .
+				// Add parameters values to current command
 
 				IDbDataParameter parameter;
 				if (isUpdate)
@@ -411,7 +416,7 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				FillSaveParameters(deviceProfile, sqlCommand);
-				// Ejecutar el command
+				// Execute the command
 				if (isUpdate)
 				{
 					sqlCommand.ExecuteNonQuery();
@@ -427,35 +432,35 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				scopeKey = deviceProfile.Id.ToString(NumberFormatInfo.InvariantInfo) + "DeviceProfile";
-				// Agregar la entidad al scope actual
+				// Add entity to current internal scope
 
 				scope.Add(scopeKey, deviceProfile);
-				// Guarda las colecciones de objetos relacionados.
-				// Guardar objetos relacionados con la entidad actual
-				// Actualizar
-				// Cierra la conexión si fue abierta en la función
+				// Save collections of related objects to current entity
+				// Save objects related to current entity
+				// Update
+				// Close transaction if initiated by me
 				if (!isGlobalTransaction)
 				{
 					dbTransaction.Commit();
 				}
-				// Actualizar los campos new y changed
+				// Update new and changed flags
 
 				deviceProfile.IsNew = false;
 				deviceProfile.Changed = false;
 			}
 			catch (DbException dbException)
 			{
-				// Anula la transaccion
+				// Rollback transaction
 				if (!isGlobalTransaction)
 				{
 					dbTransaction.Rollback();
 				}
-				// Relanza una excepcion personalizada
+				// Rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue inicializada
+				// Close connection if initiated by me
 				if (!isGlobalTransaction)
 				{
 					dbConnection.Close();
@@ -466,14 +471,14 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que elimina un DeviceProfileEntity de la base de datos.
+		/// Function to Delete a DeviceProfileEntity from database.
 		/// </summary>
-		/// <param name="deviceProfile">DeviceProfileEntity a eliminar</param>
+		/// <param name="deviceProfile">DeviceProfileEntity to delete</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="deviceProfile"/> no es un <c>DeviceProfileEntity</c>.
+		/// If <paramref name="deviceProfile"/> is not a <c>DeviceProfileEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void Delete(DeviceProfileEntity deviceProfile)
 		{
@@ -481,15 +486,15 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que elimina un DeviceProfileEntity de la base de datos.
+		/// Function to Delete a DeviceProfileEntity from database.
 		/// </summary>
-		/// <param name="deviceProfile">DeviceProfileEntity a eliminar</param>
-		/// <param name="scope">Estructura interna para evitar problemas de referencia circular.</param>
+		/// <param name="deviceProfile">DeviceProfileEntity to delete</param>
+		/// <param name="scope">Internal structure to avoid circular reference locks. Must provide an instance while calling from other data access object.</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="deviceProfile"/> no es un <c>DeviceProfileEntity</c>.
+		/// If <paramref name="deviceProfile"/> is not a <c>DeviceProfileEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void Delete(DeviceProfileEntity deviceProfile, Dictionary<string,IEntity> scope)
 		{
@@ -499,42 +504,42 @@ namespace UtnEmall.Server.DataModel
 			}
 			try 
 			{
-				// Abrir una nueva conexión e inicializar una transacción si es necesario
+				// Open connection and initialize a transaction if needed
 				if (!isGlobalTransaction)
 				{
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 					dbTransaction = dbConnection.BeginTransaction();
 				}
-				// Carga la entidad para garantizar eliminar todos los datos antiguos.
+				// Reload the entity to ensure deletion of older data
 
 				deviceProfile = this.Load(deviceProfile.Id, true);
 				if (deviceProfile == null)
 				{
-					throw new UtnEmallDataAccessException("Error al recuperar datos al intentar eliminar.");
+					throw new UtnEmallDataAccessException("Error retrieving data while trying to delete.");
 				}
-				// Crea un nuevo command para eliminar
+				// Create a command for delete
 				string cmdText = "DeleteDeviceProfile";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				sqlCommand.CommandType = CommandType.StoredProcedure;
-				// Agrega los valores de los parametros
+				// Add values to parameters
 
 				IDbDataParameter parameterID = dataAccess.GetNewDataParameter("@idDeviceProfile", DbType.Int32);
 				parameterID.Value = deviceProfile.Id;
 				sqlCommand.Parameters.Add(parameterID);
-				// Ejecuta el comando
+				// Execute the command
 
 				sqlCommand.ExecuteNonQuery();
-				// Elimina los objetos relacionados
-				// Confirma la transacción si se inicio dentro de la función
+				// Delete related objects
+				// Commit transaction if is mine
 				if (!isGlobalTransaction)
 				{
 					dbTransaction.Commit();
 				}
-				// Eliminamos la entidad de la lista de entidades cargadas en memoria
+				// Remove entity from loaded objects
 
 				inMemoryEntities.Remove(deviceProfile.Id);
-				// Eliminamos la entidad del scope
+				// Remove entity from current internal scope
 
 				if (scope != null)
 				{
@@ -544,17 +549,17 @@ namespace UtnEmall.Server.DataModel
 			}
 			catch (DbException dbException)
 			{
-				// Anula la transaccion
+				// Rollback transaction
 				if (!isGlobalTransaction)
 				{
 					dbTransaction.Rollback();
 				}
-				// Relanza una excepcion personalizada
+				// Rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue abierta dentro de la Función
+				// Close connection if it was initiated by this instance
 				if (!isGlobalTransaction)
 				{
 					dbConnection.Close();
@@ -565,7 +570,8 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Agrega al diccionario las propiedades que pueden ser usadas como primer parametro de los metodos LoadWhere
+		/// Add to the dictionary the properties that can
+		/// be used as first parameter on the LoadWhere method.
 		/// </summary>
 		private static void SetProperties()
 		{
@@ -581,12 +587,12 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga todos los DeviceProfileEntity desde la base de datos
+		/// Function to Load all the DeviceProfileEntity from database.
 		/// </summary>
-		/// <param name="loadRelation">Si es true carga la relacion</param>
-		/// <returns>Una lista con todas las entidades</returns>
+		/// <param name="loadRelation">If is true load the relation</param>
+		/// <returns>A list of all the entities</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public Collection<DeviceProfileEntity> LoadAll(bool loadRelation)
 		{
@@ -595,36 +601,36 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Abrir una nueva conexión de ser necesario
+				// Open a new connection if necessary
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Construir la consulta
+				// Build the query string
 
 				string cmdText = "SELECT idDeviceProfile FROM [DeviceProfile]";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-				// Crea un datareader
+				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 
 				DeviceProfileEntity deviceProfile;
-				// Lee los ids y los inserta en una lista
+				// Read the Ids and insert on a list
 
 				List<int> listId = new List<int>();
 				while (reader.Read())
 				{
 					listId.Add(reader.GetInt32(0));
 				}
-				// Cierra el DataReader
+				// Close the DataReader
 
 				reader.Close();
-				// Crea un scope
+				// Create a scope
 
 				Dictionary<string,IEntity> scope = new Dictionary<string,IEntity>();
-				// Carga las entidades y las agrega a la lista a retornar
+				// Load entities and add to return list
 
 				foreach(int  id in listId)
 				{
@@ -634,35 +640,37 @@ namespace UtnEmall.Server.DataModel
 			}
 			catch (DbException dbException)
 			{
-				// Relanza la excepcion como una excepcion personalizada
+				// Catch DbException and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión
+				// Close the connection
 				if (closeConnection)
 				{
 					dbConnection.Close();
 				}
 			}
-			// Retorna la entidad cargada
+			// Return the loaded
 			return deviceProfileList;
 		} 
 
 		/// <summary>
-		/// Función para cargar un DeviceProfileEntity desde la base de datos
+		/// Function to Load a DeviceProfileEntity from database.
 		/// </summary>
-		/// <param name="propertyName">Un string con el nombre del campo o una constante de la clase que representa ese campo</param>
-		/// <param name="expValue">El valor que será insertado en la clausula where</param>
-		/// <param name="loadRelation">Si es true carga la relacion</param>
-		/// <returns>Una lista que contiene todas las entidades que concuerdan con la clausula where</returns>
+		/// <param name="propertyName">A string with the name of the field or a
+		/// constant from the class that represent that field</param>
+		/// <param name="expValue">The value that will be inserted on the where
+		/// clause of the sql query</param>
+		/// <param name="loadRelation">If is true load the relations</param>
+		/// <returns>A list containing all the entities that match the where clause</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null or vacio.
-		/// Si <paramref name="propertyName"/> no es una propiedad de la clase DeviceProfileEntity.
-		/// Si <paramref name="expValue"/> es null.
+		/// If <paramref name="propertyName"/> is null or empty.
+		/// If <paramref name="propertyName"/> is not a property of DeviceProfileEntity class.
+		/// If <paramref name="expValue"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public Collection<DeviceProfileEntity> LoadWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType)
 		{
@@ -679,7 +687,7 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Abrir una nueva conexión con la base de datos si es necesario
+				// Open a new connection with a database if necessary
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
@@ -688,13 +696,13 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				string op = DataAccessConnection.GetOperatorString(operatorType);
-				// Construir la consulta
+				// Build the query string
 
 				string cmdText = "SELECT idDeviceProfile, deviceType, deviceModel, macAddress, windowsMobileVersion, idCustomer, timestamp FROM [DeviceProfile] WHERE " + propertyName + " " + op + " @expValue";
-				// Crea el command
+				// Create the command
 
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-				// Agrega los parametros al command
+				// Add parameters values to the command
 
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter();
 				parameter.ParameterName = "@expValue";
@@ -703,21 +711,21 @@ namespace UtnEmall.Server.DataModel
 
 				parameter.Value = expValue;
 				sqlCommand.Parameters.Add(parameter);
-				// Crea un datareader
+				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 				deviceProfileList = new Collection<DeviceProfileEntity>();
 				DeviceProfileEntity deviceProfile;
 				List<int> listId = new List<int>();
-				// Agrega los id a una lista de ids
+				// Add list of Ids to a list
 				while (reader.Read())
 				{
 					listId.Add(reader.GetInt32(0));
 				}
-				// Cerrar el Reader
+				// Close the reader
 
 				reader.Close();
-				// Carga las entidades
+				// Load the entities
 
 				foreach(int  id in listId)
 				{
@@ -727,12 +735,12 @@ namespace UtnEmall.Server.DataModel
 			}
 			catch (DbException dbException)
 			{
-				// Relanza la excepcion como una excepcion personalizada
+				// Catch DbException and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue abierta dentro de la Función
+				// Close connection if it was opened by myself
 				if (closeConnection)
 				{
 					dbConnection.Close();
@@ -742,10 +750,10 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga una lista de DeviceProfileEntity desde la base de datos por idCustomer.
+		/// Function to Load a list of DeviceProfileEntity from database by idCustomer.
 		/// </summary>
-		/// <param name="idCustomer">Foreing key</param>
-		/// <param name="scope">Estructura de datos interna para evitar referencias circulares</param>
+		/// <param name="idCustomer">Foreing key column</param>
+		/// <param name="scope">Internal data structure to avoid circular reference problems</param>
 		/// <returns>List of DeviceProfileEntity</returns>
 		public Collection<DeviceProfileEntity> LoadByCustomerCollection(int idCustomer, Dictionary<string,IEntity> scope)
 		{
@@ -753,27 +761,27 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Crea una nueva conexión
+				// Create a new connection
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Crea un command
+				// Create a command
 
 				string cmdText = "SELECT idDeviceProfile FROM [DeviceProfile] WHERE idCustomer = @idCustomer";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-				// Establece los parametros del command
+				// Set command parameters values
 
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idCustomer", DbType.Int32);
 				parameter.Value = idCustomer;
 				sqlCommand.Parameters.Add(parameter);
-				// Crea un DataReader
+				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 				deviceProfileList = new Collection<DeviceProfileEntity>();
-				// Carga los ids de los objetos relacionados en una lista de int.
+				// Load Ids of related objects into a list of int
 
 				List<int> listId = new List<int>();
 				while (reader.Read())
@@ -782,7 +790,7 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				reader.Close();
-				// Carga los objetos relacionados y los agrega a la coleccion
+				// Load related objects and add to collection
 
 				foreach(int  id in listId)
 				{
@@ -791,26 +799,26 @@ namespace UtnEmall.Server.DataModel
 			}
 			catch (DbException dbException)
 			{
-				// Relanzamos una excepcion personalizada
+				// Rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cerrar la conexión si fue inicializada
+				// Close connection if initiated be me
 				if (closeConnection)
 				{
 					dbConnection.Close();
 				}
 			}
-			// retornamos la lista de objetos relacionados
+			// Return related objects list
 			return deviceProfileList;
 		} 
 
 		/// <summary>
-		/// Función para cargar una lista de DeviceProfileEntity desde la base de datos por idCustomer.
+		/// Function to Load a list of DeviceProfileEntity from database by idCustomer.
 		/// </summary>
-		/// <param name="idCustomer">columna Foreing key</param>
-		/// <returns>IList de DeviceProfileEntity</returns>
+		/// <param name="idCustomer">Foreing key column</param>
+		/// <returns>IList of DeviceProfileEntity</returns>
 		public Collection<DeviceProfileEntity> LoadByCustomerCollection(int idCustomer)
 		{
 			return LoadByCustomerCollection(idCustomer, null);

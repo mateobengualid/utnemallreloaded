@@ -6,9 +6,10 @@ namespace UtnEmall.Server.EntityModel
 
 	[System.Runtime.Serialization.DataContract]
 	/// <summary>
-	/// El <c>StoreEntity</c> en una clase de entidad
-	/// que contiene todos los campos que son insertados y cargados en la base de datos
-	/// Esta clase es utilizada por todas las capas superiores.
+	/// The <c>StoreEntity</c> is a entity class
+	/// that contains all the fields that are inserted and
+	/// loaded from the database.
+	/// This class is used by the upper layers.
 	/// </summary>
 	public class StoreEntity: IEntity
 	{
@@ -18,7 +19,8 @@ namespace UtnEmall.Server.EntityModel
 		private System.DateTime timestamp; 
 		private Collection<Error> errors; 
 		/// <summary>
-		/// Inicializa una nueva instancia de un <c>StoreEntity</c>.
+		/// Initializes a new instance of a
+		/// <c>StoreEntity</c> type.
 		/// </summary>
 		public  StoreEntity()
 		{
@@ -27,7 +29,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el id de la entidad.
+		/// Gets or sets the Id of the entity.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 0 )]
 		public int Id
@@ -43,7 +45,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece si la entidad fue modificada.
+		/// Gets or sets if the entity has changed.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 1 )]
 		public bool Changed
@@ -59,7 +61,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene si la entidad es nueva.
+		/// Gets or sets if the entity is new.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 2 )]
 		public bool IsNew
@@ -75,7 +77,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene el timestamp del ultimo acceso.
+		/// Gets or sets the timestamp of the last access.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 3 )]
 		public System.DateTime Timestamp
@@ -92,7 +94,7 @@ namespace UtnEmall.Server.EntityModel
 
 		public const string DBTimestamp = "timestamp"; 
 		/// <summary>
-		/// Coleccion de errores de la entidad.
+		/// The collection of entity's errors.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 4 )]
 		public Collection<Error> Errors
@@ -110,7 +112,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _Name; 
 		[System.Runtime.Serialization.DataMember( Order = 5 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Name.
+		/// Gets or sets the value for Name.
 		/// <summary>
 		public string Name
 		{
@@ -128,7 +130,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _TelephoneNumber; 
 		[System.Runtime.Serialization.DataMember( Order = 6 )]
 		/// <summary>
-		/// Obtiene o establece el valor para TelephoneNumber.
+		/// Gets or sets the value for TelephoneNumber.
 		/// <summary>
 		public string TelephoneNumber
 		{
@@ -146,7 +148,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _InternalPhoneNumber; 
 		[System.Runtime.Serialization.DataMember( Order = 7 )]
 		/// <summary>
-		/// Obtiene o establece el valor para InternalPhoneNumber.
+		/// Gets or sets the value for InternalPhoneNumber.
 		/// <summary>
 		public string InternalPhoneNumber
 		{
@@ -164,7 +166,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _ContactName; 
 		[System.Runtime.Serialization.DataMember( Order = 8 )]
 		/// <summary>
-		/// Obtiene o establece el valor para ContactName.
+		/// Gets or sets the value for ContactName.
 		/// <summary>
 		public string ContactName
 		{
@@ -182,7 +184,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _OwnerName; 
 		[System.Runtime.Serialization.DataMember( Order = 9 )]
 		/// <summary>
-		/// Obtiene o establece el valor para OwnerName.
+		/// Gets or sets the value for OwnerName.
 		/// <summary>
 		public string OwnerName
 		{
@@ -200,7 +202,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _Email; 
 		[System.Runtime.Serialization.DataMember( Order = 10 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Email.
+		/// Gets or sets the value for Email.
 		/// <summary>
 		public string Email
 		{
@@ -218,7 +220,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _WebAddress; 
 		[System.Runtime.Serialization.DataMember( Order = 11 )]
 		/// <summary>
-		/// Obtiene o establece el valor para WebAddress.
+		/// Gets or sets the value for WebAddress.
 		/// <summary>
 		public string WebAddress
 		{
@@ -236,7 +238,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _LocalNumber; 
 		[System.Runtime.Serialization.DataMember( Order = 12 )]
 		/// <summary>
-		/// Obtiene o establece el valor para LocalNumber.
+		/// Gets or sets the value for LocalNumber.
 		/// <summary>
 		public string LocalNumber
 		{
@@ -256,7 +258,7 @@ namespace UtnEmall.Server.EntityModel
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "We need set for serialization and deserialization web service interfaces.")]
 		/// <summary>
-		/// Obtiene o establece el valor para StoreCategory.
+		/// Gets or sets the value for StoreCategory.
 		/// <summary>
 		public Collection<StoreCategoryEntity> StoreCategory
 		{
@@ -279,7 +281,7 @@ namespace UtnEmall.Server.EntityModel
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "We need set for serialization and deserialization web service interfaces.")]
 		/// <summary>
-		/// Obtiene o establece el valor para Service.
+		/// Gets or sets the value for Service.
 		/// <summary>
 		public Collection<ServiceEntity> Service
 		{
@@ -300,7 +302,7 @@ namespace UtnEmall.Server.EntityModel
 		private MallEntity _Mall; 
 		private int _IdMall; 
 		/// <summary>
-		/// Establece u obtiene el valor para Mall.
+		/// Gets or sets the value for Mall.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 15 )]
 		public MallEntity Mall
@@ -312,7 +314,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_Mall = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_Mall != null)
 				{
@@ -327,9 +329,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del Mall.
-		/// Si Mall esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the Mall.
+		/// If Mall is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 16 )]
 		public int IdMall
@@ -354,7 +356,7 @@ namespace UtnEmall.Server.EntityModel
 		private DataModelEntity _DataModel; 
 		private int _IdDataModel; 
 		/// <summary>
-		/// Obtiene o establece el valor para DataModel.
+		/// Gets or sets the value for DataModel.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 17 )]
 		public DataModelEntity DataModel
@@ -366,7 +368,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_DataModel = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_DataModel != null)
 				{
@@ -381,9 +383,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del DataModel.
-		/// Si DataModel esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the DataModel.
+		/// If DataModel is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 18 )]
 		public int IdDataModel
@@ -410,7 +412,7 @@ namespace UtnEmall.Server.EntityModel
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "We need set for serialization and deserialization web service interfaces.")]
 		/// <summary>
-		/// Obtiene o establece el valor para User.
+		/// Gets or sets the value for User.
 		/// <summary>
 		public Collection<UserEntity> User
 		{

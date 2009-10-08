@@ -4,52 +4,51 @@ using UtnEmall.Server.Base;
 using System.ServiceModel;
 using System;
 using System.Collections.ObjectModel;
-using System.Collections;
 
 namespace UtnEmall.Server.BusinessLogic
 {
 
 	/// <summary>
-	/// The <c>Group</c> implement business logic to process GroupEntity,
+	/// The <c>Campaign</c> implement business logic to process CampaignEntity,
 	/// saving, updating, deleting and validating entity data.
 	/// </summary>
-	public class Group: UtnEmall.Server.BusinessLogic.IGroup
+	public class Campaign: UtnEmall.Server.BusinessLogic.ICampaign
 	{
-		private GroupDataAccess groupDataAccess; 
-		public  Group()
+		private CampaignDataAccess campaignDataAccess; 
+		public  Campaign()
 		{
-			groupDataAccess = new GroupDataAccess();
+			campaignDataAccess = new CampaignDataAccess();
 		} 
 
 		/// <summary>
-		/// Function to save a GroupEntity to the database.
+		/// Function to save a CampaignEntity to the database.
 		/// </summary>
-		/// <param name="groupEntity">GroupEntity to save</param>
+		/// <param name="campaignEntity">CampaignEntity to save</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>null if the GroupEntity was saved successfully, the same GroupEntity otherwise</returns>
+		/// <returns>null if the CampaignEntity was saved successfully, the same CampaignEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// if <paramref name="groupEntity"/> is null.
+		/// if <paramref name="campaignEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
-		public GroupEntity Save(GroupEntity groupEntity, string session)
+		public CampaignEntity Save(CampaignEntity campaignEntity, string session)
 		{
-			bool permited = ValidationService.Instance.ValidatePermission(session, "save", "Group");
+			bool permited = ValidationService.Instance.ValidatePermission(session, "save", "Campaign");
 			if (!permited)
 			{
 				ExceptionDetail detail = new ExceptionDetail(new UtnEmall.Server.BusinessLogic.UtnEmallPermissionException("The user hasn't permissions to save an entity"));
 				throw new FaultException<ExceptionDetail>(detail);
 			}
 
-			if (!Validate(groupEntity))
+			if (!Validate(campaignEntity))
 			{
-				return groupEntity;
+				return campaignEntity;
 			}
 			try 
 			{
-				// Save groupEntity using data access object
-				groupDataAccess.Save(groupEntity);
+				// Save campaignEntity using data access object
+				campaignDataAccess.Save(campaignEntity);
 				return null;
 			}
 			catch (UtnEmallDataAccessException utnEmallDataAccessException)
@@ -59,34 +58,34 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Function to delete a GroupEntity from database.
+		/// Function to delete a CampaignEntity from database.
 		/// </summary>
-		/// <param name="groupEntity">GroupEntity to delete</param>
+		/// <param name="campaignEntity">CampaignEntity to delete</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>null if the GroupEntity was deleted successfully, the same GroupEntity otherwise</returns>
+		/// <returns>null if the CampaignEntity was deleted successfully, the same CampaignEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// if <paramref name="groupEntity"/> is null.
+		/// if <paramref name="campaignEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
-		public GroupEntity Delete(GroupEntity groupEntity, string session)
+		public CampaignEntity Delete(CampaignEntity campaignEntity, string session)
 		{
-			bool permited = ValidationService.Instance.ValidatePermission(session, "delete", "Group");
+			bool permited = ValidationService.Instance.ValidatePermission(session, "delete", "Campaign");
 			if (!permited)
 			{
 				ExceptionDetail detail = new ExceptionDetail(new UtnEmall.Server.BusinessLogic.UtnEmallPermissionException("The user hasn't permissions to delete an entity"));
 				throw new FaultException<ExceptionDetail>(detail);
 			}
 
-			if (groupEntity == null)
+			if (campaignEntity == null)
 			{
 				throw new ArgumentException("The argument can not be null or be empty");
 			}
 			try 
 			{
-				// Delete groupEntity using data access object
-				groupDataAccess.Delete(groupEntity);
+				// Delete campaignEntity using data access object
+				campaignDataAccess.Delete(campaignEntity);
 				return null;
 			}
 			catch (UtnEmallDataAccessException utnEmallDataAccessException)
@@ -96,38 +95,38 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Get an specific groupEntity
+		/// Get an specific campaignEntity
 		/// </summary>
-		/// <param name="id">id of the GroupEntity to load</param>
+		/// <param name="id">id of the CampaignEntity to load</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>A GroupEntity</returns>
+		/// <returns>A CampaignEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// if <paramref name="groupEntity"/> is null.
+		/// if <paramref name="campaignEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
-		public GroupEntity GetGroup(int id, string session)
+		public CampaignEntity GetCampaign(int id, string session)
 		{
-			return GetGroup(id, true, session);
+			return GetCampaign(id, true, session);
 		} 
 
 		/// <summary>
-		/// Get an specific groupEntity
+		/// Get an specific campaignEntity
 		/// </summary>
-		/// <param name="id">id of the GroupEntity to load</param>
+		/// <param name="id">id of the CampaignEntity to load</param>
 		/// <param name="loadRelation">true to load the relations</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>A GroupEntity</returns>
+		/// <returns>A CampaignEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// if <paramref name="groupEntity"/> is null.
+		/// if <paramref name="campaignEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
-		public GroupEntity GetGroup(int id, bool loadRelation, string session)
+		public CampaignEntity GetCampaign(int id, bool loadRelation, string session)
 		{
-			bool permited = ValidationService.Instance.ValidatePermission(session, "read", "Group");
+			bool permited = ValidationService.Instance.ValidatePermission(session, "read", "Campaign");
 			if (!permited)
 			{
 				ExceptionDetail detail = new ExceptionDetail(new UtnEmall.Server.BusinessLogic.UtnEmallPermissionException("The user hasn't permissions to read an entity"));
@@ -136,7 +135,7 @@ namespace UtnEmall.Server.BusinessLogic
 
 			try 
 			{
-				return groupDataAccess.Load(id, loadRelation);
+				return campaignDataAccess.Load(id, loadRelation);
 			}
 			catch (UtnEmallDataAccessException utnEmallDataAccessException)
 			{
@@ -145,30 +144,30 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Get collection of all groupEntity
+		/// Get collection of all campaignEntity
 		/// </summary>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>Collection of all GroupEntity</returns>
+		/// <returns>Collection of all CampaignEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
-		public Collection<GroupEntity> GetAllGroup(string session)
+		public Collection<CampaignEntity> GetAllCampaign(string session)
 		{
-			return GetAllGroup(true, session);
+			return GetAllCampaign(true, session);
 		} 
 
 		/// <summary>
-		/// Get collection of all groupEntity
+		/// Get collection of all campaignEntity
 		/// </summary>
 		/// <param name="loadRelation">true to load the relations</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>Collection of all GroupEntity</returns>
+		/// <returns>Collection of all CampaignEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
-		public Collection<GroupEntity> GetAllGroup(bool loadRelation, string session)
+		public Collection<CampaignEntity> GetAllCampaign(bool loadRelation, string session)
 		{
-			bool permited = ValidationService.Instance.ValidatePermission(session, "read", "Group");
+			bool permited = ValidationService.Instance.ValidatePermission(session, "read", "Campaign");
 			if (!permited)
 			{
 				ExceptionDetail detail = new ExceptionDetail(new UtnEmall.Server.BusinessLogic.UtnEmallPermissionException("The user hasn't permissions to read an entity"));
@@ -177,7 +176,7 @@ namespace UtnEmall.Server.BusinessLogic
 
 			try 
 			{
-				return groupDataAccess.LoadAll(loadRelation);
+				return campaignDataAccess.LoadAll(loadRelation);
 			}
 			catch (UtnEmallDataAccessException utnEmallDataAccessException)
 			{
@@ -186,12 +185,12 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Get collection of all groupEntity that comply with certain pattern
+		/// Get collection of all campaignEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">property of groupEntity</param>
+		/// <param name="propertyName">property of campaignEntity</param>
 		/// <param name="expValue">pattern</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>Collection of GroupEntity</returns>
+		/// <returns>Collection of CampaignEntity</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
@@ -200,19 +199,19 @@ namespace UtnEmall.Server.BusinessLogic
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
-		public Collection<GroupEntity> GetGroupWhere(string propertyName, object expValue, OperatorType operatorType, string session)
+		public Collection<CampaignEntity> GetCampaignWhere(string propertyName, object expValue, OperatorType operatorType, string session)
 		{
-			return GetGroupWhere(propertyName, expValue, true, operatorType, session);
+			return GetCampaignWhere(propertyName, expValue, true, operatorType, session);
 		} 
 
 		/// <summary>
-		/// Get collection of all groupEntity that comply with certain pattern
+		/// Get collection of all campaignEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">property of groupEntity</param>
+		/// <param name="propertyName">property of campaignEntity</param>
 		/// <param name="expValue">pattern</param>
 		/// <param name="loadRelation">true to load the relations</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>Collection of GroupEntity</returns>
+		/// <returns>Collection of CampaignEntity</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
@@ -221,9 +220,9 @@ namespace UtnEmall.Server.BusinessLogic
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
-		public Collection<GroupEntity> GetGroupWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType, string session)
+		public Collection<CampaignEntity> GetCampaignWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType, string session)
 		{
-			bool permited = ValidationService.Instance.ValidatePermission(session, "read", "Group");
+			bool permited = ValidationService.Instance.ValidatePermission(session, "read", "Campaign");
 			if (!permited)
 			{
 				ExceptionDetail detail = new ExceptionDetail(new UtnEmall.Server.BusinessLogic.UtnEmallPermissionException("The user hasn't permissions to read an entity"));
@@ -232,7 +231,7 @@ namespace UtnEmall.Server.BusinessLogic
 
 			try 
 			{
-				return groupDataAccess.LoadWhere(propertyName, expValue, loadRelation, operatorType);
+				return campaignDataAccess.LoadWhere(propertyName, expValue, loadRelation, operatorType);
 			}
 			catch (UtnEmallDataAccessException utnEmallDataAccessException)
 			{
@@ -241,12 +240,12 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Get collection of all groupEntity that comply with certain pattern
+		/// Get collection of all campaignEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">property of groupEntity</param>
+		/// <param name="propertyName">property of campaignEntity</param>
 		/// <param name="expValue">pattern</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>Collection of GroupEntity</returns>
+		/// <returns>Collection of CampaignEntity</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
@@ -255,19 +254,19 @@ namespace UtnEmall.Server.BusinessLogic
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
-		public Collection<GroupEntity> GetGroupWhereEqual(string propertyName, object expValue, string session)
+		public Collection<CampaignEntity> GetCampaignWhereEqual(string propertyName, object expValue, string session)
 		{
-			return GetGroupWhere(propertyName, expValue, true, OperatorType.Equal, session);
+			return GetCampaignWhere(propertyName, expValue, true, OperatorType.Equal, session);
 		} 
 
 		/// <summary>
-		/// Get collection of all groupEntity that comply with certain pattern
+		/// Get collection of all campaignEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">property of groupEntity</param>
+		/// <param name="propertyName">property of campaignEntity</param>
 		/// <param name="expValue">pattern</param>
 		/// <param name="loadRelation">true to load the relations</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>Collection of GroupEntity</returns>
+		/// <returns>Collection of CampaignEntity</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
@@ -276,97 +275,67 @@ namespace UtnEmall.Server.BusinessLogic
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
-		public Collection<GroupEntity> GetGroupWhereEqual(string propertyName, object expValue, bool loadRelation, string session)
+		public Collection<CampaignEntity> GetCampaignWhereEqual(string propertyName, object expValue, bool loadRelation, string session)
 		{
-			return GetGroupWhere(propertyName, expValue, loadRelation, OperatorType.Equal, session);
+			return GetCampaignWhere(propertyName, expValue, loadRelation, OperatorType.Equal, session);
 		} 
 
 		/// <summary>
-		/// Function to validate a GroupEntity before it's saved.
+		/// Function to validate a CampaignEntity before it's saved.
 		/// </summary>
-		/// <param name="groupEntity">GroupEntity to validate</param>
+		/// <param name="campaignEntity">CampaignEntity to validate</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>null if the GroupEntity was deleted successfully, the same GroupEntity otherwise</returns>
+		/// <returns>null if the CampaignEntity was deleted successfully, the same CampaignEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// if <paramref name="groupEntity"/> is null.
+		/// if <paramref name="campaignEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
-		public bool Validate(GroupEntity group)
+		public bool Validate(CampaignEntity campaign)
 		{
 			bool result = true;
 
-			if (group == null)
+			if (campaign == null)
 			{
 				throw new ArgumentException("The argument can not be null or be empty");
 			}
 			// Check entity data
-			if (String.IsNullOrEmpty(group.Name))
+			if (String.IsNullOrEmpty(campaign.Description))
 			{
-				group.Errors.Add(new Error("Name", "Name", "El nombre no puede estar vacío"));
+				campaign.Errors.Add(new Error("Description", "Description", "Description can't be empty"));
 				result = false;
 			}
-			if (group.Name != null)
+			if (String.IsNullOrEmpty(campaign.Name))
 			{
-				Collection<GroupEntity> listOfEquals = groupDataAccess.LoadWhere(GroupEntity.DBName, group.Name, false, OperatorType.Equal);
+				campaign.Errors.Add(new Error("Name", "Name", "Name can't be empty"));
+				result = false;
+			}
+			if (campaign.Name != null)
+			{
+				Collection<CampaignEntity> listOfEquals = campaignDataAccess.LoadWhere(CampaignEntity.DBName, campaign.Name, false, OperatorType.Equal);
 
-				if (listOfEquals.Count > 0 && listOfEquals[0].Id != group.Id)
+				if (listOfEquals.Count > 0 && listOfEquals[0].Id != campaign.Id)
 				{
-					group.Errors.Add(new Error("Name", "Name", "Nombre duplicado"));
+					campaign.Errors.Add(new Error("Name", "Name", "Duplicated name for campaign"));
 					result = false;
 				}
 			}
-			if (String.IsNullOrEmpty(group.Description))
+			if (campaign.StartDate == null)
 			{
-				group.Errors.Add(new Error("Description", "Description", "La descripción no puede estar vacía"));
+				campaign.Errors.Add(new Error("StartDate", "StartDate", "Start date can't be null"));
 				result = false;
 			}
 
-			if (group.Permissions == null)
+			if (campaign.StopDate < campaign.StartDate)
 			{
-				group.Errors.Add(new Error("Permissions", "Permissions", "Los permisos no pueden estar vacíos"));
+				campaign.Errors.Add(new Error("StopDate", "StopDate", "Stop date can't be lower than start date"));
 				result = false;
 			}
-			if (!ValidatePermissions(group.Permissions))
+			if (campaign.StopDate == null)
 			{
+				campaign.Errors.Add(new Error("StopDate", "StopDate", "Stop date can't be null"));
 				result = false;
-			}
-
-			Hashtable groupPermissions = new Hashtable();
-			foreach(PermissionEntity  permission in group.Permissions)
-			{
-				if (!permission.AllowRead && !permission.AllowUpdate && !permission.AllowNew && !permission.AllowDelete)
-				{
-					result = false;
-					group.Errors.Add(new Error(permission.BusinessClassName, "Permisos", "No se pueden establecer todos los permisos a falso para " + permission.BusinessClassName));
-				}
-
-				if (groupPermissions.Contains(permission.BusinessClassName))
-				{
-					result = false;
-					group.Errors.Add(new Error(permission.BusinessClassName, "Permisos", group.Name + " ya tiene permisos para " + permission.BusinessClassName));
-				}
-				else 
-				{
-					groupPermissions.Add(permission.BusinessClassName, null);
-				}
-			}
-			return result;
-		} 
-
-		private static bool ValidatePermissions(Collection<PermissionEntity> Permissions)
-		{
-			bool result = true;
-
-			for (int  i = 0; i < Permissions.Count; i++)
-			{
-				PermissionEntity item = Permissions[i];
-				if (String.IsNullOrEmpty(item.BusinessClassName))
-				{
-					item.Errors.Add(new Error("BusinessClassName", "BusinessClassName", "El nombre de clase de negocio no puede estar vacío"));
-					result = false;
-				}
 			}
 			return result;
 		} 

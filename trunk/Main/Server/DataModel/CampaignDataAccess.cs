@@ -5,36 +5,36 @@ using System.Collections.Generic;
 using System;
 using System.Globalization;
 using System.Data.Common;
-using System.Collections.ObjectModel;
 using UtnEmall.Server.Base;
+using System.Collections.ObjectModel;
 
 namespace UtnEmall.Server.DataModel
 {
 
 	/// <summary>
-	/// The <c>FieldDataAccess</c> is a class
+	/// The <c>CampaignDataAccess</c> is a class
 	/// that provides access to the modelName stored on
 	/// the database.
 	/// </summary>
-	public class FieldDataAccess
+	public class CampaignDataAccess
 	{
 		private bool isGlobalTransaction; 
 		private IDbConnection dbConnection; 
 		private IDbTransaction dbTransaction; 
 		private DataAccessConnection dataAccess; 
-		private Dictionary<int,FieldEntity> inMemoryEntities; 
+		private Dictionary<int,CampaignEntity> inMemoryEntities; 
 		private static Dictionary<string,Type> properties; 
 		private static bool dbChecked; 
 		/// <summary>
 		/// Initializes a new instance of a
-		/// <c>FieldDataAccess</c> type.
+		/// <c>CampaignDataAccess</c> type.
 		/// It checks if the table and stored procedure
 		/// are already on the database, if not, it creates
 		/// them.
 		/// Sets the properties that allows to make queries
 		/// by calling the LoadWhere method.
 		/// </summary>
-		public  FieldDataAccess()
+		public  CampaignDataAccess()
 		{
 			dataAccess = DataAccessConnection.Instance;
 			if (!dbChecked)
@@ -47,7 +47,7 @@ namespace UtnEmall.Server.DataModel
 				SetProperties();
 			}
 
-			inMemoryEntities = new Dictionary<int,FieldEntity>();
+			inMemoryEntities = new Dictionary<int,CampaignEntity>();
 		} 
 
 		/// <summary>
@@ -73,7 +73,7 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Function to load a FieldEntity from database.
+		/// Function to load a CampaignEntity from database.
 		/// </summary>
 		/// <param name="id">The ID of the record to load</param>
 		/// <param name="loadRelation">if is true load the relation</param>
@@ -82,17 +82,17 @@ namespace UtnEmall.Server.DataModel
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If a DbException occurs while accessing the database.
 		/// </exception>
-		public FieldEntity Load(int id, bool loadRelation, Dictionary<string,IEntity> scope)
+		public CampaignEntity Load(int id, bool loadRelation, Dictionary<string,IEntity> scope)
 		{
 			// Build a key for internal scope object
-			string scopeKey = id.ToString(NumberFormatInfo.InvariantInfo) + "Field";
+			string scopeKey = id.ToString(NumberFormatInfo.InvariantInfo) + "Campaign";
 			if (scope != null)
 			{
 				// If scope contains the object it was already loaded,
 				// return it to avoid circular references
 				if (scope.ContainsKey(scopeKey))
 				{
-					return ((FieldEntity)scope[scopeKey]);
+					return ((CampaignEntity)scope[scopeKey]);
 				}
 			}
 			else 
@@ -101,16 +101,16 @@ namespace UtnEmall.Server.DataModel
 				scope = new Dictionary<string,IEntity>();
 			}
 
-			FieldEntity field = null;
+			CampaignEntity campaign = null;
 			// Check if the entity was already loaded by current data access object
 			// and return it if that is the case
 
 			if (inMemoryEntities.ContainsKey(id))
 			{
-				field = inMemoryEntities[id];
+				campaign = inMemoryEntities[id];
 				// Add current object to current load scope
 
-				scope.Add(scopeKey, field);
+				scope.Add(scopeKey, campaign);
 			}
 			else 
 			{
@@ -125,43 +125,48 @@ namespace UtnEmall.Server.DataModel
 						dbConnection.Open();
 					}
 
-					string cmdText = "SELECT idField, name, dataType, idTable, timestamp FROM [Field] WHERE idField = @idField";
+					string cmdText = "SELECT idCampaign, description, name, startDate, stopDate, idUser, timestamp FROM [Campaign] WHERE idCampaign = @idCampaign";
 					// Create the command
 
 					IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 					// Create the Id parameter for the query
 
-					IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idField", DbType.Int32);
+					IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idCampaign", DbType.Int32);
 					parameter.Value = id;
 					sqlCommand.Parameters.Add(parameter);
 					// Use a DataReader to get data from db
 
 					IDataReader reader = sqlCommand.ExecuteReader();
-					field = new FieldEntity();
+					campaign = new CampaignEntity();
 
 					if (reader.Read())
 					{
 						// Load fields of entity
-						field.Id = reader.GetInt32(0);
+						campaign.Id = reader.GetInt32(0);
 
 						if (!reader.IsDBNull(1))
 						{
-							field.Name = reader.GetString(1);
+							campaign.Description = reader.GetString(1);
+						}
+						if (!reader.IsDBNull(2))
+						{
+							campaign.Name = reader.GetString(2);
 						}
 
-						field.DataType = reader.GetInt32(2);
-						field.IdTable = reader.GetInt32(3);
+						campaign.StartDate = reader.GetDateTime(3);
+						campaign.StopDate = reader.GetDateTime(4);
+						campaign.IdUser = reader.GetInt32(5);
 						// Add current object to the scope
 
-						scope.Add(scopeKey, field);
+						scope.Add(scopeKey, campaign);
 						// Add current object to cache of loaded entities
 
-						inMemoryEntities.Add(field.Id, field);
+						inMemoryEntities.Add(campaign.Id, campaign);
 						// Read the timestamp and set new and changed properties
 
-						field.Timestamp = reader.GetDateTime(4);
-						field.IsNew = false;
-						field.Changed = false;
+						campaign.Timestamp = reader.GetDateTime(6);
+						campaign.IsNew = false;
+						campaign.Changed = false;
 						// Close the reader
 
 						reader.Close();
@@ -169,6 +174,7 @@ namespace UtnEmall.Server.DataModel
 
 						if (loadRelation)
 						{
+							LoadRelationUser(campaign, scope);
 						}
 					}
 					else 
@@ -191,24 +197,24 @@ namespace UtnEmall.Server.DataModel
 				}
 			}
 			// Return the loaded entity
-			return field;
+			return campaign;
 		} 
 
 		/// <summary>
-		/// Function to load a FieldEntity from database.
+		/// Function to load a CampaignEntity from database.
 		/// </summary>
 		/// <param name="id">The ID of the record to load</param>
 		/// <returns>the entity instance</returns>
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If a DbException occurs while accessing the database.
 		/// </exception>
-		public FieldEntity Load(int id)
+		public CampaignEntity Load(int id)
 		{
 			return Load(id, true, null);
 		} 
 
 		/// <summary>
-		/// Function to load a FieldEntity from database.
+		/// Function to load a CampaignEntity from database.
 		/// </summary>
 		/// <param name="id">The ID of the record to load</param>
 		/// <param name="loadRelation">if is true load the relation</param>
@@ -216,13 +222,13 @@ namespace UtnEmall.Server.DataModel
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If a DbException occurs while accessing the database.
 		/// </exception>
-		public FieldEntity Load(int id, bool loadRelations)
+		public CampaignEntity Load(int id, bool loadRelations)
 		{
 			return Load(id, loadRelations, null);
 		} 
 
 		/// <summary>
-		/// Function to load a FieldEntity from database.
+		/// Function to load a CampaignEntity from database.
 		/// </summary>
 		/// <param name="id">The ID of the record to load</param>
 		/// <param name="scope">Internal structure used to avoid circular reference locks, must be provided if calling from other data access object</param>
@@ -230,7 +236,7 @@ namespace UtnEmall.Server.DataModel
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If a DbException occurs while accessing the database.
 		/// </exception>
-		public FieldEntity Load(int id, Dictionary<string,IEntity> scope)
+		public CampaignEntity Load(int id, Dictionary<string,IEntity> scope)
 		{
 			return Load(id, true, scope);
 		} 
@@ -244,93 +250,106 @@ namespace UtnEmall.Server.DataModel
 			{
 				return;
 			}
-			string[] fieldsName = new string[]{"idField", "name", "dataType", "idTable"};
-			Type[] fieldsType = new Type[]{typeof( int ), typeof( string ), typeof( int ), typeof( int )};
+			string[] fieldsName = new string[]{"idCampaign", "description", "name", "startDate", "stopDate", "idUser"};
+			Type[] fieldsType = new Type[]{typeof( int ), typeof( string ), typeof( string ), typeof( System.DateTime ), typeof( System.DateTime ), typeof( int )};
 
-			bool existsTable = DataAccessConnection.DBCheckedTable("Field");
+			bool existsTable = DataAccessConnection.DBCheckedTable("Campaign");
 
 			if (!existsTable)
 			{
-				DataAccessConnection.CreateTable("Field", fieldsName, true, fieldsType);
+				DataAccessConnection.CreateTable("Campaign", fieldsName, true, fieldsType);
 			}
-			bool existsProcedureDelete = DataAccessConnection.DBCheckedStoredProcedure("DeleteField");
-			bool existsProcedureSave = DataAccessConnection.DBCheckedStoredProcedure("SaveField");
-			bool existsProcedureUpdate = DataAccessConnection.DBCheckedStoredProcedure("UpdateField");
+			bool existsProcedureDelete = DataAccessConnection.DBCheckedStoredProcedure("DeleteCampaign");
+			bool existsProcedureSave = DataAccessConnection.DBCheckedStoredProcedure("SaveCampaign");
+			bool existsProcedureUpdate = DataAccessConnection.DBCheckedStoredProcedure("UpdateCampaign");
 
 			if (!existsProcedureDelete)
 			{
-				DataAccessConnection.CreateDeleteStoredProcedure("Field", "idField");
+				DataAccessConnection.CreateDeleteStoredProcedure("Campaign", "idCampaign");
 			}
 
 			if (!existsProcedureSave)
 			{
-				DataAccessConnection.CreateSaveStoredProcedure("Field", fieldsName, fieldsType);
+				DataAccessConnection.CreateSaveStoredProcedure("Campaign", fieldsName, fieldsType);
 			}
 
 			if (!existsProcedureUpdate)
 			{
-				DataAccessConnection.CreateUpdateStoredProcedure("Field", "idField", fieldsName, fieldsType);
+				DataAccessConnection.CreateUpdateStoredProcedure("Campaign", "idCampaign", fieldsName, fieldsType);
 			}
 
 			dbChecked = true;
 		} 
 
-		private void FillSaveParameters(FieldEntity field, IDbCommand sqlCommand)
+		private void FillSaveParameters(CampaignEntity campaign, IDbCommand sqlCommand)
 		{
 			IDbDataParameter parameter;
-			parameter = dataAccess.GetNewDataParameter("@name", DbType.String);
+			parameter = dataAccess.GetNewDataParameter("@description", DbType.String);
 
-			parameter.Value = field.Name;
-			if (String.IsNullOrEmpty(field.Name))
+			parameter.Value = campaign.Description;
+			if (String.IsNullOrEmpty(campaign.Description))
 			{
 				parameter.Value = DBNull.Value;
 			}
 
 			sqlCommand.Parameters.Add(parameter);
-			parameter = dataAccess.GetNewDataParameter("@dataType", DbType.Int32);
+			parameter = dataAccess.GetNewDataParameter("@name", DbType.String);
 
-			parameter.Value = field.DataType;
+			parameter.Value = campaign.Name;
+			if (String.IsNullOrEmpty(campaign.Name))
+			{
+				parameter.Value = DBNull.Value;
+			}
+
 			sqlCommand.Parameters.Add(parameter);
-			parameter = dataAccess.GetNewDataParameter("@idTable", DbType.Int32);
+			parameter = dataAccess.GetNewDataParameter("@startDate", DbType.DateTime);
 
-			parameter.Value = field.IdTable;
+			parameter.Value = campaign.StartDate;
+			sqlCommand.Parameters.Add(parameter);
+			parameter = dataAccess.GetNewDataParameter("@stopDate", DbType.DateTime);
+
+			parameter.Value = campaign.StopDate;
+			sqlCommand.Parameters.Add(parameter);
+			parameter = dataAccess.GetNewDataParameter("@idUser", DbType.Int32);
+
+			parameter.Value = campaign.IdUser;
 			sqlCommand.Parameters.Add(parameter);
 		} 
 
 		/// <summary>
-		/// Function to Save a FieldEntity in the database.
+		/// Function to Save a CampaignEntity in the database.
 		/// </summary>
-		/// <param name="field">FieldEntity to save</param>
+		/// <param name="campaign">CampaignEntity to save</param>
 		/// <exception cref="ArgumentNullException">
-		/// if <paramref name="field"/> is not a <c>FieldEntity</c>.
+		/// if <paramref name="campaign"/> is not a <c>CampaignEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
-		public void Save(FieldEntity field)
+		public void Save(CampaignEntity campaign)
 		{
-			Save(field, null);
+			Save(campaign, null);
 		} 
 
 		/// <summary>
-		/// Function to Save a FieldEntity in the database.
+		/// Function to Save a CampaignEntity in the database.
 		/// </summary>
-		/// <param name="field">FieldEntity to save</param>
+		/// <param name="campaign">CampaignEntity to save</param>
 		/// <param name="scope">Interna structure to avoid circular reference locks. Provide an instance when calling from other data access object.</param>
 		/// <exception cref="ArgumentNullException">
-		/// If <paramref name="field"/> is not a <c>FieldEntity</c>.
+		/// If <paramref name="campaign"/> is not a <c>CampaignEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
-		public void Save(FieldEntity field, Dictionary<string,IEntity> scope)
+		public void Save(CampaignEntity campaign, Dictionary<string,IEntity> scope)
 		{
-			if (field == null)
+			if (campaign == null)
 			{
 				throw new ArgumentException("The argument can't be null");
 			}
 			// Create a unique key to identify the object in the internal scope
-			string scopeKey = field.Id.ToString(NumberFormatInfo.InvariantInfo) + "Field";
+			string scopeKey = campaign.Id.ToString(NumberFormatInfo.InvariantInfo) + "Campaign";
 			if (scope != null)
 			{
 				// If it's on the scope return it, don't save again
@@ -359,14 +378,14 @@ namespace UtnEmall.Server.DataModel
 				bool isUpdate = false;
 				// Check if it is an insert or update command
 
-				if (field.IsNew || !DataAccessConnection.ExistsEntity(field.Id, "Field", "idField", dbConnection, dbTransaction))
+				if (campaign.IsNew || !DataAccessConnection.ExistsEntity(campaign.Id, "Campaign", "idCampaign", dbConnection, dbTransaction))
 				{
-					commandName = "SaveField";
+					commandName = "SaveCampaign";
 				}
 				else 
 				{
 					isUpdate = true;
-					commandName = "UpdateField";
+					commandName = "UpdateCampaign";
 				}
 				// Create a db command
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(commandName, dbConnection, dbTransaction);
@@ -376,12 +395,12 @@ namespace UtnEmall.Server.DataModel
 				IDbDataParameter parameter;
 				if (isUpdate)
 				{
-					parameter = dataAccess.GetNewDataParameter("@idField", DbType.Int32);
-					parameter.Value = field.Id;
+					parameter = dataAccess.GetNewDataParameter("@idCampaign", DbType.Int32);
+					parameter.Value = campaign.Id;
 					sqlCommand.Parameters.Add(parameter);
 				}
 
-				FillSaveParameters(field, sqlCommand);
+				FillSaveParameters(campaign, sqlCommand);
 				// Execute the command
 				if (isUpdate)
 				{
@@ -389,18 +408,18 @@ namespace UtnEmall.Server.DataModel
 				}
 				else 
 				{
-					IDbDataParameter parameterIdOutput = dataAccess.GetNewDataParameter("@idField", DbType.Int32);
+					IDbDataParameter parameterIdOutput = dataAccess.GetNewDataParameter("@idCampaign", DbType.Int32);
 					parameterIdOutput.Direction = ParameterDirection.ReturnValue;
 					sqlCommand.Parameters.Add(parameterIdOutput);
 
 					sqlCommand.ExecuteNonQuery();
-					field.Id = Convert.ToInt32(parameterIdOutput.Value, NumberFormatInfo.InvariantInfo);
+					campaign.Id = Convert.ToInt32(parameterIdOutput.Value, NumberFormatInfo.InvariantInfo);
 				}
 
-				scopeKey = field.Id.ToString(NumberFormatInfo.InvariantInfo) + "Field";
+				scopeKey = campaign.Id.ToString(NumberFormatInfo.InvariantInfo) + "Campaign";
 				// Add entity to current internal scope
 
-				scope.Add(scopeKey, field);
+				scope.Add(scopeKey, campaign);
 				// Save collections of related objects to current entity
 				// Save objects related to current entity
 				// Update
@@ -411,8 +430,8 @@ namespace UtnEmall.Server.DataModel
 				}
 				// Update new and changed flags
 
-				field.IsNew = false;
-				field.Changed = false;
+				campaign.IsNew = false;
+				campaign.Changed = false;
 			}
 			catch (DbException dbException)
 			{
@@ -437,34 +456,34 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Function to Delete a FieldEntity from database.
+		/// Function to Delete a CampaignEntity from database.
 		/// </summary>
-		/// <param name="field">FieldEntity to delete</param>
+		/// <param name="campaign">CampaignEntity to delete</param>
 		/// <exception cref="ArgumentNullException">
-		/// If <paramref name="field"/> is not a <c>FieldEntity</c>.
+		/// If <paramref name="campaign"/> is not a <c>CampaignEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
-		public void Delete(FieldEntity field)
+		public void Delete(CampaignEntity campaign)
 		{
-			Delete(field, null);
+			Delete(campaign, null);
 		} 
 
 		/// <summary>
-		/// Function to Delete a FieldEntity from database.
+		/// Function to Delete a CampaignEntity from database.
 		/// </summary>
-		/// <param name="field">FieldEntity to delete</param>
+		/// <param name="campaign">CampaignEntity to delete</param>
 		/// <param name="scope">Internal structure to avoid circular reference locks. Must provide an instance while calling from other data access object.</param>
 		/// <exception cref="ArgumentNullException">
-		/// If <paramref name="field"/> is not a <c>FieldEntity</c>.
+		/// If <paramref name="campaign"/> is not a <c>CampaignEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
-		public void Delete(FieldEntity field, Dictionary<string,IEntity> scope)
+		public void Delete(CampaignEntity campaign, Dictionary<string,IEntity> scope)
 		{
-			if (field == null)
+			if (campaign == null)
 			{
 				throw new ArgumentException("The argument can't be null");
 			}
@@ -479,19 +498,22 @@ namespace UtnEmall.Server.DataModel
 				}
 				// Reload the entity to ensure deletion of older data
 
-				field = this.Load(field.Id, true);
-				if (field == null)
+				campaign = this.Load(campaign.Id, true);
+				if (campaign == null)
 				{
 					throw new UtnEmallDataAccessException("Error retrieving data while trying to delete.");
 				}
+				// Check for related data
+				CheckForDelete(campaign);
 				// Create a command for delete
-				string cmdText = "DeleteField";
+
+				string cmdText = "DeleteCampaign";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				sqlCommand.CommandType = CommandType.StoredProcedure;
 				// Add values to parameters
 
-				IDbDataParameter parameterID = dataAccess.GetNewDataParameter("@idField", DbType.Int32);
-				parameterID.Value = field.Id;
+				IDbDataParameter parameterID = dataAccess.GetNewDataParameter("@idCampaign", DbType.Int32);
+				parameterID.Value = campaign.Id;
 				sqlCommand.Parameters.Add(parameterID);
 				// Execute the command
 
@@ -504,12 +526,12 @@ namespace UtnEmall.Server.DataModel
 				}
 				// Remove entity from loaded objects
 
-				inMemoryEntities.Remove(field.Id);
+				inMemoryEntities.Remove(campaign.Id);
 				// Remove entity from current internal scope
 
 				if (scope != null)
 				{
-					string scopeKey = field.Id.ToString(NumberFormatInfo.InvariantInfo) + "Field";
+					string scopeKey = campaign.Id.ToString(NumberFormatInfo.InvariantInfo) + "Campaign";
 					scope.Remove(scopeKey);
 				}
 			}
@@ -535,6 +557,16 @@ namespace UtnEmall.Server.DataModel
 			}
 		} 
 
+		private static void CheckForDelete(CampaignEntity entity)
+		{
+			ServiceCampaignDataAccess varServiceCampaignDataAccess = new ServiceCampaignDataAccess();
+
+			if (varServiceCampaignDataAccess.LoadWhere(ServiceCampaignEntity.DBIdCampaign, entity.Id, false, OperatorType.Equal).Count > 0)
+			{
+				throw new UtnEmallDataAccessException("There are services associated to this campaign.");
+			}
+		} 
+
 		/// <summary>
 		/// Add to the dictionary the properties that can
 		/// be used as first parameter on the LoadWhere method.
@@ -543,24 +575,26 @@ namespace UtnEmall.Server.DataModel
 		{
 			properties = new Dictionary<string,Type>();
 			properties.Add("timestamp", typeof( System.DateTime ));
-			properties.Add("idField", typeof( int ));
+			properties.Add("idCampaign", typeof( int ));
 
+			properties.Add("description", typeof( string ));
 			properties.Add("name", typeof( string ));
-			properties.Add("dataType", typeof( int ));
-			properties.Add("idTable", typeof( int ));
+			properties.Add("startDate", typeof( System.DateTime ));
+			properties.Add("stopDate", typeof( System.DateTime ));
+			properties.Add("idUser", typeof( int ));
 		} 
 
 		/// <summary>
-		/// Function to Load all the FieldEntity from database.
+		/// Function to Load all the CampaignEntity from database.
 		/// </summary>
 		/// <param name="loadRelation">If is true load the relation</param>
 		/// <returns>A list of all the entities</returns>
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If a DbException occurs in the try block while accessing the database.
 		/// </exception>
-		public Collection<FieldEntity> LoadAll(bool loadRelation)
+		public Collection<CampaignEntity> LoadAll(bool loadRelation)
 		{
-			Collection<FieldEntity> fieldList = new Collection<FieldEntity>();
+			Collection<CampaignEntity> campaignList = new Collection<CampaignEntity>();
 
 			bool closeConnection = false;
 			try 
@@ -574,13 +608,13 @@ namespace UtnEmall.Server.DataModel
 				}
 				// Build the query string
 
-				string cmdText = "SELECT idField FROM [Field]";
+				string cmdText = "SELECT idCampaign FROM [Campaign]";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 
-				FieldEntity field;
+				CampaignEntity campaign;
 				// Read the Ids and insert on a list
 
 				List<int> listId = new List<int>();
@@ -598,8 +632,8 @@ namespace UtnEmall.Server.DataModel
 
 				foreach(int  id in listId)
 				{
-					field = Load(id, loadRelation, scope);
-					fieldList.Add(field);
+					campaign = Load(id, loadRelation, scope);
+					campaignList.Add(campaign);
 				}
 			}
 			catch (DbException dbException)
@@ -616,11 +650,11 @@ namespace UtnEmall.Server.DataModel
 				}
 			}
 			// Return the loaded
-			return fieldList;
+			return campaignList;
 		} 
 
 		/// <summary>
-		/// Function to Load a FieldEntity from database.
+		/// Function to Load a CampaignEntity from database.
 		/// </summary>
 		/// <param name="propertyName">A string with the name of the field or a
 		/// constant from the class that represent that field</param>
@@ -630,13 +664,13 @@ namespace UtnEmall.Server.DataModel
 		/// <returns>A list containing all the entities that match the where clause</returns>
 		/// <exception cref="ArgumentNullException">
 		/// If <paramref name="propertyName"/> is null or empty.
-		/// If <paramref name="propertyName"/> is not a property of FieldEntity class.
+		/// If <paramref name="propertyName"/> is not a property of CampaignEntity class.
 		/// If <paramref name="expValue"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
-		public Collection<FieldEntity> LoadWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType)
+		public Collection<CampaignEntity> LoadWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType)
 		{
 			if (String.IsNullOrEmpty(propertyName) || expValue == null)
 			{
@@ -646,7 +680,7 @@ namespace UtnEmall.Server.DataModel
 			{
 				throw new ArgumentException("The property " + propertyName + " is not a property of this entity", "propertyName");
 			}
-			Collection<FieldEntity> fieldList;
+			Collection<CampaignEntity> campaignList;
 
 			bool closeConnection = false;
 			try 
@@ -662,7 +696,7 @@ namespace UtnEmall.Server.DataModel
 				string op = DataAccessConnection.GetOperatorString(operatorType);
 				// Build the query string
 
-				string cmdText = "SELECT idField, name, dataType, idTable, timestamp FROM [Field] WHERE " + propertyName + " " + op + " @expValue";
+				string cmdText = "SELECT idCampaign, description, name, startDate, stopDate, idUser, timestamp FROM [Campaign] WHERE " + propertyName + " " + op + " @expValue";
 				// Create the command
 
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
@@ -678,8 +712,8 @@ namespace UtnEmall.Server.DataModel
 				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
-				fieldList = new Collection<FieldEntity>();
-				FieldEntity field;
+				campaignList = new Collection<CampaignEntity>();
+				CampaignEntity campaign;
 				List<int> listId = new List<int>();
 				// Add list of Ids to a list
 				while (reader.Read())
@@ -693,8 +727,8 @@ namespace UtnEmall.Server.DataModel
 
 				foreach(int  id in listId)
 				{
-					field = Load(id, loadRelation, null);
-					fieldList.Add(field);
+					campaign = Load(id, loadRelation, null);
+					campaignList.Add(campaign);
 				}
 			}
 			catch (DbException dbException)
@@ -710,18 +744,18 @@ namespace UtnEmall.Server.DataModel
 					dbConnection.Close();
 				}
 			}
-			return fieldList;
+			return campaignList;
 		} 
 
 		/// <summary>
-		/// Function to Load a list of FieldEntity from database by idTable.
+		/// Function to Load a list of CampaignEntity from database by idUser.
 		/// </summary>
-		/// <param name="idTable">Foreing key column</param>
+		/// <param name="idUser">Foreing key column</param>
 		/// <param name="scope">Internal data structure to avoid circular reference problems</param>
-		/// <returns>List of FieldEntity</returns>
-		public Collection<FieldEntity> LoadByTableCollection(int idTable, Dictionary<string,IEntity> scope)
+		/// <returns>List of CampaignEntity</returns>
+		public Collection<CampaignEntity> LoadByUserCollection(int idUser, Dictionary<string,IEntity> scope)
 		{
-			Collection<FieldEntity> fieldList;
+			Collection<CampaignEntity> campaignList;
 			bool closeConnection = false;
 			try 
 			{
@@ -734,17 +768,17 @@ namespace UtnEmall.Server.DataModel
 				}
 				// Create a command
 
-				string cmdText = "SELECT idField FROM [Field] WHERE idTable = @idTable";
+				string cmdText = "SELECT idCampaign FROM [Campaign] WHERE idUser = @idUser";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				// Set command parameters values
 
-				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idTable", DbType.Int32);
-				parameter.Value = idTable;
+				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idUser", DbType.Int32);
+				parameter.Value = idUser;
 				sqlCommand.Parameters.Add(parameter);
 				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
-				fieldList = new Collection<FieldEntity>();
+				campaignList = new Collection<CampaignEntity>();
 				// Load Ids of related objects into a list of int
 
 				List<int> listId = new List<int>();
@@ -758,7 +792,7 @@ namespace UtnEmall.Server.DataModel
 
 				foreach(int  id in listId)
 				{
-					fieldList.Add(Load(id, scope));
+					campaignList.Add(Load(id, scope));
 				}
 			}
 			catch (DbException dbException)
@@ -775,17 +809,77 @@ namespace UtnEmall.Server.DataModel
 				}
 			}
 			// Return related objects list
-			return fieldList;
+			return campaignList;
 		} 
 
 		/// <summary>
-		/// Function to Load a list of FieldEntity from database by idTable.
+		/// Function to Load a list of CampaignEntity from database by idUser.
 		/// </summary>
-		/// <param name="idTable">Foreing key column</param>
-		/// <returns>IList of FieldEntity</returns>
-		public Collection<FieldEntity> LoadByTableCollection(int idTable)
+		/// <param name="idUser">Foreing key column</param>
+		/// <returns>IList of CampaignEntity</returns>
+		public Collection<CampaignEntity> LoadByUserCollection(int idUser)
 		{
-			return LoadByTableCollection(idTable, null);
+			return LoadByUserCollection(idUser, null);
+		} 
+
+		/// <summary>
+		/// Function to Load the relation User from database.
+		/// </summary>
+		/// <param name="campaign">CampaignEntity parent</param>
+		/// <exception cref="ArgumentNullException">
+		/// if <paramref name="campaign"/> is not a <c>CampaignEntity</c>.
+		/// </exception>
+		public void LoadRelationUser(CampaignEntity campaign, Dictionary<string,IEntity> scope)
+		{
+			if (campaign == null)
+			{
+				throw new ArgumentException("The argument can't be null");
+			}
+			bool closeConnection = false;
+			try 
+			{
+				// Create a new connection if needed
+				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
+				{
+					closeConnection = true;
+					dbConnection = dataAccess.GetNewConnection();
+					dbConnection.Open();
+				}
+				// Create a command
+
+				string cmdText = "SELECT idUser FROM [Campaign] WHERE idCampaign = @idCampaign";
+				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
+				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idCampaign", DbType.Int32);
+				// Set command parameters values
+
+				parameter.Value = campaign.Id;
+				sqlCommand.Parameters.Add(parameter);
+				// Execute commands
+
+				object idRelation = sqlCommand.ExecuteScalar();
+				if (idRelation != null && ((int)idRelation) > 0)
+				{
+					// Create data access objects and set connection objects
+					UserDataAccess userDataAccess = new UserDataAccess();
+					userDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
+					// Load related object
+
+					campaign.User = userDataAccess.Load(((int)idRelation), true, scope);
+				}
+			}
+			catch (DbException dbException)
+			{
+				// Catch and rethrow as custom exception
+				throw new UtnEmallDataAccessException(dbException.Message, dbException);
+			}
+			finally 
+			{
+				// Close connection if initiated by me
+				if (closeConnection)
+				{
+					dbConnection.Close();
+				}
+			}
 		} 
 
 	} 

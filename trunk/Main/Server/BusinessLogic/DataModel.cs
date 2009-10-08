@@ -9,7 +9,8 @@ namespace UtnEmall.Server.BusinessLogic
 {
 
 	/// <summary>
-	/// La clase <c>DataModel</c> implementa la lógica de negocio para guardar, editar, borrar y validar un DataModelEntity,
+	/// The <c>DataModel</c> implement business logic to process DataModelEntity,
+	/// saving, updating, deleting and validating entity data.
 	/// </summary>
 	public class DataModel: UtnEmall.Server.BusinessLogic.IDataModel
 	{
@@ -20,16 +21,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Función para guardar DataModelEntity en la base de datos.
+		/// Function to save a DataModelEntity to the database.
 		/// </summary>
-		/// <param name="dataModelEntity">DataModelEntity a guardar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>null si el DataModelEntity se guardo con exito, el mismo DataModelEntity en otro caso</returns>
+		/// <param name="dataModelEntity">DataModelEntity to save</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the DataModelEntity was saved successfully, the same DataModelEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="dataModelEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public DataModelEntity Save(DataModelEntity dataModelEntity, string session)
 		{
@@ -49,10 +50,11 @@ namespace UtnEmall.Server.BusinessLogic
 				// Check that the service is not deployed
 				if (dataModelEntity.Deployed)
 				{
-                    dataModelEntity.Errors.Add(new Error("DataModel Deployed", "", "No se puede guardar el modelo de datos porque ya ha sido desplegado."));
-                    return dataModelEntity;
+					dataModelEntity.Errors.Add(new Error("DataModel Deployed", "", "The data model is already deployed. Can not be saved."));
+					return dataModelEntity;
 				}
 				// Check that there isn't related custom services
+
 				if (dataModelEntity.Id > 0)
 				{
 					CustomerServiceDataDataAccess customerServiceData = new CustomerServiceDataDataAccess();
@@ -63,11 +65,12 @@ namespace UtnEmall.Server.BusinessLogic
 
 					if (referencedServices > 0)
 					{
-                        dataModelEntity.Errors.Add(new Error("DataModel Deployed", "", "No se puede guardar el modelo de datos porque tiene servicios asociados."));
-                        return dataModelEntity;
-                    }
+						dataModelEntity.Errors.Add(new Error("DataModel Deployed", "", "The data model has related customer services. Can not be updated."));
+						return dataModelEntity;
+					}
 				}
 				// Save dataModelEntity using data access object
+
 				datamodelDataAccess.Save(dataModelEntity);
 				return null;
 			}
@@ -78,16 +81,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Función para eliminar un DataModelEntity de la base de datos.
+		/// Function to delete a DataModelEntity from database.
 		/// </summary>
-		/// <param name="dataModelEntity">DataModelEntity a eliminar</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>null si el DataModelEntity fue eliminado con éxito, el mismo DataModelEntity en otro caso</returns>
+		/// <param name="dataModelEntity">DataModelEntity to delete</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the DataModelEntity was deleted successfully, the same DataModelEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="dataModelEntity"/> is null.
+		/// if <paramref name="dataModelEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public DataModelEntity Delete(DataModelEntity dataModelEntity, string session)
 		{
@@ -107,10 +110,11 @@ namespace UtnEmall.Server.BusinessLogic
 				// Check that the service is not deployed
 				if (dataModelEntity.Deployed)
 				{
-                    dataModelEntity.Errors.Add(new Error("DataModel Deployed", "", "No se puede borrar el modelo de datos porque ya ha sido desplegado"));
-                    return dataModelEntity;
+					dataModelEntity.Errors.Add(new Error("DataModel Deployed", "", "The data model is already deployed. Can not be deleted."));
+					return dataModelEntity;
 				}
 				// Delete dataModelEntity using data access object
+
 				datamodelDataAccess.Delete(dataModelEntity);
 				return null;
 			}
@@ -121,16 +125,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene un dataModelEntity específico
+		/// Get an specific dataModelEntity
 		/// </summary>
-		/// <param name="id">id del DataModelEntity a cargar</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>Un DataModelEntity</returns>
+		/// <param name="id">id of the DataModelEntity to load</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>A DataModelEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="dataModelEntity"/> is null.
+		/// if <paramref name="dataModelEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public DataModelEntity GetDataModel(int id, string session)
 		{
@@ -138,17 +142,17 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene un dataModelEntity específico
+		/// Get an specific dataModelEntity
 		/// </summary>
-		/// <param name="id">id del DataModelEntity a cargar</param>
-		/// <param name="loadRelation">true para cargar las relaciones</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>Un DataModelEntity</returns>
+		/// <param name="id">id of the DataModelEntity to load</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>A DataModelEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="dataModelEntity"/> is null.
+		/// if <paramref name="dataModelEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public DataModelEntity GetDataModel(int id, bool loadRelation, string session)
 		{
@@ -170,12 +174,12 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una colección de dataModelEntity
+		/// Get collection of all dataModelEntity
 		/// </summary>
-		/// <param name="session">Identificador de sesion.</param>
-		/// <returns>Collection de DataModelEntity</returns>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of all DataModelEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<DataModelEntity> GetAllDataModel(string session)
 		{
@@ -183,13 +187,13 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una colección de dataModelEntity
+		/// Get collection of all dataModelEntity
 		/// </summary>
-		/// <param name="loadRelation">true si desea guardar las relaciones</param>
-		/// <param name="session">Identificador de sesion.</param>
-		/// <returns>Collection de DataModelEntity</returns>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of all DataModelEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<DataModelEntity> GetAllDataModel(bool loadRelation, string session)
 		{
@@ -211,20 +215,19 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los dataModelEntity que cumplen con cierto patron
+		/// Get collection of all dataModelEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del dataModelEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="OperatorType">Tipo de operador de comparación a utilizar</param>
-		/// <param name="session">Identificador de sesion del usuario</param>
-		/// <returns>Colección de DataModelEntity</returns>
+		/// <param name="propertyName">property of dataModelEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of DataModelEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<DataModelEntity> GetDataModelWhere(string propertyName, object expValue, OperatorType operatorType, string session)
 		{
@@ -232,21 +235,20 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los dataModelEntity que cumplen con cierto patron
+		/// Get collection of all dataModelEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del dataModelEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="loadRelation">Indica si se cargan las relaciones</param>
-		/// <param name="OperatorType">Tipo de operador de comparación a utilizar</param>
-		/// <param name="session">Identificador de sesion del usuario</param>
-		/// <returns>Colección de DataModelEntity</returns>
+		/// <param name="propertyName">property of dataModelEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of DataModelEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<DataModelEntity> GetDataModelWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType, string session)
 		{
@@ -268,19 +270,19 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los dataModelEntity que cumplen con cierto patron exactamente
+		/// Get collection of all dataModelEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del dataModelEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="session">Identificador de sesion del usuario</param>
-		/// <returns>Colección de DataModelEntity</returns>
+		/// <param name="propertyName">property of dataModelEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of DataModelEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<DataModelEntity> GetDataModelWhereEqual(string propertyName, object expValue, string session)
 		{
@@ -288,20 +290,20 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los dataModelEntity que cumplen con cierto patron exactamente
+		/// Get collection of all dataModelEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del dataModelEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="loadRelation">Indica si se cargan las relaciones</param>
-		/// <param name="session">Identificador de sesión del usuario</param>
-		/// <returns>Colección de DataModelEntity</returns>
+		/// <param name="propertyName">property of dataModelEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of DataModelEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<DataModelEntity> GetDataModelWhereEqual(string propertyName, object expValue, bool loadRelation, string session)
 		{
@@ -309,16 +311,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Función que valida un DataModelEntity antes de ser guardado.
+		/// Function to validate a DataModelEntity before it's saved.
 		/// </summary>
-		/// <param name="dataModelEntity">DataModelEntity a validar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>true si se valido correctamente, false en caso contrario</returns>
+		/// <param name="dataModelEntity">DataModelEntity to validate</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the DataModelEntity was deleted successfully, the same DataModelEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// si <paramref name="dataModelEntity"/> es null.
+		/// if <paramref name="dataModelEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public bool Validate(DataModelEntity dataModel)
 		{
@@ -328,7 +330,7 @@ namespace UtnEmall.Server.BusinessLogic
 			{
 				throw new ArgumentException("The argument can not be null or be empty");
 			}
-			// Chequea los datos de la entidad
+			// Check entity data
 			if (dataModel.Tables == null)
 			{
 				dataModel.Errors.Add(new Error("Tables", "Tables", "El nombre de la tabla no puede estar vacío"));

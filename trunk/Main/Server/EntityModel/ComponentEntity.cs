@@ -7,9 +7,10 @@ namespace UtnEmall.Server.EntityModel
 
 	[System.Runtime.Serialization.DataContract]
 	/// <summary>
-	/// El <c>ComponentEntity</c> en una clase de entidad
-	/// que contiene todos los campos que son insertados y cargados en la base de datos
-	/// Esta clase es utilizada por todas las capas superiores.
+	/// The <c>ComponentEntity</c> is a entity class
+	/// that contains all the fields that are inserted and
+	/// loaded from the database.
+	/// This class is used by the upper layers.
 	/// </summary>
 	public class ComponentEntity: IEntity
 	{
@@ -19,7 +20,8 @@ namespace UtnEmall.Server.EntityModel
 		private System.DateTime timestamp; 
 		private Collection<Error> errors; 
 		/// <summary>
-		/// Inicializa una nueva instancia de un <c>ComponentEntity</c>.
+		/// Initializes a new instance of a
+		/// <c>ComponentEntity</c> type.
 		/// </summary>
 		public  ComponentEntity()
 		{
@@ -28,7 +30,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el id de la entidad.
+		/// Gets or sets the Id of the entity.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 0 )]
 		public int Id
@@ -44,7 +46,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece si la entidad fue modificada.
+		/// Gets or sets if the entity has changed.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 1 )]
 		public bool Changed
@@ -60,7 +62,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene si la entidad es nueva.
+		/// Gets or sets if the entity is new.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 2 )]
 		public bool IsNew
@@ -76,7 +78,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene el timestamp del ultimo acceso.
+		/// Gets or sets the timestamp of the last access.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 3 )]
 		public System.DateTime Timestamp
@@ -93,7 +95,7 @@ namespace UtnEmall.Server.EntityModel
 
 		public const string DBTimestamp = "timestamp"; 
 		/// <summary>
-		/// Coleccion de errores de la entidad.
+		/// The collection of entity's errors.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 4 )]
 		public Collection<Error> Errors
@@ -159,7 +161,7 @@ namespace UtnEmall.Server.EntityModel
 		private double _Height; 
 		[System.Runtime.Serialization.DataMember( Order = 5 )]
 		/// <summary>
-		/// Obtiene o establece los valores para Height.
+		/// Gets or sets the value for Height.
 		/// <summary>
 		public double Height
 		{
@@ -177,7 +179,7 @@ namespace UtnEmall.Server.EntityModel
 		private double _Width; 
 		[System.Runtime.Serialization.DataMember( Order = 6 )]
 		/// <summary>
-		/// Obtiene o establece los valores para Width.
+		/// Gets or sets the value for Width.
 		/// <summary>
 		public double Width
 		{
@@ -195,7 +197,7 @@ namespace UtnEmall.Server.EntityModel
 		private double _HeightFactor; 
 		[System.Runtime.Serialization.DataMember( Order = 7 )]
 		/// <summary>
-		/// Obtiene o establece los valores para HeightFactor.
+		/// Gets or sets the value for HeightFactor.
 		/// <summary>
 		public double HeightFactor
 		{
@@ -213,7 +215,7 @@ namespace UtnEmall.Server.EntityModel
 		private double _WidthFactor; 
 		[System.Runtime.Serialization.DataMember( Order = 8 )]
 		/// <summary>
-		/// Obtiene o establece los valores para WidthFactor.
+		/// Gets or sets the value for WidthFactor.
 		/// <summary>
 		public double WidthFactor
 		{
@@ -231,7 +233,7 @@ namespace UtnEmall.Server.EntityModel
 		private double _XCoordinateRelativeToParent; 
 		[System.Runtime.Serialization.DataMember( Order = 9 )]
 		/// <summary>
-		/// Obtiene o establece los valores para XCoordinateRelativeToParent.
+		/// Gets or sets the value for XCoordinateRelativeToParent.
 		/// <summary>
 		public double XCoordinateRelativeToParent
 		{
@@ -249,7 +251,7 @@ namespace UtnEmall.Server.EntityModel
 		private double _YCoordinateRelativeToParent; 
 		[System.Runtime.Serialization.DataMember( Order = 10 )]
 		/// <summary>
-		/// Obtiene o establece los valores para YCoordinateRelativeToParent.
+		/// Gets or sets the value for YCoordinateRelativeToParent.
 		/// <summary>
 		public double YCoordinateRelativeToParent
 		{
@@ -267,7 +269,7 @@ namespace UtnEmall.Server.EntityModel
 		private double _XFactorCoordinateRelativeToParent; 
 		[System.Runtime.Serialization.DataMember( Order = 11 )]
 		/// <summary>
-		/// Obtiene o establece los valores para XFactorCoordinateRelativeToParent.
+		/// Gets or sets the value for XFactorCoordinateRelativeToParent.
 		/// <summary>
 		public double XFactorCoordinateRelativeToParent
 		{
@@ -285,7 +287,7 @@ namespace UtnEmall.Server.EntityModel
 		private double _YFactorCoordinateRelativeToParent; 
 		[System.Runtime.Serialization.DataMember( Order = 12 )]
 		/// <summary>
-		/// Obtiene o establece los valores para YFactorCoordinateRelativeToParent.
+		/// Gets or sets the value for YFactorCoordinateRelativeToParent.
 		/// <summary>
 		public double YFactorCoordinateRelativeToParent
 		{
@@ -303,7 +305,7 @@ namespace UtnEmall.Server.EntityModel
 		private bool _Bold; 
 		[System.Runtime.Serialization.DataMember( Order = 13 )]
 		/// <summary>
-		/// Obtiene o establece los valores para Bold.
+		/// Gets or sets the value for Bold.
 		/// <summary>
 		public bool Bold
 		{
@@ -321,7 +323,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _FontColor; 
 		[System.Runtime.Serialization.DataMember( Order = 14 )]
 		/// <summary>
-		/// Obtiene o establece el valor para FontColor.
+		/// Gets or sets the value for FontColor.
 		/// <summary>
 		public string FontColor
 		{
@@ -339,7 +341,7 @@ namespace UtnEmall.Server.EntityModel
 		private int _FontName; 
 		[System.Runtime.Serialization.DataMember( Order = 15 )]
 		/// <summary>
-		/// Obtiene o establece los valores para FontName.
+		/// Gets or sets the value for FontName.
 		/// <summary>
 		public int FontName
 		{
@@ -357,7 +359,7 @@ namespace UtnEmall.Server.EntityModel
 		private int _FontSize; 
 		[System.Runtime.Serialization.DataMember( Order = 16 )]
 		/// <summary>
-		/// Obtiene o establece los valores para FontSize.
+		/// Gets or sets the value for FontSize.
 		/// <summary>
 		public int FontSize
 		{
@@ -375,7 +377,7 @@ namespace UtnEmall.Server.EntityModel
 		private bool _Italic; 
 		[System.Runtime.Serialization.DataMember( Order = 17 )]
 		/// <summary>
-		/// Obtiene o establece los valores para Italic.
+		/// Gets or sets the value for Italic.
 		/// <summary>
 		public bool Italic
 		{
@@ -393,7 +395,7 @@ namespace UtnEmall.Server.EntityModel
 		private bool _Underline; 
 		[System.Runtime.Serialization.DataMember( Order = 18 )]
 		/// <summary>
-		/// Obtiene o establece los valores para Underline.
+		/// Gets or sets the value for Underline.
 		/// <summary>
 		public bool Underline
 		{
@@ -411,7 +413,7 @@ namespace UtnEmall.Server.EntityModel
 		private int _TextAlign; 
 		[System.Runtime.Serialization.DataMember( Order = 19 )]
 		/// <summary>
-		/// Obtiene o establece los valores para TextAlign.
+		/// Gets or sets the value for TextAlign.
 		/// <summary>
 		public int TextAlign
 		{
@@ -429,7 +431,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _BackgroundColor; 
 		[System.Runtime.Serialization.DataMember( Order = 20 )]
 		/// <summary>
-		/// Obtiene o establece el valor para BackgroundColor.
+		/// Gets or sets the value for BackgroundColor.
 		/// <summary>
 		public string BackgroundColor
 		{
@@ -447,7 +449,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _Text; 
 		[System.Runtime.Serialization.DataMember( Order = 21 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Text.
+		/// Gets or sets the value for Text.
 		/// <summary>
 		public string Text
 		{
@@ -465,7 +467,7 @@ namespace UtnEmall.Server.EntityModel
 		private int _DataTypes; 
 		[System.Runtime.Serialization.DataMember( Order = 22 )]
 		/// <summary>
-		/// Obtiene o establece los valores para DataTypes.
+		/// Gets or sets the value for DataTypes.
 		/// <summary>
 		public int DataTypes
 		{
@@ -483,7 +485,7 @@ namespace UtnEmall.Server.EntityModel
 		private int _TypeOrder; 
 		[System.Runtime.Serialization.DataMember( Order = 23 )]
 		/// <summary>
-		/// Obtiene o establece los valores para TypeOrder.
+		/// Gets or sets the value for TypeOrder.
 		/// <summary>
 		public int TypeOrder
 		{
@@ -501,7 +503,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _Title; 
 		[System.Runtime.Serialization.DataMember( Order = 24 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Title.
+		/// Gets or sets the value for Title.
 		/// <summary>
 		public string Title
 		{
@@ -519,7 +521,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _StringHelp; 
 		[System.Runtime.Serialization.DataMember( Order = 25 )]
 		/// <summary>
-		/// Obtiene o establece el valor para StringHelp.
+		/// Gets or sets the value for StringHelp.
 		/// <summary>
 		public string StringHelp
 		{
@@ -537,7 +539,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _DescriptiveText; 
 		[System.Runtime.Serialization.DataMember( Order = 26 )]
 		/// <summary>
-		/// Obtiene o establece el valor para DescriptiveText.
+		/// Gets or sets the value for DescriptiveText.
 		/// <summary>
 		public string DescriptiveText
 		{
@@ -555,7 +557,7 @@ namespace UtnEmall.Server.EntityModel
 		private int _ComponentType; 
 		[System.Runtime.Serialization.DataMember( Order = 27 )]
 		/// <summary>
-		/// Obtiene o establece los valores para ComponentType.
+		/// Gets or sets the value for ComponentType.
 		/// <summary>
 		public int ComponentType
 		{
@@ -573,7 +575,7 @@ namespace UtnEmall.Server.EntityModel
 		private bool _FinalizeService; 
 		[System.Runtime.Serialization.DataMember( Order = 28 )]
 		/// <summary>
-		/// Obtiene o establece los valores para FinalizeService.
+		/// Gets or sets the value for FinalizeService.
 		/// <summary>
 		public bool FinalizeService
 		{
@@ -591,7 +593,7 @@ namespace UtnEmall.Server.EntityModel
 		private CustomerServiceDataEntity _CustomerServiceData; 
 		private int _IdCustomerServiceData; 
 		/// <summary>
-		/// Establece u obtiene el valor para CustomerServiceData.
+		/// Gets or sets the value for CustomerServiceData.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 29 )]
 		public CustomerServiceDataEntity CustomerServiceData
@@ -603,7 +605,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_CustomerServiceData = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_CustomerServiceData != null)
 				{
@@ -618,9 +620,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del CustomerServiceData.
-		/// Si CustomerServiceData esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the CustomerServiceData.
+		/// If CustomerServiceData is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 30 )]
 		public int IdCustomerServiceData
@@ -645,7 +647,7 @@ namespace UtnEmall.Server.EntityModel
 		private CustomerServiceDataEntity _TemplateListFormDocument; 
 		private int _IdTemplateListFormDocument; 
 		/// <summary>
-		/// Obtiene o establece el valor para TemplateListFormDocument.
+		/// Gets or sets the value for TemplateListFormDocument.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 31 )]
 		public CustomerServiceDataEntity TemplateListFormDocument
@@ -657,7 +659,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_TemplateListFormDocument = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_TemplateListFormDocument != null)
 				{
@@ -672,9 +674,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del TemplateListFormDocument.
-		/// Si TemplateListFormDocument esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the TemplateListFormDocument.
+		/// If TemplateListFormDocument is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 32 )]
 		public int IdTemplateListFormDocument
@@ -701,7 +703,7 @@ namespace UtnEmall.Server.EntityModel
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "We need set for serialization and deserialization web service interfaces.")]
 		/// <summary>
-		/// Obtiene o establece el valor para MenuItems.
+		/// Gets or sets the value for MenuItems.
 		/// <summary>
 		public Collection<ComponentEntity> MenuItems
 		{
@@ -722,7 +724,7 @@ namespace UtnEmall.Server.EntityModel
 		private ComponentEntity _ParentComponent; 
 		private int _IdParentComponent; 
 		/// <summary>
-		/// Establece u obtiene el valor para ParentComponent.
+		/// Gets or sets the value for ParentComponent.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 34 )]
 		public ComponentEntity ParentComponent
@@ -734,7 +736,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_ParentComponent = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_ParentComponent != null)
 				{
@@ -749,9 +751,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del ParentComponent.
-		/// Si ParentComponent esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the ParentComponent.
+		/// If ParentComponent is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 35 )]
 		public int IdParentComponent
@@ -776,7 +778,7 @@ namespace UtnEmall.Server.EntityModel
 		private ConnectionPointEntity _InputConnectionPoint; 
 		private int _IdInputConnectionPoint; 
 		/// <summary>
-		/// Obtiene o establece el valor para InputConnectionPoint.
+		/// Gets or sets the value for InputConnectionPoint.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 36 )]
 		public ConnectionPointEntity InputConnectionPoint
@@ -788,7 +790,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_InputConnectionPoint = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_InputConnectionPoint != null)
 				{
@@ -803,9 +805,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del InputConnectionPoint.
-		/// Si InputConnectionPoint esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the InputConnectionPoint.
+		/// If InputConnectionPoint is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 37 )]
 		public int IdInputConnectionPoint
@@ -830,7 +832,7 @@ namespace UtnEmall.Server.EntityModel
 		private ConnectionPointEntity _OutputConnectionPoint; 
 		private int _IdOutputConnectionPoint; 
 		/// <summary>
-		/// Obtiene o establece el valor para OutputConnectionPoint.
+		/// Gets or sets the value for OutputConnectionPoint.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 38 )]
 		public ConnectionPointEntity OutputConnectionPoint
@@ -842,7 +844,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_OutputConnectionPoint = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_OutputConnectionPoint != null)
 				{
@@ -857,9 +859,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del OutputConnectionPoint.
-		/// Si OutputConnectionPoint esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the OutputConnectionPoint.
+		/// If OutputConnectionPoint is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 39 )]
 		public int IdOutputConnectionPoint
@@ -884,7 +886,7 @@ namespace UtnEmall.Server.EntityModel
 		private TableEntity _OutputDataContext; 
 		private int _IdOutputDataContext; 
 		/// <summary>
-		/// Obtiene o establece el valor para OutputDataContext.
+		/// Gets or sets the value for OutputDataContext.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 40 )]
 		public TableEntity OutputDataContext
@@ -896,7 +898,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_OutputDataContext = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_OutputDataContext != null)
 				{
@@ -911,9 +913,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del OutputDataContext.
-		/// Si OutputDataContext esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the OutputDataContext.
+		/// If OutputDataContext is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 41 )]
 		public int IdOutputDataContext
@@ -938,7 +940,7 @@ namespace UtnEmall.Server.EntityModel
 		private TableEntity _InputDataContext; 
 		private int _IdInputDataContext; 
 		/// <summary>
-		/// Obtiene o establece el valor para InputDataContext.
+		/// Gets or sets the value for InputDataContext.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 42 )]
 		public TableEntity InputDataContext
@@ -950,7 +952,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_InputDataContext = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_InputDataContext != null)
 				{
@@ -965,9 +967,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del InputDataContext.
-		/// Si InputDataContext esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the InputDataContext.
+		/// If InputDataContext is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 43 )]
 		public int IdInputDataContext
@@ -992,7 +994,7 @@ namespace UtnEmall.Server.EntityModel
 		private TableEntity _RelatedTable; 
 		private int _IdRelatedTable; 
 		/// <summary>
-		/// Obtiene o establece el valor para RelatedTable.
+		/// Gets or sets the value for RelatedTable.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 44 )]
 		public TableEntity RelatedTable
@@ -1004,7 +1006,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_RelatedTable = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_RelatedTable != null)
 				{
@@ -1019,9 +1021,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del RelatedTable.
-		/// Si RelatedTable esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the RelatedTable.
+		/// If RelatedTable is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 45 )]
 		public int IdRelatedTable
@@ -1046,7 +1048,7 @@ namespace UtnEmall.Server.EntityModel
 		private FieldEntity _FieldToOrder; 
 		private int _IdFieldToOrder; 
 		/// <summary>
-		/// Obtiene o establece el valor para FieldToOrder.
+		/// Gets or sets the value for FieldToOrder.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 46 )]
 		public FieldEntity FieldToOrder
@@ -1058,7 +1060,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_FieldToOrder = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_FieldToOrder != null)
 				{
@@ -1073,9 +1075,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del FieldToOrder.
-		/// Si FieldToOrder esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the FieldToOrder.
+		/// If FieldToOrder is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 47 )]
 		public int IdFieldToOrder
@@ -1100,7 +1102,7 @@ namespace UtnEmall.Server.EntityModel
 		private FieldEntity _FieldAssociated; 
 		private int _IdFieldAssociated; 
 		/// <summary>
-		/// Obtiene o establece el valor para FieldAssociated.
+		/// Gets or sets the value for FieldAssociated.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 48 )]
 		public FieldEntity FieldAssociated
@@ -1112,7 +1114,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_FieldAssociated = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_FieldAssociated != null)
 				{
@@ -1127,9 +1129,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del FieldAssociated.
-		/// Si FieldAssociated esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the FieldAssociated.
+		/// If FieldAssociated is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 49 )]
 		public int IdFieldAssociated

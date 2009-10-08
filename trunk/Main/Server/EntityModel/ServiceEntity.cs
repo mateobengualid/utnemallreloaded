@@ -6,9 +6,10 @@ namespace UtnEmall.Server.EntityModel
 
 	[System.Runtime.Serialization.DataContract]
 	/// <summary>
-	/// El <c>ServiceEntity</c> en una clase de entidad
-	/// que contiene todos los campos que son insertados y cargados en la base de datos
-	/// Esta clase es utilizada por todas las capas superiores.
+	/// The <c>ServiceEntity</c> is a entity class
+	/// that contains all the fields that are inserted and
+	/// loaded from the database.
+	/// This class is used by the upper layers.
 	/// </summary>
 	public class ServiceEntity: IEntity
 	{
@@ -18,7 +19,8 @@ namespace UtnEmall.Server.EntityModel
 		private System.DateTime timestamp; 
 		private Collection<Error> errors; 
 		/// <summary>
-		/// Inicializa una nueva instancia de un <c>ServiceEntity</c>.
+		/// Initializes a new instance of a
+		/// <c>ServiceEntity</c> type.
 		/// </summary>
 		public  ServiceEntity()
 		{
@@ -27,7 +29,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el id de la entidad.
+		/// Gets or sets the Id of the entity.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 0 )]
 		public int Id
@@ -43,7 +45,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece si la entidad fue modificada.
+		/// Gets or sets if the entity has changed.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 1 )]
 		public bool Changed
@@ -59,7 +61,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene si la entidad es nueva.
+		/// Gets or sets if the entity is new.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 2 )]
 		public bool IsNew
@@ -75,7 +77,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene el timestamp del ultimo acceso.
+		/// Gets or sets the timestamp of the last access.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 3 )]
 		public System.DateTime Timestamp
@@ -92,7 +94,7 @@ namespace UtnEmall.Server.EntityModel
 
 		public const string DBTimestamp = "timestamp"; 
 		/// <summary>
-		/// Coleccion de errores de la entidad.
+		/// The collection of entity's errors.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 4 )]
 		public Collection<Error> Errors
@@ -113,7 +115,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _Name; 
 		[System.Runtime.Serialization.DataMember( Order = 5 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Name.
+		/// Gets or sets the value for Name.
 		/// <summary>
 		public string Name
 		{
@@ -131,7 +133,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _Description; 
 		[System.Runtime.Serialization.DataMember( Order = 6 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Description.
+		/// Gets or sets the value for Description.
 		/// <summary>
 		public string Description
 		{
@@ -149,7 +151,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _WebAccess; 
 		[System.Runtime.Serialization.DataMember( Order = 7 )]
 		/// <summary>
-		/// Obtiene o establece el valor para WebAccess.
+		/// Gets or sets the value for WebAccess.
 		/// <summary>
 		public string WebAccess
 		{
@@ -167,7 +169,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _RelativePathAssembly; 
 		[System.Runtime.Serialization.DataMember( Order = 8 )]
 		/// <summary>
-		/// Obtiene o establece el valor para RelativePathAssembly.
+		/// Gets or sets the value for RelativePathAssembly.
 		/// <summary>
 		public string RelativePathAssembly
 		{
@@ -185,7 +187,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _PathAssemblyServer; 
 		[System.Runtime.Serialization.DataMember( Order = 9 )]
 		/// <summary>
-		/// Obtiene o establece el valor para PathAssemblyServer.
+		/// Gets or sets the value for PathAssemblyServer.
 		/// <summary>
 		public string PathAssemblyServer
 		{
@@ -203,7 +205,7 @@ namespace UtnEmall.Server.EntityModel
 		private bool _Active; 
 		[System.Runtime.Serialization.DataMember( Order = 10 )]
 		/// <summary>
-		/// Obtiene o establece los valores para Active.
+		/// Gets or sets the value for Active.
 		/// <summary>
 		public bool Active
 		{
@@ -221,7 +223,7 @@ namespace UtnEmall.Server.EntityModel
 		private bool _Global; 
 		[System.Runtime.Serialization.DataMember( Order = 11 )]
 		/// <summary>
-		/// Obtiene o establece los valores para Global.
+		/// Gets or sets the value for Global.
 		/// <summary>
 		public bool Global
 		{
@@ -239,7 +241,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _Image; 
 		[System.Runtime.Serialization.DataMember( Order = 12 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Image.
+		/// Gets or sets the value for Image.
 		/// <summary>
 		public string Image
 		{
@@ -257,7 +259,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _Website; 
 		[System.Runtime.Serialization.DataMember( Order = 13 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Website.
+		/// Gets or sets the value for Website.
 		/// <summary>
 		public string Website
 		{
@@ -275,7 +277,7 @@ namespace UtnEmall.Server.EntityModel
 		private bool _Deployed; 
 		[System.Runtime.Serialization.DataMember( Order = 14 )]
 		/// <summary>
-		/// Obtiene o establece los valores para Deployed.
+		/// Gets or sets the value for Deployed.
 		/// <summary>
 		public bool Deployed
 		{
@@ -293,7 +295,7 @@ namespace UtnEmall.Server.EntityModel
 		private bool _Updated; 
 		[System.Runtime.Serialization.DataMember( Order = 15 )]
 		/// <summary>
-		/// Obtiene o establece los valores para Updated.
+		/// Gets or sets the value for Updated.
 		/// <summary>
 		public bool Updated
 		{
@@ -311,7 +313,7 @@ namespace UtnEmall.Server.EntityModel
 		private MallEntity _Mall; 
 		private int _IdMall; 
 		/// <summary>
-		/// Establece u obtiene el valor para Mall.
+		/// Gets or sets the value for Mall.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 16 )]
 		public MallEntity Mall
@@ -323,7 +325,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_Mall = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_Mall != null)
 				{
@@ -338,9 +340,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del Mall.
-		/// Si Mall esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the Mall.
+		/// If Mall is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 17 )]
 		public int IdMall
@@ -365,7 +367,7 @@ namespace UtnEmall.Server.EntityModel
 		private StoreEntity _Store; 
 		private int _IdStore; 
 		/// <summary>
-		/// Establece u obtiene el valor para Store.
+		/// Gets or sets the value for Store.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 18 )]
 		public StoreEntity Store
@@ -377,7 +379,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_Store = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_Store != null)
 				{
@@ -392,9 +394,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del Store.
-		/// Si Store esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the Store.
+		/// If Store is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 19 )]
 		public int IdStore
@@ -421,7 +423,7 @@ namespace UtnEmall.Server.EntityModel
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "We need set for serialization and deserialization web service interfaces.")]
 		/// <summary>
-		/// Obtiene o establece el valor para ServiceCategory.
+		/// Gets or sets the value for ServiceCategory.
 		/// <summary>
 		public Collection<ServiceCategoryEntity> ServiceCategory
 		{
@@ -442,7 +444,7 @@ namespace UtnEmall.Server.EntityModel
 		private CustomerServiceDataEntity _CustomerServiceData; 
 		private int _IdCustomerServiceData; 
 		/// <summary>
-		/// Obtiene o establece el valor para CustomerServiceData.
+		/// Gets or sets the value for CustomerServiceData.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 21 )]
 		public CustomerServiceDataEntity CustomerServiceData
@@ -454,7 +456,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_CustomerServiceData = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_CustomerServiceData != null)
 				{
@@ -469,9 +471,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del CustomerServiceData.
-		/// Si CustomerServiceData esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the CustomerServiceData.
+		/// If CustomerServiceData is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 22 )]
 		public int IdCustomerServiceData
@@ -496,7 +498,7 @@ namespace UtnEmall.Server.EntityModel
 		private System.DateTime _StartDate; 
 		[System.Runtime.Serialization.DataMember( Order = 23 )]
 		/// <summary>
-		/// Obtiene o establece el valor para StartDate.
+		/// Gets or sets the value for StartDate.
 		/// <summary>
 		public System.DateTime StartDate
 		{
@@ -514,7 +516,7 @@ namespace UtnEmall.Server.EntityModel
 		private System.DateTime _StopDate; 
 		[System.Runtime.Serialization.DataMember( Order = 24 )]
 		/// <summary>
-		/// Obtiene o establece el valor para StopDate.
+		/// Gets or sets the value for StopDate.
 		/// <summary>
 		public System.DateTime StopDate
 		{

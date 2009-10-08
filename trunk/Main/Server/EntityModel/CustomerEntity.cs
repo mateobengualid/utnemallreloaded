@@ -6,9 +6,10 @@ namespace UtnEmall.Server.EntityModel
 
 	[System.Runtime.Serialization.DataContract]
 	/// <summary>
-	/// El <c>CustomerEntity</c> en una clase de entidad
-	/// que contiene todos los campos que son insertados y cargados en la base de datos
-	/// Esta clase es utilizada por todas las capas superiores.
+	/// The <c>CustomerEntity</c> is a entity class
+	/// that contains all the fields that are inserted and
+	/// loaded from the database.
+	/// This class is used by the upper layers.
 	/// </summary>
 	public class CustomerEntity: IEntity
 	{
@@ -18,7 +19,8 @@ namespace UtnEmall.Server.EntityModel
 		private System.DateTime timestamp; 
 		private Collection<Error> errors; 
 		/// <summary>
-		/// Inicializa una nueva instancia de un <c>CustomerEntity</c>.
+		/// Initializes a new instance of a
+		/// <c>CustomerEntity</c> type.
 		/// </summary>
 		public  CustomerEntity()
 		{
@@ -27,7 +29,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el id de la entidad.
+		/// Gets or sets the Id of the entity.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 0 )]
 		public int Id
@@ -43,7 +45,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece si la entidad fue modificada.
+		/// Gets or sets if the entity has changed.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 1 )]
 		public bool Changed
@@ -59,7 +61,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene si la entidad es nueva.
+		/// Gets or sets if the entity is new.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 2 )]
 		public bool IsNew
@@ -75,7 +77,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene el timestamp del ultimo acceso.
+		/// Gets or sets the timestamp of the last access.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 3 )]
 		public System.DateTime Timestamp
@@ -92,7 +94,7 @@ namespace UtnEmall.Server.EntityModel
 
 		public const string DBTimestamp = "timestamp"; 
 		/// <summary>
-		/// Coleccion de errores de la entidad.
+		/// The collection of entity's errors.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 4 )]
 		public Collection<Error> Errors
@@ -111,7 +113,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _Name; 
 		[System.Runtime.Serialization.DataMember( Order = 5 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Name.
+		/// Gets or sets the value for Name.
 		/// <summary>
 		public string Name
 		{
@@ -129,7 +131,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _Surname; 
 		[System.Runtime.Serialization.DataMember( Order = 6 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Surname.
+		/// Gets or sets the value for Surname.
 		/// <summary>
 		public string Surname
 		{
@@ -147,7 +149,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _Address; 
 		[System.Runtime.Serialization.DataMember( Order = 7 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Address.
+		/// Gets or sets the value for Address.
 		/// <summary>
 		public string Address
 		{
@@ -165,7 +167,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _PhoneNumber; 
 		[System.Runtime.Serialization.DataMember( Order = 8 )]
 		/// <summary>
-		/// Obtiene o establece el valor para PhoneNumber.
+		/// Gets or sets the value for PhoneNumber.
 		/// <summary>
 		public string PhoneNumber
 		{
@@ -183,7 +185,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _UserName; 
 		[System.Runtime.Serialization.DataMember( Order = 9 )]
 		/// <summary>
-		/// Obtiene o establece el valor para UserName.
+		/// Gets or sets the value for UserName.
 		/// <summary>
 		public string UserName
 		{
@@ -201,7 +203,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _Password; 
 		[System.Runtime.Serialization.DataMember( Order = 10 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Password.
+		/// Gets or sets the value for Password.
 		/// <summary>
 		public string Password
 		{
@@ -216,12 +218,84 @@ namespace UtnEmall.Server.EntityModel
 			}
 		} 
 
-		private Collection<PreferenceEntity> _Preferences; 
+		private System.DateTime _Birthday; 
 		[System.Runtime.Serialization.DataMember( Order = 11 )]
+		/// <summary>
+		/// Gets or sets the value for Birthday.
+		/// <summary>
+		public System.DateTime Birthday
+		{
+			get 
+			{
+				return _Birthday;
+			}
+			set 
+			{
+				_Birthday = value;
+				changed = true;
+			}
+		} 
+
+		private int _HowManyChildren; 
+		[System.Runtime.Serialization.DataMember( Order = 12 )]
+		/// <summary>
+		/// Gets or sets the value for HowManyChildren.
+		/// <summary>
+		public int HowManyChildren
+		{
+			get 
+			{
+				return _HowManyChildren;
+			}
+			set 
+			{
+				_HowManyChildren = value;
+				changed = true;
+			}
+		} 
+
+		private int _Gender; 
+		[System.Runtime.Serialization.DataMember( Order = 13 )]
+		/// <summary>
+		/// Gets or sets the value for Gender.
+		/// <summary>
+		public int Gender
+		{
+			get 
+			{
+				return _Gender;
+			}
+			set 
+			{
+				_Gender = value;
+				changed = true;
+			}
+		} 
+
+		private int _CivilState; 
+		[System.Runtime.Serialization.DataMember( Order = 14 )]
+		/// <summary>
+		/// Gets or sets the value for CivilState.
+		/// <summary>
+		public int CivilState
+		{
+			get 
+			{
+				return _CivilState;
+			}
+			set 
+			{
+				_CivilState = value;
+				changed = true;
+			}
+		} 
+
+		private Collection<PreferenceEntity> _Preferences; 
+		[System.Runtime.Serialization.DataMember( Order = 15 )]
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "We need set for serialization and deserialization web service interfaces.")]
 		/// <summary>
-		/// Obtiene o establece el valor para Preferences.
+		/// Gets or sets the value for Preferences.
 		/// <summary>
 		public Collection<PreferenceEntity> Preferences
 		{
@@ -242,9 +316,9 @@ namespace UtnEmall.Server.EntityModel
 		private MallEntity _Mall; 
 		private int _IdMall; 
 		/// <summary>
-		/// Establece u obtiene el valor para Mall.
+		/// Gets or sets the value for Mall.
 		/// <summary>
-		[System.Runtime.Serialization.DataMember( Order = 12 )]
+		[System.Runtime.Serialization.DataMember( Order = 16 )]
 		public MallEntity Mall
 		{
 			get 
@@ -254,7 +328,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_Mall = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_Mall != null)
 				{
@@ -269,11 +343,11 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del Mall.
-		/// Si Mall esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the Mall.
+		/// If Mall is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
-		[System.Runtime.Serialization.DataMember( Order = 13 )]
+		[System.Runtime.Serialization.DataMember( Order = 17 )]
 		public int IdMall
 		{
 			get 
@@ -294,11 +368,11 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		private Collection<DeviceProfileEntity> _DeviceProfile; 
-		[System.Runtime.Serialization.DataMember( Order = 14 )]
+		[System.Runtime.Serialization.DataMember( Order = 18 )]
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "We need set for serialization and deserialization web service interfaces.")]
 		/// <summary>
-		/// Obtiene o establece el valor para DeviceProfile.
+		/// Gets or sets the value for DeviceProfile.
 		/// <summary>
 		public Collection<DeviceProfileEntity> DeviceProfile
 		{
@@ -323,6 +397,10 @@ namespace UtnEmall.Server.EntityModel
 		public const string DBPhoneNumber = "phoneNumber"; 
 		public const string DBUserName = "userName"; 
 		public const string DBPassword = "password"; 
+		public const string DBBirthday = "birthday"; 
+		public const string DBHowManyChildren = "howManyChildren"; 
+		public const string DBGender = "gender"; 
+		public const string DBCivilState = "civilState"; 
 		public const string DBIdMall = "idMall"; 
 	} 
 

@@ -9,7 +9,8 @@ namespace UtnEmall.Server.BusinessLogic
 {
 
 	/// <summary>
-	/// La clase <c>User</c> implementa la lógica de negocio para guardar, editar, borrar y validar un UserEntity,
+	/// The <c>User</c> implement business logic to process UserEntity,
+	/// saving, updating, deleting and validating entity data.
 	/// </summary>
 	public class User: UtnEmall.Server.BusinessLogic.IUser
 	{
@@ -20,16 +21,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Función para guardar UserEntity en la base de datos.
+		/// Function to save a UserEntity to the database.
 		/// </summary>
-		/// <param name="userEntity">UserEntity a guardar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>null si el UserEntity se guardo con exito, el mismo UserEntity en otro caso</returns>
+		/// <param name="userEntity">UserEntity to save</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the UserEntity was saved successfully, the same UserEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="userEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public UserEntity Save(UserEntity userEntity, string session)
 		{
@@ -46,7 +47,7 @@ namespace UtnEmall.Server.BusinessLogic
 			}
 			try 
 			{
-				// Guarda un userEntity usando un objeto de data access
+				// Save userEntity using data access object
 				userDataAccess.Save(userEntity);
 				return null;
 			}
@@ -57,16 +58,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Función para eliminar un UserEntity de la base de datos.
+		/// Function to delete a UserEntity from database.
 		/// </summary>
-		/// <param name="userEntity">UserEntity a eliminar</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>null si el UserEntity fue eliminado con éxito, el mismo UserEntity en otro caso</returns>
+		/// <param name="userEntity">UserEntity to delete</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the UserEntity was deleted successfully, the same UserEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="userEntity"/> is null.
+		/// if <paramref name="userEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public UserEntity Delete(UserEntity userEntity, string session)
 		{
@@ -83,7 +84,7 @@ namespace UtnEmall.Server.BusinessLogic
 			}
 			try 
 			{
-				// Elimina un userEntity usando un objeto data access
+				// Delete userEntity using data access object
 				userDataAccess.Delete(userEntity);
 				return null;
 			}
@@ -94,16 +95,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene un userEntity específico
+		/// Get an specific userEntity
 		/// </summary>
-		/// <param name="id">id del UserEntity a cargar</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>Un UserEntity</returns>
+		/// <param name="id">id of the UserEntity to load</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>A UserEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="userEntity"/> is null.
+		/// if <paramref name="userEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public UserEntity GetUser(int id, string session)
 		{
@@ -111,17 +112,17 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene un userEntity específico
+		/// Get an specific userEntity
 		/// </summary>
-		/// <param name="id">id del UserEntity a cargar</param>
-		/// <param name="loadRelation">true para cargar las relaciones</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>Un UserEntity</returns>
+		/// <param name="id">id of the UserEntity to load</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>A UserEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="userEntity"/> is null.
+		/// if <paramref name="userEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public UserEntity GetUser(int id, bool loadRelation, string session)
 		{
@@ -143,12 +144,12 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una colección de userEntity
+		/// Get collection of all userEntity
 		/// </summary>
-		/// <param name="session">Identificador de sesion.</param>
-		/// <returns>Collection de UserEntity</returns>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of all UserEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<UserEntity> GetAllUser(string session)
 		{
@@ -156,13 +157,13 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una colección de userEntity
+		/// Get collection of all userEntity
 		/// </summary>
-		/// <param name="loadRelation">true si desea guardar las relaciones</param>
-		/// <param name="session">Identificador de sesion.</param>
-		/// <returns>Collection de UserEntity</returns>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of all UserEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<UserEntity> GetAllUser(bool loadRelation, string session)
 		{
@@ -184,20 +185,19 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los userEntity que cumplen con cierto patron
+		/// Get collection of all userEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del userEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="OperatorType">Tipo de operador de comparación a utilizar</param>
-		/// <param name="session">Identificador de sesion del usuario</param>
-		/// <returns>Colección de UserEntity</returns>
+		/// <param name="propertyName">property of userEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of UserEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<UserEntity> GetUserWhere(string propertyName, object expValue, OperatorType operatorType, string session)
 		{
@@ -205,21 +205,20 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los userEntity que cumplen con cierto patron
+		/// Get collection of all userEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del userEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="loadRelation">Indica si se cargan las relaciones</param>
-		/// <param name="OperatorType">Tipo de operador de comparación a utilizar</param>
-		/// <param name="session">Identificador de sesion del usuario</param>
-		/// <returns>Colección de UserEntity</returns>
+		/// <param name="propertyName">property of userEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of UserEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<UserEntity> GetUserWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType, string session)
 		{
@@ -241,19 +240,19 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los userEntity que cumplen con cierto patron exactamente
+		/// Get collection of all userEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del userEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="session">Identificador de sesion del usuario</param>
-		/// <returns>Colección de UserEntity</returns>
+		/// <param name="propertyName">property of userEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of UserEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<UserEntity> GetUserWhereEqual(string propertyName, object expValue, string session)
 		{
@@ -261,20 +260,20 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los userEntity que cumplen con cierto patron exactamente
+		/// Get collection of all userEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del userEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="loadRelation">Indica si se cargan las relaciones</param>
-		/// <param name="session">Identificador de sesión del usuario</param>
-		/// <returns>Colección de UserEntity</returns>
+		/// <param name="propertyName">property of userEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of UserEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<UserEntity> GetUserWhereEqual(string propertyName, object expValue, bool loadRelation, string session)
 		{
@@ -282,16 +281,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Función que valida un UserEntity antes de ser guardado.
+		/// Function to validate a UserEntity before it's saved.
 		/// </summary>
-		/// <param name="userEntity">UserEntity a validar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>true si se valido correctamente, false en caso contrario</returns>
+		/// <param name="userEntity">UserEntity to validate</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the UserEntity was deleted successfully, the same UserEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// si <paramref name="userEntity"/> es null.
+		/// if <paramref name="userEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public bool Validate(UserEntity user)
 		{
@@ -301,7 +300,7 @@ namespace UtnEmall.Server.BusinessLogic
 			{
 				throw new ArgumentException("The argument can not be null or be empty");
 			}
-			// Chequea los datos de la entidad
+			// Check entity data
 			if (String.IsNullOrEmpty(user.UserName))
 			{
 				user.Errors.Add(new Error("UserName", "UserName", "Nombre de usuario no puede estar vacío"));

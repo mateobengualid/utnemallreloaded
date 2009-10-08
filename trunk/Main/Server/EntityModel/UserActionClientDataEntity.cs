@@ -6,9 +6,10 @@ namespace UtnEmall.Server.EntityModel
 
 	[System.Runtime.Serialization.DataContract]
 	/// <summary>
-	/// El <c>UserActionClientDataEntity</c> en una clase de entidad
-	/// que contiene todos los campos que son insertados y cargados en la base de datos
-	/// Esta clase es utilizada por todas las capas superiores.
+	/// The <c>UserActionClientDataEntity</c> is a entity class
+	/// that contains all the fields that are inserted and
+	/// loaded from the database.
+	/// This class is used by the upper layers.
 	/// </summary>
 	public class UserActionClientDataEntity: IEntity
 	{
@@ -18,7 +19,8 @@ namespace UtnEmall.Server.EntityModel
 		private System.DateTime timestamp; 
 		private Collection<Error> errors; 
 		/// <summary>
-		/// Inicializa una nueva instancia de un <c>UserActionClientDataEntity</c>.
+		/// Initializes a new instance of a
+		/// <c>UserActionClientDataEntity</c> type.
 		/// </summary>
 		public  UserActionClientDataEntity()
 		{
@@ -27,7 +29,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el id de la entidad.
+		/// Gets or sets the Id of the entity.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 0 )]
 		public int Id
@@ -43,7 +45,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece si la entidad fue modificada.
+		/// Gets or sets if the entity has changed.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 1 )]
 		public bool Changed
@@ -59,7 +61,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene si la entidad es nueva.
+		/// Gets or sets if the entity is new.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 2 )]
 		public bool IsNew
@@ -75,7 +77,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene el timestamp del ultimo acceso.
+		/// Gets or sets the timestamp of the last access.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 3 )]
 		public System.DateTime Timestamp
@@ -92,7 +94,7 @@ namespace UtnEmall.Server.EntityModel
 
 		public const string DBTimestamp = "timestamp"; 
 		/// <summary>
-		/// Coleccion de errores de la entidad.
+		/// The collection of entity's errors.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 4 )]
 		public Collection<Error> Errors
@@ -118,7 +120,7 @@ namespace UtnEmall.Server.EntityModel
 		private int _ActionType; 
 		[System.Runtime.Serialization.DataMember( Order = 5 )]
 		/// <summary>
-		/// Obtiene o establece los valores para ActionType.
+		/// Gets or sets the value for ActionType.
 		/// <summary>
 		public int ActionType
 		{
@@ -136,7 +138,7 @@ namespace UtnEmall.Server.EntityModel
 		private System.DateTime _Start; 
 		[System.Runtime.Serialization.DataMember( Order = 6 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Start.
+		/// Gets or sets the value for Start.
 		/// <summary>
 		public System.DateTime Start
 		{
@@ -154,7 +156,7 @@ namespace UtnEmall.Server.EntityModel
 		private System.DateTime _Stop; 
 		[System.Runtime.Serialization.DataMember( Order = 7 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Stop.
+		/// Gets or sets the value for Stop.
 		/// <summary>
 		public System.DateTime Stop
 		{
@@ -172,7 +174,7 @@ namespace UtnEmall.Server.EntityModel
 		private int _IdTable; 
 		[System.Runtime.Serialization.DataMember( Order = 8 )]
 		/// <summary>
-		/// Obtiene o establece los valores para IdTable.
+		/// Gets or sets the value for IdTable.
 		/// <summary>
 		public int IdTable
 		{
@@ -190,7 +192,7 @@ namespace UtnEmall.Server.EntityModel
 		private int _IdRegister; 
 		[System.Runtime.Serialization.DataMember( Order = 9 )]
 		/// <summary>
-		/// Obtiene o establece los valores para IdRegister.
+		/// Gets or sets the value for IdRegister.
 		/// <summary>
 		public int IdRegister
 		{
@@ -208,7 +210,7 @@ namespace UtnEmall.Server.EntityModel
 		private int _IdComponent; 
 		[System.Runtime.Serialization.DataMember( Order = 10 )]
 		/// <summary>
-		/// Obtiene o establece los valores para IdComponent.
+		/// Gets or sets the value for IdComponent.
 		/// <summary>
 		public int IdComponent
 		{
@@ -226,7 +228,7 @@ namespace UtnEmall.Server.EntityModel
 		private int _IdService; 
 		[System.Runtime.Serialization.DataMember( Order = 11 )]
 		/// <summary>
-		/// Obtiene o establece los valores para IdService.
+		/// Gets or sets the value for IdService.
 		/// <summary>
 		public int IdService
 		{

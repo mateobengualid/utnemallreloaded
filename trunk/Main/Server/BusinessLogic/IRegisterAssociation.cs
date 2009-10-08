@@ -7,113 +7,117 @@ namespace UtnEmall.Server.BusinessLogic
 
 	[System.ServiceModel.ServiceContract]
 	/// <summary>
-	/// La interfaz <c>IRegisterAssociation</c> es un contrato de servicio web para procesar RegisterAssociationEntity,
-	/// guarda, actualiza, elimina y valida los datos del mismo.
+	/// The <c>IRegisterAssociation</c> business contract to process RegisterAssociationEntity,
+	/// saving, updating, deleting and validating entity data.
 	/// </summary>
 	public interface IRegisterAssociation
 	{
 		/// <summary>
-		/// Función para guardar RegisterAssociationEntity en la base de datos.
+		/// Function to save a RegisterAssociationEntity to the database.
 		/// </summary>
-		/// <param name="registerAssociationEntity">RegisterAssociationEntity a guardar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>null si el RegisterAssociationEntity se guardo con exito, el mismo RegisterAssociationEntity en otro caso</returns>
+		/// <param name="registerAssociationEntity">RegisterAssociationEntity to save</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the RegisterAssociationEntity was saved successfully, the same RegisterAssociationEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="registerAssociationEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		[System.ServiceModel.OperationContract]
 		RegisterAssociationEntity Save(RegisterAssociationEntity registerAssociationEntity, string session);
 		/// <summary>
-		/// Función para eliminar un RegisterAssociationEntity de la base de datos.
+		/// Function to delete a RegisterAssociationEntity from database.
 		/// </summary>
-		/// <param name="registerAssociationEntity">RegisterAssociationEntity a eliminar</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>null si el RegisterAssociationEntity fue eliminado con éxito, el mismo RegisterAssociationEntity en otro caso</returns>
+		/// <param name="registerAssociationEntity">RegisterAssociationEntity to delete</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the RegisterAssociationEntity was deleted successfully, the same RegisterAssociationEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="registerAssociationEntity"/> is null.
+		/// if <paramref name="registerAssociationEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		RegisterAssociationEntity Delete(RegisterAssociationEntity registerAssociationEntity, string session);
 		/// <summary>
-		/// Obtiene un registerAssociationEntity específico
+		/// Get an specific registerAssociationEntity
 		/// </summary>
-		/// <param name="id">id del RegisterAssociationEntity a cargar</param>
-		/// <returns>Un RegisterAssociationEntity</returns>
+		/// <param name="id">id of the RegisterAssociationEntity to load</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>A RegisterAssociationEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="registerAssociationEntity"/> is null.
+		/// if <paramref name="registerAssociationEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		RegisterAssociationEntity GetRegisterAssociation(int id, bool loadRelation, string session);
 		/// <summary>
-		/// Obtiene una coleccion de registerAssociationEntity
+		/// Get collection of all registerAssociationEntity
 		/// </summary>
-		/// <param name="loadRelation">true si desea guardar las relaciones</param>
-		/// <param name="session">Identificador de sesion.</param>
-		/// <returns>Collection de RegisterAssociationEntity</returns>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of all RegisterAssociationEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		Collection<RegisterAssociationEntity> GetAllRegisterAssociation(bool loadRelation, string session);
 		/// <summary>
-		/// Obtiene una coleccion de todos los registerAssociationEntity que cumplen con cierto patron
+		/// Get collection of all registerAssociationEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del registerAssociationEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <returns>Colección de RegisterAssociationEntity</returns>
+		/// <param name="propertyName">property of registerAssociationEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of RegisterAssociationEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		Collection<RegisterAssociationEntity> GetRegisterAssociationWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType, string session);
 		/// <summary>
-		/// Obtiene una coleccion de todos los registerAssociationEntity que cumplen con cierto patron exactamente
+		/// Get collection of all registerAssociationEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del registerAssociationEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="loadRelation">Indica si se cargan las relaciones</param>
-		/// <param name="session">Identificador de sesión del usuario</param>
-		/// <returns>Colección de RegisterAssociationEntity</returns>
+		/// <param name="propertyName">property of registerAssociationEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of RegisterAssociationEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		Collection<RegisterAssociationEntity> GetRegisterAssociationWhereEqual(string propertyName, object expValue, bool loadRelation, string session);
 		/// <summary>
-		/// Función que valida un RegisterAssociationEntity antes de ser guardado.
+		/// Function to validate a RegisterAssociationEntity before it's saved.
 		/// </summary>
-		/// <param name="registerAssociationEntity">RegisterAssociationEntity a validar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>true si se valido correctamente, false en caso contrario</returns>
+		/// <param name="registerAssociationEntity">RegisterAssociationEntity to validate</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the RegisterAssociationEntity was deleted successfully, the same RegisterAssociationEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// si <paramref name="registerAssociationEntity"/> es null.
+		/// if <paramref name="registerAssociationEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]

@@ -6,9 +6,10 @@ namespace UtnEmall.Server.EntityModel
 
 	[System.Runtime.Serialization.DataContract]
 	/// <summary>
-	/// El <c>RegisterAssociationEntity</c> en una clase de entidad
-	/// que contiene todos los campos que son insertados y cargados en la base de datos
-	/// Esta clase es utilizada por todas las capas superiores.
+	/// The <c>RegisterAssociationEntity</c> is a entity class
+	/// that contains all the fields that are inserted and
+	/// loaded from the database.
+	/// This class is used by the upper layers.
 	/// </summary>
 	public class RegisterAssociationEntity: IEntity
 	{
@@ -18,7 +19,8 @@ namespace UtnEmall.Server.EntityModel
 		private System.DateTime timestamp; 
 		private Collection<Error> errors; 
 		/// <summary>
-		/// Inicializa una nueva instancia de un <c>RegisterAssociationEntity</c>.
+		/// Initializes a new instance of a
+		/// <c>RegisterAssociationEntity</c> type.
 		/// </summary>
 		public  RegisterAssociationEntity()
 		{
@@ -27,7 +29,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el id de la entidad.
+		/// Gets or sets the Id of the entity.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 0 )]
 		public int Id
@@ -43,7 +45,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece si la entidad fue modificada.
+		/// Gets or sets if the entity has changed.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 1 )]
 		public bool Changed
@@ -59,7 +61,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene si la entidad es nueva.
+		/// Gets or sets if the entity is new.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 2 )]
 		public bool IsNew
@@ -75,7 +77,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene el timestamp del ultimo acceso.
+		/// Gets or sets the timestamp of the last access.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 3 )]
 		public System.DateTime Timestamp
@@ -92,7 +94,7 @@ namespace UtnEmall.Server.EntityModel
 
 		public const string DBTimestamp = "timestamp"; 
 		/// <summary>
-		/// Coleccion de errores de la entidad.
+		/// The collection of entity's errors.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 4 )]
 		public Collection<Error> Errors
@@ -110,7 +112,7 @@ namespace UtnEmall.Server.EntityModel
 		private int _IdRegister; 
 		[System.Runtime.Serialization.DataMember( Order = 5 )]
 		/// <summary>
-		/// Obtiene o establece los valores para IdRegister.
+		/// Gets or sets the value for IdRegister.
 		/// <summary>
 		public int IdRegister
 		{
@@ -128,7 +130,7 @@ namespace UtnEmall.Server.EntityModel
 		private TableEntity _Table; 
 		private int _IdTable; 
 		/// <summary>
-		/// Establece u obtiene el valor para Table.
+		/// Gets or sets the value for Table.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 6 )]
 		public TableEntity Table
@@ -140,7 +142,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_Table = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_Table != null)
 				{
@@ -155,9 +157,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del Table.
-		/// Si Table esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the Table.
+		/// If Table is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 7 )]
 		public int IdTable
@@ -184,7 +186,7 @@ namespace UtnEmall.Server.EntityModel
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "We need set for serialization and deserialization web service interfaces.")]
 		/// <summary>
-		/// Obtiene o establece el valor para RegisterAssociationCategories.
+		/// Gets or sets the value for RegisterAssociationCategories.
 		/// <summary>
 		public Collection<RegisterAssociationCategoriesEntity> RegisterAssociationCategories
 		{

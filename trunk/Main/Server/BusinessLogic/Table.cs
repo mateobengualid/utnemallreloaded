@@ -9,7 +9,8 @@ namespace UtnEmall.Server.BusinessLogic
 {
 
 	/// <summary>
-	/// La clase <c>Table</c> implementa la lógica de negocio para guardar, editar, borrar y validar un TableEntity,
+	/// The <c>Table</c> implement business logic to process TableEntity,
+	/// saving, updating, deleting and validating entity data.
 	/// </summary>
 	public class Table: UtnEmall.Server.BusinessLogic.ITable
 	{
@@ -20,16 +21,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Función para guardar TableEntity en la base de datos.
+		/// Function to save a TableEntity to the database.
 		/// </summary>
-		/// <param name="tableEntity">TableEntity a guardar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>null si el TableEntity se guardo con exito, el mismo TableEntity en otro caso</returns>
+		/// <param name="tableEntity">TableEntity to save</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the TableEntity was saved successfully, the same TableEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="tableEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public TableEntity Save(TableEntity tableEntity, string session)
 		{
@@ -46,7 +47,7 @@ namespace UtnEmall.Server.BusinessLogic
 			}
 			try 
 			{
-				// Guarda un tableEntity usando un objeto de data access
+				// Save tableEntity using data access object
 				tableDataAccess.Save(tableEntity);
 				return null;
 			}
@@ -57,16 +58,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Función para eliminar un TableEntity de la base de datos.
+		/// Function to delete a TableEntity from database.
 		/// </summary>
-		/// <param name="tableEntity">TableEntity a eliminar</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>null si el TableEntity fue eliminado con éxito, el mismo TableEntity en otro caso</returns>
+		/// <param name="tableEntity">TableEntity to delete</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the TableEntity was deleted successfully, the same TableEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="tableEntity"/> is null.
+		/// if <paramref name="tableEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public TableEntity Delete(TableEntity tableEntity, string session)
 		{
@@ -83,7 +84,7 @@ namespace UtnEmall.Server.BusinessLogic
 			}
 			try 
 			{
-				// Elimina un tableEntity usando un objeto data access
+				// Delete tableEntity using data access object
 				tableDataAccess.Delete(tableEntity);
 				return null;
 			}
@@ -94,16 +95,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene un tableEntity específico
+		/// Get an specific tableEntity
 		/// </summary>
-		/// <param name="id">id del TableEntity a cargar</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>Un TableEntity</returns>
+		/// <param name="id">id of the TableEntity to load</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>A TableEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="tableEntity"/> is null.
+		/// if <paramref name="tableEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public TableEntity GetTable(int id, string session)
 		{
@@ -111,17 +112,17 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene un tableEntity específico
+		/// Get an specific tableEntity
 		/// </summary>
-		/// <param name="id">id del TableEntity a cargar</param>
-		/// <param name="loadRelation">true para cargar las relaciones</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>Un TableEntity</returns>
+		/// <param name="id">id of the TableEntity to load</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>A TableEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="tableEntity"/> is null.
+		/// if <paramref name="tableEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public TableEntity GetTable(int id, bool loadRelation, string session)
 		{
@@ -143,12 +144,12 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una colección de tableEntity
+		/// Get collection of all tableEntity
 		/// </summary>
-		/// <param name="session">Identificador de sesion.</param>
-		/// <returns>Collection de TableEntity</returns>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of all TableEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<TableEntity> GetAllTable(string session)
 		{
@@ -156,13 +157,13 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una colección de tableEntity
+		/// Get collection of all tableEntity
 		/// </summary>
-		/// <param name="loadRelation">true si desea guardar las relaciones</param>
-		/// <param name="session">Identificador de sesion.</param>
-		/// <returns>Collection de TableEntity</returns>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of all TableEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<TableEntity> GetAllTable(bool loadRelation, string session)
 		{
@@ -184,20 +185,19 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los tableEntity que cumplen con cierto patron
+		/// Get collection of all tableEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del tableEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="OperatorType">Tipo de operador de comparación a utilizar</param>
-		/// <param name="session">Identificador de sesion del usuario</param>
-		/// <returns>Colección de TableEntity</returns>
+		/// <param name="propertyName">property of tableEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of TableEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<TableEntity> GetTableWhere(string propertyName, object expValue, OperatorType operatorType, string session)
 		{
@@ -205,21 +205,20 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los tableEntity que cumplen con cierto patron
+		/// Get collection of all tableEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del tableEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="loadRelation">Indica si se cargan las relaciones</param>
-		/// <param name="OperatorType">Tipo de operador de comparación a utilizar</param>
-		/// <param name="session">Identificador de sesion del usuario</param>
-		/// <returns>Colección de TableEntity</returns>
+		/// <param name="propertyName">property of tableEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of TableEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<TableEntity> GetTableWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType, string session)
 		{
@@ -241,19 +240,19 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los tableEntity que cumplen con cierto patron exactamente
+		/// Get collection of all tableEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del tableEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="session">Identificador de sesion del usuario</param>
-		/// <returns>Colección de TableEntity</returns>
+		/// <param name="propertyName">property of tableEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of TableEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<TableEntity> GetTableWhereEqual(string propertyName, object expValue, string session)
 		{
@@ -261,20 +260,20 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los tableEntity que cumplen con cierto patron exactamente
+		/// Get collection of all tableEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del tableEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="loadRelation">Indica si se cargan las relaciones</param>
-		/// <param name="session">Identificador de sesión del usuario</param>
-		/// <returns>Colección de TableEntity</returns>
+		/// <param name="propertyName">property of tableEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of TableEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<TableEntity> GetTableWhereEqual(string propertyName, object expValue, bool loadRelation, string session)
 		{
@@ -282,16 +281,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Función que valida un TableEntity antes de ser guardado.
+		/// Function to validate a TableEntity before it's saved.
 		/// </summary>
-		/// <param name="tableEntity">TableEntity a validar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>true si se valido correctamente, false en caso contrario</returns>
+		/// <param name="tableEntity">TableEntity to validate</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the TableEntity was deleted successfully, the same TableEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// si <paramref name="tableEntity"/> es null.
+		/// if <paramref name="tableEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public bool Validate(TableEntity table)
 		{
@@ -301,7 +300,7 @@ namespace UtnEmall.Server.BusinessLogic
 			{
 				throw new ArgumentException("The argument can not be null or be empty");
 			}
-			// Chequea los datos de la entidad
+			// Check entity data
 			if (String.IsNullOrEmpty(table.Name))
 			{
 				table.Errors.Add(new Error("Name", "Name", "El nombre no puede estar vacío"));

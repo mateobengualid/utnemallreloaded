@@ -6,12 +6,12 @@ namespace UtnEmall.Server.EntityModel
 
 	[System.Runtime.Serialization.DataContract]
 	/// <summary>
-	/// The <c>CategoryEntity</c> is a entity class
+	/// The <c>CampaignEntity</c> is a entity class
 	/// that contains all the fields that are inserted and
 	/// loaded from the database.
 	/// This class is used by the upper layers.
 	/// </summary>
-	public class CategoryEntity: IEntity
+	public class CampaignEntity: IEntity
 	{
 		private int id; 
 		private bool changed; 
@@ -20,9 +20,9 @@ namespace UtnEmall.Server.EntityModel
 		private Collection<Error> errors; 
 		/// <summary>
 		/// Initializes a new instance of a
-		/// <c>CategoryEntity</c> type.
+		/// <c>CampaignEntity</c> type.
 		/// </summary>
-		public  CategoryEntity()
+		public  CampaignEntity()
 		{
 			isNew = true;
 			errors = new Collection<Error>();
@@ -109,9 +109,7 @@ namespace UtnEmall.Server.EntityModel
 			}
 		} 
 
-		/// Model::Relations(History, History, RelationTypes::UnoAMuchos, false, false){};
 		/// Deletion restrictions
-		/// Model::DeleteRestriction(Preference, Category, "There are preferencies of some customers associated to this category.");
 		private string _Description; 
 		[System.Runtime.Serialization.DataMember( Order = 5 )]
 		/// <summary>
@@ -148,156 +146,125 @@ namespace UtnEmall.Server.EntityModel
 			}
 		} 
 
-		private Collection<CategoryEntity> _Childs; 
+		private System.DateTime _StartDate; 
 		[System.Runtime.Serialization.DataMember( Order = 7 )]
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "We need set for serialization and deserialization web service interfaces.")]
 		/// <summary>
-		/// Gets or sets the value for Childs.
+		/// Gets or sets the value for StartDate.
 		/// <summary>
-		public Collection<CategoryEntity> Childs
+		public System.DateTime StartDate
 		{
 			get 
 			{
-				if (_Childs == null)
-				{
-					_Childs = new Collection<CategoryEntity>();
-				}
-				return _Childs;
+				return _StartDate;
 			}
 			set 
 			{
-				_Childs = value;
+				_StartDate = value;
+				changed = true;
 			}
 		} 
 
-		private CategoryEntity _ParentCategory; 
-		private int _IdParentCategory; 
-		/// <summary>
-		/// Gets or sets the value for ParentCategory.
-		/// <summary>
+		private System.DateTime _StopDate; 
 		[System.Runtime.Serialization.DataMember( Order = 8 )]
-		public CategoryEntity ParentCategory
+		/// <summary>
+		/// Gets or sets the value for StopDate.
+		/// <summary>
+		public System.DateTime StopDate
 		{
 			get 
 			{
-				return _ParentCategory;
+				return _StopDate;
 			}
 			set 
 			{
-				_ParentCategory = value;
+				_StopDate = value;
+				changed = true;
+			}
+		} 
+
+		private UserEntity _User; 
+		private int _IdUser; 
+		/// <summary>
+		/// Gets or sets the value for User.
+		/// <summary>
+		[System.Runtime.Serialization.DataMember( Order = 9 )]
+		public UserEntity User
+		{
+			get 
+			{
+				return _User;
+			}
+			set 
+			{
+				_User = value;
 				// If provided value is null set id to 0, else to provided object id
 
-				if (_ParentCategory != null)
+				if (_User != null)
 				{
-					IdParentCategory = _ParentCategory.Id;
+					IdUser = _User.Id;
 				}
 				else 
 				{
-					IdParentCategory = 0;
+					IdUser = 0;
 				}
 				changed = true;
 			}
 		} 
 
 		/// <summary>
-		/// Gets or sets the Id of the ParentCategory.
-		/// If ParentCategory is set return the Id of the object,
+		/// Gets or sets the Id of the User.
+		/// If User is set return the Id of the object,
 		/// else returns manually stored Id
 		/// <summary>
-		[System.Runtime.Serialization.DataMember( Order = 9 )]
-		public int IdParentCategory
+		[System.Runtime.Serialization.DataMember( Order = 10 )]
+		public int IdUser
 		{
 			get 
 			{
-				if (_ParentCategory == null)
+				if (_User == null)
 				{
-					return _IdParentCategory;
+					return _IdUser;
 				}
 				else 
 				{
-					return _ParentCategory.Id;
+					return _User.Id;
 				}
 			}
 			set 
 			{
-				_IdParentCategory = value;
+				_IdUser = value;
 			}
 		} 
 
-		private Collection<PreferenceEntity> _Preference; 
-		[System.Runtime.Serialization.DataMember( Order = 10 )]
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "We need set for serialization and deserialization web service interfaces.")]
-		/// <summary>
-		/// Gets or sets the value for Preference.
-		/// <summary>
-		public Collection<PreferenceEntity> Preference
-		{
-			get 
-			{
-				if (_Preference == null)
-				{
-					_Preference = new Collection<PreferenceEntity>();
-				}
-				return _Preference;
-			}
-			set 
-			{
-				_Preference = value;
-			}
-		} 
-
-		private Collection<ServiceCategoryEntity> _ServiceCategory; 
+		private Collection<ServiceCampaignEntity> _ServiceCampaign; 
 		[System.Runtime.Serialization.DataMember( Order = 11 )]
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "We need set for serialization and deserialization web service interfaces.")]
 		/// <summary>
-		/// Gets or sets the value for ServiceCategory.
+		/// Gets or sets the value for ServiceCampaign.
 		/// <summary>
-		public Collection<ServiceCategoryEntity> ServiceCategory
+		public Collection<ServiceCampaignEntity> ServiceCampaign
 		{
 			get 
 			{
-				if (_ServiceCategory == null)
+				if (_ServiceCampaign == null)
 				{
-					_ServiceCategory = new Collection<ServiceCategoryEntity>();
+					_ServiceCampaign = new Collection<ServiceCampaignEntity>();
 				}
-				return _ServiceCategory;
+				return _ServiceCampaign;
 			}
 			set 
 			{
-				_ServiceCategory = value;
+				_ServiceCampaign = value;
 			}
 		} 
 
-		private Collection<StoreCategoryEntity> _StoreCategory; 
-		[System.Runtime.Serialization.DataMember( Order = 12 )]
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "We need set for serialization and deserialization web service interfaces.")]
-		/// <summary>
-		/// Gets or sets the value for StoreCategory.
-		/// <summary>
-		public Collection<StoreCategoryEntity> StoreCategory
-		{
-			get 
-			{
-				if (_StoreCategory == null)
-				{
-					_StoreCategory = new Collection<StoreCategoryEntity>();
-				}
-				return _StoreCategory;
-			}
-			set 
-			{
-				_StoreCategory = value;
-			}
-		} 
-
-		public const string DBIdCategory = "idCategory"; 
+		public const string DBIdCampaign = "idCampaign"; 
 		public const string DBDescription = "description"; 
 		public const string DBName = "name"; 
-		public const string DBIdParentCategory = "idParentCategory"; 
+		public const string DBStartDate = "startDate"; 
+		public const string DBStopDate = "stopDate"; 
+		public const string DBIdUser = "idUser"; 
 	} 
 
 }

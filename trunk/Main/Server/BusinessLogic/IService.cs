@@ -7,119 +7,123 @@ namespace UtnEmall.Server.BusinessLogic
 
 	[System.ServiceModel.ServiceContract]
 	/// <summary>
-	/// La interfaz <c>IService</c> es un contrato de servicio web para procesar ServiceEntity,
-	/// guarda, actualiza, elimina y valida los datos del mismo.
+	/// The <c>IService</c> business contract to process ServiceEntity,
+	/// saving, updating, deleting and validating entity data.
 	/// </summary>
 	public interface IService
 	{
 		/// <summary>
-		/// Función para guardar ServiceEntity en la base de datos.
+		/// Function to save a ServiceEntity to the database.
 		/// </summary>
-		/// <param name="serviceEntity">ServiceEntity a guardar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>null si el ServiceEntity se guardo con exito, el mismo ServiceEntity en otro caso</returns>
+		/// <param name="serviceEntity">ServiceEntity to save</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the ServiceEntity was saved successfully, the same ServiceEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="serviceEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		ServiceEntity Save(ServiceEntity serviceEntity, string session);
 		/// <summary>
-		/// Función para eliminar un ServiceEntity de la base de datos.
+		/// Function to delete a ServiceEntity from database.
 		/// </summary>
-		/// <param name="serviceEntity">ServiceEntity a eliminar</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>null si el ServiceEntity fue eliminado con éxito, el mismo ServiceEntity en otro caso</returns>
+		/// <param name="serviceEntity">ServiceEntity to delete</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the ServiceEntity was deleted successfully, the same ServiceEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="serviceEntity"/> is null.
+		/// if <paramref name="serviceEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		ServiceEntity Delete(ServiceEntity serviceEntity, string session);
 		/// <summary>
-		/// Obtiene un serviceEntity específico
+		/// Get an specific serviceEntity
 		/// </summary>
-		/// <param name="id">id del ServiceEntity a cargar</param>
-		/// <returns>Un ServiceEntity</returns>
+		/// <param name="id">id of the ServiceEntity to load</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>A ServiceEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="serviceEntity"/> is null.
+		/// if <paramref name="serviceEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		ServiceEntity GetService(int id, bool loadRelation, string session);
 		/// <summary>
-		/// Obtiene una coleccion de serviceEntity
+		/// Get collection of all serviceEntity
 		/// </summary>
-		/// <param name="loadRelation">true si desea guardar las relaciones</param>
-		/// <param name="session">Identificador de sesion.</param>
-		/// <returns>Collection de ServiceEntity</returns>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of all ServiceEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		Collection<ServiceEntity> GetAllService(bool loadRelation, string session);
 		/// <summary>
-		/// Obtiene una coleccion de todos los serviceEntity que cumplen con cierto patron
+		/// Get collection of all serviceEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del serviceEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <returns>Colección de ServiceEntity</returns>
+		/// <param name="propertyName">property of serviceEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of ServiceEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		Collection<ServiceEntity> GetServiceWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType, string session);
 		/// <summary>
-		/// Obtiene una coleccion de todos los serviceEntity que cumplen con cierto patron exactamente
+		/// Get collection of all serviceEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del serviceEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="loadRelation">Indica si se cargan las relaciones</param>
-		/// <param name="session">Identificador de sesión del usuario</param>
-		/// <returns>Colección de ServiceEntity</returns>
+		/// <param name="propertyName">property of serviceEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of ServiceEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		Collection<ServiceEntity> GetServiceWhereEqual(string propertyName, object expValue, bool loadRelation, string session);
 		/// <summary>
-		/// Función que valida un ServiceEntity antes de ser guardado.
+		/// Function to validate a ServiceEntity before it's saved.
 		/// </summary>
-		/// <param name="serviceEntity">ServiceEntity a validar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>true si se valido correctamente, false en caso contrario</returns>
+		/// <param name="serviceEntity">ServiceEntity to validate</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the ServiceEntity was deleted successfully, the same ServiceEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// si <paramref name="serviceEntity"/> es null.
+		/// if <paramref name="serviceEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]

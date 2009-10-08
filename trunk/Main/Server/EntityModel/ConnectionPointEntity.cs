@@ -6,9 +6,10 @@ namespace UtnEmall.Server.EntityModel
 
 	[System.Runtime.Serialization.DataContract]
 	/// <summary>
-	/// El <c>ConnectionPointEntity</c> en una clase de entidad
-	/// que contiene todos los campos que son insertados y cargados en la base de datos
-	/// Esta clase es utilizada por todas las capas superiores.
+	/// The <c>ConnectionPointEntity</c> is a entity class
+	/// that contains all the fields that are inserted and
+	/// loaded from the database.
+	/// This class is used by the upper layers.
 	/// </summary>
 	public class ConnectionPointEntity: IEntity
 	{
@@ -18,7 +19,8 @@ namespace UtnEmall.Server.EntityModel
 		private System.DateTime timestamp; 
 		private Collection<Error> errors; 
 		/// <summary>
-		/// Inicializa una nueva instancia de un <c>ConnectionPointEntity</c>.
+		/// Initializes a new instance of a
+		/// <c>ConnectionPointEntity</c> type.
 		/// </summary>
 		public  ConnectionPointEntity()
 		{
@@ -27,7 +29,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el id de la entidad.
+		/// Gets or sets the Id of the entity.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 0 )]
 		public int Id
@@ -43,7 +45,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece si la entidad fue modificada.
+		/// Gets or sets if the entity has changed.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 1 )]
 		public bool Changed
@@ -59,7 +61,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene si la entidad es nueva.
+		/// Gets or sets if the entity is new.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 2 )]
 		public bool IsNew
@@ -75,7 +77,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene el timestamp del ultimo acceso.
+		/// Gets or sets the timestamp of the last access.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 3 )]
 		public System.DateTime Timestamp
@@ -92,7 +94,7 @@ namespace UtnEmall.Server.EntityModel
 
 		public const string DBTimestamp = "timestamp"; 
 		/// <summary>
-		/// Coleccion de errores de la entidad.
+		/// The collection of entity's errors.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 4 )]
 		public Collection<Error> Errors
@@ -116,7 +118,7 @@ namespace UtnEmall.Server.EntityModel
 		private int _ConnectionType; 
 		[System.Runtime.Serialization.DataMember( Order = 5 )]
 		/// <summary>
-		/// Obtiene o establece los valores para ConnectionType.
+		/// Gets or sets the value for ConnectionType.
 		/// <summary>
 		public int ConnectionType
 		{
@@ -134,7 +136,7 @@ namespace UtnEmall.Server.EntityModel
 		private double _XCoordinateRelativeToParent; 
 		[System.Runtime.Serialization.DataMember( Order = 6 )]
 		/// <summary>
-		/// Obtiene o establece los valores para XCoordinateRelativeToParent.
+		/// Gets or sets the value for XCoordinateRelativeToParent.
 		/// <summary>
 		public double XCoordinateRelativeToParent
 		{
@@ -152,7 +154,7 @@ namespace UtnEmall.Server.EntityModel
 		private double _YCoordinateRelativeToParent; 
 		[System.Runtime.Serialization.DataMember( Order = 7 )]
 		/// <summary>
-		/// Obtiene o establece los valores para YCoordinateRelativeToParent.
+		/// Gets or sets the value for YCoordinateRelativeToParent.
 		/// <summary>
 		public double YCoordinateRelativeToParent
 		{
@@ -170,7 +172,7 @@ namespace UtnEmall.Server.EntityModel
 		private ComponentEntity _ParentComponent; 
 		private int _IdParentComponent; 
 		/// <summary>
-		/// Obtiene o establece el valor para ParentComponent.
+		/// Gets or sets the value for ParentComponent.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 8 )]
 		public ComponentEntity ParentComponent
@@ -182,7 +184,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_ParentComponent = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_ParentComponent != null)
 				{
@@ -197,9 +199,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del ParentComponent.
-		/// Si ParentComponent esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the ParentComponent.
+		/// If ParentComponent is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 9 )]
 		public int IdParentComponent
@@ -224,7 +226,7 @@ namespace UtnEmall.Server.EntityModel
 		private ComponentEntity _Component; 
 		private int _IdComponent; 
 		/// <summary>
-		/// Establece u obtiene el valor para Component.
+		/// Gets or sets the value for Component.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 10 )]
 		public ComponentEntity Component
@@ -236,7 +238,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_Component = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_Component != null)
 				{
@@ -251,9 +253,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del Component.
-		/// Si Component esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the Component.
+		/// If Component is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 11 )]
 		public int IdComponent
@@ -278,7 +280,7 @@ namespace UtnEmall.Server.EntityModel
 		private ConnectionWidgetEntity _ConnectionWidget; 
 		private int _IdConnectionWidget; 
 		/// <summary>
-		/// Obtiene o establece el valor para ConnectionWidget.
+		/// Gets or sets the value for ConnectionWidget.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 12 )]
 		public ConnectionWidgetEntity ConnectionWidget
@@ -290,7 +292,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_ConnectionWidget = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_ConnectionWidget != null)
 				{
@@ -305,9 +307,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del ConnectionWidget.
-		/// Si ConnectionWidget esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the ConnectionWidget.
+		/// If ConnectionWidget is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 13 )]
 		public int IdConnectionWidget

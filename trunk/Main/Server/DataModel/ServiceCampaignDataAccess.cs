@@ -12,29 +12,29 @@ namespace UtnEmall.Server.DataModel
 {
 
 	/// <summary>
-	/// The <c>FieldDataAccess</c> is a class
+	/// The <c>ServiceCampaignDataAccess</c> is a class
 	/// that provides access to the modelName stored on
 	/// the database.
 	/// </summary>
-	public class FieldDataAccess
+	public class ServiceCampaignDataAccess
 	{
 		private bool isGlobalTransaction; 
 		private IDbConnection dbConnection; 
 		private IDbTransaction dbTransaction; 
 		private DataAccessConnection dataAccess; 
-		private Dictionary<int,FieldEntity> inMemoryEntities; 
+		private Dictionary<int,ServiceCampaignEntity> inMemoryEntities; 
 		private static Dictionary<string,Type> properties; 
 		private static bool dbChecked; 
 		/// <summary>
 		/// Initializes a new instance of a
-		/// <c>FieldDataAccess</c> type.
+		/// <c>ServiceCampaignDataAccess</c> type.
 		/// It checks if the table and stored procedure
 		/// are already on the database, if not, it creates
 		/// them.
 		/// Sets the properties that allows to make queries
 		/// by calling the LoadWhere method.
 		/// </summary>
-		public  FieldDataAccess()
+		public  ServiceCampaignDataAccess()
 		{
 			dataAccess = DataAccessConnection.Instance;
 			if (!dbChecked)
@@ -47,7 +47,7 @@ namespace UtnEmall.Server.DataModel
 				SetProperties();
 			}
 
-			inMemoryEntities = new Dictionary<int,FieldEntity>();
+			inMemoryEntities = new Dictionary<int,ServiceCampaignEntity>();
 		} 
 
 		/// <summary>
@@ -73,7 +73,7 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Function to load a FieldEntity from database.
+		/// Function to load a ServiceCampaignEntity from database.
 		/// </summary>
 		/// <param name="id">The ID of the record to load</param>
 		/// <param name="loadRelation">if is true load the relation</param>
@@ -82,17 +82,17 @@ namespace UtnEmall.Server.DataModel
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If a DbException occurs while accessing the database.
 		/// </exception>
-		public FieldEntity Load(int id, bool loadRelation, Dictionary<string,IEntity> scope)
+		public ServiceCampaignEntity Load(int id, bool loadRelation, Dictionary<string,IEntity> scope)
 		{
 			// Build a key for internal scope object
-			string scopeKey = id.ToString(NumberFormatInfo.InvariantInfo) + "Field";
+			string scopeKey = id.ToString(NumberFormatInfo.InvariantInfo) + "ServiceCampaign";
 			if (scope != null)
 			{
 				// If scope contains the object it was already loaded,
 				// return it to avoid circular references
 				if (scope.ContainsKey(scopeKey))
 				{
-					return ((FieldEntity)scope[scopeKey]);
+					return ((ServiceCampaignEntity)scope[scopeKey]);
 				}
 			}
 			else 
@@ -101,16 +101,16 @@ namespace UtnEmall.Server.DataModel
 				scope = new Dictionary<string,IEntity>();
 			}
 
-			FieldEntity field = null;
+			ServiceCampaignEntity serviceCampaign = null;
 			// Check if the entity was already loaded by current data access object
 			// and return it if that is the case
 
 			if (inMemoryEntities.ContainsKey(id))
 			{
-				field = inMemoryEntities[id];
+				serviceCampaign = inMemoryEntities[id];
 				// Add current object to current load scope
 
-				scope.Add(scopeKey, field);
+				scope.Add(scopeKey, serviceCampaign);
 			}
 			else 
 			{
@@ -125,43 +125,38 @@ namespace UtnEmall.Server.DataModel
 						dbConnection.Open();
 					}
 
-					string cmdText = "SELECT idField, name, dataType, idTable, timestamp FROM [Field] WHERE idField = @idField";
+					string cmdText = "SELECT idServiceCampaign, idService, idCampaign, timestamp FROM [ServiceCampaign] WHERE idServiceCampaign = @idServiceCampaign";
 					// Create the command
 
 					IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 					// Create the Id parameter for the query
 
-					IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idField", DbType.Int32);
+					IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idServiceCampaign", DbType.Int32);
 					parameter.Value = id;
 					sqlCommand.Parameters.Add(parameter);
 					// Use a DataReader to get data from db
 
 					IDataReader reader = sqlCommand.ExecuteReader();
-					field = new FieldEntity();
+					serviceCampaign = new ServiceCampaignEntity();
 
 					if (reader.Read())
 					{
 						// Load fields of entity
-						field.Id = reader.GetInt32(0);
+						serviceCampaign.Id = reader.GetInt32(0);
 
-						if (!reader.IsDBNull(1))
-						{
-							field.Name = reader.GetString(1);
-						}
-
-						field.DataType = reader.GetInt32(2);
-						field.IdTable = reader.GetInt32(3);
+						serviceCampaign.IdService = reader.GetInt32(1);
+						serviceCampaign.IdCampaign = reader.GetInt32(2);
 						// Add current object to the scope
 
-						scope.Add(scopeKey, field);
+						scope.Add(scopeKey, serviceCampaign);
 						// Add current object to cache of loaded entities
 
-						inMemoryEntities.Add(field.Id, field);
+						inMemoryEntities.Add(serviceCampaign.Id, serviceCampaign);
 						// Read the timestamp and set new and changed properties
 
-						field.Timestamp = reader.GetDateTime(4);
-						field.IsNew = false;
-						field.Changed = false;
+						serviceCampaign.Timestamp = reader.GetDateTime(3);
+						serviceCampaign.IsNew = false;
+						serviceCampaign.Changed = false;
 						// Close the reader
 
 						reader.Close();
@@ -169,6 +164,7 @@ namespace UtnEmall.Server.DataModel
 
 						if (loadRelation)
 						{
+							LoadRelationCampaign(serviceCampaign, scope);
 						}
 					}
 					else 
@@ -191,24 +187,24 @@ namespace UtnEmall.Server.DataModel
 				}
 			}
 			// Return the loaded entity
-			return field;
+			return serviceCampaign;
 		} 
 
 		/// <summary>
-		/// Function to load a FieldEntity from database.
+		/// Function to load a ServiceCampaignEntity from database.
 		/// </summary>
 		/// <param name="id">The ID of the record to load</param>
 		/// <returns>the entity instance</returns>
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If a DbException occurs while accessing the database.
 		/// </exception>
-		public FieldEntity Load(int id)
+		public ServiceCampaignEntity Load(int id)
 		{
 			return Load(id, true, null);
 		} 
 
 		/// <summary>
-		/// Function to load a FieldEntity from database.
+		/// Function to load a ServiceCampaignEntity from database.
 		/// </summary>
 		/// <param name="id">The ID of the record to load</param>
 		/// <param name="loadRelation">if is true load the relation</param>
@@ -216,13 +212,13 @@ namespace UtnEmall.Server.DataModel
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If a DbException occurs while accessing the database.
 		/// </exception>
-		public FieldEntity Load(int id, bool loadRelations)
+		public ServiceCampaignEntity Load(int id, bool loadRelations)
 		{
 			return Load(id, loadRelations, null);
 		} 
 
 		/// <summary>
-		/// Function to load a FieldEntity from database.
+		/// Function to load a ServiceCampaignEntity from database.
 		/// </summary>
 		/// <param name="id">The ID of the record to load</param>
 		/// <param name="scope">Internal structure used to avoid circular reference locks, must be provided if calling from other data access object</param>
@@ -230,7 +226,7 @@ namespace UtnEmall.Server.DataModel
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If a DbException occurs while accessing the database.
 		/// </exception>
-		public FieldEntity Load(int id, Dictionary<string,IEntity> scope)
+		public ServiceCampaignEntity Load(int id, Dictionary<string,IEntity> scope)
 		{
 			return Load(id, true, scope);
 		} 
@@ -244,93 +240,84 @@ namespace UtnEmall.Server.DataModel
 			{
 				return;
 			}
-			string[] fieldsName = new string[]{"idField", "name", "dataType", "idTable"};
-			Type[] fieldsType = new Type[]{typeof( int ), typeof( string ), typeof( int ), typeof( int )};
+			string[] fieldsName = new string[]{"idServiceCampaign", "idService", "idCampaign"};
+			Type[] fieldsType = new Type[]{typeof( int ), typeof( int ), typeof( int )};
 
-			bool existsTable = DataAccessConnection.DBCheckedTable("Field");
+			bool existsTable = DataAccessConnection.DBCheckedTable("ServiceCampaign");
 
 			if (!existsTable)
 			{
-				DataAccessConnection.CreateTable("Field", fieldsName, true, fieldsType);
+				DataAccessConnection.CreateTable("ServiceCampaign", fieldsName, true, fieldsType);
 			}
-			bool existsProcedureDelete = DataAccessConnection.DBCheckedStoredProcedure("DeleteField");
-			bool existsProcedureSave = DataAccessConnection.DBCheckedStoredProcedure("SaveField");
-			bool existsProcedureUpdate = DataAccessConnection.DBCheckedStoredProcedure("UpdateField");
+			bool existsProcedureDelete = DataAccessConnection.DBCheckedStoredProcedure("DeleteServiceCampaign");
+			bool existsProcedureSave = DataAccessConnection.DBCheckedStoredProcedure("SaveServiceCampaign");
+			bool existsProcedureUpdate = DataAccessConnection.DBCheckedStoredProcedure("UpdateServiceCampaign");
 
 			if (!existsProcedureDelete)
 			{
-				DataAccessConnection.CreateDeleteStoredProcedure("Field", "idField");
+				DataAccessConnection.CreateDeleteStoredProcedure("ServiceCampaign", "idServiceCampaign");
 			}
 
 			if (!existsProcedureSave)
 			{
-				DataAccessConnection.CreateSaveStoredProcedure("Field", fieldsName, fieldsType);
+				DataAccessConnection.CreateSaveStoredProcedure("ServiceCampaign", fieldsName, fieldsType);
 			}
 
 			if (!existsProcedureUpdate)
 			{
-				DataAccessConnection.CreateUpdateStoredProcedure("Field", "idField", fieldsName, fieldsType);
+				DataAccessConnection.CreateUpdateStoredProcedure("ServiceCampaign", "idServiceCampaign", fieldsName, fieldsType);
 			}
 
 			dbChecked = true;
 		} 
 
-		private void FillSaveParameters(FieldEntity field, IDbCommand sqlCommand)
+		private void FillSaveParameters(ServiceCampaignEntity serviceCampaign, IDbCommand sqlCommand)
 		{
 			IDbDataParameter parameter;
-			parameter = dataAccess.GetNewDataParameter("@name", DbType.String);
+			parameter = dataAccess.GetNewDataParameter("@idService", DbType.Int32);
 
-			parameter.Value = field.Name;
-			if (String.IsNullOrEmpty(field.Name))
-			{
-				parameter.Value = DBNull.Value;
-			}
-
+			parameter.Value = serviceCampaign.IdService;
 			sqlCommand.Parameters.Add(parameter);
-			parameter = dataAccess.GetNewDataParameter("@dataType", DbType.Int32);
+			parameter = dataAccess.GetNewDataParameter("@idCampaign", DbType.Int32);
 
-			parameter.Value = field.DataType;
-			sqlCommand.Parameters.Add(parameter);
-			parameter = dataAccess.GetNewDataParameter("@idTable", DbType.Int32);
-
-			parameter.Value = field.IdTable;
+			parameter.Value = serviceCampaign.IdCampaign;
 			sqlCommand.Parameters.Add(parameter);
 		} 
 
 		/// <summary>
-		/// Function to Save a FieldEntity in the database.
+		/// Function to Save a ServiceCampaignEntity in the database.
 		/// </summary>
-		/// <param name="field">FieldEntity to save</param>
+		/// <param name="serviceCampaign">ServiceCampaignEntity to save</param>
 		/// <exception cref="ArgumentNullException">
-		/// if <paramref name="field"/> is not a <c>FieldEntity</c>.
+		/// if <paramref name="serviceCampaign"/> is not a <c>ServiceCampaignEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
-		public void Save(FieldEntity field)
+		public void Save(ServiceCampaignEntity serviceCampaign)
 		{
-			Save(field, null);
+			Save(serviceCampaign, null);
 		} 
 
 		/// <summary>
-		/// Function to Save a FieldEntity in the database.
+		/// Function to Save a ServiceCampaignEntity in the database.
 		/// </summary>
-		/// <param name="field">FieldEntity to save</param>
+		/// <param name="serviceCampaign">ServiceCampaignEntity to save</param>
 		/// <param name="scope">Interna structure to avoid circular reference locks. Provide an instance when calling from other data access object.</param>
 		/// <exception cref="ArgumentNullException">
-		/// If <paramref name="field"/> is not a <c>FieldEntity</c>.
+		/// If <paramref name="serviceCampaign"/> is not a <c>ServiceCampaignEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
-		public void Save(FieldEntity field, Dictionary<string,IEntity> scope)
+		public void Save(ServiceCampaignEntity serviceCampaign, Dictionary<string,IEntity> scope)
 		{
-			if (field == null)
+			if (serviceCampaign == null)
 			{
 				throw new ArgumentException("The argument can't be null");
 			}
 			// Create a unique key to identify the object in the internal scope
-			string scopeKey = field.Id.ToString(NumberFormatInfo.InvariantInfo) + "Field";
+			string scopeKey = serviceCampaign.Id.ToString(NumberFormatInfo.InvariantInfo) + "ServiceCampaign";
 			if (scope != null)
 			{
 				// If it's on the scope return it, don't save again
@@ -359,14 +346,14 @@ namespace UtnEmall.Server.DataModel
 				bool isUpdate = false;
 				// Check if it is an insert or update command
 
-				if (field.IsNew || !DataAccessConnection.ExistsEntity(field.Id, "Field", "idField", dbConnection, dbTransaction))
+				if (serviceCampaign.IsNew || !DataAccessConnection.ExistsEntity(serviceCampaign.Id, "ServiceCampaign", "idServiceCampaign", dbConnection, dbTransaction))
 				{
-					commandName = "SaveField";
+					commandName = "SaveServiceCampaign";
 				}
 				else 
 				{
 					isUpdate = true;
-					commandName = "UpdateField";
+					commandName = "UpdateServiceCampaign";
 				}
 				// Create a db command
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(commandName, dbConnection, dbTransaction);
@@ -376,12 +363,12 @@ namespace UtnEmall.Server.DataModel
 				IDbDataParameter parameter;
 				if (isUpdate)
 				{
-					parameter = dataAccess.GetNewDataParameter("@idField", DbType.Int32);
-					parameter.Value = field.Id;
+					parameter = dataAccess.GetNewDataParameter("@idServiceCampaign", DbType.Int32);
+					parameter.Value = serviceCampaign.Id;
 					sqlCommand.Parameters.Add(parameter);
 				}
 
-				FillSaveParameters(field, sqlCommand);
+				FillSaveParameters(serviceCampaign, sqlCommand);
 				// Execute the command
 				if (isUpdate)
 				{
@@ -389,18 +376,18 @@ namespace UtnEmall.Server.DataModel
 				}
 				else 
 				{
-					IDbDataParameter parameterIdOutput = dataAccess.GetNewDataParameter("@idField", DbType.Int32);
+					IDbDataParameter parameterIdOutput = dataAccess.GetNewDataParameter("@idServiceCampaign", DbType.Int32);
 					parameterIdOutput.Direction = ParameterDirection.ReturnValue;
 					sqlCommand.Parameters.Add(parameterIdOutput);
 
 					sqlCommand.ExecuteNonQuery();
-					field.Id = Convert.ToInt32(parameterIdOutput.Value, NumberFormatInfo.InvariantInfo);
+					serviceCampaign.Id = Convert.ToInt32(parameterIdOutput.Value, NumberFormatInfo.InvariantInfo);
 				}
 
-				scopeKey = field.Id.ToString(NumberFormatInfo.InvariantInfo) + "Field";
+				scopeKey = serviceCampaign.Id.ToString(NumberFormatInfo.InvariantInfo) + "ServiceCampaign";
 				// Add entity to current internal scope
 
-				scope.Add(scopeKey, field);
+				scope.Add(scopeKey, serviceCampaign);
 				// Save collections of related objects to current entity
 				// Save objects related to current entity
 				// Update
@@ -411,8 +398,8 @@ namespace UtnEmall.Server.DataModel
 				}
 				// Update new and changed flags
 
-				field.IsNew = false;
-				field.Changed = false;
+				serviceCampaign.IsNew = false;
+				serviceCampaign.Changed = false;
 			}
 			catch (DbException dbException)
 			{
@@ -437,34 +424,34 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Function to Delete a FieldEntity from database.
+		/// Function to Delete a ServiceCampaignEntity from database.
 		/// </summary>
-		/// <param name="field">FieldEntity to delete</param>
+		/// <param name="serviceCampaign">ServiceCampaignEntity to delete</param>
 		/// <exception cref="ArgumentNullException">
-		/// If <paramref name="field"/> is not a <c>FieldEntity</c>.
+		/// If <paramref name="serviceCampaign"/> is not a <c>ServiceCampaignEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
-		public void Delete(FieldEntity field)
+		public void Delete(ServiceCampaignEntity serviceCampaign)
 		{
-			Delete(field, null);
+			Delete(serviceCampaign, null);
 		} 
 
 		/// <summary>
-		/// Function to Delete a FieldEntity from database.
+		/// Function to Delete a ServiceCampaignEntity from database.
 		/// </summary>
-		/// <param name="field">FieldEntity to delete</param>
+		/// <param name="serviceCampaign">ServiceCampaignEntity to delete</param>
 		/// <param name="scope">Internal structure to avoid circular reference locks. Must provide an instance while calling from other data access object.</param>
 		/// <exception cref="ArgumentNullException">
-		/// If <paramref name="field"/> is not a <c>FieldEntity</c>.
+		/// If <paramref name="serviceCampaign"/> is not a <c>ServiceCampaignEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
-		public void Delete(FieldEntity field, Dictionary<string,IEntity> scope)
+		public void Delete(ServiceCampaignEntity serviceCampaign, Dictionary<string,IEntity> scope)
 		{
-			if (field == null)
+			if (serviceCampaign == null)
 			{
 				throw new ArgumentException("The argument can't be null");
 			}
@@ -479,19 +466,19 @@ namespace UtnEmall.Server.DataModel
 				}
 				// Reload the entity to ensure deletion of older data
 
-				field = this.Load(field.Id, true);
-				if (field == null)
+				serviceCampaign = this.Load(serviceCampaign.Id, true);
+				if (serviceCampaign == null)
 				{
 					throw new UtnEmallDataAccessException("Error retrieving data while trying to delete.");
 				}
 				// Create a command for delete
-				string cmdText = "DeleteField";
+				string cmdText = "DeleteServiceCampaign";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				sqlCommand.CommandType = CommandType.StoredProcedure;
 				// Add values to parameters
 
-				IDbDataParameter parameterID = dataAccess.GetNewDataParameter("@idField", DbType.Int32);
-				parameterID.Value = field.Id;
+				IDbDataParameter parameterID = dataAccess.GetNewDataParameter("@idServiceCampaign", DbType.Int32);
+				parameterID.Value = serviceCampaign.Id;
 				sqlCommand.Parameters.Add(parameterID);
 				// Execute the command
 
@@ -504,12 +491,12 @@ namespace UtnEmall.Server.DataModel
 				}
 				// Remove entity from loaded objects
 
-				inMemoryEntities.Remove(field.Id);
+				inMemoryEntities.Remove(serviceCampaign.Id);
 				// Remove entity from current internal scope
 
 				if (scope != null)
 				{
-					string scopeKey = field.Id.ToString(NumberFormatInfo.InvariantInfo) + "Field";
+					string scopeKey = serviceCampaign.Id.ToString(NumberFormatInfo.InvariantInfo) + "ServiceCampaign";
 					scope.Remove(scopeKey);
 				}
 			}
@@ -543,24 +530,23 @@ namespace UtnEmall.Server.DataModel
 		{
 			properties = new Dictionary<string,Type>();
 			properties.Add("timestamp", typeof( System.DateTime ));
-			properties.Add("idField", typeof( int ));
+			properties.Add("idServiceCampaign", typeof( int ));
 
-			properties.Add("name", typeof( string ));
-			properties.Add("dataType", typeof( int ));
-			properties.Add("idTable", typeof( int ));
+			properties.Add("idService", typeof( int ));
+			properties.Add("idCampaign", typeof( int ));
 		} 
 
 		/// <summary>
-		/// Function to Load all the FieldEntity from database.
+		/// Function to Load all the ServiceCampaignEntity from database.
 		/// </summary>
 		/// <param name="loadRelation">If is true load the relation</param>
 		/// <returns>A list of all the entities</returns>
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If a DbException occurs in the try block while accessing the database.
 		/// </exception>
-		public Collection<FieldEntity> LoadAll(bool loadRelation)
+		public Collection<ServiceCampaignEntity> LoadAll(bool loadRelation)
 		{
-			Collection<FieldEntity> fieldList = new Collection<FieldEntity>();
+			Collection<ServiceCampaignEntity> serviceCampaignList = new Collection<ServiceCampaignEntity>();
 
 			bool closeConnection = false;
 			try 
@@ -574,13 +560,13 @@ namespace UtnEmall.Server.DataModel
 				}
 				// Build the query string
 
-				string cmdText = "SELECT idField FROM [Field]";
+				string cmdText = "SELECT idServiceCampaign FROM [ServiceCampaign]";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 
-				FieldEntity field;
+				ServiceCampaignEntity serviceCampaign;
 				// Read the Ids and insert on a list
 
 				List<int> listId = new List<int>();
@@ -598,8 +584,8 @@ namespace UtnEmall.Server.DataModel
 
 				foreach(int  id in listId)
 				{
-					field = Load(id, loadRelation, scope);
-					fieldList.Add(field);
+					serviceCampaign = Load(id, loadRelation, scope);
+					serviceCampaignList.Add(serviceCampaign);
 				}
 			}
 			catch (DbException dbException)
@@ -616,11 +602,11 @@ namespace UtnEmall.Server.DataModel
 				}
 			}
 			// Return the loaded
-			return fieldList;
+			return serviceCampaignList;
 		} 
 
 		/// <summary>
-		/// Function to Load a FieldEntity from database.
+		/// Function to Load a ServiceCampaignEntity from database.
 		/// </summary>
 		/// <param name="propertyName">A string with the name of the field or a
 		/// constant from the class that represent that field</param>
@@ -630,13 +616,13 @@ namespace UtnEmall.Server.DataModel
 		/// <returns>A list containing all the entities that match the where clause</returns>
 		/// <exception cref="ArgumentNullException">
 		/// If <paramref name="propertyName"/> is null or empty.
-		/// If <paramref name="propertyName"/> is not a property of FieldEntity class.
+		/// If <paramref name="propertyName"/> is not a property of ServiceCampaignEntity class.
 		/// If <paramref name="expValue"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
 		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
-		public Collection<FieldEntity> LoadWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType)
+		public Collection<ServiceCampaignEntity> LoadWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType)
 		{
 			if (String.IsNullOrEmpty(propertyName) || expValue == null)
 			{
@@ -646,7 +632,7 @@ namespace UtnEmall.Server.DataModel
 			{
 				throw new ArgumentException("The property " + propertyName + " is not a property of this entity", "propertyName");
 			}
-			Collection<FieldEntity> fieldList;
+			Collection<ServiceCampaignEntity> serviceCampaignList;
 
 			bool closeConnection = false;
 			try 
@@ -662,7 +648,7 @@ namespace UtnEmall.Server.DataModel
 				string op = DataAccessConnection.GetOperatorString(operatorType);
 				// Build the query string
 
-				string cmdText = "SELECT idField, name, dataType, idTable, timestamp FROM [Field] WHERE " + propertyName + " " + op + " @expValue";
+				string cmdText = "SELECT idServiceCampaign, idService, idCampaign, timestamp FROM [ServiceCampaign] WHERE " + propertyName + " " + op + " @expValue";
 				// Create the command
 
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
@@ -678,8 +664,8 @@ namespace UtnEmall.Server.DataModel
 				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
-				fieldList = new Collection<FieldEntity>();
-				FieldEntity field;
+				serviceCampaignList = new Collection<ServiceCampaignEntity>();
+				ServiceCampaignEntity serviceCampaign;
 				List<int> listId = new List<int>();
 				// Add list of Ids to a list
 				while (reader.Read())
@@ -693,8 +679,8 @@ namespace UtnEmall.Server.DataModel
 
 				foreach(int  id in listId)
 				{
-					field = Load(id, loadRelation, null);
-					fieldList.Add(field);
+					serviceCampaign = Load(id, loadRelation, null);
+					serviceCampaignList.Add(serviceCampaign);
 				}
 			}
 			catch (DbException dbException)
@@ -710,18 +696,18 @@ namespace UtnEmall.Server.DataModel
 					dbConnection.Close();
 				}
 			}
-			return fieldList;
+			return serviceCampaignList;
 		} 
 
 		/// <summary>
-		/// Function to Load a list of FieldEntity from database by idTable.
+		/// Function to Load a list of ServiceCampaignEntity from database by idService.
 		/// </summary>
-		/// <param name="idTable">Foreing key column</param>
+		/// <param name="idService">Foreing key column</param>
 		/// <param name="scope">Internal data structure to avoid circular reference problems</param>
-		/// <returns>List of FieldEntity</returns>
-		public Collection<FieldEntity> LoadByTableCollection(int idTable, Dictionary<string,IEntity> scope)
+		/// <returns>List of ServiceCampaignEntity</returns>
+		public Collection<ServiceCampaignEntity> LoadByServiceCollection(int idService, Dictionary<string,IEntity> scope)
 		{
-			Collection<FieldEntity> fieldList;
+			Collection<ServiceCampaignEntity> serviceCampaignList;
 			bool closeConnection = false;
 			try 
 			{
@@ -734,17 +720,17 @@ namespace UtnEmall.Server.DataModel
 				}
 				// Create a command
 
-				string cmdText = "SELECT idField FROM [Field] WHERE idTable = @idTable";
+				string cmdText = "SELECT idServiceCampaign FROM [ServiceCampaign] WHERE idService = @idService";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				// Set command parameters values
 
-				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idTable", DbType.Int32);
-				parameter.Value = idTable;
+				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idService", DbType.Int32);
+				parameter.Value = idService;
 				sqlCommand.Parameters.Add(parameter);
 				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
-				fieldList = new Collection<FieldEntity>();
+				serviceCampaignList = new Collection<ServiceCampaignEntity>();
 				// Load Ids of related objects into a list of int
 
 				List<int> listId = new List<int>();
@@ -758,7 +744,7 @@ namespace UtnEmall.Server.DataModel
 
 				foreach(int  id in listId)
 				{
-					fieldList.Add(Load(id, scope));
+					serviceCampaignList.Add(Load(id, scope));
 				}
 			}
 			catch (DbException dbException)
@@ -775,17 +761,152 @@ namespace UtnEmall.Server.DataModel
 				}
 			}
 			// Return related objects list
-			return fieldList;
+			return serviceCampaignList;
 		} 
 
 		/// <summary>
-		/// Function to Load a list of FieldEntity from database by idTable.
+		/// Function to Load a list of ServiceCampaignEntity from database by idService.
 		/// </summary>
-		/// <param name="idTable">Foreing key column</param>
-		/// <returns>IList of FieldEntity</returns>
-		public Collection<FieldEntity> LoadByTableCollection(int idTable)
+		/// <param name="idService">Foreing key column</param>
+		/// <returns>IList of ServiceCampaignEntity</returns>
+		public Collection<ServiceCampaignEntity> LoadByServiceCollection(int idService)
 		{
-			return LoadByTableCollection(idTable, null);
+			return LoadByServiceCollection(idService, null);
+		} 
+
+		/// <summary>
+		/// Function to Load a list of ServiceCampaignEntity from database by idCampaign.
+		/// </summary>
+		/// <param name="idCampaign">Foreing key column</param>
+		/// <param name="scope">Internal data structure to avoid circular reference problems</param>
+		/// <returns>List of ServiceCampaignEntity</returns>
+		public Collection<ServiceCampaignEntity> LoadByCampaignCollection(int idCampaign, Dictionary<string,IEntity> scope)
+		{
+			Collection<ServiceCampaignEntity> serviceCampaignList;
+			bool closeConnection = false;
+			try 
+			{
+				// Create a new connection
+				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
+				{
+					closeConnection = true;
+					dbConnection = dataAccess.GetNewConnection();
+					dbConnection.Open();
+				}
+				// Create a command
+
+				string cmdText = "SELECT idServiceCampaign FROM [ServiceCampaign] WHERE idCampaign = @idCampaign";
+				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
+				// Set command parameters values
+
+				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idCampaign", DbType.Int32);
+				parameter.Value = idCampaign;
+				sqlCommand.Parameters.Add(parameter);
+				// Create a DataReader
+
+				IDataReader reader = sqlCommand.ExecuteReader();
+				serviceCampaignList = new Collection<ServiceCampaignEntity>();
+				// Load Ids of related objects into a list of int
+
+				List<int> listId = new List<int>();
+				while (reader.Read())
+				{
+					listId.Add(reader.GetInt32(0));
+				}
+
+				reader.Close();
+				// Load related objects and add to collection
+
+				foreach(int  id in listId)
+				{
+					serviceCampaignList.Add(Load(id, scope));
+				}
+			}
+			catch (DbException dbException)
+			{
+				// Rethrow as custom exception
+				throw new UtnEmallDataAccessException(dbException.Message, dbException);
+			}
+			finally 
+			{
+				// Close connection if initiated be me
+				if (closeConnection)
+				{
+					dbConnection.Close();
+				}
+			}
+			// Return related objects list
+			return serviceCampaignList;
+		} 
+
+		/// <summary>
+		/// Function to Load a list of ServiceCampaignEntity from database by idCampaign.
+		/// </summary>
+		/// <param name="idCampaign">Foreing key column</param>
+		/// <returns>IList of ServiceCampaignEntity</returns>
+		public Collection<ServiceCampaignEntity> LoadByCampaignCollection(int idCampaign)
+		{
+			return LoadByCampaignCollection(idCampaign, null);
+		} 
+
+		/// <summary>
+		/// Function to Load the relation Campaign from database.
+		/// </summary>
+		/// <param name="serviceCampaign">ServiceCampaignEntity parent</param>
+		/// <exception cref="ArgumentNullException">
+		/// if <paramref name="serviceCampaign"/> is not a <c>ServiceCampaignEntity</c>.
+		/// </exception>
+		public void LoadRelationCampaign(ServiceCampaignEntity serviceCampaign, Dictionary<string,IEntity> scope)
+		{
+			if (serviceCampaign == null)
+			{
+				throw new ArgumentException("The argument can't be null");
+			}
+			bool closeConnection = false;
+			try 
+			{
+				// Create a new connection if needed
+				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
+				{
+					closeConnection = true;
+					dbConnection = dataAccess.GetNewConnection();
+					dbConnection.Open();
+				}
+				// Create a command
+
+				string cmdText = "SELECT idCampaign FROM [ServiceCampaign] WHERE idServiceCampaign = @idServiceCampaign";
+				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
+				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idServiceCampaign", DbType.Int32);
+				// Set command parameters values
+
+				parameter.Value = serviceCampaign.Id;
+				sqlCommand.Parameters.Add(parameter);
+				// Execute commands
+
+				object idRelation = sqlCommand.ExecuteScalar();
+				if (idRelation != null && ((int)idRelation) > 0)
+				{
+					// Create data access objects and set connection objects
+					CampaignDataAccess campaignDataAccess = new CampaignDataAccess();
+					campaignDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
+					// Load related object
+
+					serviceCampaign.Campaign = campaignDataAccess.Load(((int)idRelation), true, scope);
+				}
+			}
+			catch (DbException dbException)
+			{
+				// Catch and rethrow as custom exception
+				throw new UtnEmallDataAccessException(dbException.Message, dbException);
+			}
+			finally 
+			{
+				// Close connection if initiated by me
+				if (closeConnection)
+				{
+					dbConnection.Close();
+				}
+			}
 		} 
 
 	} 

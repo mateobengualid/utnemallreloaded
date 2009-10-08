@@ -6,9 +6,10 @@ namespace UtnEmall.Server.EntityModel
 
 	[System.Runtime.Serialization.DataContract]
 	/// <summary>
-	/// El <c>PreferenceEntity</c> en una clase de entidad
-	/// que contiene todos los campos que son insertados y cargados en la base de datos
-	/// Esta clase es utilizada por todas las capas superiores.
+	/// The <c>PreferenceEntity</c> is a entity class
+	/// that contains all the fields that are inserted and
+	/// loaded from the database.
+	/// This class is used by the upper layers.
 	/// </summary>
 	public class PreferenceEntity: IEntity
 	{
@@ -18,7 +19,8 @@ namespace UtnEmall.Server.EntityModel
 		private System.DateTime timestamp; 
 		private Collection<Error> errors; 
 		/// <summary>
-		/// Inicializa una nueva instancia de un <c>PreferenceEntity</c>.
+		/// Initializes a new instance of a
+		/// <c>PreferenceEntity</c> type.
 		/// </summary>
 		public  PreferenceEntity()
 		{
@@ -27,7 +29,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el id de la entidad.
+		/// Gets or sets the Id of the entity.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 0 )]
 		public int Id
@@ -43,7 +45,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece si la entidad fue modificada.
+		/// Gets or sets if the entity has changed.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 1 )]
 		public bool Changed
@@ -59,7 +61,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene si la entidad es nueva.
+		/// Gets or sets if the entity is new.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 2 )]
 		public bool IsNew
@@ -75,7 +77,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene el timestamp del ultimo acceso.
+		/// Gets or sets the timestamp of the last access.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 3 )]
 		public System.DateTime Timestamp
@@ -92,7 +94,7 @@ namespace UtnEmall.Server.EntityModel
 
 		public const string DBTimestamp = "timestamp"; 
 		/// <summary>
-		/// Coleccion de errores de la entidad.
+		/// The collection of entity's errors.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 4 )]
 		public Collection<Error> Errors
@@ -110,7 +112,7 @@ namespace UtnEmall.Server.EntityModel
 		private bool _Active; 
 		[System.Runtime.Serialization.DataMember( Order = 5 )]
 		/// <summary>
-		/// Obtiene o establece los valores para Active.
+		/// Gets or sets the value for Active.
 		/// <summary>
 		public bool Active
 		{
@@ -128,7 +130,7 @@ namespace UtnEmall.Server.EntityModel
 		private double _Level; 
 		[System.Runtime.Serialization.DataMember( Order = 6 )]
 		/// <summary>
-		/// Obtiene o establece los valores para Level.
+		/// Gets or sets the value for Level.
 		/// <summary>
 		public double Level
 		{
@@ -146,7 +148,7 @@ namespace UtnEmall.Server.EntityModel
 		private CustomerEntity _Customer; 
 		private int _IdCustomer; 
 		/// <summary>
-		/// Establece u obtiene el valor para Customer.
+		/// Gets or sets the value for Customer.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 7 )]
 		public CustomerEntity Customer
@@ -158,7 +160,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_Customer = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_Customer != null)
 				{
@@ -173,9 +175,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del Customer.
-		/// Si Customer esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the Customer.
+		/// If Customer is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 8 )]
 		public int IdCustomer
@@ -200,7 +202,7 @@ namespace UtnEmall.Server.EntityModel
 		private CategoryEntity _Category; 
 		private int _IdCategory; 
 		/// <summary>
-		/// Establece u obtiene el valor para Category.
+		/// Gets or sets the value for Category.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 9 )]
 		public CategoryEntity Category
@@ -212,7 +214,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_Category = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_Category != null)
 				{
@@ -227,9 +229,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del Category.
-		/// Si Category esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the Category.
+		/// If Category is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 10 )]
 		public int IdCategory

@@ -7,113 +7,117 @@ namespace UtnEmall.Server.BusinessLogic
 
 	[System.ServiceModel.ServiceContract]
 	/// <summary>
-	/// La interfaz <c>IGroup</c> es un contrato de servicio web para procesar GroupEntity,
-	/// guarda, actualiza, elimina y valida los datos del mismo.
+	/// The <c>IGroup</c> business contract to process GroupEntity,
+	/// saving, updating, deleting and validating entity data.
 	/// </summary>
 	public interface IGroup
 	{
 		/// <summary>
-		/// Función para guardar GroupEntity en la base de datos.
+		/// Function to save a GroupEntity to the database.
 		/// </summary>
-		/// <param name="groupEntity">GroupEntity a guardar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>null si el GroupEntity se guardo con exito, el mismo GroupEntity en otro caso</returns>
+		/// <param name="groupEntity">GroupEntity to save</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the GroupEntity was saved successfully, the same GroupEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="groupEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		[System.ServiceModel.OperationContract]
 		GroupEntity Save(GroupEntity groupEntity, string session);
 		/// <summary>
-		/// Función para eliminar un GroupEntity de la base de datos.
+		/// Function to delete a GroupEntity from database.
 		/// </summary>
-		/// <param name="groupEntity">GroupEntity a eliminar</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>null si el GroupEntity fue eliminado con éxito, el mismo GroupEntity en otro caso</returns>
+		/// <param name="groupEntity">GroupEntity to delete</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the GroupEntity was deleted successfully, the same GroupEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="groupEntity"/> is null.
+		/// if <paramref name="groupEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		GroupEntity Delete(GroupEntity groupEntity, string session);
 		/// <summary>
-		/// Obtiene un groupEntity específico
+		/// Get an specific groupEntity
 		/// </summary>
-		/// <param name="id">id del GroupEntity a cargar</param>
-		/// <returns>Un GroupEntity</returns>
+		/// <param name="id">id of the GroupEntity to load</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>A GroupEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="groupEntity"/> is null.
+		/// if <paramref name="groupEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		GroupEntity GetGroup(int id, bool loadRelation, string session);
 		/// <summary>
-		/// Obtiene una coleccion de groupEntity
+		/// Get collection of all groupEntity
 		/// </summary>
-		/// <param name="loadRelation">true si desea guardar las relaciones</param>
-		/// <param name="session">Identificador de sesion.</param>
-		/// <returns>Collection de GroupEntity</returns>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of all GroupEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		Collection<GroupEntity> GetAllGroup(bool loadRelation, string session);
 		/// <summary>
-		/// Obtiene una coleccion de todos los groupEntity que cumplen con cierto patron
+		/// Get collection of all groupEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del groupEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <returns>Colección de GroupEntity</returns>
+		/// <param name="propertyName">property of groupEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of GroupEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		Collection<GroupEntity> GetGroupWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType, string session);
 		/// <summary>
-		/// Obtiene una coleccion de todos los groupEntity que cumplen con cierto patron exactamente
+		/// Get collection of all groupEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del groupEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="loadRelation">Indica si se cargan las relaciones</param>
-		/// <param name="session">Identificador de sesión del usuario</param>
-		/// <returns>Colección de GroupEntity</returns>
+		/// <param name="propertyName">property of groupEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of GroupEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		Collection<GroupEntity> GetGroupWhereEqual(string propertyName, object expValue, bool loadRelation, string session);
 		/// <summary>
-		/// Función que valida un GroupEntity antes de ser guardado.
+		/// Function to validate a GroupEntity before it's saved.
 		/// </summary>
-		/// <param name="groupEntity">GroupEntity a validar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>true si se valido correctamente, false en caso contrario</returns>
+		/// <param name="groupEntity">GroupEntity to validate</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the GroupEntity was deleted successfully, the same GroupEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// si <paramref name="groupEntity"/> es null.
+		/// if <paramref name="groupEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]

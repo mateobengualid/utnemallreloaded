@@ -9,7 +9,8 @@ namespace UtnEmall.Server.BusinessLogic
 {
 
 	/// <summary>
-	/// La clase <c>CustomerServiceData</c> implementa la lógica de negocio para guardar, editar, borrar y validar un CustomerServiceDataEntity,
+	/// The <c>CustomerServiceData</c> implement business logic to process CustomerServiceDataEntity,
+	/// saving, updating, deleting and validating entity data.
 	/// </summary>
 	public class CustomerServiceData: UtnEmall.Server.BusinessLogic.ICustomerServiceData
 	{
@@ -20,16 +21,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Función para guardar CustomerServiceDataEntity en la base de datos.
+		/// Function to save a CustomerServiceDataEntity to the database.
 		/// </summary>
-		/// <param name="customerServiceDataEntity">CustomerServiceDataEntity a guardar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>null si el CustomerServiceDataEntity se guardo con exito, el mismo CustomerServiceDataEntity en otro caso</returns>
+		/// <param name="customerServiceDataEntity">CustomerServiceDataEntity to save</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the CustomerServiceDataEntity was saved successfully, the same CustomerServiceDataEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="customerServiceDataEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public CustomerServiceDataEntity Save(CustomerServiceDataEntity customerServiceDataEntity, string session)
 		{
@@ -46,7 +47,7 @@ namespace UtnEmall.Server.BusinessLogic
 			}
 			try 
 			{
-				// Guarda un customerServiceDataEntity usando un objeto de data access
+				// Save customerServiceDataEntity using data access object
 				customerservicedataDataAccess.Save(customerServiceDataEntity);
 				return null;
 			}
@@ -57,16 +58,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Función para eliminar un CustomerServiceDataEntity de la base de datos.
+		/// Function to delete a CustomerServiceDataEntity from database.
 		/// </summary>
-		/// <param name="customerServiceDataEntity">CustomerServiceDataEntity a eliminar</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>null si el CustomerServiceDataEntity fue eliminado con éxito, el mismo CustomerServiceDataEntity en otro caso</returns>
+		/// <param name="customerServiceDataEntity">CustomerServiceDataEntity to delete</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the CustomerServiceDataEntity was deleted successfully, the same CustomerServiceDataEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="customerServiceDataEntity"/> is null.
+		/// if <paramref name="customerServiceDataEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public CustomerServiceDataEntity Delete(CustomerServiceDataEntity customerServiceDataEntity, string session)
 		{
@@ -83,7 +84,7 @@ namespace UtnEmall.Server.BusinessLogic
 			}
 			try 
 			{
-				// Elimina un customerServiceDataEntity usando un objeto data access
+				// Delete customerServiceDataEntity using data access object
 				customerservicedataDataAccess.Delete(customerServiceDataEntity);
 				return null;
 			}
@@ -94,16 +95,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene un customerServiceDataEntity específico
+		/// Get an specific customerServiceDataEntity
 		/// </summary>
-		/// <param name="id">id del CustomerServiceDataEntity a cargar</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>Un CustomerServiceDataEntity</returns>
+		/// <param name="id">id of the CustomerServiceDataEntity to load</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>A CustomerServiceDataEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="customerServiceDataEntity"/> is null.
+		/// if <paramref name="customerServiceDataEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public CustomerServiceDataEntity GetCustomerServiceData(int id, string session)
 		{
@@ -111,17 +112,17 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene un customerServiceDataEntity específico
+		/// Get an specific customerServiceDataEntity
 		/// </summary>
-		/// <param name="id">id del CustomerServiceDataEntity a cargar</param>
-		/// <param name="loadRelation">true para cargar las relaciones</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>Un CustomerServiceDataEntity</returns>
+		/// <param name="id">id of the CustomerServiceDataEntity to load</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>A CustomerServiceDataEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="customerServiceDataEntity"/> is null.
+		/// if <paramref name="customerServiceDataEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public CustomerServiceDataEntity GetCustomerServiceData(int id, bool loadRelation, string session)
 		{
@@ -143,12 +144,12 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una colección de customerServiceDataEntity
+		/// Get collection of all customerServiceDataEntity
 		/// </summary>
-		/// <param name="session">Identificador de sesion.</param>
-		/// <returns>Collection de CustomerServiceDataEntity</returns>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of all CustomerServiceDataEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<CustomerServiceDataEntity> GetAllCustomerServiceData(string session)
 		{
@@ -156,13 +157,13 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una colección de customerServiceDataEntity
+		/// Get collection of all customerServiceDataEntity
 		/// </summary>
-		/// <param name="loadRelation">true si desea guardar las relaciones</param>
-		/// <param name="session">Identificador de sesion.</param>
-		/// <returns>Collection de CustomerServiceDataEntity</returns>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of all CustomerServiceDataEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<CustomerServiceDataEntity> GetAllCustomerServiceData(bool loadRelation, string session)
 		{
@@ -184,20 +185,19 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los customerServiceDataEntity que cumplen con cierto patron
+		/// Get collection of all customerServiceDataEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del customerServiceDataEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="OperatorType">Tipo de operador de comparación a utilizar</param>
-		/// <param name="session">Identificador de sesion del usuario</param>
-		/// <returns>Colección de CustomerServiceDataEntity</returns>
+		/// <param name="propertyName">property of customerServiceDataEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of CustomerServiceDataEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<CustomerServiceDataEntity> GetCustomerServiceDataWhere(string propertyName, object expValue, OperatorType operatorType, string session)
 		{
@@ -205,21 +205,20 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los customerServiceDataEntity que cumplen con cierto patron
+		/// Get collection of all customerServiceDataEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del customerServiceDataEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="loadRelation">Indica si se cargan las relaciones</param>
-		/// <param name="OperatorType">Tipo de operador de comparación a utilizar</param>
-		/// <param name="session">Identificador de sesion del usuario</param>
-		/// <returns>Colección de CustomerServiceDataEntity</returns>
+		/// <param name="propertyName">property of customerServiceDataEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of CustomerServiceDataEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<CustomerServiceDataEntity> GetCustomerServiceDataWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType, string session)
 		{
@@ -241,19 +240,19 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los customerServiceDataEntity que cumplen con cierto patron exactamente
+		/// Get collection of all customerServiceDataEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del customerServiceDataEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="session">Identificador de sesion del usuario</param>
-		/// <returns>Colección de CustomerServiceDataEntity</returns>
+		/// <param name="propertyName">property of customerServiceDataEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of CustomerServiceDataEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<CustomerServiceDataEntity> GetCustomerServiceDataWhereEqual(string propertyName, object expValue, string session)
 		{
@@ -261,20 +260,20 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Obtiene una coleccion de todos los customerServiceDataEntity que cumplen con cierto patron exactamente
+		/// Get collection of all customerServiceDataEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del customerServiceDataEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="loadRelation">Indica si se cargan las relaciones</param>
-		/// <param name="session">Identificador de sesión del usuario</param>
-		/// <returns>Colección de CustomerServiceDataEntity</returns>
+		/// <param name="propertyName">property of customerServiceDataEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of CustomerServiceDataEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public Collection<CustomerServiceDataEntity> GetCustomerServiceDataWhereEqual(string propertyName, object expValue, bool loadRelation, string session)
 		{
@@ -282,16 +281,16 @@ namespace UtnEmall.Server.BusinessLogic
 		} 
 
 		/// <summary>
-		/// Función que valida un CustomerServiceDataEntity antes de ser guardado.
+		/// Function to validate a CustomerServiceDataEntity before it's saved.
 		/// </summary>
-		/// <param name="customerServiceDataEntity">CustomerServiceDataEntity a validar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>true si se valido correctamente, false en caso contrario</returns>
+		/// <param name="customerServiceDataEntity">CustomerServiceDataEntity to validate</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the CustomerServiceDataEntity was deleted successfully, the same CustomerServiceDataEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// si <paramref name="customerServiceDataEntity"/> es null.
+		/// if <paramref name="customerServiceDataEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		public bool Validate(CustomerServiceDataEntity customerServiceData)
 		{
@@ -301,7 +300,7 @@ namespace UtnEmall.Server.BusinessLogic
 			{
 				throw new ArgumentException("The argument can not be null or be empty");
 			}
-			// Chequea los datos de la entidad
+			// Check entity data
 			if (customerServiceData.CustomerServiceDataType < 0)
 			{
 				customerServiceData.Errors.Add(new Error("CustomerServiceDataType", "CustomerServiceDataType", "El tipo de dato del servicio no puede ser negativo"));
