@@ -6,12 +6,12 @@ namespace UtnEmall.Server.EntityModel
 
 	[System.Runtime.Serialization.DataContract]
 	/// <summary>
-	/// The <c>StoreCategoryEntity</c> is a entity class
+	/// The <c>ServiceCampaignEntity</c> is a entity class
 	/// that contains all the fields that are inserted and
 	/// loaded from the database.
 	/// This class is used by the upper layers.
 	/// </summary>
-	public class StoreCategoryEntity: IEntity
+	public class ServiceCampaignEntity: IEntity
 	{
 		private int id; 
 		private bool changed; 
@@ -20,9 +20,9 @@ namespace UtnEmall.Server.EntityModel
 		private Collection<Error> errors; 
 		/// <summary>
 		/// Initializes a new instance of a
-		/// <c>StoreCategoryEntity</c> type.
+		/// <c>ServiceCampaignEntity</c> type.
 		/// </summary>
-		public  StoreCategoryEntity()
+		public  ServiceCampaignEntity()
 		{
 			isNew = true;
 			errors = new Collection<Error>();
@@ -109,117 +109,117 @@ namespace UtnEmall.Server.EntityModel
 			}
 		} 
 
-		private CategoryEntity _Category; 
-		private int _IdCategory; 
+		private ServiceEntity _Service; 
+		private int _IdService; 
 		/// <summary>
-		/// Gets or sets the value for Category.
+		/// Gets or sets the value for Service.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 5 )]
-		public CategoryEntity Category
+		public ServiceEntity Service
 		{
 			get 
 			{
-				return _Category;
+				return _Service;
 			}
 			set 
 			{
-				_Category = value;
+				_Service = value;
 				// If provided value is null set id to 0, else to provided object id
 
-				if (_Category != null)
+				if (_Service != null)
 				{
-					IdCategory = _Category.Id;
+					IdService = _Service.Id;
 				}
 				else 
 				{
-					IdCategory = 0;
+					IdService = 0;
 				}
 				changed = true;
 			}
 		} 
 
 		/// <summary>
-		/// Gets or sets the Id of the Category.
-		/// If Category is set return the Id of the object,
+		/// Gets or sets the Id of the Service.
+		/// If Service is set return the Id of the object,
 		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 6 )]
-		public int IdCategory
+		public int IdService
 		{
 			get 
 			{
-				if (_Category == null)
+				if (_Service == null)
 				{
-					return _IdCategory;
+					return _IdService;
 				}
 				else 
 				{
-					return _Category.Id;
+					return _Service.Id;
 				}
 			}
 			set 
 			{
-				_IdCategory = value;
+				_IdService = value;
 			}
 		} 
 
-		private StoreEntity _Store; 
-		private int _IdStore; 
+		private CampaignEntity _Campaign; 
+		private int _IdCampaign; 
 		/// <summary>
-		/// Gets or sets the value for Store.
+		/// Gets or sets the value for Campaign.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 7 )]
-		public StoreEntity Store
+		public CampaignEntity Campaign
 		{
 			get 
 			{
-				return _Store;
+				return _Campaign;
 			}
 			set 
 			{
-				_Store = value;
+				_Campaign = value;
 				// If provided value is null set id to 0, else to provided object id
 
-				if (_Store != null)
+				if (_Campaign != null)
 				{
-					IdStore = _Store.Id;
+					IdCampaign = _Campaign.Id;
 				}
 				else 
 				{
-					IdStore = 0;
+					IdCampaign = 0;
 				}
 				changed = true;
 			}
 		} 
 
 		/// <summary>
-		/// Gets or sets the Id of the Store.
-		/// If Store is set return the Id of the object,
+		/// Gets or sets the Id of the Campaign.
+		/// If Campaign is set return the Id of the object,
 		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 8 )]
-		public int IdStore
+		public int IdCampaign
 		{
 			get 
 			{
-				if (_Store == null)
+				if (_Campaign == null)
 				{
-					return _IdStore;
+					return _IdCampaign;
 				}
 				else 
 				{
-					return _Store.Id;
+					return _Campaign.Id;
 				}
 			}
 			set 
 			{
-				_IdStore = value;
+				_IdCampaign = value;
 			}
 		} 
 
-		public const string DBIdStoreCategory = "idStoreCategory"; 
-		public const string DBIdCategory = "idCategory"; 
-		public const string DBIdStore = "idStore"; 
+		public const string DBIdServiceCampaign = "idServiceCampaign"; 
+		public const string DBIdService = "idService"; 
+		public const string DBIdCampaign = "idCampaign"; 
 	} 
 
 }

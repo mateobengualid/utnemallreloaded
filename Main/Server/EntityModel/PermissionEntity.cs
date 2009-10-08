@@ -6,9 +6,10 @@ namespace UtnEmall.Server.EntityModel
 
 	[System.Runtime.Serialization.DataContract]
 	/// <summary>
-	/// El <c>PermissionEntity</c> en una clase de entidad
-	/// que contiene todos los campos que son insertados y cargados en la base de datos
-	/// Esta clase es utilizada por todas las capas superiores.
+	/// The <c>PermissionEntity</c> is a entity class
+	/// that contains all the fields that are inserted and
+	/// loaded from the database.
+	/// This class is used by the upper layers.
 	/// </summary>
 	public class PermissionEntity: IEntity
 	{
@@ -18,7 +19,8 @@ namespace UtnEmall.Server.EntityModel
 		private System.DateTime timestamp; 
 		private Collection<Error> errors; 
 		/// <summary>
-		/// Inicializa una nueva instancia de un <c>PermissionEntity</c>.
+		/// Initializes a new instance of a
+		/// <c>PermissionEntity</c> type.
 		/// </summary>
 		public  PermissionEntity()
 		{
@@ -27,7 +29,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el id de la entidad.
+		/// Gets or sets the Id of the entity.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 0 )]
 		public int Id
@@ -43,7 +45,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece si la entidad fue modificada.
+		/// Gets or sets if the entity has changed.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 1 )]
 		public bool Changed
@@ -59,7 +61,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene si la entidad es nueva.
+		/// Gets or sets if the entity is new.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 2 )]
 		public bool IsNew
@@ -75,7 +77,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene el timestamp del ultimo acceso.
+		/// Gets or sets the timestamp of the last access.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 3 )]
 		public System.DateTime Timestamp
@@ -92,7 +94,7 @@ namespace UtnEmall.Server.EntityModel
 
 		public const string DBTimestamp = "timestamp"; 
 		/// <summary>
-		/// Coleccion de errores de la entidad.
+		/// The collection of entity's errors.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 4 )]
 		public Collection<Error> Errors
@@ -110,7 +112,7 @@ namespace UtnEmall.Server.EntityModel
 		private bool _AllowRead; 
 		[System.Runtime.Serialization.DataMember( Order = 5 )]
 		/// <summary>
-		/// Obtiene o establece los valores para AllowRead.
+		/// Gets or sets the value for AllowRead.
 		/// <summary>
 		public bool AllowRead
 		{
@@ -128,7 +130,7 @@ namespace UtnEmall.Server.EntityModel
 		private bool _AllowUpdate; 
 		[System.Runtime.Serialization.DataMember( Order = 6 )]
 		/// <summary>
-		/// Obtiene o establece los valores para AllowUpdate.
+		/// Gets or sets the value for AllowUpdate.
 		/// <summary>
 		public bool AllowUpdate
 		{
@@ -146,7 +148,7 @@ namespace UtnEmall.Server.EntityModel
 		private bool _AllowNew; 
 		[System.Runtime.Serialization.DataMember( Order = 7 )]
 		/// <summary>
-		/// Obtiene o establece los valores para AllowNew.
+		/// Gets or sets the value for AllowNew.
 		/// <summary>
 		public bool AllowNew
 		{
@@ -164,7 +166,7 @@ namespace UtnEmall.Server.EntityModel
 		private bool _AllowDelete; 
 		[System.Runtime.Serialization.DataMember( Order = 8 )]
 		/// <summary>
-		/// Obtiene o establece los valores para AllowDelete.
+		/// Gets or sets the value for AllowDelete.
 		/// <summary>
 		public bool AllowDelete
 		{
@@ -182,7 +184,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _BusinessClassName; 
 		[System.Runtime.Serialization.DataMember( Order = 9 )]
 		/// <summary>
-		/// Obtiene o establece el valor para BusinessClassName.
+		/// Gets or sets the value for BusinessClassName.
 		/// <summary>
 		public string BusinessClassName
 		{
@@ -200,7 +202,7 @@ namespace UtnEmall.Server.EntityModel
 		private GroupEntity _Group; 
 		private int _IdGroup; 
 		/// <summary>
-		/// Establece u obtiene el valor para Group.
+		/// Gets or sets the value for Group.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 10 )]
 		public GroupEntity Group
@@ -212,7 +214,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_Group = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_Group != null)
 				{
@@ -227,9 +229,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del Group.
-		/// Si Group esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the Group.
+		/// If Group is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 11 )]
 		public int IdGroup

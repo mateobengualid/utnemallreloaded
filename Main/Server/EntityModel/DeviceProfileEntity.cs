@@ -6,9 +6,10 @@ namespace UtnEmall.Server.EntityModel
 
 	[System.Runtime.Serialization.DataContract]
 	/// <summary>
-	/// El <c>DeviceProfileEntity</c> en una clase de entidad
-	/// que contiene todos los campos que son insertados y cargados en la base de datos
-	/// Esta clase es utilizada por todas las capas superiores.
+	/// The <c>DeviceProfileEntity</c> is a entity class
+	/// that contains all the fields that are inserted and
+	/// loaded from the database.
+	/// This class is used by the upper layers.
 	/// </summary>
 	public class DeviceProfileEntity: IEntity
 	{
@@ -18,7 +19,8 @@ namespace UtnEmall.Server.EntityModel
 		private System.DateTime timestamp; 
 		private Collection<Error> errors; 
 		/// <summary>
-		/// Inicializa una nueva instancia de un <c>DeviceProfileEntity</c>.
+		/// Initializes a new instance of a
+		/// <c>DeviceProfileEntity</c> type.
 		/// </summary>
 		public  DeviceProfileEntity()
 		{
@@ -27,7 +29,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el id de la entidad.
+		/// Gets or sets the Id of the entity.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 0 )]
 		public int Id
@@ -43,7 +45,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece si la entidad fue modificada.
+		/// Gets or sets if the entity has changed.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 1 )]
 		public bool Changed
@@ -59,7 +61,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene si la entidad es nueva.
+		/// Gets or sets if the entity is new.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 2 )]
 		public bool IsNew
@@ -75,7 +77,7 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene el timestamp del ultimo acceso.
+		/// Gets or sets the timestamp of the last access.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 3 )]
 		public System.DateTime Timestamp
@@ -92,7 +94,7 @@ namespace UtnEmall.Server.EntityModel
 
 		public const string DBTimestamp = "timestamp"; 
 		/// <summary>
-		/// Coleccion de errores de la entidad.
+		/// The collection of entity's errors.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 4 )]
 		public Collection<Error> Errors
@@ -110,7 +112,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _DeviceType; 
 		[System.Runtime.Serialization.DataMember( Order = 5 )]
 		/// <summary>
-		/// Obtiene o establece el valor para DeviceType.
+		/// Gets or sets the value for DeviceType.
 		/// <summary>
 		public string DeviceType
 		{
@@ -128,7 +130,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _DeviceModel; 
 		[System.Runtime.Serialization.DataMember( Order = 6 )]
 		/// <summary>
-		/// Obtiene o establece el valor para DeviceModel.
+		/// Gets or sets the value for DeviceModel.
 		/// <summary>
 		public string DeviceModel
 		{
@@ -146,7 +148,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _MacAddress; 
 		[System.Runtime.Serialization.DataMember( Order = 7 )]
 		/// <summary>
-		/// Obtiene o establece el valor para MacAddress.
+		/// Gets or sets the value for MacAddress.
 		/// <summary>
 		public string MacAddress
 		{
@@ -164,7 +166,7 @@ namespace UtnEmall.Server.EntityModel
 		private string _WindowsMobileVersion; 
 		[System.Runtime.Serialization.DataMember( Order = 8 )]
 		/// <summary>
-		/// Obtiene o establece el valor para WindowsMobileVersion.
+		/// Gets or sets the value for WindowsMobileVersion.
 		/// <summary>
 		public string WindowsMobileVersion
 		{
@@ -182,7 +184,7 @@ namespace UtnEmall.Server.EntityModel
 		private CustomerEntity _Customer; 
 		private int _IdCustomer; 
 		/// <summary>
-		/// Establece u obtiene el valor para Customer.
+		/// Gets or sets the value for Customer.
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 9 )]
 		public CustomerEntity Customer
@@ -194,7 +196,7 @@ namespace UtnEmall.Server.EntityModel
 			set 
 			{
 				_Customer = value;
-				// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+				// If provided value is null set id to 0, else to provided object id
 
 				if (_Customer != null)
 				{
@@ -209,9 +211,9 @@ namespace UtnEmall.Server.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el Id del Customer.
-		/// Si Customer esta establecido devuelve el id del objeto,
-		/// sino devuelve el id almacenado manualmente.
+		/// Gets or sets the Id of the Customer.
+		/// If Customer is set return the Id of the object,
+		/// else returns manually stored Id
 		/// <summary>
 		[System.Runtime.Serialization.DataMember( Order = 10 )]
 		public int IdCustomer

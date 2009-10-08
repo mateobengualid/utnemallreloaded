@@ -23,8 +23,9 @@ namespace UtnEmall.Server.DataModel
 	/// Bloque custom delete para el Data Model
 	/// Bloque custom save para el Data Model
 	/// <summary>
-	/// El <c>ComponentDataAccess</c> es una clase
-	/// que provee acceso a la base de datos para la tabla correspondiente.
+	/// The <c>ComponentDataAccess</c> is a class
+	/// that provides access to the modelName stored on
+	/// the database.
 	/// </summary>
 	public class ComponentDataAccess
 	{
@@ -36,12 +37,13 @@ namespace UtnEmall.Server.DataModel
 		private static Dictionary<string,Type> properties; 
 		private static bool dbChecked; 
 		/// <summary>
-		/// Inicializa una nueva instancia de
-		/// <c>ComponentDataAccess</c>.
-		/// Chequea si la tabla y los procedimientos almacenados
-		/// ya existen en la base de datos, si no, los crea
-		/// Establece las propiedades que permite realizar consultas
-		/// llamando los metodos LoadWhere.
+		/// Initializes a new instance of a
+		/// <c>ComponentDataAccess</c> type.
+		/// It checks if the table and stored procedure
+		/// are already on the database, if not, it creates
+		/// them.
+		/// Sets the properties that allows to make queries
+		/// by calling the LoadWhere method.
 		/// </summary>
 		public  ComponentDataAccess()
 		{
@@ -60,12 +62,13 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Establece la conexión y la transacción en el caso de que una transacción global se este ejecutando
+		/// set the connection and the transaction to the object, in the case
+		/// that a global transaction is running.
 		/// </summary>
-		/// <param name="connection">La conexión IDbConnection</param>
-		/// <param name="transaction">La transacción global IDbTransaction</param>
+		/// <param name="connection">The IDbConnection connection to the database</param>
+		/// <param name="transaction">The global IDbTransaction transaction</param>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void SetConnectionObjects(IDbConnection connection, IDbTransaction transaction)
 		{
@@ -75,27 +78,29 @@ namespace UtnEmall.Server.DataModel
 			}
 			this.dbConnection = connection;
 			this.dbTransaction = transaction;
+			// FIXME : The name of this flag is not always apropiated
+
 			this.isGlobalTransaction = true;
 		} 
 
 		/// <summary>
-		/// Función para cargar un ComponentEntity desde la base de datos.
+		/// Function to load a ComponentEntity from database.
 		/// </summary>
-		/// <param name="id">El id del registro a cargar</param>
-		/// <param name="loadRelation">Si es true carga las relaciones</param>
-		/// <param name="scope">Estructura interna usada para evitar la referencia circular, debe ser proveida si es llamada desde otro data access</param>
-		/// <returns>La instancia de la entidad</returns>
+		/// <param name="id">The ID of the record to load</param>
+		/// <param name="loadRelation">if is true load the relation</param>
+		/// <param name="scope">Internal structure used to avoid circular reference locks, must be provided if calling from other data access object</param>
+		/// <returns>The entity instance</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs while accessing the database.
 		/// </exception>
 		public ComponentEntity Load(int id, bool loadRelation, Dictionary<string,IEntity> scope)
 		{
-			// Crea una clave para el objeto de scope interno
+			// Build a key for internal scope object
 			string scopeKey = id.ToString(NumberFormatInfo.InvariantInfo) + "Component";
 			if (scope != null)
 			{
-				// Si el scope contiene el objeto, este ya fue cargado
-				// retorna el objeto situado en el scope para evitar referencias circulares
+				// If scope contains the object it was already loaded,
+				// return it to avoid circular references
 				if (scope.ContainsKey(scopeKey))
 				{
 					return ((ComponentEntity)scope[scopeKey]);
@@ -103,18 +108,18 @@ namespace UtnEmall.Server.DataModel
 			}
 			else 
 			{
-				// Si no existe un scope, crear uno
+				// If there isn't a current scope create one
 				scope = new Dictionary<string,IEntity>();
 			}
 
 			ComponentEntity component = null;
-			// Chequear si la entidad fue ya cargada por el data access actual
-			// y retornar si fue ya cargada
+			// Check if the entity was already loaded by current data access object
+			// and return it if that is the case
 
 			if (inMemoryEntities.ContainsKey(id))
 			{
 				component = inMemoryEntities[id];
-				// Agregar el objeto actual al scope
+				// Add current object to current load scope
 
 				scope.Add(scopeKey, component);
 			}
@@ -123,7 +128,7 @@ namespace UtnEmall.Server.DataModel
 				bool closeConnection = false;
 				try 
 				{
-					// Abrir una nueva conexión si no es una transaccion
+					// Open a new connection if it isn't on a transaction
 					if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 					{
 						closeConnection = true;
@@ -132,22 +137,22 @@ namespace UtnEmall.Server.DataModel
 					}
 
 					string cmdText = "SELECT idComponent, height, width, heightFactor, widthFactor, xCoordinateRelativeToParent, yCoordinateRelativeToParent, xFactorCoordinateRelativeToParent, yFactorCoordinateRelativeToParent, bold, fontColor, fontName, fontSize, italic, underline, textAlign, backgroundColor, text, dataTypes, typeOrder, title, stringHelp, descriptiveText, componentType, finalizeService, idCustomerServiceData, idTemplateListFormDocument, idParentComponent, idInputConnectionPoint, idOutputConnectionPoint, idOutputDataContext, idInputDataContext, idRelatedTable, idFieldToOrder, idFieldAssociated, timestamp FROM [Component] WHERE idComponent = @idComponent";
-					// Crea el command
+					// Create the command
 
 					IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-					// Crear el parametro id para la consulta
+					// Create the Id parameter for the query
 
 					IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idComponent", DbType.Int32);
 					parameter.Value = id;
 					sqlCommand.Parameters.Add(parameter);
-					// Usar el datareader para cargar desde la base de datos
+					// Use a DataReader to get data from db
 
 					IDataReader reader = sqlCommand.ExecuteReader();
 					component = new ComponentEntity();
 
 					if (reader.Read())
 					{
-						// Cargar las filas de la entidad
+						// Load fields of entity
 						component.Id = reader.GetInt32(0);
 
 						component.Height = Convert.ToDouble(reader.GetDecimal(1));
@@ -205,21 +210,21 @@ namespace UtnEmall.Server.DataModel
 						component.IdRelatedTable = reader.GetInt32(32);
 						component.IdFieldToOrder = reader.GetInt32(33);
 						component.IdFieldAssociated = reader.GetInt32(34);
-						// Agregar el objeto actual al scope
+						// Add current object to the scope
 
 						scope.Add(scopeKey, component);
-						// Agregar el objeto a la cahce de entidades cargadas
+						// Add current object to cache of loaded entities
 
 						inMemoryEntities.Add(component.Id, component);
-						// Lee el timestamp y establece las propiedades nuevo y cambiado
+						// Read the timestamp and set new and changed properties
 
 						component.Timestamp = reader.GetDateTime(35);
 						component.IsNew = false;
 						component.Changed = false;
-						// Cerrar el Reader
+						// Close the reader
 
 						reader.Close();
-						// Carga los objetos relacionadoss if required
+						// Load related objects if required
 
 						if (loadRelation)
 						{
@@ -242,29 +247,29 @@ namespace UtnEmall.Server.DataModel
 				}
 				catch (DbException dbException)
 				{
-					// Relanza la excepcion como una excepcion personalizada
+					// Catch DBException and rethrow as custom exception
 					throw new UtnEmallDataAccessException(dbException.Message, dbException);
 				}
 				finally 
 				{
-					// Cierra la conexión si fue creada dentro de la Función
+					// Close connection if it was opened by ourself
 					if (closeConnection)
 					{
 						dbConnection.Close();
 					}
 				}
 			}
-			// Retorna la entidad cargada
+			// Return the loaded entity
 			return component;
 		} 
 
 		/// <summary>
-		/// Función para cargar un ComponentEntity desde la base de datos
+		/// Function to load a ComponentEntity from database.
 		/// </summary>
-		/// <param name="id">El id del registro a cargar</param>
-		/// <returns>La instancia de la entidad</returns>
+		/// <param name="id">The ID of the record to load</param>
+		/// <returns>the entity instance</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs while accessing the database.
 		/// </exception>
 		public ComponentEntity Load(int id)
 		{
@@ -272,13 +277,13 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función para cargar un ComponentEntity desde la base de datos
+		/// Function to load a ComponentEntity from database.
 		/// </summary>
-		/// <param name="id">El id del registro a cargar</param>
-		/// <param name="loadRelation">Si es true carga la relacion</param>
-		/// <returns>La instancia de la entidad</returns>
+		/// <param name="id">The ID of the record to load</param>
+		/// <param name="loadRelation">if is true load the relation</param>
+		/// <returns>the entity instance</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs while accessing the database.
 		/// </exception>
 		public ComponentEntity Load(int id, bool loadRelations)
 		{
@@ -286,13 +291,13 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función para cargar un ComponentEntity desde la base de datos
+		/// Function to load a ComponentEntity from database.
 		/// </summary>
-		/// <param name="id">El id del registro a cargar</param>
-		/// <param name="scope">Estructura interna usada para evitar la referencia circular, debe ser proveida si es llamada desde otro data access</param>
-		/// <returns>La instancia de la entidad</returns>
+		/// <param name="id">The ID of the record to load</param>
+		/// <param name="scope">Internal structure used to avoid circular reference locks, must be provided if calling from other data access object</param>
+		/// <returns>the entity instance</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs while accessing the database.
 		/// </exception>
 		public ComponentEntity Load(int id, Dictionary<string,IEntity> scope)
 		{
@@ -300,7 +305,7 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que controla y crea la tabla y los procedimientos almacenados para esta clase.
+		/// Function to check and create table and stored procedures for this class.
 		/// </summary>
 		private static void DbChecked()
 		{
@@ -511,14 +516,14 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que guarda un ComponentEntity en la base de datos.
+		/// Function to Save a ComponentEntity in the database.
 		/// </summary>
-		/// <param name="component">ComponentEntity a guardar</param>
+		/// <param name="component">ComponentEntity to save</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// if <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void Save(ComponentEntity component)
 		{
@@ -526,15 +531,15 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que guarda un ComponentEntity en la base de datos.
+		/// Function to Save a ComponentEntity in the database.
 		/// </summary>
-		/// <param name="component">ComponentEntity a guardar</param>
-		/// <param name="scope">Estructura interna para evitar problemas con referencias circulares</param>
+		/// <param name="component">ComponentEntity to save</param>
+		/// <param name="scope">Interna structure to avoid circular reference locks. Provide an instance when calling from other data access object.</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// If <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void Save(ComponentEntity component, Dictionary<string,IEntity> scope)
 		{
@@ -542,11 +547,11 @@ namespace UtnEmall.Server.DataModel
 			{
 				throw new ArgumentException("The argument can't be null");
 			}
-			// Crear una clave unica para identificar el objeto dentro del scope interno
+			// Create a unique key to identify the object in the internal scope
 			string scopeKey = component.Id.ToString(NumberFormatInfo.InvariantInfo) + "Component";
 			if (scope != null)
 			{
-				// Si se encuentra dentro del scope lo retornamos
+				// If it's on the scope return it, don't save again
 				if (scope.ContainsKey(scopeKey))
 				{
 					return;
@@ -554,13 +559,13 @@ namespace UtnEmall.Server.DataModel
 			}
 			else 
 			{
-				// Crea un nuevo scope si este no fue enviado
+				// Create a new scope if it's not provided
 				scope = new Dictionary<string,IEntity>();
 			}
 
 			try 
 			{
-				// Crea una nueva conexion y una nueva transaccion si no hay una a nivel superior
+				// Open a DbConnection and a new transaction if it isn't on a higher level one
 				if (!isGlobalTransaction)
 				{
 					dbConnection = dataAccess.GetNewConnection();
@@ -570,7 +575,7 @@ namespace UtnEmall.Server.DataModel
 
 				string commandName = "";
 				bool isUpdate = false;
-				// Verifica si se debe hacer una actualización o una inserción
+				// Check if it is an insert or update command
 
 				if (component.IsNew || !DataAccessConnection.ExistsEntity(component.Id, "Component", "idComponent", dbConnection, dbTransaction))
 				{
@@ -608,11 +613,11 @@ namespace UtnEmall.Server.DataModel
 						connectionPointDataAccess.Delete(componentTemp5.OutputConnectionPoint, scope);
 					}
 				}
-				// Se crea un command
+				// Create a db command
 
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(commandName, dbConnection, dbTransaction);
 				sqlCommand.CommandType = CommandType.StoredProcedure;
-				// Agregar los parametros del command .
+				// Add parameters values to current command
 
 				IDbDataParameter parameter;
 				if (isUpdate)
@@ -623,7 +628,7 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				FillSaveParameters(component, sqlCommand);
-				// Ejecutar el command
+				// Execute the command
 				if (isUpdate)
 				{
 					sqlCommand.ExecuteNonQuery();
@@ -639,15 +644,15 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				scopeKey = component.Id.ToString(NumberFormatInfo.InvariantInfo) + "Component";
-				// Agregar la entidad al scope actual
+				// Add entity to current internal scope
 
 				scope.Add(scopeKey, component);
-				// Guarda las colecciones de objetos relacionados.
+				// Save collections of related objects to current entity
 				if (component.MenuItems != null)
 				{
 					this.SaveComponentCollection(new ComponentDataAccess(), component, component.MenuItems, component.IsNew, scope);
 				}
-				// Guardar objetos relacionados con la entidad actual
+				// Save objects related to current entity
 				if (component.TemplateListFormDocument != null)
 				{
 					CustomerServiceDataDataAccess customerServiceDataDataAccess = new CustomerServiceDataDataAccess();
@@ -672,32 +677,32 @@ namespace UtnEmall.Server.DataModel
 					connectionPointDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
 					connectionPointDataAccess.Save(component.OutputConnectionPoint, scope);
 				}
-				// Actualizar
+				// Update
 				Update(component);
-				// Cierra la conexión si fue abierta en la función
+				// Close transaction if initiated by me
 
 				if (!isGlobalTransaction)
 				{
 					dbTransaction.Commit();
 				}
-				// Actualizar los campos new y changed
+				// Update new and changed flags
 
 				component.IsNew = false;
 				component.Changed = false;
 			}
 			catch (DbException dbException)
 			{
-				// Anula la transaccion
+				// Rollback transaction
 				if (!isGlobalTransaction)
 				{
 					dbTransaction.Rollback();
 				}
-				// Relanza una excepcion personalizada
+				// Rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue inicializada
+				// Close connection if initiated by me
 				if (!isGlobalTransaction)
 				{
 					dbConnection.Close();
@@ -708,14 +713,14 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que elimina un ComponentEntity de la base de datos.
+		/// Function to Delete a ComponentEntity from database.
 		/// </summary>
-		/// <param name="component">ComponentEntity a eliminar</param>
+		/// <param name="component">ComponentEntity to delete</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// If <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void Delete(ComponentEntity component)
 		{
@@ -723,15 +728,15 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que elimina un ComponentEntity de la base de datos.
+		/// Function to Delete a ComponentEntity from database.
 		/// </summary>
-		/// <param name="component">ComponentEntity a eliminar</param>
-		/// <param name="scope">Estructura interna para evitar problemas de referencia circular.</param>
+		/// <param name="component">ComponentEntity to delete</param>
+		/// <param name="scope">Internal structure to avoid circular reference locks. Must provide an instance while calling from other data access object.</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// If <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void Delete(ComponentEntity component, Dictionary<string,IEntity> scope)
 		{
@@ -741,33 +746,33 @@ namespace UtnEmall.Server.DataModel
 			}
 			try 
 			{
-				// Abrir una nueva conexión e inicializar una transacción si es necesario
+				// Open connection and initialize a transaction if needed
 				if (!isGlobalTransaction)
 				{
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 					dbTransaction = dbConnection.BeginTransaction();
 				}
-				// Carga la entidad para garantizar eliminar todos los datos antiguos.
+				// Reload the entity to ensure deletion of older data
 
 				component = this.Load(component.Id, true);
 				if (component == null)
 				{
-					throw new UtnEmallDataAccessException("Error al recuperar datos al intentar eliminar.");
+					throw new UtnEmallDataAccessException("Error retrieving data while trying to delete.");
 				}
-				// Crea un nuevo command para eliminar
+				// Create a command for delete
 				string cmdText = "DeleteComponent";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				sqlCommand.CommandType = CommandType.StoredProcedure;
-				// Agrega los valores de los parametros
+				// Add values to parameters
 
 				IDbDataParameter parameterID = dataAccess.GetNewDataParameter("@idComponent", DbType.Int32);
 				parameterID.Value = component.Id;
 				sqlCommand.Parameters.Add(parameterID);
-				// Ejecuta el comando
+				// Execute the command
 
 				sqlCommand.ExecuteNonQuery();
-				// Elimina los objetos relacionados
+				// Delete related objects
 				if (component.TemplateListFormDocument != null)
 				{
 					CustomerServiceDataDataAccess customerServiceDataDataAccess = new CustomerServiceDataDataAccess();
@@ -791,16 +796,16 @@ namespace UtnEmall.Server.DataModel
 					connectionPointDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
 					connectionPointDataAccess.Delete(component.OutputConnectionPoint, scope);
 				}
-				// Confirma la transacción si se inicio dentro de la función
+				// Commit transaction if is mine
 
 				if (!isGlobalTransaction)
 				{
 					dbTransaction.Commit();
 				}
-				// Eliminamos la entidad de la lista de entidades cargadas en memoria
+				// Remove entity from loaded objects
 
 				inMemoryEntities.Remove(component.Id);
-				// Eliminamos la entidad del scope
+				// Remove entity from current internal scope
 
 				if (scope != null)
 				{
@@ -810,17 +815,17 @@ namespace UtnEmall.Server.DataModel
 			}
 			catch (DbException dbException)
 			{
-				// Anula la transaccion
+				// Rollback transaction
 				if (!isGlobalTransaction)
 				{
 					dbTransaction.Rollback();
 				}
-				// Relanza una excepcion personalizada
+				// Rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue abierta dentro de la Función
+				// Close connection if it was initiated by this instance
 				if (!isGlobalTransaction)
 				{
 					dbConnection.Close();
@@ -831,7 +836,8 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Agrega al diccionario las propiedades que pueden ser usadas como primer parametro de los metodos LoadWhere
+		/// Add to the dictionary the properties that can
+		/// be used as first parameter on the LoadWhere method.
 		/// </summary>
 		private static void SetProperties()
 		{
@@ -876,12 +882,12 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga todos los ComponentEntity desde la base de datos
+		/// Function to Load all the ComponentEntity from database.
 		/// </summary>
-		/// <param name="loadRelation">Si es true carga la relacion</param>
-		/// <returns>Una lista con todas las entidades</returns>
+		/// <param name="loadRelation">If is true load the relation</param>
+		/// <returns>A list of all the entities</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public Collection<ComponentEntity> LoadAll(bool loadRelation)
 		{
@@ -890,36 +896,36 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Abrir una nueva conexión de ser necesario
+				// Open a new connection if necessary
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Construir la consulta
+				// Build the query string
 
 				string cmdText = "SELECT idComponent FROM [Component]";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-				// Crea un datareader
+				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 
 				ComponentEntity component;
-				// Lee los ids y los inserta en una lista
+				// Read the Ids and insert on a list
 
 				List<int> listId = new List<int>();
 				while (reader.Read())
 				{
 					listId.Add(reader.GetInt32(0));
 				}
-				// Cierra el DataReader
+				// Close the DataReader
 
 				reader.Close();
-				// Crea un scope
+				// Create a scope
 
 				Dictionary<string,IEntity> scope = new Dictionary<string,IEntity>();
-				// Carga las entidades y las agrega a la lista a retornar
+				// Load entities and add to return list
 
 				foreach(int  id in listId)
 				{
@@ -929,35 +935,37 @@ namespace UtnEmall.Server.DataModel
 			}
 			catch (DbException dbException)
 			{
-				// Relanza la excepcion como una excepcion personalizada
+				// Catch DbException and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión
+				// Close the connection
 				if (closeConnection)
 				{
 					dbConnection.Close();
 				}
 			}
-			// Retorna la entidad cargada
+			// Return the loaded
 			return componentList;
 		} 
 
 		/// <summary>
-		/// Función para cargar un ComponentEntity desde la base de datos
+		/// Function to Load a ComponentEntity from database.
 		/// </summary>
-		/// <param name="propertyName">Un string con el nombre del campo o una constante de la clase que representa ese campo</param>
-		/// <param name="expValue">El valor que será insertado en la clausula where</param>
-		/// <param name="loadRelation">Si es true carga la relacion</param>
-		/// <returns>Una lista que contiene todas las entidades que concuerdan con la clausula where</returns>
+		/// <param name="propertyName">A string with the name of the field or a
+		/// constant from the class that represent that field</param>
+		/// <param name="expValue">The value that will be inserted on the where
+		/// clause of the sql query</param>
+		/// <param name="loadRelation">If is true load the relations</param>
+		/// <returns>A list containing all the entities that match the where clause</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null or vacio.
-		/// Si <paramref name="propertyName"/> no es una propiedad de la clase ComponentEntity.
-		/// Si <paramref name="expValue"/> es null.
+		/// If <paramref name="propertyName"/> is null or empty.
+		/// If <paramref name="propertyName"/> is not a property of ComponentEntity class.
+		/// If <paramref name="expValue"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public Collection<ComponentEntity> LoadWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType)
 		{
@@ -974,7 +982,7 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Abrir una nueva conexión con la base de datos si es necesario
+				// Open a new connection with a database if necessary
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
@@ -983,13 +991,13 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				string op = DataAccessConnection.GetOperatorString(operatorType);
-				// Construir la consulta
+				// Build the query string
 
 				string cmdText = "SELECT idComponent, height, width, heightFactor, widthFactor, xCoordinateRelativeToParent, yCoordinateRelativeToParent, xFactorCoordinateRelativeToParent, yFactorCoordinateRelativeToParent, bold, fontColor, fontName, fontSize, italic, underline, textAlign, backgroundColor, text, dataTypes, typeOrder, title, stringHelp, descriptiveText, componentType, finalizeService, idCustomerServiceData, idTemplateListFormDocument, idParentComponent, idInputConnectionPoint, idOutputConnectionPoint, idOutputDataContext, idInputDataContext, idRelatedTable, idFieldToOrder, idFieldAssociated, timestamp FROM [Component] WHERE " + propertyName + " " + op + " @expValue";
-				// Crea el command
+				// Create the command
 
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-				// Agrega los parametros al command
+				// Add parameters values to the command
 
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter();
 				parameter.ParameterName = "@expValue";
@@ -998,21 +1006,21 @@ namespace UtnEmall.Server.DataModel
 
 				parameter.Value = expValue;
 				sqlCommand.Parameters.Add(parameter);
-				// Crea un datareader
+				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 				componentList = new Collection<ComponentEntity>();
 				ComponentEntity component;
 				List<int> listId = new List<int>();
-				// Agrega los id a una lista de ids
+				// Add list of Ids to a list
 				while (reader.Read())
 				{
 					listId.Add(reader.GetInt32(0));
 				}
-				// Cerrar el Reader
+				// Close the reader
 
 				reader.Close();
-				// Carga las entidades
+				// Load the entities
 
 				foreach(int  id in listId)
 				{
@@ -1022,12 +1030,12 @@ namespace UtnEmall.Server.DataModel
 			}
 			catch (DbException dbException)
 			{
-				// Relanza la excepcion como una excepcion personalizada
+				// Catch DbException and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue abierta dentro de la Función
+				// Close connection if it was opened by myself
 				if (closeConnection)
 				{
 					dbConnection.Close();
@@ -1037,10 +1045,10 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga una lista de ComponentEntity desde la base de datos por idCustomerServiceData.
+		/// Function to Load a list of ComponentEntity from database by idCustomerServiceData.
 		/// </summary>
-		/// <param name="idCustomerServiceData">Foreing key</param>
-		/// <param name="scope">Estructura de datos interna para evitar referencias circulares</param>
+		/// <param name="idCustomerServiceData">Foreing key column</param>
+		/// <param name="scope">Internal data structure to avoid circular reference problems</param>
 		/// <returns>List of ComponentEntity</returns>
 		public Collection<ComponentEntity> LoadByCustomerServiceDataCollection(int idCustomerServiceData, Dictionary<string,IEntity> scope)
 		{
@@ -1048,27 +1056,27 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Crea una nueva conexión
+				// Create a new connection
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Crea un command
+				// Create a command
 
 				string cmdText = "SELECT idComponent FROM [Component] WHERE idCustomerServiceData = @idCustomerServiceData";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-				// Establece los parametros del command
+				// Set command parameters values
 
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idCustomerServiceData", DbType.Int32);
 				parameter.Value = idCustomerServiceData;
 				sqlCommand.Parameters.Add(parameter);
-				// Crea un DataReader
+				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 				componentList = new Collection<ComponentEntity>();
-				// Carga los ids de los objetos relacionados en una lista de int.
+				// Load Ids of related objects into a list of int
 
 				List<int> listId = new List<int>();
 				while (reader.Read())
@@ -1077,7 +1085,7 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				reader.Close();
-				// Carga los objetos relacionados y los agrega a la coleccion
+				// Load related objects and add to collection
 
 				foreach(int  id in listId)
 				{
@@ -1086,37 +1094,37 @@ namespace UtnEmall.Server.DataModel
 			}
 			catch (DbException dbException)
 			{
-				// Relanzamos una excepcion personalizada
+				// Rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cerrar la conexión si fue inicializada
+				// Close connection if initiated be me
 				if (closeConnection)
 				{
 					dbConnection.Close();
 				}
 			}
-			// retornamos la lista de objetos relacionados
+			// Return related objects list
 			return componentList;
 		} 
 
 		/// <summary>
-		/// Función para cargar una lista de ComponentEntity desde la base de datos por idCustomerServiceData.
+		/// Function to Load a list of ComponentEntity from database by idCustomerServiceData.
 		/// </summary>
-		/// <param name="idCustomerServiceData">columna Foreing key</param>
-		/// <returns>IList de ComponentEntity</returns>
+		/// <param name="idCustomerServiceData">Foreing key column</param>
+		/// <returns>IList of ComponentEntity</returns>
 		public Collection<ComponentEntity> LoadByCustomerServiceDataCollection(int idCustomerServiceData)
 		{
 			return LoadByCustomerServiceDataCollection(idCustomerServiceData, null);
 		} 
 
 		/// <summary>
-		/// Función que carga la relacion TemplateListFormDocument desde la base de datos
+		/// Function to Load the relation TemplateListFormDocument from database.
 		/// </summary>
-		/// <param name="component">Padre: ComponentEntity</param>
+		/// <param name="component">ComponentEntity parent</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// if <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		public void LoadRelationTemplateListFormDocument(ComponentEntity component, Dictionary<string,IEntity> scope)
 		{
@@ -1127,19 +1135,19 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Crea una nueva conexión si es necesario
+				// Create a new connection if needed
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Crea un nuevo command
+				// Create a command
 
 				string cmdText = "SELECT idTemplateListFormDocument FROM [Component] WHERE idComponent = @idComponent";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idComponent", DbType.Int32);
-				// Establece los valores a los parametros del command
+				// Set command parameters values
 
 				parameter.Value = component.Id;
 				sqlCommand.Parameters.Add(parameter);
@@ -1151,19 +1159,19 @@ namespace UtnEmall.Server.DataModel
 					// Create data access objects and set connection objects
 					CustomerServiceDataDataAccess customerServiceDataDataAccess = new CustomerServiceDataDataAccess();
 					customerServiceDataDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-					// Carga los objetos relacionados
+					// Load related object
 
 					component.TemplateListFormDocument = customerServiceDataDataAccess.Load(((int)idRelation), true, scope);
 				}
 			}
 			catch (DbException dbException)
 			{
-				// Relanza una excepcion personalizada
+				// Catch and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue inicializada
+				// Close connection if initiated by me
 				if (closeConnection)
 				{
 					dbConnection.Close();
@@ -1172,12 +1180,12 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga la relacion MenuItems desde la base de datos
+		/// Function to Load the relation MenuItems from database.
 		/// </summary>
-		/// <param name="component">Entidad padre ComponentEntity</param>
-		/// <param name="scope">Estructura de datos interna para evitar los problemas de referencia circular</param>
+		/// <param name="component">ComponentEntity parent</param>
+		/// <param name="scope">Internal structure to avoid problems with circular referencies</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// if <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		public void LoadRelationMenuItems(ComponentEntity component, Dictionary<string,IEntity> scope)
 		{
@@ -1185,26 +1193,26 @@ namespace UtnEmall.Server.DataModel
 			{
 				throw new ArgumentException("The argument can't be null");
 			}
-			// Crea un objeto data access para los objetos relacionados
+			// Create data access object for related object
 			ComponentDataAccess componentDataAccess = new ComponentDataAccess();
-			// Establece los objetos de la conexión al data access de la relacion
+			// Set connection objects to the data access
 
 			componentDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-			// Carga los objetos relacionadoss
+			// Load related objects
 
 			component.MenuItems = componentDataAccess.LoadByComponentCollection(component.Id, scope);
 		} 
 
 		/// <summary>
-		/// Actualiza la base de datos para reflejar el estado actual de la lista.
+		/// Updates the database to reflect the current state of the list.
 		/// </summary>
-		/// <param name="collectionDataAccess">El IDataAccess de la relación</param>
-		/// <param name="parent">El objeto padre</param>
-		/// <param name="collection">una colección de items</param>
-		/// <param name="isNewParent">Si el padre es un objeto nuevo</param>
-		/// <param name="scope">Estructura de datos interna para evitar problemas de referencia circular</param>
+		/// <param name="collectionDataAccess">the IDataAccess of the relation</param>
+		/// <param name="parent">the parent of the object</param>
+		/// <param name="collection">a collection of items</param>
+		/// <param name="isNewParent">if the parent is a new object</param>
+		/// <param name="scope">internal data structure to aviod problems with circular referencies on entities</param>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		private void SaveComponentCollection(ComponentDataAccess collectionDataAccess, ComponentEntity parent, Collection<ComponentEntity> collection, bool isNewParent, Dictionary<string,IEntity> scope)
 		{
@@ -1212,9 +1220,9 @@ namespace UtnEmall.Server.DataModel
 			{
 				return;
 			}
-			// Establece los objetos de conexión
+			// Set connection objects on collection data access
 			collectionDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-			// Establece la relación padre/hijo
+			// Set the child/parent relation
 
 			for (int  i = 0; i < collection.Count; i++)
 			{
@@ -1222,7 +1230,7 @@ namespace UtnEmall.Server.DataModel
 				collection[i].ParentComponent = parent;
 				collection[i].Changed = changed;
 			}
-			// Si el padre es nuevo guarda todos los hijos, sino controla las diferencias con la base de datos.
+			// If the parent is new save all childs, else check diferencies with db
 
 			if (isNewParent)
 			{
@@ -1233,7 +1241,7 @@ namespace UtnEmall.Server.DataModel
 			}
 			else 
 			{
-				// Controla los hijos que ya no son parte de la relación
+				// Check the childs that are not part of the parent any more
 				string idList = "0";
 				if (collection.Count > 0)
 				{
@@ -1244,7 +1252,7 @@ namespace UtnEmall.Server.DataModel
 				{
 					idList += ", " + collection[i].Id;
 				}
-				// Retorna los ids que ya no existe en la colección actual
+				// Returns the ids that doesn't exists in the current collection
 
 				string command = "SELECT idComponent FROM [Component] WHERE idParentComponent = @idParentComponent AND idComponent NOT IN (" + idList + ")";
 
@@ -1256,7 +1264,7 @@ namespace UtnEmall.Server.DataModel
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 				Collection<ComponentEntity> objectsToDelete = new Collection<ComponentEntity>();
-				// Inserta los id en una lista
+				// Insert Ids on a list
 
 				List<int> listId = new List<int>();
 				while (reader.Read())
@@ -1265,14 +1273,15 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				reader.Close();
-				// Carga los items a ser eliminados
+				// Load items to be removed
 
 				foreach(int  id in listId)
 				{
 					ComponentEntity entityToDelete = collectionDataAccess.Load(id, scope);
 					objectsToDelete.Add(entityToDelete);
 				}
-				// Esto se realiza porque el reader debe ser cerrado despues de eliminar las entidades
+				// Have to do this because the reader must be closed before
+				// deletion of entities
 
 				for (int  i = 0; i < objectsToDelete.Count; i++)
 				{
@@ -1280,18 +1289,18 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				System.DateTime timestamp;
-				// Controla todas las propiedades de los items de la colección
-				// para verificar si alguno cambio
+				// Check all the properties of the collection items
+				// to see if they have changed (timestamp)
 
 				for (int  i = 0; i < collection.Count; i++)
 				{
 					ComponentEntity item = collection[i];
 					if (!item.Changed && !item.IsNew)
 					{
-						// Crea el command
+						// Create the command
 						string sql = "SELECT timestamp FROM [Component] WHERE idComponent = @idComponent";
 						IDbCommand sqlCommandTimestamp = dataAccess.GetNewCommand(sql, dbConnection, dbTransaction);
-						// Establece los datos a los parametros del command
+						// Set the command's parameters values
 
 						IDbDataParameter sqlParameterIdPreference = dataAccess.GetNewDataParameter("@idComponent", DbType.Int32);
 						sqlParameterIdPreference.Value = item.Id;
@@ -1303,7 +1312,7 @@ namespace UtnEmall.Server.DataModel
 							item.Changed = true;
 						}
 					}
-					// Guarda el item si cambio o es nuevo
+					// Save the item if it changed or is new
 
 					if (item.Changed || item.IsNew)
 					{
@@ -1314,21 +1323,21 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función para eliminar una lista de entidades relacionadas desde la base de datos
+		/// Function to Delete a list of related entities from database.
 		/// </summary>
-		/// <param name="collectionDataAccess">IDataAccess de la relacion</param>
-		/// <param name="collection">La colección de entidades a eliminar</param>
-		/// <param name="scope">Estructura interna para evitar problemas de referencia circular</param>
-		/// <returns>True si la colección no es nula</returns>
+		/// <param name="collectionDataAccess">IDataAccess of the relation</param>
+		/// <param name="collection">The collection of entities to delete</param>
+		/// <param name="scope">Internal structure to keep safe circular referencies</param>
+		/// <returns>True if collection not null</returns>
 		private bool DeleteComponentCollection(ComponentDataAccess collectionDataAccess, Collection<ComponentEntity> collection, Dictionary<string,IEntity> scope)
 		{
 			if (collection == null)
 			{
 				return false;
 			}
-			// Establece los objetos de conexión al data access de la relación.
+			// Set connection objects of related data access object
 			collectionDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-			// Elimina los objetos relacionados
+			// Delete related objects
 
 			for (int  i = 0; i < collection.Count; i++)
 			{
@@ -1338,10 +1347,10 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga una lista de ComponentEntity desde la base de datos por idComponent.
+		/// Function to Load a list of ComponentEntity from database by idComponent.
 		/// </summary>
-		/// <param name="idComponent">Foreing key</param>
-		/// <param name="scope">Estructura de datos interna para evitar referencias circulares</param>
+		/// <param name="idComponent">Foreing key column</param>
+		/// <param name="scope">Internal data structure to avoid circular reference problems</param>
 		/// <returns>List of ComponentEntity</returns>
 		public Collection<ComponentEntity> LoadByComponentCollection(int idComponent, Dictionary<string,IEntity> scope)
 		{
@@ -1349,27 +1358,27 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Crea una nueva conexión
+				// Create a new connection
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Crea un command
+				// Create a command
 
 				string cmdText = "SELECT idComponent FROM [Component] WHERE idParentComponent = @idParentComponent";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-				// Establece los parametros del command
+				// Set command parameters values
 
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idParentComponent", DbType.Int32);
 				parameter.Value = idComponent;
 				sqlCommand.Parameters.Add(parameter);
-				// Crea un DataReader
+				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 				componentList = new Collection<ComponentEntity>();
-				// Carga los ids de los objetos relacionados en una lista de int.
+				// Load Ids of related objects into a list of int
 
 				List<int> listId = new List<int>();
 				while (reader.Read())
@@ -1378,7 +1387,7 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				reader.Close();
-				// Carga los objetos relacionados y los agrega a la coleccion
+				// Load related objects and add to collection
 
 				foreach(int  id in listId)
 				{
@@ -1387,37 +1396,37 @@ namespace UtnEmall.Server.DataModel
 			}
 			catch (DbException dbException)
 			{
-				// Relanzamos una excepcion personalizada
+				// Rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cerrar la conexión si fue inicializada
+				// Close connection if initiated be me
 				if (closeConnection)
 				{
 					dbConnection.Close();
 				}
 			}
-			// retornamos la lista de objetos relacionados
+			// Return related objects list
 			return componentList;
 		} 
 
 		/// <summary>
-		/// Función para cargar una lista de ComponentEntity desde la base de datos por idComponent.
+		/// Function to Load a list of ComponentEntity from database by idComponent.
 		/// </summary>
-		/// <param name="idComponent">columna Foreing key</param>
-		/// <returns>IList de ComponentEntity</returns>
+		/// <param name="idComponent">Foreing key column</param>
+		/// <returns>IList of ComponentEntity</returns>
 		public Collection<ComponentEntity> LoadByComponentCollection(int idComponent)
 		{
 			return LoadByComponentCollection(idComponent, null);
 		} 
 
 		/// <summary>
-		/// Función que carga la relacion ParentComponent desde la base de datos
+		/// Function to Load the relation ParentComponent from database.
 		/// </summary>
-		/// <param name="component">Padre: ComponentEntity</param>
+		/// <param name="component">ComponentEntity parent</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// if <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		public void LoadRelationParentComponent(ComponentEntity component, Dictionary<string,IEntity> scope)
 		{
@@ -1428,19 +1437,19 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Crea una nueva conexión si es necesario
+				// Create a new connection if needed
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Crea un nuevo command
+				// Create a command
 
 				string cmdText = "SELECT idParentComponent FROM [Component] WHERE idComponent = @idComponent";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idComponent", DbType.Int32);
-				// Establece los valores a los parametros del command
+				// Set command parameters values
 
 				parameter.Value = component.Id;
 				sqlCommand.Parameters.Add(parameter);
@@ -1452,19 +1461,19 @@ namespace UtnEmall.Server.DataModel
 					// Create data access objects and set connection objects
 					ComponentDataAccess componentDataAccess = new ComponentDataAccess();
 					componentDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-					// Carga los objetos relacionados
+					// Load related object
 
 					component.ParentComponent = componentDataAccess.Load(((int)idRelation), true, scope);
 				}
 			}
 			catch (DbException dbException)
 			{
-				// Relanza una excepcion personalizada
+				// Catch and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue inicializada
+				// Close connection if initiated by me
 				if (closeConnection)
 				{
 					dbConnection.Close();
@@ -1473,11 +1482,11 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga la relacion InputConnectionPoint desde la base de datos
+		/// Function to Load the relation InputConnectionPoint from database.
 		/// </summary>
-		/// <param name="component">Padre: ComponentEntity</param>
+		/// <param name="component">ComponentEntity parent</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// if <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		public void LoadRelationInputConnectionPoint(ComponentEntity component, Dictionary<string,IEntity> scope)
 		{
@@ -1488,19 +1497,19 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Crea una nueva conexión si es necesario
+				// Create a new connection if needed
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Crea un nuevo command
+				// Create a command
 
 				string cmdText = "SELECT idInputConnectionPoint FROM [Component] WHERE idComponent = @idComponent";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idComponent", DbType.Int32);
-				// Establece los valores a los parametros del command
+				// Set command parameters values
 
 				parameter.Value = component.Id;
 				sqlCommand.Parameters.Add(parameter);
@@ -1512,19 +1521,19 @@ namespace UtnEmall.Server.DataModel
 					// Create data access objects and set connection objects
 					ConnectionPointDataAccess connectionPointDataAccess = new ConnectionPointDataAccess();
 					connectionPointDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-					// Carga los objetos relacionados
+					// Load related object
 
 					component.InputConnectionPoint = connectionPointDataAccess.Load(((int)idRelation), true, scope);
 				}
 			}
 			catch (DbException dbException)
 			{
-				// Relanza una excepcion personalizada
+				// Catch and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue inicializada
+				// Close connection if initiated by me
 				if (closeConnection)
 				{
 					dbConnection.Close();
@@ -1533,11 +1542,11 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga la relacion OutputConnectionPoint desde la base de datos
+		/// Function to Load the relation OutputConnectionPoint from database.
 		/// </summary>
-		/// <param name="component">Padre: ComponentEntity</param>
+		/// <param name="component">ComponentEntity parent</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// if <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		public void LoadRelationOutputConnectionPoint(ComponentEntity component, Dictionary<string,IEntity> scope)
 		{
@@ -1548,19 +1557,19 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Crea una nueva conexión si es necesario
+				// Create a new connection if needed
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Crea un nuevo command
+				// Create a command
 
 				string cmdText = "SELECT idOutputConnectionPoint FROM [Component] WHERE idComponent = @idComponent";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idComponent", DbType.Int32);
-				// Establece los valores a los parametros del command
+				// Set command parameters values
 
 				parameter.Value = component.Id;
 				sqlCommand.Parameters.Add(parameter);
@@ -1572,19 +1581,19 @@ namespace UtnEmall.Server.DataModel
 					// Create data access objects and set connection objects
 					ConnectionPointDataAccess connectionPointDataAccess = new ConnectionPointDataAccess();
 					connectionPointDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-					// Carga los objetos relacionados
+					// Load related object
 
 					component.OutputConnectionPoint = connectionPointDataAccess.Load(((int)idRelation), true, scope);
 				}
 			}
 			catch (DbException dbException)
 			{
-				// Relanza una excepcion personalizada
+				// Catch and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue inicializada
+				// Close connection if initiated by me
 				if (closeConnection)
 				{
 					dbConnection.Close();
@@ -1593,11 +1602,11 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga la relacion OutputDataContext desde la base de datos
+		/// Function to Load the relation OutputDataContext from database.
 		/// </summary>
-		/// <param name="component">Padre: ComponentEntity</param>
+		/// <param name="component">ComponentEntity parent</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// if <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		public void LoadRelationOutputDataContext(ComponentEntity component, Dictionary<string,IEntity> scope)
 		{
@@ -1608,19 +1617,19 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Crea una nueva conexión si es necesario
+				// Create a new connection if needed
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Crea un nuevo command
+				// Create a command
 
 				string cmdText = "SELECT idOutputDataContext FROM [Component] WHERE idComponent = @idComponent";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idComponent", DbType.Int32);
-				// Establece los valores a los parametros del command
+				// Set command parameters values
 
 				parameter.Value = component.Id;
 				sqlCommand.Parameters.Add(parameter);
@@ -1632,19 +1641,19 @@ namespace UtnEmall.Server.DataModel
 					// Create data access objects and set connection objects
 					TableDataAccess tableDataAccess = new TableDataAccess();
 					tableDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-					// Carga los objetos relacionados
+					// Load related object
 
 					component.OutputDataContext = tableDataAccess.Load(((int)idRelation), true, scope);
 				}
 			}
 			catch (DbException dbException)
 			{
-				// Relanza una excepcion personalizada
+				// Catch and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue inicializada
+				// Close connection if initiated by me
 				if (closeConnection)
 				{
 					dbConnection.Close();
@@ -1653,11 +1662,11 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga la relacion InputDataContext desde la base de datos
+		/// Function to Load the relation InputDataContext from database.
 		/// </summary>
-		/// <param name="component">Padre: ComponentEntity</param>
+		/// <param name="component">ComponentEntity parent</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// if <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		public void LoadRelationInputDataContext(ComponentEntity component, Dictionary<string,IEntity> scope)
 		{
@@ -1668,19 +1677,19 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Crea una nueva conexión si es necesario
+				// Create a new connection if needed
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Crea un nuevo command
+				// Create a command
 
 				string cmdText = "SELECT idInputDataContext FROM [Component] WHERE idComponent = @idComponent";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idComponent", DbType.Int32);
-				// Establece los valores a los parametros del command
+				// Set command parameters values
 
 				parameter.Value = component.Id;
 				sqlCommand.Parameters.Add(parameter);
@@ -1692,19 +1701,19 @@ namespace UtnEmall.Server.DataModel
 					// Create data access objects and set connection objects
 					TableDataAccess tableDataAccess = new TableDataAccess();
 					tableDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-					// Carga los objetos relacionados
+					// Load related object
 
 					component.InputDataContext = tableDataAccess.Load(((int)idRelation), true, scope);
 				}
 			}
 			catch (DbException dbException)
 			{
-				// Relanza una excepcion personalizada
+				// Catch and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue inicializada
+				// Close connection if initiated by me
 				if (closeConnection)
 				{
 					dbConnection.Close();
@@ -1713,11 +1722,11 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga la relacion RelatedTable desde la base de datos
+		/// Function to Load the relation RelatedTable from database.
 		/// </summary>
-		/// <param name="component">Padre: ComponentEntity</param>
+		/// <param name="component">ComponentEntity parent</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// if <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		public void LoadRelationRelatedTable(ComponentEntity component, Dictionary<string,IEntity> scope)
 		{
@@ -1728,19 +1737,19 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Crea una nueva conexión si es necesario
+				// Create a new connection if needed
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Crea un nuevo command
+				// Create a command
 
 				string cmdText = "SELECT idRelatedTable FROM [Component] WHERE idComponent = @idComponent";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idComponent", DbType.Int32);
-				// Establece los valores a los parametros del command
+				// Set command parameters values
 
 				parameter.Value = component.Id;
 				sqlCommand.Parameters.Add(parameter);
@@ -1752,19 +1761,19 @@ namespace UtnEmall.Server.DataModel
 					// Create data access objects and set connection objects
 					TableDataAccess tableDataAccess = new TableDataAccess();
 					tableDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-					// Carga los objetos relacionados
+					// Load related object
 
 					component.RelatedTable = tableDataAccess.Load(((int)idRelation), true, scope);
 				}
 			}
 			catch (DbException dbException)
 			{
-				// Relanza una excepcion personalizada
+				// Catch and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue inicializada
+				// Close connection if initiated by me
 				if (closeConnection)
 				{
 					dbConnection.Close();
@@ -1773,11 +1782,11 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga la relacion FieldToOrder desde la base de datos
+		/// Function to Load the relation FieldToOrder from database.
 		/// </summary>
-		/// <param name="component">Padre: ComponentEntity</param>
+		/// <param name="component">ComponentEntity parent</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// if <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		public void LoadRelationFieldToOrder(ComponentEntity component, Dictionary<string,IEntity> scope)
 		{
@@ -1788,19 +1797,19 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Crea una nueva conexión si es necesario
+				// Create a new connection if needed
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Crea un nuevo command
+				// Create a command
 
 				string cmdText = "SELECT idFieldToOrder FROM [Component] WHERE idComponent = @idComponent";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idComponent", DbType.Int32);
-				// Establece los valores a los parametros del command
+				// Set command parameters values
 
 				parameter.Value = component.Id;
 				sqlCommand.Parameters.Add(parameter);
@@ -1812,19 +1821,19 @@ namespace UtnEmall.Server.DataModel
 					// Create data access objects and set connection objects
 					FieldDataAccess fieldDataAccess = new FieldDataAccess();
 					fieldDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-					// Carga los objetos relacionados
+					// Load related object
 
 					component.FieldToOrder = fieldDataAccess.Load(((int)idRelation), true, scope);
 				}
 			}
 			catch (DbException dbException)
 			{
-				// Relanza una excepcion personalizada
+				// Catch and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue inicializada
+				// Close connection if initiated by me
 				if (closeConnection)
 				{
 					dbConnection.Close();
@@ -1833,11 +1842,11 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga la relacion FieldAssociated desde la base de datos
+		/// Function to Load the relation FieldAssociated from database.
 		/// </summary>
-		/// <param name="component">Padre: ComponentEntity</param>
+		/// <param name="component">ComponentEntity parent</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// if <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		public void LoadRelationFieldAssociated(ComponentEntity component, Dictionary<string,IEntity> scope)
 		{
@@ -1848,19 +1857,19 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Crea una nueva conexión si es necesario
+				// Create a new connection if needed
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Crea un nuevo command
+				// Create a command
 
 				string cmdText = "SELECT idFieldAssociated FROM [Component] WHERE idComponent = @idComponent";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idComponent", DbType.Int32);
-				// Establece los valores a los parametros del command
+				// Set command parameters values
 
 				parameter.Value = component.Id;
 				sqlCommand.Parameters.Add(parameter);
@@ -1872,19 +1881,19 @@ namespace UtnEmall.Server.DataModel
 					// Create data access objects and set connection objects
 					FieldDataAccess fieldDataAccess = new FieldDataAccess();
 					fieldDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-					// Carga los objetos relacionados
+					// Load related object
 
 					component.FieldAssociated = fieldDataAccess.Load(((int)idRelation), true, scope);
 				}
 			}
 			catch (DbException dbException)
 			{
-				// Relanza una excepcion personalizada
+				// Catch and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue inicializada
+				// Close connection if initiated by me
 				if (closeConnection)
 				{
 					dbConnection.Close();
@@ -1893,14 +1902,14 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que actualiza un ComponentEntity en la base de datos.
+		/// Function to Update a ComponentEntity from database.
 		/// </summary>
-		/// <param name="component">ComponentEntity a actualizar</param>
+		/// <param name="component">ComponentEntity to update</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="component"/> no es un <c>ComponentEntity</c>.
+		/// if <paramref name="component"/> is not a <c>ComponentEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		private void Update(ComponentEntity component)
 		{
@@ -1908,11 +1917,11 @@ namespace UtnEmall.Server.DataModel
 			{
 				throw new ArgumentException("The argument can't be null", "component");
 			}
-			// Construir un comando para actualizar
+			// Build update command
 			string commandName = "UpdateComponent";
 			IDbCommand sqlCommand = dataAccess.GetNewCommand(commandName, dbConnection, dbTransaction);
 			sqlCommand.CommandType = CommandType.StoredProcedure;
-			// Establece los parametros de actualización
+			// Set update parameters values
 
 			IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idComponent", DbType.Int32);
 			parameter.Value = component.Id;
@@ -2083,10 +2092,10 @@ namespace UtnEmall.Server.DataModel
 
 			parameter.Value = component.IdFieldAssociated;
 			sqlCommand.Parameters.Add(parameter);
-			// Ejecuta la actualización
+			// Execute the update
 
 			sqlCommand.ExecuteNonQuery();
-			// Actualizar los campos new y changed
+			// Update new and changed flags
 
 			component.IsNew = false;
 			component.Changed = false;

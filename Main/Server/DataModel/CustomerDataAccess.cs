@@ -12,8 +12,9 @@ namespace UtnEmall.Server.DataModel
 {
 
 	/// <summary>
-	/// El <c>CustomerDataAccess</c> es una clase
-	/// que provee acceso a la base de datos para la tabla correspondiente.
+	/// The <c>CustomerDataAccess</c> is a class
+	/// that provides access to the modelName stored on
+	/// the database.
 	/// </summary>
 	public class CustomerDataAccess
 	{
@@ -25,12 +26,13 @@ namespace UtnEmall.Server.DataModel
 		private static Dictionary<string,Type> properties; 
 		private static bool dbChecked; 
 		/// <summary>
-		/// Inicializa una nueva instancia de
-		/// <c>CustomerDataAccess</c>.
-		/// Chequea si la tabla y los procedimientos almacenados
-		/// ya existen en la base de datos, si no, los crea
-		/// Establece las propiedades que permite realizar consultas
-		/// llamando los metodos LoadWhere.
+		/// Initializes a new instance of a
+		/// <c>CustomerDataAccess</c> type.
+		/// It checks if the table and stored procedure
+		/// are already on the database, if not, it creates
+		/// them.
+		/// Sets the properties that allows to make queries
+		/// by calling the LoadWhere method.
 		/// </summary>
 		public  CustomerDataAccess()
 		{
@@ -49,12 +51,13 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Establece la conexión y la transacción en el caso de que una transacción global se este ejecutando
+		/// set the connection and the transaction to the object, in the case
+		/// that a global transaction is running.
 		/// </summary>
-		/// <param name="connection">La conexión IDbConnection</param>
-		/// <param name="transaction">La transacción global IDbTransaction</param>
+		/// <param name="connection">The IDbConnection connection to the database</param>
+		/// <param name="transaction">The global IDbTransaction transaction</param>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void SetConnectionObjects(IDbConnection connection, IDbTransaction transaction)
 		{
@@ -64,27 +67,29 @@ namespace UtnEmall.Server.DataModel
 			}
 			this.dbConnection = connection;
 			this.dbTransaction = transaction;
+			// FIXME : The name of this flag is not always apropiated
+
 			this.isGlobalTransaction = true;
 		} 
 
 		/// <summary>
-		/// Función para cargar un CustomerEntity desde la base de datos.
+		/// Function to load a CustomerEntity from database.
 		/// </summary>
-		/// <param name="id">El id del registro a cargar</param>
-		/// <param name="loadRelation">Si es true carga las relaciones</param>
-		/// <param name="scope">Estructura interna usada para evitar la referencia circular, debe ser proveida si es llamada desde otro data access</param>
-		/// <returns>La instancia de la entidad</returns>
+		/// <param name="id">The ID of the record to load</param>
+		/// <param name="loadRelation">if is true load the relation</param>
+		/// <param name="scope">Internal structure used to avoid circular reference locks, must be provided if calling from other data access object</param>
+		/// <returns>The entity instance</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs while accessing the database.
 		/// </exception>
 		public CustomerEntity Load(int id, bool loadRelation, Dictionary<string,IEntity> scope)
 		{
-			// Crea una clave para el objeto de scope interno
+			// Build a key for internal scope object
 			string scopeKey = id.ToString(NumberFormatInfo.InvariantInfo) + "Customer";
 			if (scope != null)
 			{
-				// Si el scope contiene el objeto, este ya fue cargado
-				// retorna el objeto situado en el scope para evitar referencias circulares
+				// If scope contains the object it was already loaded,
+				// return it to avoid circular references
 				if (scope.ContainsKey(scopeKey))
 				{
 					return ((CustomerEntity)scope[scopeKey]);
@@ -92,18 +97,18 @@ namespace UtnEmall.Server.DataModel
 			}
 			else 
 			{
-				// Si no existe un scope, crear uno
+				// If there isn't a current scope create one
 				scope = new Dictionary<string,IEntity>();
 			}
 
 			CustomerEntity customer = null;
-			// Chequear si la entidad fue ya cargada por el data access actual
-			// y retornar si fue ya cargada
+			// Check if the entity was already loaded by current data access object
+			// and return it if that is the case
 
 			if (inMemoryEntities.ContainsKey(id))
 			{
 				customer = inMemoryEntities[id];
-				// Agregar el objeto actual al scope
+				// Add current object to current load scope
 
 				scope.Add(scopeKey, customer);
 			}
@@ -112,7 +117,7 @@ namespace UtnEmall.Server.DataModel
 				bool closeConnection = false;
 				try 
 				{
-					// Abrir una nueva conexión si no es una transaccion
+					// Open a new connection if it isn't on a transaction
 					if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 					{
 						closeConnection = true;
@@ -120,23 +125,23 @@ namespace UtnEmall.Server.DataModel
 						dbConnection.Open();
 					}
 
-					string cmdText = "SELECT idCustomer, name, surname, address, phoneNumber, userName, password, idMall, timestamp FROM [Customer] WHERE idCustomer = @idCustomer";
-					// Crea el command
+					string cmdText = "SELECT idCustomer, name, surname, address, phoneNumber, userName, password, birthday, howManyChildren, gender, civilState, idMall, timestamp FROM [Customer] WHERE idCustomer = @idCustomer";
+					// Create the command
 
 					IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-					// Crear el parametro id para la consulta
+					// Create the Id parameter for the query
 
 					IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idCustomer", DbType.Int32);
 					parameter.Value = id;
 					sqlCommand.Parameters.Add(parameter);
-					// Usar el datareader para cargar desde la base de datos
+					// Use a DataReader to get data from db
 
 					IDataReader reader = sqlCommand.ExecuteReader();
 					customer = new CustomerEntity();
 
 					if (reader.Read())
 					{
-						// Cargar las filas de la entidad
+						// Load fields of entity
 						customer.Id = reader.GetInt32(0);
 
 						if (!reader.IsDBNull(1))
@@ -164,22 +169,26 @@ namespace UtnEmall.Server.DataModel
 							customer.Password = reader.GetString(6);
 						}
 
-						customer.IdMall = reader.GetInt32(7);
-						// Agregar el objeto actual al scope
+						customer.Birthday = reader.GetDateTime(7);
+						customer.HowManyChildren = reader.GetInt32(8);
+						customer.Gender = reader.GetInt32(9);
+						customer.CivilState = reader.GetInt32(10);
+						customer.IdMall = reader.GetInt32(11);
+						// Add current object to the scope
 
 						scope.Add(scopeKey, customer);
-						// Agregar el objeto a la cahce de entidades cargadas
+						// Add current object to cache of loaded entities
 
 						inMemoryEntities.Add(customer.Id, customer);
-						// Lee el timestamp y establece las propiedades nuevo y cambiado
+						// Read the timestamp and set new and changed properties
 
-						customer.Timestamp = reader.GetDateTime(8);
+						customer.Timestamp = reader.GetDateTime(12);
 						customer.IsNew = false;
 						customer.Changed = false;
-						// Cerrar el Reader
+						// Close the reader
 
 						reader.Close();
-						// Carga los objetos relacionadoss if required
+						// Load related objects if required
 
 						if (loadRelation)
 						{
@@ -194,29 +203,29 @@ namespace UtnEmall.Server.DataModel
 				}
 				catch (DbException dbException)
 				{
-					// Relanza la excepcion como una excepcion personalizada
+					// Catch DBException and rethrow as custom exception
 					throw new UtnEmallDataAccessException(dbException.Message, dbException);
 				}
 				finally 
 				{
-					// Cierra la conexión si fue creada dentro de la Función
+					// Close connection if it was opened by ourself
 					if (closeConnection)
 					{
 						dbConnection.Close();
 					}
 				}
 			}
-			// Retorna la entidad cargada
+			// Return the loaded entity
 			return customer;
 		} 
 
 		/// <summary>
-		/// Función para cargar un CustomerEntity desde la base de datos
+		/// Function to load a CustomerEntity from database.
 		/// </summary>
-		/// <param name="id">El id del registro a cargar</param>
-		/// <returns>La instancia de la entidad</returns>
+		/// <param name="id">The ID of the record to load</param>
+		/// <returns>the entity instance</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs while accessing the database.
 		/// </exception>
 		public CustomerEntity Load(int id)
 		{
@@ -224,13 +233,13 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función para cargar un CustomerEntity desde la base de datos
+		/// Function to load a CustomerEntity from database.
 		/// </summary>
-		/// <param name="id">El id del registro a cargar</param>
-		/// <param name="loadRelation">Si es true carga la relacion</param>
-		/// <returns>La instancia de la entidad</returns>
+		/// <param name="id">The ID of the record to load</param>
+		/// <param name="loadRelation">if is true load the relation</param>
+		/// <returns>the entity instance</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs while accessing the database.
 		/// </exception>
 		public CustomerEntity Load(int id, bool loadRelations)
 		{
@@ -238,13 +247,13 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función para cargar un CustomerEntity desde la base de datos
+		/// Function to load a CustomerEntity from database.
 		/// </summary>
-		/// <param name="id">El id del registro a cargar</param>
-		/// <param name="scope">Estructura interna usada para evitar la referencia circular, debe ser proveida si es llamada desde otro data access</param>
-		/// <returns>La instancia de la entidad</returns>
+		/// <param name="id">The ID of the record to load</param>
+		/// <param name="scope">Internal structure used to avoid circular reference locks, must be provided if calling from other data access object</param>
+		/// <returns>the entity instance</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs while accessing the database.
 		/// </exception>
 		public CustomerEntity Load(int id, Dictionary<string,IEntity> scope)
 		{
@@ -252,7 +261,7 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que controla y crea la tabla y los procedimientos almacenados para esta clase.
+		/// Function to check and create table and stored procedures for this class.
 		/// </summary>
 		private static void DbChecked()
 		{
@@ -260,8 +269,8 @@ namespace UtnEmall.Server.DataModel
 			{
 				return;
 			}
-			string[] fieldsName = new string[]{"idCustomer", "name", "surname", "address", "phoneNumber", "userName", "password", "idMall"};
-			Type[] fieldsType = new Type[]{typeof( int ), typeof( string ), typeof( string ), typeof( string ), typeof( string ), typeof( string ), typeof( string ), typeof( int )};
+			string[] fieldsName = new string[]{"idCustomer", "name", "surname", "address", "phoneNumber", "userName", "password", "birthday", "howManyChildren", "gender", "civilState", "idMall"};
+			Type[] fieldsType = new Type[]{typeof( int ), typeof( string ), typeof( string ), typeof( string ), typeof( string ), typeof( string ), typeof( string ), typeof( System.DateTime ), typeof( int ), typeof( int ), typeof( int ), typeof( int )};
 
 			bool existsTable = DataAccessConnection.DBCheckedTable("Customer");
 
@@ -348,6 +357,22 @@ namespace UtnEmall.Server.DataModel
 			}
 
 			sqlCommand.Parameters.Add(parameter);
+			parameter = dataAccess.GetNewDataParameter("@birthday", DbType.DateTime);
+
+			parameter.Value = customer.Birthday;
+			sqlCommand.Parameters.Add(parameter);
+			parameter = dataAccess.GetNewDataParameter("@howManyChildren", DbType.Int32);
+
+			parameter.Value = customer.HowManyChildren;
+			sqlCommand.Parameters.Add(parameter);
+			parameter = dataAccess.GetNewDataParameter("@gender", DbType.Int32);
+
+			parameter.Value = customer.Gender;
+			sqlCommand.Parameters.Add(parameter);
+			parameter = dataAccess.GetNewDataParameter("@civilState", DbType.Int32);
+
+			parameter.Value = customer.CivilState;
+			sqlCommand.Parameters.Add(parameter);
 			parameter = dataAccess.GetNewDataParameter("@idMall", DbType.Int32);
 
 			parameter.Value = customer.IdMall;
@@ -355,14 +380,14 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que guarda un CustomerEntity en la base de datos.
+		/// Function to Save a CustomerEntity in the database.
 		/// </summary>
-		/// <param name="customer">CustomerEntity a guardar</param>
+		/// <param name="customer">CustomerEntity to save</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="customer"/> no es un <c>CustomerEntity</c>.
+		/// if <paramref name="customer"/> is not a <c>CustomerEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void Save(CustomerEntity customer)
 		{
@@ -370,15 +395,15 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que guarda un CustomerEntity en la base de datos.
+		/// Function to Save a CustomerEntity in the database.
 		/// </summary>
-		/// <param name="customer">CustomerEntity a guardar</param>
-		/// <param name="scope">Estructura interna para evitar problemas con referencias circulares</param>
+		/// <param name="customer">CustomerEntity to save</param>
+		/// <param name="scope">Interna structure to avoid circular reference locks. Provide an instance when calling from other data access object.</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="customer"/> no es un <c>CustomerEntity</c>.
+		/// If <paramref name="customer"/> is not a <c>CustomerEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void Save(CustomerEntity customer, Dictionary<string,IEntity> scope)
 		{
@@ -386,11 +411,11 @@ namespace UtnEmall.Server.DataModel
 			{
 				throw new ArgumentException("The argument can't be null");
 			}
-			// Crear una clave unica para identificar el objeto dentro del scope interno
+			// Create a unique key to identify the object in the internal scope
 			string scopeKey = customer.Id.ToString(NumberFormatInfo.InvariantInfo) + "Customer";
 			if (scope != null)
 			{
-				// Si se encuentra dentro del scope lo retornamos
+				// If it's on the scope return it, don't save again
 				if (scope.ContainsKey(scopeKey))
 				{
 					return;
@@ -398,13 +423,13 @@ namespace UtnEmall.Server.DataModel
 			}
 			else 
 			{
-				// Crea un nuevo scope si este no fue enviado
+				// Create a new scope if it's not provided
 				scope = new Dictionary<string,IEntity>();
 			}
 
 			try 
 			{
-				// Crea una nueva conexion y una nueva transaccion si no hay una a nivel superior
+				// Open a DbConnection and a new transaction if it isn't on a higher level one
 				if (!isGlobalTransaction)
 				{
 					dbConnection = dataAccess.GetNewConnection();
@@ -414,7 +439,7 @@ namespace UtnEmall.Server.DataModel
 
 				string commandName = "";
 				bool isUpdate = false;
-				// Verifica si se debe hacer una actualización o una inserción
+				// Check if it is an insert or update command
 
 				if (customer.IsNew || !DataAccessConnection.ExistsEntity(customer.Id, "Customer", "idCustomer", dbConnection, dbTransaction))
 				{
@@ -425,10 +450,10 @@ namespace UtnEmall.Server.DataModel
 					isUpdate = true;
 					commandName = "UpdateCustomer";
 				}
-				// Se crea un command
+				// Create a db command
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(commandName, dbConnection, dbTransaction);
 				sqlCommand.CommandType = CommandType.StoredProcedure;
-				// Agregar los parametros del command .
+				// Add parameters values to current command
 
 				IDbDataParameter parameter;
 				if (isUpdate)
@@ -439,7 +464,7 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				FillSaveParameters(customer, sqlCommand);
-				// Ejecutar el command
+				// Execute the command
 				if (isUpdate)
 				{
 					sqlCommand.ExecuteNonQuery();
@@ -455,10 +480,10 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				scopeKey = customer.Id.ToString(NumberFormatInfo.InvariantInfo) + "Customer";
-				// Agregar la entidad al scope actual
+				// Add entity to current internal scope
 
 				scope.Add(scopeKey, customer);
-				// Guarda las colecciones de objetos relacionados.
+				// Save collections of related objects to current entity
 				if (customer.Preferences != null)
 				{
 					this.SavePreferenceCollection(new PreferenceDataAccess(), customer, customer.Preferences, customer.IsNew, scope);
@@ -467,31 +492,31 @@ namespace UtnEmall.Server.DataModel
 				{
 					this.SaveDeviceProfileCollection(new DeviceProfileDataAccess(), customer, customer.DeviceProfile, customer.IsNew, scope);
 				}
-				// Guardar objetos relacionados con la entidad actual
-				// Actualizar
-				// Cierra la conexión si fue abierta en la función
+				// Save objects related to current entity
+				// Update
+				// Close transaction if initiated by me
 				if (!isGlobalTransaction)
 				{
 					dbTransaction.Commit();
 				}
-				// Actualizar los campos new y changed
+				// Update new and changed flags
 
 				customer.IsNew = false;
 				customer.Changed = false;
 			}
 			catch (DbException dbException)
 			{
-				// Anula la transaccion
+				// Rollback transaction
 				if (!isGlobalTransaction)
 				{
 					dbTransaction.Rollback();
 				}
-				// Relanza una excepcion personalizada
+				// Rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue inicializada
+				// Close connection if initiated by me
 				if (!isGlobalTransaction)
 				{
 					dbConnection.Close();
@@ -502,14 +527,14 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que elimina un CustomerEntity de la base de datos.
+		/// Function to Delete a CustomerEntity from database.
 		/// </summary>
-		/// <param name="customer">CustomerEntity a eliminar</param>
+		/// <param name="customer">CustomerEntity to delete</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="customer"/> no es un <c>CustomerEntity</c>.
+		/// If <paramref name="customer"/> is not a <c>CustomerEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void Delete(CustomerEntity customer)
 		{
@@ -517,15 +542,15 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que elimina un CustomerEntity de la base de datos.
+		/// Function to Delete a CustomerEntity from database.
 		/// </summary>
-		/// <param name="customer">CustomerEntity a eliminar</param>
-		/// <param name="scope">Estructura interna para evitar problemas de referencia circular.</param>
+		/// <param name="customer">CustomerEntity to delete</param>
+		/// <param name="scope">Internal structure to avoid circular reference locks. Must provide an instance while calling from other data access object.</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="customer"/> no es un <c>CustomerEntity</c>.
+		/// If <paramref name="customer"/> is not a <c>CustomerEntity</c>.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public void Delete(CustomerEntity customer, Dictionary<string,IEntity> scope)
 		{
@@ -535,33 +560,33 @@ namespace UtnEmall.Server.DataModel
 			}
 			try 
 			{
-				// Abrir una nueva conexión e inicializar una transacción si es necesario
+				// Open connection and initialize a transaction if needed
 				if (!isGlobalTransaction)
 				{
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 					dbTransaction = dbConnection.BeginTransaction();
 				}
-				// Carga la entidad para garantizar eliminar todos los datos antiguos.
+				// Reload the entity to ensure deletion of older data
 
 				customer = this.Load(customer.Id, true);
 				if (customer == null)
 				{
-					throw new UtnEmallDataAccessException("Error al recuperar datos al intentar eliminar.");
+					throw new UtnEmallDataAccessException("Error retrieving data while trying to delete.");
 				}
-				// Crea un nuevo command para eliminar
+				// Create a command for delete
 				string cmdText = "DeleteCustomer";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 				sqlCommand.CommandType = CommandType.StoredProcedure;
-				// Agrega los valores de los parametros
+				// Add values to parameters
 
 				IDbDataParameter parameterID = dataAccess.GetNewDataParameter("@idCustomer", DbType.Int32);
 				parameterID.Value = customer.Id;
 				sqlCommand.Parameters.Add(parameterID);
-				// Ejecuta el comando
+				// Execute the command
 
 				sqlCommand.ExecuteNonQuery();
-				// Elimina los objetos relacionados
+				// Delete related objects
 				if (customer.Preferences != null)
 				{
 					this.DeletePreferenceCollection(new PreferenceDataAccess(), customer.Preferences, scope);
@@ -570,16 +595,16 @@ namespace UtnEmall.Server.DataModel
 				{
 					this.DeleteDeviceProfileCollection(new DeviceProfileDataAccess(), customer.DeviceProfile, scope);
 				}
-				// Confirma la transacción si se inicio dentro de la función
+				// Commit transaction if is mine
 
 				if (!isGlobalTransaction)
 				{
 					dbTransaction.Commit();
 				}
-				// Eliminamos la entidad de la lista de entidades cargadas en memoria
+				// Remove entity from loaded objects
 
 				inMemoryEntities.Remove(customer.Id);
-				// Eliminamos la entidad del scope
+				// Remove entity from current internal scope
 
 				if (scope != null)
 				{
@@ -589,17 +614,17 @@ namespace UtnEmall.Server.DataModel
 			}
 			catch (DbException dbException)
 			{
-				// Anula la transaccion
+				// Rollback transaction
 				if (!isGlobalTransaction)
 				{
 					dbTransaction.Rollback();
 				}
-				// Relanza una excepcion personalizada
+				// Rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue abierta dentro de la Función
+				// Close connection if it was initiated by this instance
 				if (!isGlobalTransaction)
 				{
 					dbConnection.Close();
@@ -610,7 +635,8 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Agrega al diccionario las propiedades que pueden ser usadas como primer parametro de los metodos LoadWhere
+		/// Add to the dictionary the properties that can
+		/// be used as first parameter on the LoadWhere method.
 		/// </summary>
 		private static void SetProperties()
 		{
@@ -624,16 +650,20 @@ namespace UtnEmall.Server.DataModel
 			properties.Add("phoneNumber", typeof( string ));
 			properties.Add("userName", typeof( string ));
 			properties.Add("password", typeof( string ));
+			properties.Add("birthday", typeof( System.DateTime ));
+			properties.Add("howManyChildren", typeof( int ));
+			properties.Add("gender", typeof( int ));
+			properties.Add("civilState", typeof( int ));
 			properties.Add("idMall", typeof( int ));
 		} 
 
 		/// <summary>
-		/// Función que carga todos los CustomerEntity desde la base de datos
+		/// Function to Load all the CustomerEntity from database.
 		/// </summary>
-		/// <param name="loadRelation">Si es true carga la relacion</param>
-		/// <returns>Una lista con todas las entidades</returns>
+		/// <param name="loadRelation">If is true load the relation</param>
+		/// <returns>A list of all the entities</returns>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre mientras se accede a la base de datos
+		/// If a DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public Collection<CustomerEntity> LoadAll(bool loadRelation)
 		{
@@ -642,36 +672,36 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Abrir una nueva conexión de ser necesario
+				// Open a new connection if necessary
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Construir la consulta
+				// Build the query string
 
 				string cmdText = "SELECT idCustomer FROM [Customer]";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-				// Crea un datareader
+				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 
 				CustomerEntity customer;
-				// Lee los ids y los inserta en una lista
+				// Read the Ids and insert on a list
 
 				List<int> listId = new List<int>();
 				while (reader.Read())
 				{
 					listId.Add(reader.GetInt32(0));
 				}
-				// Cierra el DataReader
+				// Close the DataReader
 
 				reader.Close();
-				// Crea un scope
+				// Create a scope
 
 				Dictionary<string,IEntity> scope = new Dictionary<string,IEntity>();
-				// Carga las entidades y las agrega a la lista a retornar
+				// Load entities and add to return list
 
 				foreach(int  id in listId)
 				{
@@ -681,35 +711,37 @@ namespace UtnEmall.Server.DataModel
 			}
 			catch (DbException dbException)
 			{
-				// Relanza la excepcion como una excepcion personalizada
+				// Catch DbException and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión
+				// Close the connection
 				if (closeConnection)
 				{
 					dbConnection.Close();
 				}
 			}
-			// Retorna la entidad cargada
+			// Return the loaded
 			return customerList;
 		} 
 
 		/// <summary>
-		/// Función para cargar un CustomerEntity desde la base de datos
+		/// Function to Load a CustomerEntity from database.
 		/// </summary>
-		/// <param name="propertyName">Un string con el nombre del campo o una constante de la clase que representa ese campo</param>
-		/// <param name="expValue">El valor que será insertado en la clausula where</param>
-		/// <param name="loadRelation">Si es true carga la relacion</param>
-		/// <returns>Una lista que contiene todas las entidades que concuerdan con la clausula where</returns>
+		/// <param name="propertyName">A string with the name of the field or a
+		/// constant from the class that represent that field</param>
+		/// <param name="expValue">The value that will be inserted on the where
+		/// clause of the sql query</param>
+		/// <param name="loadRelation">If is true load the relations</param>
+		/// <returns>A list containing all the entities that match the where clause</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null or vacio.
-		/// Si <paramref name="propertyName"/> no es una propiedad de la clase CustomerEntity.
-		/// Si <paramref name="expValue"/> es null.
+		/// If <paramref name="propertyName"/> is null or empty.
+		/// If <paramref name="propertyName"/> is not a property of CustomerEntity class.
+		/// If <paramref name="expValue"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		public Collection<CustomerEntity> LoadWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType)
 		{
@@ -726,7 +758,7 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Abrir una nueva conexión con la base de datos si es necesario
+				// Open a new connection with a database if necessary
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
@@ -735,13 +767,13 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				string op = DataAccessConnection.GetOperatorString(operatorType);
-				// Construir la consulta
+				// Build the query string
 
-				string cmdText = "SELECT idCustomer, name, surname, address, phoneNumber, userName, password, idMall, timestamp FROM [Customer] WHERE " + propertyName + " " + op + " @expValue";
-				// Crea el command
+				string cmdText = "SELECT idCustomer, name, surname, address, phoneNumber, userName, password, birthday, howManyChildren, gender, civilState, idMall, timestamp FROM [Customer] WHERE " + propertyName + " " + op + " @expValue";
+				// Create the command
 
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-				// Agrega los parametros al command
+				// Add parameters values to the command
 
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter();
 				parameter.ParameterName = "@expValue";
@@ -750,21 +782,21 @@ namespace UtnEmall.Server.DataModel
 
 				parameter.Value = expValue;
 				sqlCommand.Parameters.Add(parameter);
-				// Crea un datareader
+				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 				customerList = new Collection<CustomerEntity>();
 				CustomerEntity customer;
 				List<int> listId = new List<int>();
-				// Agrega los id a una lista de ids
+				// Add list of Ids to a list
 				while (reader.Read())
 				{
 					listId.Add(reader.GetInt32(0));
 				}
-				// Cerrar el Reader
+				// Close the reader
 
 				reader.Close();
-				// Carga las entidades
+				// Load the entities
 
 				foreach(int  id in listId)
 				{
@@ -774,12 +806,12 @@ namespace UtnEmall.Server.DataModel
 			}
 			catch (DbException dbException)
 			{
-				// Relanza la excepcion como una excepcion personalizada
+				// Catch DbException and rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cierra la conexión si fue abierta dentro de la Función
+				// Close connection if it was opened by myself
 				if (closeConnection)
 				{
 					dbConnection.Close();
@@ -789,12 +821,12 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga la relacion Preferences desde la base de datos
+		/// Function to Load the relation Preferences from database.
 		/// </summary>
-		/// <param name="customer">Entidad padre CustomerEntity</param>
-		/// <param name="scope">Estructura de datos interna para evitar los problemas de referencia circular</param>
+		/// <param name="customer">CustomerEntity parent</param>
+		/// <param name="scope">Internal structure to avoid problems with circular referencies</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="customer"/> no es un <c>CustomerEntity</c>.
+		/// if <paramref name="customer"/> is not a <c>CustomerEntity</c>.
 		/// </exception>
 		public void LoadRelationPreferences(CustomerEntity customer, Dictionary<string,IEntity> scope)
 		{
@@ -802,26 +834,26 @@ namespace UtnEmall.Server.DataModel
 			{
 				throw new ArgumentException("The argument can't be null");
 			}
-			// Crea un objeto data access para los objetos relacionados
+			// Create data access object for related object
 			PreferenceDataAccess preferenceDataAccess = new PreferenceDataAccess();
-			// Establece los objetos de la conexión al data access de la relacion
+			// Set connection objects to the data access
 
 			preferenceDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-			// Carga los objetos relacionadoss
+			// Load related objects
 
 			customer.Preferences = preferenceDataAccess.LoadByCustomerCollection(customer.Id, scope);
 		} 
 
 		/// <summary>
-		/// Actualiza la base de datos para reflejar el estado actual de la lista.
+		/// Updates the database to reflect the current state of the list.
 		/// </summary>
-		/// <param name="collectionDataAccess">El IDataAccess de la relación</param>
-		/// <param name="parent">El objeto padre</param>
-		/// <param name="collection">una colección de items</param>
-		/// <param name="isNewParent">Si el padre es un objeto nuevo</param>
-		/// <param name="scope">Estructura de datos interna para evitar problemas de referencia circular</param>
+		/// <param name="collectionDataAccess">the IDataAccess of the relation</param>
+		/// <param name="parent">the parent of the object</param>
+		/// <param name="collection">a collection of items</param>
+		/// <param name="isNewParent">if the parent is a new object</param>
+		/// <param name="scope">internal data structure to aviod problems with circular referencies on entities</param>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		private void SavePreferenceCollection(PreferenceDataAccess collectionDataAccess, CustomerEntity parent, Collection<PreferenceEntity> collection, bool isNewParent, Dictionary<string,IEntity> scope)
 		{
@@ -829,9 +861,9 @@ namespace UtnEmall.Server.DataModel
 			{
 				return;
 			}
-			// Establece los objetos de conexión
+			// Set connection objects on collection data access
 			collectionDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-			// Establece la relación padre/hijo
+			// Set the child/parent relation
 
 			for (int  i = 0; i < collection.Count; i++)
 			{
@@ -839,7 +871,7 @@ namespace UtnEmall.Server.DataModel
 				collection[i].Customer = parent;
 				collection[i].Changed = changed;
 			}
-			// Si el padre es nuevo guarda todos los hijos, sino controla las diferencias con la base de datos.
+			// If the parent is new save all childs, else check diferencies with db
 
 			if (isNewParent)
 			{
@@ -850,7 +882,7 @@ namespace UtnEmall.Server.DataModel
 			}
 			else 
 			{
-				// Controla los hijos que ya no son parte de la relación
+				// Check the childs that are not part of the parent any more
 				string idList = "0";
 				if (collection.Count > 0)
 				{
@@ -861,7 +893,7 @@ namespace UtnEmall.Server.DataModel
 				{
 					idList += ", " + collection[i].Id;
 				}
-				// Retorna los ids que ya no existe en la colección actual
+				// Returns the ids that doesn't exists in the current collection
 
 				string command = "SELECT idPreference FROM [Preference] WHERE idCustomer = @idCustomer AND idPreference NOT IN (" + idList + ")";
 
@@ -873,7 +905,7 @@ namespace UtnEmall.Server.DataModel
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 				Collection<PreferenceEntity> objectsToDelete = new Collection<PreferenceEntity>();
-				// Inserta los id en una lista
+				// Insert Ids on a list
 
 				List<int> listId = new List<int>();
 				while (reader.Read())
@@ -882,14 +914,15 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				reader.Close();
-				// Carga los items a ser eliminados
+				// Load items to be removed
 
 				foreach(int  id in listId)
 				{
 					PreferenceEntity entityToDelete = collectionDataAccess.Load(id, scope);
 					objectsToDelete.Add(entityToDelete);
 				}
-				// Esto se realiza porque el reader debe ser cerrado despues de eliminar las entidades
+				// Have to do this because the reader must be closed before
+				// deletion of entities
 
 				for (int  i = 0; i < objectsToDelete.Count; i++)
 				{
@@ -897,18 +930,18 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				System.DateTime timestamp;
-				// Controla todas las propiedades de los items de la colección
-				// para verificar si alguno cambio
+				// Check all the properties of the collection items
+				// to see if they have changed (timestamp)
 
 				for (int  i = 0; i < collection.Count; i++)
 				{
 					PreferenceEntity item = collection[i];
 					if (!item.Changed && !item.IsNew)
 					{
-						// Crea el command
+						// Create the command
 						string sql = "SELECT timestamp FROM [Preference] WHERE idPreference = @idPreference";
 						IDbCommand sqlCommandTimestamp = dataAccess.GetNewCommand(sql, dbConnection, dbTransaction);
-						// Establece los datos a los parametros del command
+						// Set the command's parameters values
 
 						IDbDataParameter sqlParameterIdPreference = dataAccess.GetNewDataParameter("@idPreference", DbType.Int32);
 						sqlParameterIdPreference.Value = item.Id;
@@ -920,7 +953,7 @@ namespace UtnEmall.Server.DataModel
 							item.Changed = true;
 						}
 					}
-					// Guarda el item si cambio o es nuevo
+					// Save the item if it changed or is new
 
 					if (item.Changed || item.IsNew)
 					{
@@ -931,21 +964,21 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función para eliminar una lista de entidades relacionadas desde la base de datos
+		/// Function to Delete a list of related entities from database.
 		/// </summary>
-		/// <param name="collectionDataAccess">IDataAccess de la relacion</param>
-		/// <param name="collection">La colección de entidades a eliminar</param>
-		/// <param name="scope">Estructura interna para evitar problemas de referencia circular</param>
-		/// <returns>True si la colección no es nula</returns>
+		/// <param name="collectionDataAccess">IDataAccess of the relation</param>
+		/// <param name="collection">The collection of entities to delete</param>
+		/// <param name="scope">Internal structure to keep safe circular referencies</param>
+		/// <returns>True if collection not null</returns>
 		private bool DeletePreferenceCollection(PreferenceDataAccess collectionDataAccess, Collection<PreferenceEntity> collection, Dictionary<string,IEntity> scope)
 		{
 			if (collection == null)
 			{
 				return false;
 			}
-			// Establece los objetos de conexión al data access de la relación.
+			// Set connection objects of related data access object
 			collectionDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-			// Elimina los objetos relacionados
+			// Delete related objects
 
 			for (int  i = 0; i < collection.Count; i++)
 			{
@@ -955,10 +988,10 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función que carga una lista de CustomerEntity desde la base de datos por idMall.
+		/// Function to Load a list of CustomerEntity from database by idMall.
 		/// </summary>
-		/// <param name="idMall">Foreing key</param>
-		/// <param name="scope">Estructura de datos interna para evitar referencias circulares</param>
+		/// <param name="idMall">Foreing key column</param>
+		/// <param name="scope">Internal data structure to avoid circular reference problems</param>
 		/// <returns>List of CustomerEntity</returns>
 		public Collection<CustomerEntity> LoadByMallCollection(int idMall, Dictionary<string,IEntity> scope)
 		{
@@ -966,27 +999,27 @@ namespace UtnEmall.Server.DataModel
 			bool closeConnection = false;
 			try 
 			{
-				// Crea una nueva conexión
+				// Create a new connection
 				if (dbConnection == null || dbConnection.State.CompareTo(ConnectionState.Closed) == 0)
 				{
 					closeConnection = true;
 					dbConnection = dataAccess.GetNewConnection();
 					dbConnection.Open();
 				}
-				// Crea un command
+				// Create a command
 
 				string cmdText = "SELECT idCustomer FROM [Customer] WHERE idMall = @idMall";
 				IDbCommand sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-				// Establece los parametros del command
+				// Set command parameters values
 
 				IDbDataParameter parameter = dataAccess.GetNewDataParameter("@idMall", DbType.Int32);
 				parameter.Value = idMall;
 				sqlCommand.Parameters.Add(parameter);
-				// Crea un DataReader
+				// Create a DataReader
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 				customerList = new Collection<CustomerEntity>();
-				// Carga los ids de los objetos relacionados en una lista de int.
+				// Load Ids of related objects into a list of int
 
 				List<int> listId = new List<int>();
 				while (reader.Read())
@@ -995,7 +1028,7 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				reader.Close();
-				// Carga los objetos relacionados y los agrega a la coleccion
+				// Load related objects and add to collection
 
 				foreach(int  id in listId)
 				{
@@ -1004,38 +1037,38 @@ namespace UtnEmall.Server.DataModel
 			}
 			catch (DbException dbException)
 			{
-				// Relanzamos una excepcion personalizada
+				// Rethrow as custom exception
 				throw new UtnEmallDataAccessException(dbException.Message, dbException);
 			}
 			finally 
 			{
-				// Cerrar la conexión si fue inicializada
+				// Close connection if initiated be me
 				if (closeConnection)
 				{
 					dbConnection.Close();
 				}
 			}
-			// retornamos la lista de objetos relacionados
+			// Return related objects list
 			return customerList;
 		} 
 
 		/// <summary>
-		/// Función para cargar una lista de CustomerEntity desde la base de datos por idMall.
+		/// Function to Load a list of CustomerEntity from database by idMall.
 		/// </summary>
-		/// <param name="idMall">columna Foreing key</param>
-		/// <returns>IList de CustomerEntity</returns>
+		/// <param name="idMall">Foreing key column</param>
+		/// <returns>IList of CustomerEntity</returns>
 		public Collection<CustomerEntity> LoadByMallCollection(int idMall)
 		{
 			return LoadByMallCollection(idMall, null);
 		} 
 
 		/// <summary>
-		/// Función que carga la relacion DeviceProfile desde la base de datos
+		/// Function to Load the relation DeviceProfile from database.
 		/// </summary>
-		/// <param name="customer">Entidad padre CustomerEntity</param>
-		/// <param name="scope">Estructura de datos interna para evitar los problemas de referencia circular</param>
+		/// <param name="customer">CustomerEntity parent</param>
+		/// <param name="scope">Internal structure to avoid problems with circular referencies</param>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="customer"/> no es un <c>CustomerEntity</c>.
+		/// if <paramref name="customer"/> is not a <c>CustomerEntity</c>.
 		/// </exception>
 		public void LoadRelationDeviceProfile(CustomerEntity customer, Dictionary<string,IEntity> scope)
 		{
@@ -1043,26 +1076,26 @@ namespace UtnEmall.Server.DataModel
 			{
 				throw new ArgumentException("The argument can't be null");
 			}
-			// Crea un objeto data access para los objetos relacionados
+			// Create data access object for related object
 			DeviceProfileDataAccess deviceProfileDataAccess = new DeviceProfileDataAccess();
-			// Establece los objetos de la conexión al data access de la relacion
+			// Set connection objects to the data access
 
 			deviceProfileDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-			// Carga los objetos relacionadoss
+			// Load related objects
 
 			customer.DeviceProfile = deviceProfileDataAccess.LoadByCustomerCollection(customer.Id, scope);
 		} 
 
 		/// <summary>
-		/// Actualiza la base de datos para reflejar el estado actual de la lista.
+		/// Updates the database to reflect the current state of the list.
 		/// </summary>
-		/// <param name="collectionDataAccess">El IDataAccess de la relación</param>
-		/// <param name="parent">El objeto padre</param>
-		/// <param name="collection">una colección de items</param>
-		/// <param name="isNewParent">Si el padre es un objeto nuevo</param>
-		/// <param name="scope">Estructura de datos interna para evitar problemas de referencia circular</param>
+		/// <param name="collectionDataAccess">the IDataAccess of the relation</param>
+		/// <param name="parent">the parent of the object</param>
+		/// <param name="collection">a collection of items</param>
+		/// <param name="isNewParent">if the parent is a new object</param>
+		/// <param name="scope">internal data structure to aviod problems with circular referencies on entities</param>
 		/// <exception cref="UtnEmallDataAccessException">
-		/// Si una DbException ocurre cuando se accede a la base de datos
+		/// If an DbException occurs in the try block while accessing the database.
 		/// </exception>
 		private void SaveDeviceProfileCollection(DeviceProfileDataAccess collectionDataAccess, CustomerEntity parent, Collection<DeviceProfileEntity> collection, bool isNewParent, Dictionary<string,IEntity> scope)
 		{
@@ -1070,9 +1103,9 @@ namespace UtnEmall.Server.DataModel
 			{
 				return;
 			}
-			// Establece los objetos de conexión
+			// Set connection objects on collection data access
 			collectionDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-			// Establece la relación padre/hijo
+			// Set the child/parent relation
 
 			for (int  i = 0; i < collection.Count; i++)
 			{
@@ -1080,7 +1113,7 @@ namespace UtnEmall.Server.DataModel
 				collection[i].Customer = parent;
 				collection[i].Changed = changed;
 			}
-			// Si el padre es nuevo guarda todos los hijos, sino controla las diferencias con la base de datos.
+			// If the parent is new save all childs, else check diferencies with db
 
 			if (isNewParent)
 			{
@@ -1091,7 +1124,7 @@ namespace UtnEmall.Server.DataModel
 			}
 			else 
 			{
-				// Controla los hijos que ya no son parte de la relación
+				// Check the childs that are not part of the parent any more
 				string idList = "0";
 				if (collection.Count > 0)
 				{
@@ -1102,7 +1135,7 @@ namespace UtnEmall.Server.DataModel
 				{
 					idList += ", " + collection[i].Id;
 				}
-				// Retorna los ids que ya no existe en la colección actual
+				// Returns the ids that doesn't exists in the current collection
 
 				string command = "SELECT idDeviceProfile FROM [DeviceProfile] WHERE idCustomer = @idCustomer AND idDeviceProfile NOT IN (" + idList + ")";
 
@@ -1114,7 +1147,7 @@ namespace UtnEmall.Server.DataModel
 
 				IDataReader reader = sqlCommand.ExecuteReader();
 				Collection<DeviceProfileEntity> objectsToDelete = new Collection<DeviceProfileEntity>();
-				// Inserta los id en una lista
+				// Insert Ids on a list
 
 				List<int> listId = new List<int>();
 				while (reader.Read())
@@ -1123,14 +1156,15 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				reader.Close();
-				// Carga los items a ser eliminados
+				// Load items to be removed
 
 				foreach(int  id in listId)
 				{
 					DeviceProfileEntity entityToDelete = collectionDataAccess.Load(id, scope);
 					objectsToDelete.Add(entityToDelete);
 				}
-				// Esto se realiza porque el reader debe ser cerrado despues de eliminar las entidades
+				// Have to do this because the reader must be closed before
+				// deletion of entities
 
 				for (int  i = 0; i < objectsToDelete.Count; i++)
 				{
@@ -1138,18 +1172,18 @@ namespace UtnEmall.Server.DataModel
 				}
 
 				System.DateTime timestamp;
-				// Controla todas las propiedades de los items de la colección
-				// para verificar si alguno cambio
+				// Check all the properties of the collection items
+				// to see if they have changed (timestamp)
 
 				for (int  i = 0; i < collection.Count; i++)
 				{
 					DeviceProfileEntity item = collection[i];
 					if (!item.Changed && !item.IsNew)
 					{
-						// Crea el command
+						// Create the command
 						string sql = "SELECT timestamp FROM [DeviceProfile] WHERE idDeviceProfile = @idDeviceProfile";
 						IDbCommand sqlCommandTimestamp = dataAccess.GetNewCommand(sql, dbConnection, dbTransaction);
-						// Establece los datos a los parametros del command
+						// Set the command's parameters values
 
 						IDbDataParameter sqlParameterIdPreference = dataAccess.GetNewDataParameter("@idDeviceProfile", DbType.Int32);
 						sqlParameterIdPreference.Value = item.Id;
@@ -1161,7 +1195,7 @@ namespace UtnEmall.Server.DataModel
 							item.Changed = true;
 						}
 					}
-					// Guarda el item si cambio o es nuevo
+					// Save the item if it changed or is new
 
 					if (item.Changed || item.IsNew)
 					{
@@ -1172,21 +1206,21 @@ namespace UtnEmall.Server.DataModel
 		} 
 
 		/// <summary>
-		/// Función para eliminar una lista de entidades relacionadas desde la base de datos
+		/// Function to Delete a list of related entities from database.
 		/// </summary>
-		/// <param name="collectionDataAccess">IDataAccess de la relacion</param>
-		/// <param name="collection">La colección de entidades a eliminar</param>
-		/// <param name="scope">Estructura interna para evitar problemas de referencia circular</param>
-		/// <returns>True si la colección no es nula</returns>
+		/// <param name="collectionDataAccess">IDataAccess of the relation</param>
+		/// <param name="collection">The collection of entities to delete</param>
+		/// <param name="scope">Internal structure to keep safe circular referencies</param>
+		/// <returns>True if collection not null</returns>
 		private bool DeleteDeviceProfileCollection(DeviceProfileDataAccess collectionDataAccess, Collection<DeviceProfileEntity> collection, Dictionary<string,IEntity> scope)
 		{
 			if (collection == null)
 			{
 				return false;
 			}
-			// Establece los objetos de conexión al data access de la relación.
+			// Set connection objects of related data access object
 			collectionDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-			// Elimina los objetos relacionados
+			// Delete related objects
 
 			for (int  i = 0; i < collection.Count; i++)
 			{

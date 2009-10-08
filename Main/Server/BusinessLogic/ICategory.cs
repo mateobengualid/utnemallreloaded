@@ -7,119 +7,123 @@ namespace UtnEmall.Server.BusinessLogic
 
 	[System.ServiceModel.ServiceContract]
 	/// <summary>
-	/// La interfaz <c>ICategory</c> es un contrato de servicio web para procesar CategoryEntity,
-	/// guarda, actualiza, elimina y valida los datos del mismo.
+	/// The <c>ICategory</c> business contract to process CategoryEntity,
+	/// saving, updating, deleting and validating entity data.
 	/// </summary>
 	public interface ICategory
 	{
 		/// <summary>
-		/// Función para guardar CategoryEntity en la base de datos.
+		/// Function to save a CategoryEntity to the database.
 		/// </summary>
-		/// <param name="categoryEntity">CategoryEntity a guardar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>null si el CategoryEntity se guardo con exito, el mismo CategoryEntity en otro caso</returns>
+		/// <param name="categoryEntity">CategoryEntity to save</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the CategoryEntity was saved successfully, the same CategoryEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="categoryEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		CategoryEntity Save(CategoryEntity categoryEntity, string session);
 		/// <summary>
-		/// Función para eliminar un CategoryEntity de la base de datos.
+		/// Function to delete a CategoryEntity from database.
 		/// </summary>
-		/// <param name="categoryEntity">CategoryEntity a eliminar</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>null si el CategoryEntity fue eliminado con éxito, el mismo CategoryEntity en otro caso</returns>
+		/// <param name="categoryEntity">CategoryEntity to delete</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the CategoryEntity was deleted successfully, the same CategoryEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="categoryEntity"/> is null.
+		/// if <paramref name="categoryEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		CategoryEntity Delete(CategoryEntity categoryEntity, string session);
 		/// <summary>
-		/// Obtiene un categoryEntity específico
+		/// Get an specific categoryEntity
 		/// </summary>
-		/// <param name="id">id del CategoryEntity a cargar</param>
-		/// <returns>Un CategoryEntity</returns>
+		/// <param name="id">id of the CategoryEntity to load</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>A CategoryEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="categoryEntity"/> is null.
+		/// if <paramref name="categoryEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		CategoryEntity GetCategory(int id, bool loadRelation, string session);
 		/// <summary>
-		/// Obtiene una coleccion de categoryEntity
+		/// Get collection of all categoryEntity
 		/// </summary>
-		/// <param name="loadRelation">true si desea guardar las relaciones</param>
-		/// <param name="session">Identificador de sesion.</param>
-		/// <returns>Collection de CategoryEntity</returns>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of all CategoryEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		Collection<CategoryEntity> GetAllCategory(bool loadRelation, string session);
 		/// <summary>
-		/// Obtiene una coleccion de todos los categoryEntity que cumplen con cierto patron
+		/// Get collection of all categoryEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del categoryEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <returns>Colección de CategoryEntity</returns>
+		/// <param name="propertyName">property of categoryEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of CategoryEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		Collection<CategoryEntity> GetCategoryWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType, string session);
 		/// <summary>
-		/// Obtiene una coleccion de todos los categoryEntity que cumplen con cierto patron exactamente
+		/// Get collection of all categoryEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del categoryEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="loadRelation">Indica si se cargan las relaciones</param>
-		/// <param name="session">Identificador de sesión del usuario</param>
-		/// <returns>Colección de CategoryEntity</returns>
+		/// <param name="propertyName">property of categoryEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of CategoryEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		Collection<CategoryEntity> GetCategoryWhereEqual(string propertyName, object expValue, bool loadRelation, string session);
 		/// <summary>
-		/// Función que valida un CategoryEntity antes de ser guardado.
+		/// Function to validate a CategoryEntity before it's saved.
 		/// </summary>
-		/// <param name="categoryEntity">CategoryEntity a validar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>true si se valido correctamente, false en caso contrario</returns>
+		/// <param name="categoryEntity">CategoryEntity to validate</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the CategoryEntity was deleted successfully, the same CategoryEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// si <paramref name="categoryEntity"/> es null.
+		/// if <paramref name="categoryEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]

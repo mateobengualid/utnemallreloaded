@@ -272,31 +272,31 @@ namespace DotNET::UtnEmall::Server::DataModel
 	Model::Define(Campaign, true, true){
 		Model::Field(Description, gettype(string))
 		{
-			Rules::PropertyStringNotEmpty(Description, "Description can't be empty");
+			Rules::PropertyStringNotEmpty(Description, "La descripción no puede estar vacía.");
 		};
 
 		Model::Field(Name, gettype(string))
 		{
-			Rules::PropertyStringNotEmpty(Name,"Name can't be empty");
-			Rules::PropertyUnique(Name, "Duplicated name for campaign", Campaign);
+			Rules::PropertyStringNotEmpty(Name,"El nombre no puede estar vacío.");
+			Rules::PropertyUnique(Name, "El nombre de campaña ya existe.", Campaign);
 		};
 		
 		Model::Field(StartDate, gettype(DateTime))
 		{
-			Rules::PropertyNotNull(StartDate, "Start date can't be null");
+			Rules::PropertyNotNull(StartDate, "La fecha de inicio no puede estar vacía.");
 		};
 
 		Model::Field(StopDate, gettype(DateTime))
 		{
-			Rules::PropertyDateTimeLowerThan(StopDate, StartDate, "Stop date can't be lower than start date");
-			Rules::PropertyNotNull(StopDate, "Stop date can't be null");
+			Rules::PropertyDateTimeLowerThan(StopDate, StartDate, "La fecha de inicio no puede ser posterior a la de fin.");
+			Rules::PropertyNotNull(StopDate, "La fecha de fin no puede estar vacía.);
 		};
 		
 		Model::Relations(User, User, User, RelationTypes::MuchosAUno, true, false, false, true, true){};
 		Model::Relations(ServiceCampaign, ServiceCampaign, RelationTypes::UnoAMuchos, false, false){};
 		
 		// Deletion restrictions
-		Model::DeleteRestriction(ServiceCampaign, Campaign, "There are services associated to this campaign.");
+		Model::DeleteRestriction(ServiceCampaign, Campaign, "Hay servicios asociados a esta campaña.");
 	};
 
 	Model::Define(Category, true, true){

@@ -7,119 +7,123 @@ namespace UtnEmall.Server.BusinessLogic
 
 	[System.ServiceModel.ServiceContract]
 	/// <summary>
-	/// La interfaz <c>IStore</c> es un contrato de servicio web para procesar StoreEntity,
-	/// guarda, actualiza, elimina y valida los datos del mismo.
+	/// The <c>IStore</c> business contract to process StoreEntity,
+	/// saving, updating, deleting and validating entity data.
 	/// </summary>
 	public interface IStore
 	{
 		/// <summary>
-		/// Función para guardar StoreEntity en la base de datos.
+		/// Function to save a StoreEntity to the database.
 		/// </summary>
-		/// <param name="storeEntity">StoreEntity a guardar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>null si el StoreEntity se guardo con exito, el mismo StoreEntity en otro caso</returns>
+		/// <param name="storeEntity">StoreEntity to save</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the StoreEntity was saved successfully, the same StoreEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="storeEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		StoreEntity Save(StoreEntity storeEntity, string session);
 		/// <summary>
-		/// Función para eliminar un StoreEntity de la base de datos.
+		/// Function to delete a StoreEntity from database.
 		/// </summary>
-		/// <param name="storeEntity">StoreEntity a eliminar</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>null si el StoreEntity fue eliminado con éxito, el mismo StoreEntity en otro caso</returns>
+		/// <param name="storeEntity">StoreEntity to delete</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the StoreEntity was deleted successfully, the same StoreEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="storeEntity"/> is null.
+		/// if <paramref name="storeEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		StoreEntity Delete(StoreEntity storeEntity, string session);
 		/// <summary>
-		/// Obtiene un storeEntity específico
+		/// Get an specific storeEntity
 		/// </summary>
-		/// <param name="id">id del StoreEntity a cargar</param>
-		/// <returns>Un StoreEntity</returns>
+		/// <param name="id">id of the StoreEntity to load</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>A StoreEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="storeEntity"/> is null.
+		/// if <paramref name="storeEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		StoreEntity GetStore(int id, bool loadRelation, string session);
 		/// <summary>
-		/// Obtiene una coleccion de storeEntity
+		/// Get collection of all storeEntity
 		/// </summary>
-		/// <param name="loadRelation">true si desea guardar las relaciones</param>
-		/// <param name="session">Identificador de sesion.</param>
-		/// <returns>Collection de StoreEntity</returns>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of all StoreEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		Collection<StoreEntity> GetAllStore(bool loadRelation, string session);
 		/// <summary>
-		/// Obtiene una coleccion de todos los storeEntity que cumplen con cierto patron
+		/// Get collection of all storeEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del storeEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <returns>Colección de StoreEntity</returns>
+		/// <param name="propertyName">property of storeEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of StoreEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		Collection<StoreEntity> GetStoreWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType, string session);
 		/// <summary>
-		/// Obtiene una coleccion de todos los storeEntity que cumplen con cierto patron exactamente
+		/// Get collection of all storeEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del storeEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="loadRelation">Indica si se cargan las relaciones</param>
-		/// <param name="session">Identificador de sesión del usuario</param>
-		/// <returns>Colección de StoreEntity</returns>
+		/// <param name="propertyName">property of storeEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of StoreEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
 		Collection<StoreEntity> GetStoreWhereEqual(string propertyName, object expValue, bool loadRelation, string session);
 		/// <summary>
-		/// Función que valida un StoreEntity antes de ser guardado.
+		/// Function to validate a StoreEntity before it's saved.
 		/// </summary>
-		/// <param name="storeEntity">StoreEntity a validar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>true si se valido correctamente, false en caso contrario</returns>
+		/// <param name="storeEntity">StoreEntity to validate</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the StoreEntity was deleted successfully, the same StoreEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// si <paramref name="storeEntity"/> es null.
+		/// if <paramref name="storeEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]

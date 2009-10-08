@@ -7,113 +7,117 @@ namespace UtnEmall.Server.BusinessLogic
 
 	[System.ServiceModel.ServiceContract]
 	/// <summary>
-	/// La interfaz <c>IUserActionClientData</c> es un contrato de servicio web para procesar UserActionClientDataEntity,
-	/// guarda, actualiza, elimina y valida los datos del mismo.
+	/// The <c>IUserActionClientData</c> business contract to process UserActionClientDataEntity,
+	/// saving, updating, deleting and validating entity data.
 	/// </summary>
 	public interface IUserActionClientData
 	{
 		/// <summary>
-		/// Función para guardar UserActionClientDataEntity en la base de datos.
+		/// Function to save a UserActionClientDataEntity to the database.
 		/// </summary>
-		/// <param name="userActionClientDataEntity">UserActionClientDataEntity a guardar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>null si el UserActionClientDataEntity se guardo con exito, el mismo UserActionClientDataEntity en otro caso</returns>
+		/// <param name="userActionClientDataEntity">UserActionClientDataEntity to save</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the UserActionClientDataEntity was saved successfully, the same UserActionClientDataEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="userActionClientDataEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		[System.ServiceModel.OperationContract]
 		UserActionClientDataEntity Save(UserActionClientDataEntity userActionClientDataEntity, string session);
 		/// <summary>
-		/// Función para eliminar un UserActionClientDataEntity de la base de datos.
+		/// Function to delete a UserActionClientDataEntity from database.
 		/// </summary>
-		/// <param name="userActionClientDataEntity">UserActionClientDataEntity a eliminar</param>
-		/// <param name="session">Identificador de sesión.</param>
-		/// <returns>null si el UserActionClientDataEntity fue eliminado con éxito, el mismo UserActionClientDataEntity en otro caso</returns>
+		/// <param name="userActionClientDataEntity">UserActionClientDataEntity to delete</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the UserActionClientDataEntity was deleted successfully, the same UserActionClientDataEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="userActionClientDataEntity"/> is null.
+		/// if <paramref name="userActionClientDataEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		UserActionClientDataEntity Delete(UserActionClientDataEntity userActionClientDataEntity, string session);
 		/// <summary>
-		/// Obtiene un userActionClientDataEntity específico
+		/// Get an specific userActionClientDataEntity
 		/// </summary>
-		/// <param name="id">id del UserActionClientDataEntity a cargar</param>
-		/// <returns>Un UserActionClientDataEntity</returns>
+		/// <param name="id">id of the UserActionClientDataEntity to load</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>A UserActionClientDataEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="userActionClientDataEntity"/> is null.
+		/// if <paramref name="userActionClientDataEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		UserActionClientDataEntity GetUserActionClientData(int id, bool loadRelation, string session);
 		/// <summary>
-		/// Obtiene una coleccion de userActionClientDataEntity
+		/// Get collection of all userActionClientDataEntity
 		/// </summary>
-		/// <param name="loadRelation">true si desea guardar las relaciones</param>
-		/// <param name="session">Identificador de sesion.</param>
-		/// <returns>Collection de UserActionClientDataEntity</returns>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of all UserActionClientDataEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una excepción UtnEmallDataAccessException ocurre en el data model.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		Collection<UserActionClientDataEntity> GetAllUserActionClientData(bool loadRelation, string session);
 		/// <summary>
-		/// Obtiene una coleccion de todos los userActionClientDataEntity que cumplen con cierto patron
+		/// Get collection of all userActionClientDataEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del userActionClientDataEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <returns>Colección de UserActionClientDataEntity</returns>
+		/// <param name="propertyName">property of userActionClientDataEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of UserActionClientDataEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		Collection<UserActionClientDataEntity> GetUserActionClientDataWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType, string session);
 		/// <summary>
-		/// Obtiene una coleccion de todos los userActionClientDataEntity que cumplen con cierto patron exactamente
+		/// Get collection of all userActionClientDataEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">propiedad del userActionClientDataEntity</param>
-		/// <param name="expValue">patrón de busqueda</param>
-		/// <param name="loadRelation">Indica si se cargan las relaciones</param>
-		/// <param name="session">Identificador de sesión del usuario</param>
-		/// <returns>Colección de UserActionClientDataEntity</returns>
+		/// <param name="propertyName">property of userActionClientDataEntity</param>
+		/// <param name="expValue">pattern</param>
+		/// <param name="loadRelation">true to load the relations</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>Collection of UserActionClientDataEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="propertyName"/> es null o vacio.
+		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
-		/// Si <paramref name="expValue"/> es null or vacío.
+		/// if <paramref name="expValue"/> is null or empty.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]
 		Collection<UserActionClientDataEntity> GetUserActionClientDataWhereEqual(string propertyName, object expValue, bool loadRelation, string session);
 		/// <summary>
-		/// Función que valida un UserActionClientDataEntity antes de ser guardado.
+		/// Function to validate a UserActionClientDataEntity before it's saved.
 		/// </summary>
-		/// <param name="userActionClientDataEntity">UserActionClientDataEntity a validar</param>
-		/// <param name="session">Identificador de sesion del usuario.</param>
-		/// <returns>true si se valido correctamente, false en caso contrario</returns>
+		/// <param name="userActionClientDataEntity">UserActionClientDataEntity to validate</param>
+		/// <param name="session">User's session identifier.</param>
+		/// <returns>null if the UserActionClientDataEntity was deleted successfully, the same UserActionClientDataEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// si <paramref name="userActionClientDataEntity"/> es null.
+		/// if <paramref name="userActionClientDataEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
-		/// Si una UtnEmallDataAccessException ocurre en el DataModel.
+		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[System.ServiceModel.OperationContract]

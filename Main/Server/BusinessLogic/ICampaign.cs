@@ -7,34 +7,34 @@ namespace UtnEmall.Server.BusinessLogic
 
 	[System.ServiceModel.ServiceContract]
 	/// <summary>
-	/// The <c>IDataModel</c> business contract to process DataModelEntity,
+	/// The <c>ICampaign</c> business contract to process CampaignEntity,
 	/// saving, updating, deleting and validating entity data.
 	/// </summary>
-	public interface IDataModel
+	public interface ICampaign
 	{
 		/// <summary>
-		/// Function to save a DataModelEntity to the database.
+		/// Function to save a CampaignEntity to the database.
 		/// </summary>
-		/// <param name="dataModelEntity">DataModelEntity to save</param>
+		/// <param name="campaignEntity">CampaignEntity to save</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>null if the DataModelEntity was saved successfully, the same DataModelEntity otherwise</returns>
+		/// <returns>null if the CampaignEntity was saved successfully, the same CampaignEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// if <paramref name="dataModelEntity"/> is null.
+		/// if <paramref name="campaignEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
-		DataModelEntity Save(DataModelEntity dataModelEntity, string session);
+		CampaignEntity Save(CampaignEntity campaignEntity, string session);
 		/// <summary>
-		/// Function to delete a DataModelEntity from database.
+		/// Function to delete a CampaignEntity from database.
 		/// </summary>
-		/// <param name="dataModelEntity">DataModelEntity to delete</param>
+		/// <param name="campaignEntity">CampaignEntity to delete</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>null if the DataModelEntity was deleted successfully, the same DataModelEntity otherwise</returns>
+		/// <returns>null if the CampaignEntity was deleted successfully, the same CampaignEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// if <paramref name="dataModelEntity"/> is null.
+		/// if <paramref name="campaignEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
@@ -42,16 +42,16 @@ namespace UtnEmall.Server.BusinessLogic
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
-		DataModelEntity Delete(DataModelEntity dataModelEntity, string session);
+		CampaignEntity Delete(CampaignEntity campaignEntity, string session);
 		/// <summary>
-		/// Get an specific dataModelEntity
+		/// Get an specific campaignEntity
 		/// </summary>
-		/// <param name="id">id of the DataModelEntity to load</param>
+		/// <param name="id">id of the CampaignEntity to load</param>
 		/// <param name="loadRelation">true to load the relations</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>A DataModelEntity</returns>
+		/// <returns>A CampaignEntity</returns>
 		/// <exception cref="ArgumentNullException">
-		/// if <paramref name="dataModelEntity"/> is null.
+		/// if <paramref name="campaignEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
@@ -59,28 +59,28 @@ namespace UtnEmall.Server.BusinessLogic
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
-		DataModelEntity GetDataModel(int id, bool loadRelation, string session);
+		CampaignEntity GetCampaign(int id, bool loadRelation, string session);
 		/// <summary>
-		/// Get collection of all dataModelEntity
+		/// Get collection of all campaignEntity
 		/// </summary>
 		/// <param name="loadRelation">true to load the relations</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>Collection of all DataModelEntity</returns>
+		/// <returns>Collection of all CampaignEntity</returns>
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
 		/// </exception>
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
-		Collection<DataModelEntity> GetAllDataModel(bool loadRelation, string session);
+		Collection<CampaignEntity> GetAllCampaign(bool loadRelation, string session);
 		/// <summary>
-		/// Get collection of all dataModelEntity that comply with certain pattern
+		/// Get collection of all campaignEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">property of dataModelEntity</param>
+		/// <param name="propertyName">property of campaignEntity</param>
 		/// <param name="expValue">pattern</param>
 		/// <param name="loadRelation">true to load the relations</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>Collection of DataModelEntity</returns>
+		/// <returns>Collection of CampaignEntity</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
@@ -92,15 +92,15 @@ namespace UtnEmall.Server.BusinessLogic
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
-		Collection<DataModelEntity> GetDataModelWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType, string session);
+		Collection<CampaignEntity> GetCampaignWhere(string propertyName, object expValue, bool loadRelation, OperatorType operatorType, string session);
 		/// <summary>
-		/// Get collection of all dataModelEntity that comply with certain pattern
+		/// Get collection of all campaignEntity that comply with certain pattern
 		/// </summary>
-		/// <param name="propertyName">property of dataModelEntity</param>
+		/// <param name="propertyName">property of campaignEntity</param>
 		/// <param name="expValue">pattern</param>
 		/// <param name="loadRelation">true to load the relations</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>Collection of DataModelEntity</returns>
+		/// <returns>Collection of CampaignEntity</returns>
 		/// <exception cref="ArgumentNullException">
 		/// if <paramref name="propertyName"/> is null or empty.
 		/// <exception cref="ArgumentNullException">
@@ -112,15 +112,15 @@ namespace UtnEmall.Server.BusinessLogic
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
-		Collection<DataModelEntity> GetDataModelWhereEqual(string propertyName, object expValue, bool loadRelation, string session);
+		Collection<CampaignEntity> GetCampaignWhereEqual(string propertyName, object expValue, bool loadRelation, string session);
 		/// <summary>
-		/// Function to validate a DataModelEntity before it's saved.
+		/// Function to validate a CampaignEntity before it's saved.
 		/// </summary>
-		/// <param name="dataModelEntity">DataModelEntity to validate</param>
+		/// <param name="campaignEntity">CampaignEntity to validate</param>
 		/// <param name="session">User's session identifier.</param>
-		/// <returns>null if the DataModelEntity was deleted successfully, the same DataModelEntity otherwise</returns>
+		/// <returns>null if the CampaignEntity was deleted successfully, the same CampaignEntity otherwise</returns>
 		/// <exception cref="ArgumentNullException">
-		/// if <paramref name="dataModelEntity"/> is null.
+		/// if <paramref name="campaignEntity"/> is null.
 		/// </exception>
 		/// <exception cref="UtnEmallBusinessLogicException">
 		/// If an UtnEmallDataAccessException occurs in DataModel.
@@ -128,7 +128,7 @@ namespace UtnEmall.Server.BusinessLogic
 
 		[UtnEmall.Server.Core.ReferencePreservingDataContractFormat]
 		[System.ServiceModel.OperationContract]
-		bool Validate(DataModelEntity dataModel);
+		bool Validate(CampaignEntity campaign);
 	} 
 
 }
