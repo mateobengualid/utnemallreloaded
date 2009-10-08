@@ -356,6 +356,13 @@ namespace DotNET::UtnEmall::Server::DataModel
 			Rules::PropertyStringNotEmpty(Password, "El password no puede estar vacío");
 		};
 
+		Model::Field(Birthday, gettype(DateTime))
+		{
+			Rules::PropertyNotNull(Birthday, "La fecha de cumpleaños no puede estar vacía.");
+		};
+		Model::Field(HowManyChildren, gettype(int)){};
+		Model::Field(Gender, gettype(int)){};
+		Model::Field(CivilState, gettype(int)){};
 
 		Model::Relations(Preferences, Preference, RelationTypes::UnoAMuchos, true, true, true)
 		{
