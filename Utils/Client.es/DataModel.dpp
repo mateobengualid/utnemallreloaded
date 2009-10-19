@@ -289,7 +289,7 @@ namespace DotNET::UtnEmall::Server::DataModel
 		Model::Field(StopDate, gettype(DateTime))
 		{
 			Rules::PropertyDateTimeLowerThan(StopDate, StartDate, "La fecha de inicio no puede ser posterior a la de fin.");
-			Rules::PropertyNotNull(StopDate, "La fecha de fin no puede estar vacía.);
+			Rules::PropertyNotNull(StopDate, "La fecha de fin no puede estar vacía.");
 		};
 		
 		Model::Relations(User, User, User, RelationTypes::MuchosAUno, true, false, false, true, true){};
