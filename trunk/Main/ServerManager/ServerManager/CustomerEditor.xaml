@@ -1,8 +1,9 @@
 ﻿<UserControl
 	x:Uid="UserControl_1" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:UtnEmall.ServerManager="clr-namespace:UtnEmall.ServerManager"
 	x:Class="UtnEmall.ServerManager.CustomerEditor"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:UtnEmall.ServerManager="clr-namespace:UtnEmall.ServerManager"
+    xmlns:UtnEmall.BaseDesktop="clr-namespace:UtnEmall.Server.EntityModel;assembly=BaseDesktop"	
 	Width="640" Height="480">
 
 	<Grid x:Uid="Grid_1">
@@ -10,7 +11,7 @@
 		<Label x:Uid="Title" HorizontalAlignment="Left" Margin="8,8,0,0" VerticalAlignment="Top" Width="292" Height="37" Content="{x:Static UtnEmall.ServerManager:UIResources.AddCustomer}" FontSize="20" x:Name="Title"/>
 		<Button x:Uid="bOK" Margin="0,0,121,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.OK}" x:Name="bOK" HorizontalAlignment="Right" Width="100" Click="OnOkClicked"/>
 		<Button x:Uid="bCancel" Margin="0,0,8,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Cancel}" x:Name="bCancel" HorizontalAlignment="Right" Width="100" Click="OnCancelClicked"/>
-		<UniformGrid x:Uid="UniformGrid_1" Margin="8,49,0,0" Columns="2" Rows="7" Height="244" Width="364" HorizontalAlignment="Left" VerticalAlignment="Top">
+		<UniformGrid x:Uid="UniformGrid_1" Margin="8,49,0,0" Columns="2" Rows="11" Height="244" Width="364" HorizontalAlignment="Left" VerticalAlignment="Top">
 			<Label x:Uid="Label_1" Width="170" Height="35" Content="{x:Static UtnEmall.ServerManager:UIResources.FirstName}" FontSize="16" Foreground="#FF444444"/>
 			<TextBox x:Uid="TxtFirstName" Width="175" Height="25" Text="" TextWrapping="Wrap" x:Name="TxtFirstName" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
 			<Label x:Uid="Label_2" Width="170" Height="35" Content="{x:Static UtnEmall.ServerManager:UIResources.LastName}" FontSize="16" Foreground="#FF444444"/>
@@ -25,6 +26,22 @@
 			<TextBox x:Uid="TxtPhone" Text="" TextWrapping="Wrap" Height="25" Width="175" x:Name="TxtPhone" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
 			<Label x:Uid="Label_7" Width="170" Content="{x:Static UtnEmall.ServerManager:UIResources.Address}" FontSize="16" Foreground="#FF444444" Height="35"/>
 			<TextBox x:Uid="TxtAddress" Text="" TextWrapping="Wrap" x:Name="TxtAddress" Width="175" Height="25" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
-		</UniformGrid>
+            <Label x:Uid="Label_8" Width="170" Content="{x:Static UtnEmall.ServerManager:UIResources.Birthday}" FontSize="16" Foreground="#FF444444" Height="35"/>
+            <UtnEmall.ServerManager:DatePicker x:Uid="BirthdayPicker" x:Name="BirthdayPicker" Height="25" Width="175"/>
+            <Label x:Uid="Label_9" Width="170" Content="{x:Static UtnEmall.ServerManager:UIResources.HowManyChildren}" FontSize="16" Foreground="#FF444444" Height="35"/>
+            <TextBox x:Uid="TxtHowManyChildren" Text="" TextWrapping="Wrap" x:Name="TxtHowManyChildren" Width="175" Height="25" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
+            <Label x:Uid="Label_10" Width="170" Content="{x:Static UtnEmall.ServerManager:UIResources.Gender}" FontSize="16" Foreground="#FF444444" Height="35"/>
+            <ComboBox x:Uid="DdlGender" Width="175" Height="25" x:Name="DdlGender">
+                <ComboBoxItem Content="{x:Static UtnEmall.BaseDesktop:Gender.Male}" Name="Male" />
+                <ComboBoxItem Content="{x:Static UtnEmall.BaseDesktop:Gender.Female}" Name="Female" />
+            </ComboBox>
+            <Label x:Uid="Label_11" Width="170" Content="{x:Static UtnEmall.ServerManager:UIResources.CivilState}" FontSize="16" Foreground="#FF444444" Height="35"/>
+            <ComboBox x:Uid="DdlCivilState" Width="175" Height="25" x:Name="DdlCivilState">
+                <ComboBoxItem Content="{x:Static UtnEmall.BaseDesktop:CivilState.Single}" Name="Single" />
+                <ComboBoxItem Content="{x:Static UtnEmall.BaseDesktop:CivilState.Married}" Name="Married" />
+                <ComboBoxItem Content="{x:Static UtnEmall.BaseDesktop:CivilState.Widow}" Name="Widow" />
+                <ComboBoxItem Content="{x:Static UtnEmall.BaseDesktop:CivilState.Divorced}" Name="Divorced" />
+            </ComboBox>
+        </UniformGrid>
 	</Grid>
 </UserControl>

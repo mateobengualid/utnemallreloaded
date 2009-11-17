@@ -12,6 +12,20 @@
         TemplateListItem = 7,
         Table = 8,
     }
+
+    public enum CivilState
+    {
+        Single = 0,
+        Married = 1,
+        Widow = 2,
+        Divorced = 3,
+    }
+
+    public enum Gender
+    {
+        Male = 0,
+        Female = 1,
+    }
 }
 
 namespace UtnEmall.Server.Base

@@ -38,6 +38,10 @@ namespace UtnEmall.ServerManager
             titles.Add(new DataBinding(UtnEmall.ServerManager.Properties.Resources.UserName, "UserName"));
             titles.Add(new DataBinding(UtnEmall.ServerManager.Properties.Resources.Phone, "PhoneNumber"));
             titles.Add(new DataBinding(UtnEmall.ServerManager.Properties.Resources.Address, "Address"));
+            titles.Add(new DataBinding(UtnEmall.ServerManager.Properties.Resources.Gender, "Gender"));
+            titles.Add(new DataBinding(UtnEmall.ServerManager.Properties.Resources.HowManyChildren, "HowManyChildren"));
+            titles.Add(new DataBinding(UtnEmall.ServerManager.Properties.Resources.CivilState, "CivilState"));
+            titles.Add(new DataBinding(UtnEmall.ServerManager.Properties.Resources.Birthday, "Birthday"));
             list.SetColumns(new Collection<DataBinding>(titles));
 
             list.DoFilter = DoFilter;
@@ -132,7 +136,9 @@ namespace UtnEmall.ServerManager
 
             if (customer.Name.Contains(filterText) || customer.Surname.Contains(filterText)
                 || customer.UserName.Contains(filterText) || customer.Address.Contains(filterText)
-                || customer.PhoneNumber.Contains(filterText))
+                || customer.PhoneNumber.Contains(filterText)
+                || customer.CivilState.ToString().Contains(filterText)
+                || customer.Gender.ToString().Contains(filterText))
                 return true;
 
             return false;
