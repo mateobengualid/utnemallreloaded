@@ -34,6 +34,10 @@ namespace UtnEmall.ServerManager
                 TxtUserName.Text = customer.UserName;
                 TxtPhone.Text = customer.PhoneNumber;
                 TxtAddress.Text = customer.Address;
+                TxtHowManyChildren.Text = customer.HowManyChildren + "";
+                DdlGender.SelectedValue = customer.Gender;
+                DdlCivilState.SelectedValue = customer.CivilState;                
+                BirthdayPicker.Date = customer.Birthday;
             }
         }
 
@@ -105,6 +109,10 @@ namespace UtnEmall.ServerManager
             customer.Password = Utilities.CalculateHashString(TxtPassword.Password);
             customer.PhoneNumber = TxtPhone.Text.Trim();
             customer.Address = TxtAddress.Text.Trim();
+            customer.HowManyChildren = int.Parse(TxtHowManyChildren.Text);
+            customer.Gender = (int)(((ComboBoxItem)DdlGender.SelectedItem).Content);
+            customer.CivilState = (int)(((ComboBoxItem)DdlCivilState.SelectedItem).Content);
+            customer.Birthday = BirthdayPicker.Date;
         }
 
         /// <summary>
@@ -119,6 +127,10 @@ namespace UtnEmall.ServerManager
             TxtConfirm.Password = "";
             TxtPhone.Text = "";
             TxtAddress.Text = "";
+            TxtHowManyChildren.Text = "";
+            DdlGender.SelectedValue = 0;
+            DdlCivilState.SelectedValue = 0;    
+            BirthdayPicker.Date = new DateTime(1900, 1, 1);
         }
 
         /// <summary>
@@ -174,6 +186,12 @@ namespace UtnEmall.ServerManager
             if (string.IsNullOrEmpty(customer.Address.Trim()))
             {
                 message = UtnEmall.ServerManager.Properties.Resources.AddressIsEmpty;
+                return false;
+            }
+
+            if (customer.HowManyChildren < 0)
+            {
+                message = UtnEmall.ServerManager.Properties.Resources.HowManyChildrenIsNegative;
                 return false;
             }
 

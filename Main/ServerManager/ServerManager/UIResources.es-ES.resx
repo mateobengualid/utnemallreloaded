@@ -471,4 +471,16 @@
   <data name="Table" xml:space="preserve">
     <value>Tabla</value>
   </data>
+  <data name="Birthday" xml:space="preserve">
+    <value>Fecha de nacimiento</value>
+  </data>
+  <data name="HowManyChildren" xml:space="preserve">
+    <value>Numero de hijos</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Género</value>
+  </data>
+  <data name="CivilState" xml:space="preserve">
+    <value>Estado Civil</value>
+  </data>
 </root>
