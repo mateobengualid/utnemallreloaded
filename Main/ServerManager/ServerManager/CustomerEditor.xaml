@@ -4,14 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:UtnEmall.ServerManager="clr-namespace:UtnEmall.ServerManager"
     xmlns:UtnEmall.BaseDesktop="clr-namespace:UtnEmall.Server.EntityModel;assembly=BaseDesktop"	
-	Width="640" Height="480">
+	Width="640" Height="500">
 
 	<Grid x:Uid="Grid_1">
 		<Image x:Uid="Image_1" HorizontalAlignment="Right" Margin="200,0,0,100" Width="Auto" Source="imgs\customers_mono.png" Stretch="Fill"/>
 		<Label x:Uid="Title" HorizontalAlignment="Left" Margin="8,8,0,0" VerticalAlignment="Top" Width="292" Height="37" Content="{x:Static UtnEmall.ServerManager:UIResources.AddCustomer}" FontSize="20" x:Name="Title"/>
 		<Button x:Uid="bOK" Margin="0,0,121,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.OK}" x:Name="bOK" HorizontalAlignment="Right" Width="100" Click="OnOkClicked"/>
 		<Button x:Uid="bCancel" Margin="0,0,8,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Cancel}" x:Name="bCancel" HorizontalAlignment="Right" Width="100" Click="OnCancelClicked"/>
-		<UniformGrid x:Uid="UniformGrid_1" Margin="8,49,0,0" Columns="2" Rows="11" Height="244" Width="364" HorizontalAlignment="Left" VerticalAlignment="Top">
+		<UniformGrid x:Uid="UniformGrid_1" Margin="8,49,0,0" Columns="2" Rows="11" Height="284" Width="364" HorizontalAlignment="Left" VerticalAlignment="Top">
 			<Label x:Uid="Label_1" Width="170" Height="35" Content="{x:Static UtnEmall.ServerManager:UIResources.FirstName}" FontSize="16" Foreground="#FF444444"/>
 			<TextBox x:Uid="TxtFirstName" Width="175" Height="25" Text="" TextWrapping="Wrap" x:Name="TxtFirstName" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
 			<Label x:Uid="Label_2" Width="170" Height="35" Content="{x:Static UtnEmall.ServerManager:UIResources.LastName}" FontSize="16" Foreground="#FF444444"/>
