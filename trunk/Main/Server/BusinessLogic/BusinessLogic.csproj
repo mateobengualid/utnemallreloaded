@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0E4FE665-290D-49A8-820F-F430BAC2C1A5}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -54,11 +54,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Campaign.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="CustomerServiceData.cs" />
     <Compile Include="DataModel.cs" />
     <Compile Include="Group.cs" />
+    <Compile Include="ICampaign.cs" />
     <Compile Include="ICategory.cs" />
     <Compile Include="ICustomer.cs" />
     <Compile Include="ICustomerServiceData.cs" />

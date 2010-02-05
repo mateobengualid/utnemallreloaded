@@ -723,4 +723,28 @@
   <data name="HowManyChildrenIsNegative" xml:space="preserve">
     <value>La cantidad de hijos no puede ser negativa.</value>
   </data>
+  <data name="AddCampaign" xml:space="preserve">
+    <value>Agregar campaña</value>
+  </data>
+  <data name="Campaigns" xml:space="preserve">
+    <value>Campañas</value>
+  </data>
+  <data name="ConfirmDeleteCampaign" xml:space="preserve">
+    <value>¿Está seguro que desea borrar la campaña seleccionada?</value>
+  </data>
+  <data name="EditCampaign" xml:space="preserve">
+    <value>Editar campaña</value>
+  </data>
+  <data name="LoadCampaignsFailed" xml:space="preserve">
+    <value>No se pudieron cargar las campañas</value>
+  </data>
+  <data name="SaveCampaignError" xml:space="preserve">
+    <value>Error guardando campaña</value>
+  </data>
+  <data name="NoCampaignSelected" xml:space="preserve">
+    <value>Campaña no seleccionada</value>
+  </data>
+  <data name="ConnectionErrorServicesNotLoaded" xml:space="preserve">
+    <value>Error de conexión, los servicios no pudieron ser cargados</value>
+  </data>
 </root>

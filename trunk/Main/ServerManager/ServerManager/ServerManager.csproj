@@ -137,11 +137,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="CampaignEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CampaignManager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="CustomerEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DataModelEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditServices.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -343,6 +355,17 @@
     <Compile Include="CategoryEditor.xaml.cs">
       <DependentUpon>CategoryEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CampaignController.cs" />
+    <Compile Include="CampaignEditor.xaml.cs">
+      <DependentUpon>CampaignEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CampaignManager.xaml.cs">
+      <DependentUpon>CampaignManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditServices.xaml.cs">
+      <DependentUpon>EditServices.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="proxies\SAL.Campaign.cs" />
     <Compile Include="UIResources.es-ES.Designer.cs">
       <DependentUpon>UIResources.es-ES.resx</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -625,6 +625,8 @@ namespace DotNET::UtnEmall::Server::DataModel
 			};*/
 		};
 
+		Model::Relations(ServiceCampaign, ServiceCampaign, RelationTypes::UnoAMuchos, false, false){};
+		
 		Model::Relations(CustomerServiceData, CustomerServiceData, RelationTypes::UnoAUno, true, true, true)
 		{
 			//Rules::PropertyNotNull(CustomerServiceData, "CustomerServiceData can't be empty");
@@ -640,6 +642,10 @@ namespace DotNET::UtnEmall::Server::DataModel
 			Rules::PropertyDateTimeLowerThan(StopDate, StartDate, "La fecha de finalización no puede ser menor a la fecha de inicio");
 			Rules::PropertyNotNull(StopDate, "La fecha de finalización no puede ser nula");
 		};
+
+		// Deletion restrictions
+		Model::DeleteRestriction(ServiceCampaign, Campaign, "Hay servicios asociados a esta campaña.");
+
 	};
 
 	Model::Define(ServiceCategory, false){

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A7081E55-9370-4237-AECE-9A8C6664CE27}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CampaignDataAccess.cs" />
     <Compile Include="CategoryDataAccess.cs" />
     <Compile Include="ComponentDataAccess.cs" />
     <Compile Include="ConnectionPointDataAccess.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="RegisterAssociationCategoriesDataAccess.cs" />
     <Compile Include="RegisterAssociationDataAccess.cs" />
     <Compile Include="RelationDataAccess.cs" />
+    <Compile Include="ServiceCampaignDataAccess.cs" />
     <Compile Include="ServiceCategoryDataAccess.cs" />
     <Compile Include="ServiceDataAccess.cs" />
     <Compile Include="StoreCategoryDataAccess.cs" />
