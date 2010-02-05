@@ -136,6 +136,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="SampleDatabaseGenerator.cs" />
     <Compile Include="ServerHost.cs" />
     <Compile Include="ServiceBuilder.cs" />
     <Compile Include="SessionManager.cs" />
@@ -357,10 +358,6 @@
     </Content>
     <Content Include="database\UtnEMall.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="database\UtnEMall_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>UtnEMall.mdf</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>

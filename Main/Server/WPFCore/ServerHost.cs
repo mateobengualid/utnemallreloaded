@@ -44,6 +44,7 @@ namespace UtnEmall.Server.WpfCore
         private Dictionary<string, ServiceHost> hostedServices;
 
         public const string CleanAssemblyFolderKey = "clean_assembly_folder";
+        public const string CreateSampleDataKey = "insert_sample_data";
 
         /// <summary>
         /// Implementa el patrón Singleton
@@ -104,12 +105,28 @@ namespace UtnEmall.Server.WpfCore
             // Limpia la carpeta de ensamblados si es necesario
             CheckForClean();
 
+            CheckForSampleData();
+
             // Inicializa el administrador de sesión
             InitSessionManager();
 
             // Inicialización de servicios
             InitServices();
             ConsoleWriter.SetText("Discovery Service Starting...");            
+        }
+
+        private void CheckForSampleData()
+        {
+                ExeConfigurationFileMap configFile = new ExeConfigurationFileMap();
+                configFile.ExeConfigFilename = "wpfcore.config";
+                Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
+                if (config.AppSettings.Settings[ServerHost.CreateSampleDataKey] != null)
+                {
+                    SampleDatabaseGenerator.Run();
+                    Trace.WriteLine("----> Sample data created.");
+                    config.AppSettings.Settings.Remove(CleanAssemblyFolderKey);
+                    config.Save();
+                }
         }
 
         /// <summary>

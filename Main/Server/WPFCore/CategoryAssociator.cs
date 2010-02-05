@@ -93,6 +93,7 @@ namespace UtnEmall.Server.WpfCore
                     RACEntity = new RegisterAssociationCategoriesEntity();
                     RACEntity.IdCategory = categoryId;
                     RACEntity.RegisterAssociation = RAEntity;
+
                     RAEntity.RegisterAssociationCategories.Add(RACEntity);
                 }
 
