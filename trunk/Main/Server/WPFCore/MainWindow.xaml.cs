@@ -140,6 +140,18 @@ namespace UtnEmall.Server.WpfCore
                     configFile.ExeConfigFilename = "wpfcore.config";
                     Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
                     config.AppSettings.Settings.Add(ServerHost.CleanAssemblyFolderKey, "true");
+
+                    if (System.Windows.MessageBox.Show(
+                        "¿Desea insertar datos de ejemplo en la base de datos?",
+                        "Atención",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question,
+                        MessageBoxResult.Yes)
+                        == MessageBoxResult.Yes)
+                    {
+                        config.AppSettings.Settings.Add(ServerHost.CreateSampleDataKey, "true");
+                    }
+
                     config.Save();
 
                     CloseServer();
