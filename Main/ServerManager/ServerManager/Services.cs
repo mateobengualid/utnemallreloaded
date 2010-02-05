@@ -19,6 +19,7 @@ using UtnEmall.ServerManager.SAL.SessionManager;
 using System.Xml.XPath;
 using System.Xml;
 using System.Diagnostics;
+using UtnEmall.ServerManager.SAL.Campaign;
 
 namespace UtnEmall.ServerManager
 {
@@ -372,6 +373,23 @@ namespace UtnEmall.ServerManager
                 }
 
                 return statisticsAnalyzer;
+            }
+        }
+
+        private static CampaignClient campaign;
+        /// <summary>
+        /// Proxy de servicio web para campañas
+        /// </summary>
+        public static CampaignClient Campaign
+        {
+            get
+            {
+                if (campaign == null)
+                {
+                    campaign = new CampaignClient(DefaultBinding, new EndpointAddress(GetServiceURL("Campaign")));
+                }
+
+                return campaign;
             }
         }
 

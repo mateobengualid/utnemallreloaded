@@ -483,4 +483,10 @@
   <data name="CivilState" xml:space="preserve">
     <value>Civil State</value>
   </data>
+  <data name="ManageCampaigns" xml:space="preserve">
+    <value>Manage categories</value>
+  </data>
+  <data name="AddCampaign" xml:space="preserve">
+    <value>Add campaign</value>
+  </data>
 </root>

@@ -718,4 +718,28 @@
   <data name="HowManyChildrenIsNegative" xml:space="preserve">
     <value>The number of children can't be negative.</value>
   </data>
+  <data name="AddCampaign" xml:space="preserve">
+    <value>Add campaign</value>
+  </data>
+  <data name="Campaigns" xml:space="preserve">
+    <value>Campaigns</value>
+  </data>
+  <data name="ConfirmDeleteCampaign" xml:space="preserve">
+    <value>Are you sure you want to delete the selected campaign?</value>
+  </data>
+  <data name="EditCampaign" xml:space="preserve">
+    <value>Edit campaign</value>
+  </data>
+  <data name="LoadCampaignsFailed" xml:space="preserve">
+    <value>Couldn't load campaigns.</value>
+  </data>
+  <data name="SaveCampaignError" xml:space="preserve">
+    <value>An error has occurred while saving the campaign.</value>
+  </data>
+  <data name="NoCampaignSelected" xml:space="preserve">
+    <value>No campaign was selected.</value>
+  </data>
+  <data name="ConnectionErrorServicesNotLoaded" xml:space="preserve">
+    <value>Connection error, services couldn't be loaded.</value>
+  </data>
 </root>

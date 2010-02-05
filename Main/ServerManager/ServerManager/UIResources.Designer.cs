@@ -70,6 +70,15 @@ namespace UtnEmall.ServerManager {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add campaign.
+        /// </summary>
+        public static string AddCampaign {
+            get {
+                return ResourceManager.GetString("AddCampaign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add categories.
         /// </summary>
         public static string AddCategories {
@@ -579,6 +588,15 @@ namespace UtnEmall.ServerManager {
         public static string LoginFailed {
             get {
                 return ResourceManager.GetString("LoginFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage categories.
+        /// </summary>
+        public static string ManageCampaigns {
+            get {
+                return ResourceManager.GetString("ManageCampaigns", resourceCulture);
             }
         }
         

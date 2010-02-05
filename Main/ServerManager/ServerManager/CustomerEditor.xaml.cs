@@ -9,6 +9,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using UtnEmall.Server.EntityModel;
 using UtnEmall.Server.Base;
+using System.Globalization;
 
 namespace UtnEmall.ServerManager
 {
@@ -109,7 +110,7 @@ namespace UtnEmall.ServerManager
             customer.Password = Utilities.CalculateHashString(TxtPassword.Password);
             customer.PhoneNumber = TxtPhone.Text.Trim();
             customer.Address = TxtAddress.Text.Trim();
-            customer.HowManyChildren = int.Parse(TxtHowManyChildren.Text);
+            customer.HowManyChildren = int.Parse(TxtHowManyChildren.Text, CultureInfo.InvariantCulture);
             customer.Gender = (int)(((ComboBoxItem)DdlGender.SelectedItem).Content);
             customer.CivilState = (int)(((ComboBoxItem)DdlCivilState.SelectedItem).Content);
             customer.Birthday = BirthdayPicker.Date;
