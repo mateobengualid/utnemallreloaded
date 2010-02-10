@@ -50,13 +50,13 @@
 		<UtnEmall.ServerManager:StoreManager x:Uid="storeManager" Margin="0,8,8,8" Visibility="Hidden" x:Name="storeManager" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
 		<UtnEmall.ServerManager:UserManager x:Uid="userManager" Margin="0,8,8,8" Visibility="Hidden" x:Name="userManager" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
 		<UtnEmall.ServerManager:UserEditor x:Uid="addUser" Margin="0,8,8,8" Visibility="Hidden" x:Name="addUser" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
-		<UtnEmall.ServerManager:CustomerEditor x:Uid="addCustomer" Margin="0,8,8,8" Visibility="Visible" x:Name="addCustomer" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:CustomerEditor x:Uid="addCustomer" Margin="0,8,8,8" Visibility="Hidden" x:Name="addCustomer" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
 		<UtnEmall.ServerManager:StoreEditor x:Uid="addStore" Margin="0,8,8,8" Visibility="Hidden" x:Name="addStore" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
 		<UtnEmall.ServerManager:ServiceEditor x:Uid="addService" Margin="0,8,8,8" Visibility="Hidden" x:Name="addService" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391"/>
 		<UtnEmall.ServerManager:CategoryEditor x:Uid="addCategory" Margin="0,8,8,8" Visibility="Hidden" x:Name="addCategory" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
 		<UtnEmall.ServerManager:GroupEditor x:Uid="addGroup" Margin="0,8,8,8" Visibility="Hidden" x:Name="addGroup" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
 		<UtnEmall.ServerManager:AuthorizationEditor x:Uid="addPermission" Margin="0,8,8,8" Visibility="Hidden" x:Name="addPermission" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
-		<UtnEmall.ServerManager:Welcome x:Uid="welcome" Margin="0,8,8,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391" x:Name="welcome" Visibility="Hidden"/>
+		<UtnEmall.ServerManager:Welcome x:Uid="welcome" Margin="0,8,8,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391" x:Name="welcome"/>
 		<UtnEmall.ServerManager:GroupManager x:Uid="groupManager" Margin="0,8,8,0" Visibility="Hidden" x:Name="groupManager" Width="512" Height="391" HorizontalAlignment="Right" VerticalAlignment="Top"/>
 		<UtnEmall.ServerManager:DataModelManager x:Uid="dataModelManager" Margin="0,8,8,0" x:Name="dataModelManager" Width="512" Height="391" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="0,0,0,0"/>
 		<UtnEmall.ServerManager:DataModelEditor x:Uid="addDataModel" Margin="0,8,8,0" x:Name="addDataModel" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391" Visibility="Hidden"/>
