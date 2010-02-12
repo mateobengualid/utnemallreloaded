@@ -59,31 +59,22 @@
         <Storyboard x:Uid="Storyboard_14" x:Key="OnManageGroupsMouseEnter"/>
         <Storyboard x:Uid="Storyboard_15" x:Key="OnManageGroupsMouseLeave"/>
         <Storyboard x:Uid="Storyboard_16" x:Key="OnManageDataModelMouseEnter"/>
-        <Storyboard x:Uid="Storyboard_17" x:Key="OnManageDataModelMouseLeave"/>
+        <Storyboard x:Uid="Storyboard_20" x:Key="OnManageDataModelMouseLeave"/>
+        <Storyboard x:Uid="Storyboard_21" x:Key="OnManageCampaignsMouseEnter"/>
+        <Storyboard x:Uid="Storyboard_17" x:Key="OnManageCampaignsMouseLeave"/>
         <Storyboard x:Uid="Storyboard_18" x:Key="OnViewStatisticsMouseEnter"/>
 		<Storyboard x:Uid="Storyboard_19" x:Key="OnViewStatisticsMouseLeave"/>
     </UserControl.Resources>
 
-	<UserControl.Triggers>
-    </UserControl.Triggers>
-
 	<Grid x:Uid="Grid_1">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition x:Uid="ColumnDefinition_1" Width="0.705*"/>
-			<ColumnDefinition x:Uid="ColumnDefinition_2" Width="0.295*"/>
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition x:Uid="RowDefinition_1" Height="0.857*"/>
-			<RowDefinition x:Uid="RowDefinition_2" Height="0.143*"/>
-		</Grid.RowDefinitions>
-		<UtnEmall.ServerManager:Button Margin="8,16,8,0" VerticalAlignment="Top" Height="40" Grid.ColumnSpan="2" x:Name="Users" MouseLeftButtonUp="OnManageUsersClicked"/>
-		
-		<UtnEmall.ServerManager:Button Margin="8,59,8,0" VerticalAlignment="Top" Height="40" Grid.ColumnSpan="2" x:Name="Customers" MouseLeftButtonUp="OnManageCustomersClicked"/>
-		<UtnEmall.ServerManager:Button Margin="8,103,8,0" VerticalAlignment="Top" Height="40" x:Name="Categories" Grid.ColumnSpan="2" MouseLeftButtonUp="OnManageCategoriesClicked"/>
-		<UtnEmall.ServerManager:Button Margin="8,147,8,161.799" x:Name="Services" Grid.ColumnSpan="2" MouseLeftButtonUp="OnManageServicesClicked"/>
-		<UtnEmall.ServerManager:Button Margin="8,0,8,117.799" VerticalAlignment="Bottom" Height="40" x:Name="Stores" Grid.ColumnSpan="2" MouseLeftButtonUp="OnManageStoresClicked"/>
-		<UtnEmall.ServerManager:Button Margin="8,0,8,73.799" VerticalAlignment="Bottom" Height="40" x:Name="Groups" Grid.ColumnSpan="2" MouseLeftButtonUp="OnManageGroupsClicked"/>
-		<UtnEmall.ServerManager:Button Margin="8,0,8,29.799" VerticalAlignment="Bottom" Height="40" x:Name="DataModel" Grid.ColumnSpan="2" MouseLeftButtonUp="OnManageDataModelClicked"/>
-		<UtnEmall.ServerManager:Button Margin="8,0,8,-14.201" VerticalAlignment="Bottom" Height="40" x:Name="Statistics" Grid.ColumnSpan="2" MouseLeftButtonUp="OnViewStatisticsClicked"/>
+		<UtnEmall.ServerManager:Button Margin="8,16,8,0" VerticalAlignment="Top" Height="40" x:Name="Users" MouseLeftButtonUp="OnManageUsersClicked"/>		
+		<UtnEmall.ServerManager:Button Margin="8,59,8,0" VerticalAlignment="Top" Height="40" x:Name="Customers" MouseLeftButtonUp="OnManageCustomersClicked"/>
+		<UtnEmall.ServerManager:Button Margin="8,102,8,0" VerticalAlignment="Top" Height="40" x:Name="Categories" MouseLeftButtonUp="OnManageCategoriesClicked"/>
+		<UtnEmall.ServerManager:Button Margin="8,145,8,0" VerticalAlignment="Top" Height="40" x:Name="Services" MouseLeftButtonUp="OnManageServicesClicked"/>
+		<UtnEmall.ServerManager:Button Margin="8,188,8,0" VerticalAlignment="Top" Height="40" x:Name="Stores" MouseLeftButtonUp="OnManageStoresClicked"/>
+		<UtnEmall.ServerManager:Button Margin="8,231,8,0" VerticalAlignment="Top" Height="40" x:Name="Groups" MouseLeftButtonUp="OnManageGroupsClicked"/>
+		<UtnEmall.ServerManager:Button Margin="8,274,8,0" VerticalAlignment="Top" Height="40" x:Name="DataModel" MouseLeftButtonUp="OnManageDataModelClicked"/>
+		<UtnEmall.ServerManager:Button Margin="8,317,8,0" VerticalAlignment="Top" Height="40" x:Name="Campaigns" MouseLeftButtonUp="OnManageCampaignsClicked"/>
+        <UtnEmall.ServerManager:Button Margin="8,360,8,8" VerticalAlignment="Top" Height="40" x:Name="Statistics" MouseLeftButtonUp="OnViewStatisticsClicked"/>
 	</Grid>
 </UserControl>
