@@ -32,6 +32,9 @@ namespace UtnEmall.ServerManager
             Services.Text = UtnEmall.ServerManager.Properties.Resources.Services;
             Services.Image = "../imgs/services.png";
 
+            Campaigns.Text = UtnEmall.ServerManager.Properties.Resources.Campaigns;
+            Campaigns.Image = "../imgs/campaigns.png";
+
             Categories.Text = UtnEmall.ServerManager.Properties.Resources.Categories;
             Categories.Image = "../imgs/categories.png";
 
@@ -111,6 +114,23 @@ namespace UtnEmall.ServerManager
             if (ManageServicesSelected != null)
             {
                 ManageServicesSelected(sender, e);
+            }
+        }
+
+        /// <summary>
+        /// Método invocado cuando se selecciona Campañas en el menú
+        /// </summary>
+        /// <param name="sender">
+        /// el objeto que genera el evento
+        /// </param>
+        /// <param name="e">
+        /// contiene información adicional acerca del evento
+        /// </param>
+        private void OnManageCampaignsClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (ManageCampaignsSelected != null)
+            {
+                ManageCampaignsSelected(sender, e);
             }
         }
 
@@ -205,6 +225,11 @@ namespace UtnEmall.ServerManager
         /// Evento creado cuando se selecciona el botón Servicios
         /// </summary>
         public event EventHandler ManageServicesSelected;
+
+        /// <summary>
+        /// Evento creado cuando se selecciona el botón Campañas
+        /// </summary>
+        public event EventHandler ManageCampaignsSelected;
 
         /// <summary>
         /// Evento creado cuando se presiona el botón Tiendas

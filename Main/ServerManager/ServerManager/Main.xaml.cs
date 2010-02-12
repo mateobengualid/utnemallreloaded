@@ -28,6 +28,7 @@ namespace UtnEmall.ServerManager
         private GroupController groupController;
         private PermissionController permissionController;
         private CategoryController categoryController;
+        private CampaignController campaignController;
         private StatisticController statisticController;
         private SessionController sessionController;
 
@@ -88,6 +89,7 @@ namespace UtnEmall.ServerManager
             groupController = new GroupController(this, groupManager, addGroup, addGroup.TxtName, permissionManager);
             permissionController = new PermissionController(this, permissionManager, addPermission, addPermission.klass);
             categoryController = new CategoryController(this, categoryManager, addCategory, addCategory.TxtName);
+            campaignController = new CampaignController(this, campaignManager, addCampaign, addCampaign.TxtName, editServices);
             statisticController = new StatisticController(this, statisticsViewer, globalStatisticsAnalyzer);
             sessionController = new SessionController(this, welcome);
 
@@ -97,6 +99,7 @@ namespace UtnEmall.ServerManager
             menu.ManageStoresSelected += storeController.OnSelected;
             menu.ManageGroupsSelected += groupController.OnSelected;
             menu.ManageCustomersSelected += customerController.OnSelected;
+            menu.ManageCampaignsSelected += campaignController.OnSelected;
             menu.ViewStatisticsSelected += statisticController.OnSelected;
             menu.ManageDataModelSelected += dataModelController.OnSelected;
 
