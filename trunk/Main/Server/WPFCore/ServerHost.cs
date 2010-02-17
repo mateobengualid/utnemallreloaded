@@ -261,6 +261,8 @@ namespace UtnEmall.Server.WpfCore
                 InitService(typeof(ICustomerServiceData), typeof(CustomerServiceData));
                 // categoría
                 InitService(typeof(ICategory), typeof(Category));
+                // campaña
+                InitService(typeof(ICampaign), typeof(Campaign));
                 // Asociación de categoría
                 InitService(typeof(ICategoryAssociation), typeof(CategoryAssociation));
                 // cliente
@@ -365,7 +367,7 @@ namespace UtnEmall.Server.WpfCore
                 GroupDataAccess groupDataAccess = new GroupDataAccess();
                 UserEntity user = new UserEntity();
                 GroupEntity group = new GroupEntity();
-                string[] bussinesClasses = { "Category", "CustomerServiceData", "Customer", "DataModel", "Group", "Permission", "RegisterAssociation", "Service", "Store", "User", "UserAction" };
+                string[] bussinesClasses = { "Category", "Campaign", "CustomerServiceData", "Customer", "DataModel", "Group", "Permission", "RegisterAssociation", "Service", "Store", "User", "UserAction" };
 
                 user.Name = "admin";
                 user.Password = Utilities.CalculateHashString("admin");

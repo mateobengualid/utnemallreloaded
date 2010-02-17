@@ -36,8 +36,9 @@ namespace UtnEmall.ServerManager
                 TxtPhone.Text = customer.PhoneNumber;
                 TxtAddress.Text = customer.Address;
                 TxtHowManyChildren.Text = customer.HowManyChildren + "";
-                DdlGender.SelectedValue = customer.Gender;
-                DdlCivilState.SelectedValue = customer.CivilState;                
+                // This way of assigning it is bad, but it works.
+                DdlGender.SelectedIndex = customer.Gender;
+                DdlCivilState.SelectedIndex = customer.CivilState;
                 BirthdayPicker.Date = customer.Birthday;
             }
         }
@@ -111,8 +112,8 @@ namespace UtnEmall.ServerManager
             customer.PhoneNumber = TxtPhone.Text.Trim();
             customer.Address = TxtAddress.Text.Trim();
             customer.HowManyChildren = int.Parse(TxtHowManyChildren.Text, CultureInfo.InvariantCulture);
-            customer.Gender = (int)(((ComboBoxItem)DdlGender.SelectedItem).Content);
-            customer.CivilState = (int)(((ComboBoxItem)DdlCivilState.SelectedItem).Content);
+            customer.Gender = (int)Enum.Parse(typeof(Gender), ((ComboBoxItem)DdlGender.SelectedItem).Name);
+            customer.CivilState = (int)Enum.Parse(typeof(CivilState), ((ComboBoxItem)DdlCivilState.SelectedItem).Name);
             customer.Birthday = BirthdayPicker.Date;
         }
 
