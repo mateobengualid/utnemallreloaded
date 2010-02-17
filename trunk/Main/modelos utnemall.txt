@@ -1,0 +1,58 @@
+Cine: Reserva y catálogo y promoción
+Computación: Catálogo 
+Indumentaria: Catálogo y promoción
+Comida: Catálogo y reserva
+Librería: Catálogo y promoción
+Musicá: catálogo
+
+//////////////////////////////////////////////////////////
+Libreria:
+Libro
+	Titulo
+	Precio
+	Imagen
+Autor
+	Nombre
+	Biografia
+OrigenAutor
+	Nombre
+Categoria
+	Nombre
+Reserva
+	Cantidad
+
+//////////////////////////////////////////////////////////
+Accesorios:
+Accesorio,
+	Descripcion
+	Imagen
+	Precio
+Categoria,
+	Nombre
+
+//////////////////////////////////////////////////////////
+Cine:
+Pelicula,
+	Titulo
+	Imagen
+	Director
+	Audiencia
+Categoria,
+	Nombre
+Sala,
+	Nombre
+	Capacidad
+Funcion
+	Fecha
+	Hora
+Reserva
+	Cantidad
+
+//////////////////////////////////////////////////////////
+Shopping:
+Producto
+	Descripcion
+	Imagen
+	Precio
+	Tienda
+
