@@ -12,35 +12,35 @@
 		<Button x:Uid="bOK" Margin="0,0,121,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.OK}" x:Name="bOK" HorizontalAlignment="Right" Width="100" Click="OnOkClicked"/>
 		<Button x:Uid="bCancel" Margin="0,0,8,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Cancel}" x:Name="bCancel" HorizontalAlignment="Right" Width="100" Click="OnCancelClicked"/>
 		<UniformGrid x:Uid="UniformGrid_1" Margin="8,49,0,0" Columns="2" Rows="11" Height="284" Width="364" HorizontalAlignment="Left" VerticalAlignment="Top">
-			<Label x:Uid="Label_1" Width="170" Height="35" Content="{x:Static UtnEmall.ServerManager:UIResources.FirstName}" FontSize="16" Foreground="#FF444444"/>
+			<Label x:Uid="Label_1" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.FirstName}" FontSize="16" Foreground="#FF444444"/>
 			<TextBox x:Uid="TxtFirstName" Width="175" Height="25" Text="" TextWrapping="Wrap" x:Name="TxtFirstName" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
-			<Label x:Uid="Label_2" Width="170" Height="35" Content="{x:Static UtnEmall.ServerManager:UIResources.LastName}" FontSize="16" Foreground="#FF444444"/>
+			<Label x:Uid="Label_2" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.LastName}" FontSize="16" Foreground="#FF444444"/>
 			<TextBox x:Uid="TxtLastName" Height="25" Text="" TextWrapping="Wrap" Width="175" x:Name="TxtLastName" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
-			<Label x:Uid="Label_3" Width="170" Height="35" Content="{x:Static UtnEmall.ServerManager:UIResources.UserName}" FontSize="16" Foreground="#FF444444"/>
+			<Label x:Uid="Label_3" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.UserName}" FontSize="16" Foreground="#FF444444"/>
 			<TextBox x:Uid="TxtUserName" Height="25" Text="" TextWrapping="Wrap" Width="175" x:Name="TxtUserName" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
-			<Label x:Uid="Label_4" Width="170" Content="{x:Static UtnEmall.ServerManager:UIResources.Password}" FontSize="16" Foreground="#FF444444" Height="35"/>
+			<Label x:Uid="Label_4" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Password}" FontSize="16" Foreground="#FF444444"/>
 			<PasswordBox x:Uid="TxtPassword" Width="175" x:Name="TxtPassword" Height="25" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
-			<Label x:Uid="Label_5" Width="170" Content="{x:Static UtnEmall.ServerManager:UIResources.ConfirmPassword}" FontSize="16" Foreground="#FF444444" Height="35"/>
+			<Label x:Uid="Label_5" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.ConfirmPassword}" FontSize="16" Foreground="#FF444444"/>
 			<PasswordBox x:Uid="TxtConfirm" Width="175" x:Name="TxtConfirm" Height="25" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
-			<Label x:Uid="Label_6" Width="170" Content="{x:Static UtnEmall.ServerManager:UIResources.Phone}" FontSize="16" Foreground="#FF444444" Height="35"/>
+			<Label x:Uid="Label_6" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Phone}" FontSize="16" Foreground="#FF444444"/>
 			<TextBox x:Uid="TxtPhone" Text="" TextWrapping="Wrap" Height="25" Width="175" x:Name="TxtPhone" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
-			<Label x:Uid="Label_7" Width="170" Content="{x:Static UtnEmall.ServerManager:UIResources.Address}" FontSize="16" Foreground="#FF444444" Height="35"/>
+			<Label x:Uid="Label_7" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Address}" FontSize="16" Foreground="#FF444444"/>
 			<TextBox x:Uid="TxtAddress" Text="" TextWrapping="Wrap" x:Name="TxtAddress" Width="175" Height="25" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
-            <Label x:Uid="Label_8" Width="170" Content="{x:Static UtnEmall.ServerManager:UIResources.Birthday}" FontSize="16" Foreground="#FF444444" Height="35"/>
+            <Label x:Uid="Label_8" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Birthday}" FontSize="16" Foreground="#FF444444"/>
             <UtnEmall.ServerManager:DatePicker x:Uid="BirthdayPicker" x:Name="BirthdayPicker" Height="25" Width="175"/>
-            <Label x:Uid="Label_9" Width="170" Content="{x:Static UtnEmall.ServerManager:UIResources.HowManyChildren}" FontSize="16" Foreground="#FF444444" Height="35"/>
+            <Label x:Uid="Label_9" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.HowManyChildren}" FontSize="16" Foreground="#FF444444"/>
             <TextBox x:Uid="TxtHowManyChildren" Text="" TextWrapping="Wrap" x:Name="TxtHowManyChildren" Width="175" Height="25" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
-            <Label x:Uid="Label_10" Width="170" Content="{x:Static UtnEmall.ServerManager:UIResources.Gender}" FontSize="16" Foreground="#FF444444" Height="35"/>
+            <Label x:Uid="Label_10" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Gender}" FontSize="16" Foreground="#FF444444"/>
             <ComboBox x:Uid="DdlGender" Width="175" Height="25" x:Name="DdlGender">
-                <ComboBoxItem Content="{x:Static UtnEmall.BaseDesktop:Gender.Male}" Name="Male" />
-                <ComboBoxItem Content="{x:Static UtnEmall.BaseDesktop:Gender.Female}" Name="Female" />
+                <ComboBoxItem Content="{x:Static UtnEmall.ServerManager:UIResources.Male}" Name="Male" />
+                <ComboBoxItem Content="{x:Static UtnEmall.ServerManager:UIResources.Female}" Name="Female" />
             </ComboBox>
-            <Label x:Uid="Label_11" Width="170" Content="{x:Static UtnEmall.ServerManager:UIResources.CivilState}" FontSize="16" Foreground="#FF444444" Height="35"/>
+            <Label x:Uid="Label_11" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.CivilState}" FontSize="16" Foreground="#FF444444"/>
             <ComboBox x:Uid="DdlCivilState" Width="175" Height="25" x:Name="DdlCivilState">
-                <ComboBoxItem Content="{x:Static UtnEmall.BaseDesktop:CivilState.Single}" Name="Single" />
-                <ComboBoxItem Content="{x:Static UtnEmall.BaseDesktop:CivilState.Married}" Name="Married" />
-                <ComboBoxItem Content="{x:Static UtnEmall.BaseDesktop:CivilState.Widow}" Name="Widow" />
-                <ComboBoxItem Content="{x:Static UtnEmall.BaseDesktop:CivilState.Divorced}" Name="Divorced" />
+                <ComboBoxItem Content="{x:Static UtnEmall.ServerManager:UIResources.Single}" Name="Single" />
+                <ComboBoxItem Content="{x:Static UtnEmall.ServerManager:UIResources.Married}" Name="Married" />
+                <ComboBoxItem Content="{x:Static UtnEmall.ServerManager:UIResources.Widow}" Name="Widow" />
+                <ComboBoxItem Content="{x:Static UtnEmall.ServerManager:UIResources.Divorced}" Name="Divorced" />
             </ComboBox>
         </UniformGrid>
 	</Grid>

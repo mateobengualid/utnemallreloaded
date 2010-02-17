@@ -30,6 +30,8 @@ namespace UtnEmall.ServerManager
                 campaign = value;
                 TxtName.Text = campaign.Name;
                 TxtDescription.Text = campaign.Description;
+                StartDatePicker.Date = campaign.StartDate;
+                StopDatePicker.Date = campaign.StopDate;
             }
         }
 
@@ -98,6 +100,8 @@ namespace UtnEmall.ServerManager
 
             campaign.Name = TxtName.Text.Trim();
             campaign.Description = TxtDescription.Text.Trim();
+            campaign.StartDate = StartDatePicker.Date;
+            campaign.StopDate = StopDatePicker.Date;
         }
 
         /// <summary>
@@ -107,6 +111,8 @@ namespace UtnEmall.ServerManager
         {
             TxtName.Text = "";
             TxtDescription.Text = "";
+            StartDatePicker.Date = new DateTime(1900, 1, 1);
+            StopDatePicker.Date = new DateTime(1900, 1, 1);
         }
 
         /// <summary>

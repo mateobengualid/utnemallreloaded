@@ -489,4 +489,22 @@
   <data name="AddCampaign" xml:space="preserve">
     <value>Agregar campaña</value>
   </data>
+  <data name="Female" xml:space="preserve">
+    <value>Mujer</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>Varón</value>
+  </data>
+  <data name="Divorced" xml:space="preserve">
+    <value>Divorciado/a</value>
+  </data>
+  <data name="Married" xml:space="preserve">
+    <value>Casado/a</value>
+  </data>
+  <data name="Single" xml:space="preserve">
+    <value>Soltero/a</value>
+  </data>
+  <data name="Widow" xml:space="preserve">
+    <value>Viudo/a</value>
+  </data>
 </root>
