@@ -105,10 +105,10 @@ namespace UtnEmall.Server.WpfCore
             // Limpia la carpeta de ensamblados si es necesario
             CheckForClean();
 
-            CheckForSampleData();
-
             // Inicializa el administrador de sesión
             InitSessionManager();
+
+            CheckForSampleData();
 
             // Inicialización de servicios
             InitServices();
@@ -124,7 +124,7 @@ namespace UtnEmall.Server.WpfCore
                 {
                     SampleDatabaseGenerator.Run();
                     Trace.WriteLine("----> Sample data created.");
-                    config.AppSettings.Settings.Remove(CleanAssemblyFolderKey);
+                    config.AppSettings.Settings.Remove(CreateSampleDataKey);
                     config.Save();
                 }
         }
