@@ -9,7 +9,7 @@
             <TabItem x:Uid="TabItem_1" Header="{x:Static Resources:Resources.InformationTitle}">
                 <Grid x:Uid="Grid_2" Width="Auto" Height="Auto">
                     <Label x:Uid="Label_1" Height="25" Content="{x:Static Resources:Resources.ServerVersion}" FlowDirection="RightToLeft" Margin="120.48,52.43,205.48,0" VerticalAlignment="Top" />
-                    <Label x:Uid="version" Height="25" Content="1.0.0" x:Name="version" Margin="0,52.43,82,0" VerticalAlignment="Top" Width="125" HorizontalAlignment="Right"/>
+                    <Label x:Uid="version" Height="25" Content="1.1.0" x:Name="version" Margin="0,52.43,82,0" VerticalAlignment="Top" Width="125" HorizontalAlignment="Right"/>
                 </Grid>
             </TabItem>
             <TabItem x:Uid="TabItem_2" Header="{x:Static Resources:Resources.ConfigurationTitle}">
