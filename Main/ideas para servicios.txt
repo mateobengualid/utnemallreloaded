@@ -1,0 +1,8 @@
+Ideas para servicios:
+
+- Servicio para hacer referrals de amigos
+- Servicio para ingresar el codigo de algo especial y ganarte un premio o descuento
+- Dos catalogos diferenciados en estructura - navegacion
+- Si vas al cine ingresas el codigo de tu entrada y sumas puntos
+- Estacionamiento
+- 
