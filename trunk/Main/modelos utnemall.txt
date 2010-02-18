@@ -6,48 +6,59 @@ Librería: Catálogo y promoción
 Musicá: catálogo
 
 //////////////////////////////////////////////////////////
-Libreria:
-Libro
+Libreria: Tinta Amarilla
+Libros
 	Titulo
 	Precio
 	Imagen
-Autor
+Autores
 	Nombre
 	Biografia
 OrigenAutor
 	Nombre
-Categoria
+Categorias
 	Nombre
-Reserva
+Reservas
 	Cantidad
 
+Relaciones:
+	Muchos a Muchos: Categorias - Libros, Libros - Origen Autor
+	Uno a Muchos: OrigenAutor - Autor
+	
 //////////////////////////////////////////////////////////
-Accesorios:
-Accesorio,
+Accesorios: Soleil Bijouterie
+Accesorios,
 	Descripcion
 	Imagen
 	Precio
-Categoria,
+Categorias,
 	Nombre
-
+	
+Relaciones:
+	Uno a Muchos: Categorias - Accesorios
+	
 //////////////////////////////////////////////////////////
-Cine:
-Pelicula,
+Cine: Hoyts General Cinema
+Peliculas,
 	Titulo
 	Imagen
 	Director
 	Audiencia
-Categoria,
+Categorias,
 	Nombre
-Sala,
+Salas,
 	Nombre
 	Capacidad
-Funcion
+Funciones
 	Fecha
 	Hora
-Reserva
+Reservas
 	Cantidad
 
+Relaciones:
+	Muchos a Muchos: Peliculas - Categorias, Salas - Funciones
+	Uno a Muchos: Peliculas - Funciones
+	
 //////////////////////////////////////////////////////////
 Shopping:
 Producto
