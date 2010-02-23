@@ -13,6 +13,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Server Setup", "Server Setu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfCore", "WPFCore\WpfCore.csproj", "{D9B9889E-3374-497A-8361-DCD5E734F741}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleDatabaseFiller", "SampleDatabaseFiller\SampleDatabaseFiller.csproj", "{06F97231-0E9F-48E7-99A1-EB7F1EDA2C6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,9 @@ Global
 		{D9B9889E-3374-497A-8361-DCD5E734F741}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9B9889E-3374-497A-8361-DCD5E734F741}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9B9889E-3374-497A-8361-DCD5E734F741}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06F97231-0E9F-48E7-99A1-EB7F1EDA2C6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06F97231-0E9F-48E7-99A1-EB7F1EDA2C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06F97231-0E9F-48E7-99A1-EB7F1EDA2C6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
