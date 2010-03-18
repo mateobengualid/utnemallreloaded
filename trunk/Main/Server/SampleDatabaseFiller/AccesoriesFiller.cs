@@ -96,14 +96,17 @@ namespace SampleDatabaseFiller
         private void FillCategorias()
         {
             Categorias__01697024398DataAccess da = new Categorias__01697024398DataAccess();
-            if (da.LoadAll(false).Count > 0) return;
-
-            var categorias = new Categorias__01697024398Entity[]{
-                new Categorias__01697024398Entity{ Nombre = "Collares" }, 
-                new Categorias__01697024398Entity{ Nombre = "Pulseras" }, 
-                new Categorias__01697024398Entity{ Nombre = "Aros" }, 
-                new Categorias__01697024398Entity{ Nombre = "Pañuelos" },
-            };
+            var categorias = da.LoadAll(false);
+            if (categorias.Count == 0)
+            {
+                categorias = new System.Collections.ObjectModel.Collection<Categorias__01697024398Entity>(
+                    new Categorias__01697024398Entity[]{
+                        new Categorias__01697024398Entity{ Nombre = "Collares" }, 
+                        new Categorias__01697024398Entity{ Nombre = "Pulseras" }, 
+                        new Categorias__01697024398Entity{ Nombre = "Aros" }, 
+                        new Categorias__01697024398Entity{ Nombre = "Pañuelos" },
+                    });
+            }
             foreach (var item in categorias)
             {
                 da.Save(item);

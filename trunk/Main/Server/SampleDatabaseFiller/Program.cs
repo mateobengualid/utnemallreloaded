@@ -41,6 +41,7 @@ namespace SampleDatabaseFiller
         private static void FillRegistersForCinema()
         {
             Console.WriteLine("Llenando registros para Cine");
+            new CinemaFiller(conn).Run();
         }
 
         private static void FillRegistersForLibrary()
