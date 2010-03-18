@@ -4,6 +4,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Globalization;
+using System.Drawing.Imaging;
 
 namespace UtnEmall.Server.Base
 {
@@ -51,6 +52,27 @@ namespace UtnEmall.Server.Base
             }
 
             return img;
+        }
+
+        private static byte[] ConvertImageToByteArray(System.Drawing.Image imageToConvert,ImageFormat formatOfImage)
+        {
+            byte[] Ret;
+            try
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    imageToConvert.Save(ms, formatOfImage);
+                    Ret = ms.ToArray();
+                }
+            }
+            catch (Exception) { throw; }
+            return Ret;
+        } 
+
+        public static string ImageToString(string path)
+        {
+            Image img = Bitmap.FromFile(path);
+            return Convert.ToBase64String(ConvertImageToByteArray(img, ImageFormat.Jpeg));
         }
 
         /// <summary>
