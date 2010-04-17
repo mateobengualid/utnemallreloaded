@@ -23,7 +23,7 @@ Reservas
 
 Relaciones:
 	Muchos a Muchos: Categorias - Libros, Libros - Origen Autor
-	Uno a Muchos: OrigenAutor - Autor
+	Uno a Muchos: OrigenAutor - Autor, Reserva - Libros
 	
 //////////////////////////////////////////////////////////
 Accesorios: Soleil Bijouterie

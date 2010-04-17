@@ -11,6 +11,7 @@ Mall:
 - Estacionamiento
 - Horarios
 - Promociones inter-tienda
+- Sorteos
 
 Libreria: Tinta Amarilla
 - Catálogo de libros (poner novedades, ofertas, y lista completa)
@@ -19,10 +20,9 @@ Libreria: Tinta Amarilla
 
 Accesorios: Soleil Bijouterie
 - Novedades
-- Sorteos
+- Conjuntos
 
 Hoyts
 - Novedades
-- Sorteo de entradas
 - Reservas
 - Salas y equipos
