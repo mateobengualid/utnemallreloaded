@@ -181,9 +181,9 @@ namespace UtnEmall.ServerManager
         /// <summary>
         /// Llena el campo año con el año actual y los próximos 3 años.
         /// </summary>
-        private void FillYear()
+        private void FillYear(int startYear, int endYear)
         {
-            for (int i = 1900; i < 2000; i++)
+            for (int i = startYear; i < endYear; i++)
             {
                 Year.Items.Add("" + i);
             }
@@ -194,11 +194,21 @@ namespace UtnEmall.ServerManager
         /// <summary>
         /// Llena todos los campos.
         /// </summary>
-        private void Fill()
+        public void Fill()
         {
             FillDay();
             FillMonth();
-            FillYear();
+            FillYear(2000, DateTime.Today.Year + 3);
+        }
+
+        /// <summary>
+        /// Llena todos los campos, para un cierto intervalo de años.
+        /// </summary>
+        public void Fill(int startYear, int endYear)
+        {
+            FillDay();
+            FillMonth();
+            FillYear(startYear, endYear);
         }
 
         #endregion

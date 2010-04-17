@@ -67,6 +67,8 @@ namespace UtnEmall.ServerManager
         public CampaignEditor()
         {
             this.InitializeComponent();
+            this.StartDatePicker.Fill(2000, DateTime.Today.Year + 5);
+            this.StopDatePicker.Fill(2000, DateTime.Today.Year + 6);
             campaign = new CampaignEntity();
         }
 
