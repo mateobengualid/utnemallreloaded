@@ -19,8 +19,8 @@ namespace SampleDatabaseFiller
             conn = DataAccessConnection.Instance.GetNewConnection();
 
             FillRegistersForLibrary();
-            FillRegistersForCinema();
             FillRegistersForAccesories();
+            FillRegistersForCinema();
             FillRegistersForMall();
 
             Console.WriteLine("Fin");

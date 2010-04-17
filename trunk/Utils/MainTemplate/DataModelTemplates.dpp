@@ -2004,65 +2004,9 @@ namespace UtnEmall::Utils
 			
 			XplFunctionBody^ fieldsBlock = new XplFunctionBody();
 			
-			for(int i = 0; i<listaCampos.Count; i++)
-			{
-				XplType^ propertyType = (XplType^)listaTipos[i];
-				XplIName^ propertyTypeCall = null;
-				bool isString = false;
-		
-				switch(propertyType.get_typename())
-				{
-					case NativeTypes::Boolean:
-						propertyTypeCall = new XplIName("DbType::Boolean");
-						break;
-					case NativeTypes::Float:
-						propertyTypeCall = new XplIName("DbType::Decimal");
-						break;
-					case NativeTypes::Double:
-						propertyTypeCall = new XplIName("DbType::Decimal");
-						break;
-					case NativeTypes::Integer:
-						propertyTypeCall = new XplIName("DbType::Int32");
-						break;
-					case NativeTypes::String:
-						propertyTypeCall = new XplIName("DbType::String");
-						isString = true;
-						break;
-					case "UtnEmall.Utils.Image":
-						propertyTypeCall = new XplIName("DbType::Object");
-						break;
-					default:
-						propertyTypeCall = new XplIName("DbType::DateTime");
-						break;
-				}
-
-				XplIName^ propertyName = (XplIName^)listaCampos[i];
-				//XplIName^ propertyNameRelation = new XplIName(propertyName.Identifier.Substring(2));
-				string^ propertyStringName = "@" + ToLowerCamelCase(propertyName.Identifier);
-				
-				XplNodeList::CopyNodesAtEnd( writecode{
-						parameter = dataAccess.GetNewDataParameter($propertyStringName, $propertyTypeCall);
-				}.Children(), fieldsBlock.Children());
-								
-				if(isString)
-				{
-					XplNodeList::CopyNodesAtEnd( writecode{
-						parameter.Value = $entity.$propertyName;
-						if(DotNET::System::String::IsNullOrEmpty($entity.$propertyName)){
-							parameter.Value = DotNET::System::DBNull::Value;
-						}
-						sqlCommand.Parameters.Add(parameter);
-					}.Children(), fieldsBlock.Children());
-
-				}
-				else
-				{
-					XplNodeList::CopyNodesAtEnd( writecode{
-					parameter.Value = $entity.$propertyName;
-					sqlCommand.Parameters.Add(parameter);
-					}.Children(), fieldsBlock.Children());
-				}
-			}
+			fieldsBlock.Children().InsertAtEnd(
+				writecode( FillSaveParameters($entity, sqlCommand) )
+			);
 
 			string^ parameterName = entity.Identifier;
 			XplClassMembersList^ updateFunction = writecode{%
