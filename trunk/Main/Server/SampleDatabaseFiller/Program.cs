@@ -47,6 +47,7 @@ namespace SampleDatabaseFiller
         private static void FillRegistersForLibrary()
         {
             Console.WriteLine("Llenando registros para Libreria");
+            new LibraryFiller(conn).Run();
         }
 
 
