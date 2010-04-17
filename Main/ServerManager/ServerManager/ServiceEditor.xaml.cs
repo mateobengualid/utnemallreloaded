@@ -152,11 +152,12 @@ namespace UtnEmall.ServerManager
         public ServiceEditor()
         {
             this.InitializeComponent();
+
             storesById = new Dictionary<int, StoreEntity>();
             service = new ServiceEntity();
 
             Initialize();
-
+            
             StartDate.Date = DateTime.Now;
             StopDate.Date = DateTime.Now.AddDays(1);
         }

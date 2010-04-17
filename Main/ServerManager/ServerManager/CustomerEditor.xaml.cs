@@ -74,6 +74,7 @@ namespace UtnEmall.ServerManager
         public CustomerEditor()
         {
             this.InitializeComponent();
+            this.BirthdayPicker.Fill(1900, DateTime.Today.Year - 17);
             customer = new CustomerEntity();
         }
 

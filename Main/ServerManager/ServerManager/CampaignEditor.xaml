@@ -10,14 +10,14 @@
 		<Label x:Uid="Title" HorizontalAlignment="Left" Margin="8,8,0,0" VerticalAlignment="Top" Width="302" Height="37" Content="{x:Static UtnEmall.ServerManager:UIResources.AddCampaign}" FontSize="20" x:Name="Title"/>
 		<Button x:Uid="bOK" Margin="0,0,121,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.OK}" x:Name="bOK" HorizontalAlignment="Right" Width="100" Click="OnOkClicked"/>
 		<Button x:Uid="bCancel" Margin="0,0,8,8" VerticalAlignment="Bottom" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Cancel}" x:Name="bCancel" HorizontalAlignment="Right" Width="100" Click="OnCancelClicked"/>
-		<UniformGrid x:Uid="UniformGrid_1" Margin="8,91,0,0" Columns="2" Rows="2" VerticalAlignment="Top" Height="106" HorizontalAlignment="Left">
-			<Label x:Uid="Label_1" Width="183" Height="35" Content="{x:Static UtnEmall.ServerManager:UIResources.Name}" FontSize="16" Foreground="#FF444444"/>
+		<UniformGrid x:Uid="UniformGrid_1" Margin="8,49,0,0" Columns="2" Rows="2" VerticalAlignment="Top" Height="106" HorizontalAlignment="Left">
+			<Label x:Uid="Label_1" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Name}" FontSize="16" Foreground="#FF444444"/>
 			<TextBox x:Uid="TxtName" Width="175" Height="25" Text="" TextWrapping="Wrap" x:Name="TxtName" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
-            <Label x:Uid="Label_2" Width="183" Height="35" Content="{x:Static UtnEmall.ServerManager:UIResources.StartDate}" FontSize="16" Foreground="#FF444444"/>
+            <Label x:Uid="Label_2" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.StartDate}" FontSize="16" Foreground="#FF444444"/>
             <UtnEmall.ServerManager:DatePicker x:Uid="StartDatePicker" Width="175" Height="25" x:Name="StartDatePicker"/>
-            <Label x:Uid="Label_3" Width="183" Height="35" Content="{x:Static UtnEmall.ServerManager:UIResources.StopDate}" FontSize="16" Foreground="#FF444444"/>
+            <Label x:Uid="Label_3" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.StopDate}" FontSize="16" Foreground="#FF444444"/>
             <UtnEmall.ServerManager:DatePicker x:Uid="StopDatePicker" Width="175" Height="25" x:Name="StopDatePicker"/>
-            <Label x:Uid="Label_4" Width="183" Height="35" Content="{x:Static UtnEmall.ServerManager:UIResources.Description}" Foreground="#FF444444" FontSize="16"/>
+            <Label x:Uid="Label_4" Width="170" Height="30" Content="{x:Static UtnEmall.ServerManager:UIResources.Description}" Foreground="#FF444444" FontSize="16"/>
 			<TextBox x:Uid="TxtDescription" Width="175" Height="25" TextWrapping="Wrap" x:Name="TxtDescription" Background="#33FFFFFF" KeyDown="OnKeyPressed"/>
 		</UniformGrid>
 	</Grid>
