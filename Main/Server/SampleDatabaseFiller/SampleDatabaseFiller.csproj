@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="AccesoriesFiller.cs" />
     <Compile Include="CinemaFiller.cs" />
+    <Compile Include="LibraryFiller.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -68,11 +68,11 @@ namespace SampleDatabaseFiller
                 var da2 = new Funciones_00933784564_To_Salas_01199597104DataAccess();
                 foreach (var funcion in funciones)
                 {
-                    // _salas[_random.Next(_salas.Count - 1)]
                     da.Save(funcion);
                     var fts = new Funciones_00933784564_To_Salas_01199597104Entity();
                     fts.Funciones_00933784564Id = funcion.Id;
                     fts.Salas_01199597104Id = _salas[_random.Next(_salas.Count - 1)];
+                    da2.Save(fts);
                 }
             }
         }
