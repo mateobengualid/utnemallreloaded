@@ -27,6 +27,7 @@ Relaciones:
 	
 //////////////////////////////////////////////////////////
 Accesorios: Soleil Bijouterie
+
 Accesorios,
 	Descripcion
 	Imagen
