@@ -5,4 +5,24 @@ Ideas para servicios:
 - Dos catalogos diferenciados en estructura - navegacion
 - Si vas al cine ingresas el codigo de tu entrada y sumas puntos
 - Estacionamiento
-- 
+
+Mall:
+
+- Estacionamiento
+- Horarios
+- Promociones inter-tienda
+
+Libreria: Tinta Amarilla
+- Catálogo de libros (poner novedades, ofertas, y lista completa)
+- Reserva de ejemplares
+- Colecciones
+
+Accesorios: Soleil Bijouterie
+- Novedades
+- Sorteos
+
+Hoyts
+- Novedades
+- Sorteo de entradas
+- Reservas
+- Salas y equipos
