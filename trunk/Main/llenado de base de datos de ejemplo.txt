@@ -1,0 +1,18 @@
+Pasos:
+
+- Crear una base en blanco en SQL Server
+- Apuntar el server a dich base en blanco, cuando pregunte por insertar datos de ejemplo decir que si, 
+el server se va a cerrar
+- Correr nuevamente el server para que se ingresen los datos por defecto (tiendas, categorias, clientes, etc)
+- Cargar manualmente los Data model para la tiendas usando los modelos en utnemall
+- Compilar los servicios de los datamodel de las tiendas
+- Copiar en contenido de la carpeta "Sample images for Services" a "trunk\Main\Server\SampleDatabaseFiller\bin\Debug"
+- Abrir el ServerSolution.sln, setear el proyecto SampleDatabaseFiller como inicio, y referenciar en dicho proyecto
+las .dll creadas para los datamodels.
+- Correr el proyecto SampleDatabaseFiller. Esto llenara los datos de cada tienda.
+- Correr el server y el servermanager y cargar a mano los servicios de las tiendas de acuerdo "ideas para servicios.txt"
+
+
+[CUANDO ESTE DISPONIBLE]
+- Correr el proyecto/script para llenar los datos aleatorios de uso de los servicios
+
