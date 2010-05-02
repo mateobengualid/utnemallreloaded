@@ -110,6 +110,8 @@ namespace UtnEmall::Utils
 						zoe::lang::DateTime formStart;
 						PictureBox^ header;
 						Label^ title;
+						int _idTable;
+						int _idRegister;
 
 						void backMenu_Click(object^ sender, EventArgs^ e)
 						{
@@ -141,6 +143,8 @@ namespace UtnEmall::Utils
 							userAction.Stop = stop;
 							userAction.IdComponent = $idComponent;
 							userAction.IdService = $serviceID;
+							userAction.IdRegister = this._idRegister;
+							userAction.IdTable = this._idTable;
 
 							// Save the current statistic
 							userActionDataAccess.Save(userAction);
@@ -459,6 +463,7 @@ namespace UtnEmall::Utils
 			XplClassMembersList^ declarations = null;
 			XplIName^ serviceName = new XplIName( service.ServiceName.Identifier + "Smart" );
 			int storeID = service.StoreID;
+			int idTable = form.IdInputTable;
 
 			// En el caso de ser un Form de Lista o Menu
 			if(form.Type == "List"){
@@ -481,45 +486,6 @@ namespace UtnEmall::Utils
 					source = ds.Name.Identifier;
 					target = form.Name.Identifier;
 				}
-
-				// Este for busca en las relaciones de entrada si tienen datasource
-				//for(UtnEmall::Utils::Relation relation in service.Relations){
-				//	if(relation.Target == form.Name.Identifier && !founded){
-				//		source = relation.Source;
-				//		target = relation.Target;
-
-				//		// Check if it is a DataSource
-				//		for(DataSource^ ds in service.DataSources)
-				//		{
-				//			if(ds.Name.Identifier == relation.Source)
-				//			{
-				//				loadFromWS = true;
-				//				founded = true;
-				//				break;
-				//			}
-				//		}
-				//		// Check if it is a Form with a source data
-				//		for(Form^ sourceForm in service.Forms){
-				//			if(sourceForm.Name.Identifier == relation.Source &&
-				//				sourceForm.OutputTable.Identifier != null)
-				//			{
-				//				loadFromWS = false;
-				//				founded = true;
-				//				break;
-				//			}
-				//		}
-				//	}//if
-				//}//for
-
-				// If there are generated data in the parent form, use it
-				//sourceCondition = writecode{
-				//	// Check if the data to show is comming from the source form
-				//	if (SourceForm != null && SourceForm.NextDataEntity != null)
-				//	{
-				//		localDataEntity = SourceForm.NextDataEntity;
-				//	}
-				//};
-
 				
 				if(loadFromWS){
 					string^ mName = "Get"+source+"List"+"For"+target;
@@ -687,8 +653,19 @@ namespace UtnEmall::Utils
 					void LoadItems()
 					{
 						try{
+							this._idTable = $idTable;
+							int entityId = 0;
+							if(localDataEntity.IsList){
+								entityId = ((DotNET::UtnEmall::Client::EntityModel::IEntity^)localDataEntity.IEntityList[0]).Id;
+							}else{
+								entityId = localDataEntity.Entity.Id;
+							}							
+							this._idRegister = entityId;
+							
 							$sourceCondition;
-						}catch(Exception error){
+							
+						}
+						catch(Exception^ error){
 							ShowErrorMessage(error.Message, DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(2));
 						}
 					}
