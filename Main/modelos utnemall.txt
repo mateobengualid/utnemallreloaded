@@ -8,32 +8,32 @@ Musicá: catálogo
 //////////////////////////////////////////////////////////
 Libreria: Tinta Amarilla
 Libros
-	Titulo
-	Precio
-	Imagen
-Autores
-	Nombre
-	Biografia
+	Titulo:text
+	Precio:text
+	Imagen:image
+Autor
+	Nombre:text
+	Biografia:text
 OrigenAutor
-	Nombre
+	Nombre:text
 Categorias
-	Nombre
-Reservas
+	Categoria:text
+Reserva
 	Cantidad
 
 Relaciones:
-	Muchos a Muchos: Categorias - Libros, Libros - Origen Autor
-	Uno a Muchos: OrigenAutor - Autor, Reserva - Libros
+	Muchos a Muchos: Categorias - Libros, Libros - Autor
+	Uno a Muchos: OrigenAutor - Autor
 	
 //////////////////////////////////////////////////////////
 Accesorios: Soleil Bijouterie
 
 Accesorios,
-	Descripcion
-	Imagen
-	Precio
+	Descripcion:text
+	Imagen:image
+	Precio:text
 Categorias,
-	Nombre
+	Nombre:text
 	
 Relaciones:
 	Uno a Muchos: Categorias - Accesorios
@@ -41,20 +41,23 @@ Relaciones:
 //////////////////////////////////////////////////////////
 Cine: Hoyts General Cinema
 Peliculas,
-	Titulo
-	Imagen
-	Director
-	Audiencia
+	Titulo:text
+	Imagen:image
+	Director:text
+	Audiencia:text
+	Actores:text
+	Sinopsis:text
+	Duracion:text
 Categorias,
-	Nombre
+	Nombre:text
 Salas,
-	Nombre
-	Capacidad
+	Nombre:text
+	Capacidad:numeric
 Funciones
-	Fecha
-	Hora
+	Fecha:text
+	Hora:text
 Reservas
-	Cantidad
+	
 
 Relaciones:
 	Muchos a Muchos: Peliculas - Categorias, Salas - Funciones
