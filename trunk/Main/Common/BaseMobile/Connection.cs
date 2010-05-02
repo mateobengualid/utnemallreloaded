@@ -88,7 +88,7 @@ namespace UtnEmall.Client.SmartClientLayer
                 {
                     System.ServiceModel.Channels.CustomBinding binding = new System.ServiceModel.Channels.CustomBinding();
                     HttpTransportBindingElement transport = new HttpTransportBindingElement();
-                    transport.MaxReceivedMessageSize = 200000;
+                    transport.MaxReceivedMessageSize = Int32.MaxValue;
                     transport.KeepAliveEnabled = false;
                     binding.Elements.AddRange(new System.ServiceModel.Channels.BindingElement[] { new System.ServiceModel.Channels.TextMessageEncodingBindingElement(System.ServiceModel.Channels.MessageVersion.Soap11, System.Text.Encoding.UTF8), transport });
                     serverBinding = binding;
