@@ -6,12 +6,15 @@ using UtnEmall.Server.DataModel;
 using System.Diagnostics;
 using UtnEmall.Server.EntityModel;
 using UtnEmall.Server.Base;
+using UtnEmall.Server.BusinessLogic;
+using UtnEmall.Server.WpfCore;
 
 namespace WpfCore
 {
     class SampleDatabaseGenerator
     {
         static Random _rnd = new Random();
+        static string sessionId;
 
         static string[] _maleNames = new string[] { 
                 "Ambrosio", "Américo", "Amilcar", "Anastasio", "Andrés", "Ángel", "Aníbal", "Aniceto", "Anselmo", "Antolín", "Antón", "Antonello", "Antonio", "Apolo", "Apolonio", "Aquiles", "Aquilino", "Arcadio", "Arcángel", "Archibaldo", "Ariano", "Ariel", "Aristóbulo", "Aristóteles", "Armando", "Arnaldo", "Arquímedes", "Arsenio", "Artemio", "Arturo", "Astor", "Atahualpa", "Atanasio", "Ataúlfo", "Atila", "Augusto", "Aureliano", "Aurelio", "Axel",
@@ -71,6 +74,8 @@ namespace WpfCore
         public static void Run()
         {
             Trace.WriteLine("Inserting sample data into database.");
+
+            sessionId = SessionManager.CreateUserSession("admin", Utilities.CalculateHashString("admin"));
 
             // Categories
             CreateCategories();
@@ -179,7 +184,7 @@ namespace WpfCore
 
         private static void CreateCustomer()
         {
-            var cda = new CustomerDataAccess();
+            var cda = new Customer();
             // crear clientes
             var ce = new CustomerEntity();
 
@@ -214,7 +219,7 @@ namespace WpfCore
             ce.Address = GetAddress();
             
             // save the customer
-            cda.Save(ce);
+            cda.Save(ce, sessionId);
         }
 
         private static string GetPhoneNumber()

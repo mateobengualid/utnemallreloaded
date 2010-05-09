@@ -202,8 +202,9 @@ namespace UtnEmall::Utils
 			clase = writecode
 			{
 					 // <summary>
-					 //   El <c>$dataAccessClassName$</c> es una clase
-					 //   que provee acceso a la base de datos para la tabla correspondiente.
+					 //   The <c>$dataAccessClassName$</c> is a class
+					 //   that provides access to the modelName stored on
+					 //   the database.
 					 // </summary>
 					public class $dataAccessClassName
 					{
@@ -224,12 +225,13 @@ namespace UtnEmall::Utils
 
 						public:
 							// <summary>
-							//   Inicializa una nueva instancia de
-							//   <c>$dataAccessClassName$</c>.
-							//   Chequea si la tabla y los procedimientos almacenados
-							//   ya existen en la base de datos, si no, los crea
-							//   Establece las propiedades que permite realizar consultas
-							//   llamando los metodos LoadWhere.
+							//   Initializes a new instance of a 
+							//   <c>$dataAccessClassName$</c> type.
+							//   It checks if the table and stored procedure
+							//   are already on the database, if not, it creates
+							//   them.
+							//   Sets the properties that allows to make queries
+							//   by calling the LoadWhere method.
 							// </summary>
 							$dataAccessClassName()
 							{
@@ -289,9 +291,10 @@ namespace UtnEmall::Utils
 			//Zoe::Attribute::Add($str);
 			clase = writecode{
 					// <summary>
-					//   El <c>$entityClassName$</c> en una clase de entidad
-					//   que contiene todos los campos que son insertados y cargados en la base de datos
-					//   Esta clase es utilizada por todas las capas superiores.
+					//   The <c>$entityClassName$</c> is a entity class
+					//   that contains all the fields that are inserted and
+					//   loaded from the database. 
+					//   This class is used by the upper layers.
 					// </summary>
 					public class $entityClassName implements IEntity
 					{
@@ -306,7 +309,8 @@ namespace UtnEmall::Utils
 
 						public:
 							// <summary>
-							// Inicializa una nueva instancia de un <c>$entityClassName$</c>.
+							// Initializes a new instance of a 
+							// <c>$entityClassName$</c> type.
 							// </summary>
 							$entityClassName ()
 							{
@@ -315,7 +319,7 @@ namespace UtnEmall::Utils
 							}					
 							
 							// <summary>
-							// Obtiene o establece el id de la entidad.
+							// Gets or sets the Id of the entity.
 							// <summary>
 							$dataMemberExpression;
 							int property Id
@@ -331,7 +335,7 @@ namespace UtnEmall::Utils
 							}
 
 							// <summary>
-							// Obtiene o establece si la entidad fue modificada.
+							// Gets or sets if the entity has changed.
 							// <summary>
 							$dataMemberExpression;
 							bool property Changed
@@ -347,7 +351,7 @@ namespace UtnEmall::Utils
 							}
 
 							// <summary>
-							// Establece o obtiene si la entidad es nueva.
+							// Gets or sets if the entity is new.
 							// <summary>
 							$dataMemberExpression;
 							bool property IsNew
@@ -364,7 +368,7 @@ namespace UtnEmall::Utils
 
 
 							// <summary>
-							// Establece o obtiene el timestamp del ultimo acceso.
+							// Gets or sets the timestamp of the last access.
 							// <summary>
 							$dataMemberExpression;
 							zoe::lang::DateTime property Timestamp
@@ -382,7 +386,7 @@ namespace UtnEmall::Utils
 
 							const string^ DBTimestamp = "timestamp";
 							// <summary>
-							// Coleccion de errores de la entidad.
+							// The collection of entity's errors.
 							// <summary>
 							UtnEmall::Utils::Model::InsertDataMemberAttribute( $isMobilExp , true );
 							
@@ -475,7 +479,7 @@ namespace UtnEmall::Utils
 						public:
 							$dataMemberExpression;
 							// <summary>
-							// Obtiene o establece los valores para $fieldName$.
+							// Gets or sets the value for $fieldName$.
 							// <summary>
 							$fieldType property $fieldName
 							{
@@ -497,7 +501,7 @@ namespace UtnEmall::Utils
 						private:
 							string^ $internalFieldName;
 						// <summary>
-						// Obtiene o establece el $fieldName.
+						// Gets or sets the $fieldName.
 						// <summary>
 						public:
 							$dataMemberExpression;
@@ -523,7 +527,7 @@ namespace UtnEmall::Utils
 						public:
 							$dataMemberExpression;
 							// <summary>
-							// Obtiene o establece el valor para $fieldName$.
+							// Gets or sets the value for $fieldName$.
 							// <summary>
 							$fieldType^ property $fieldName
 							{
@@ -547,7 +551,7 @@ namespace UtnEmall::Utils
 						public:
 							$dataMemberExpression;
 							// <summary>
-							// Obtiene o establece el valor para $fieldName$.
+							// Gets or sets the value for $fieldName$.
 							// <summary>
 							$fieldType property $fieldName
 							{
@@ -622,7 +626,7 @@ namespace UtnEmall::Utils
 						UtnEmall::Utils::Model::InsertDataMemberAttribute( $isMobilExp , true );
 						Zoe::Attribute::Add($str);
 						// <summary>
-						// Obtiene o establece el valor para $fieldName$.
+						// Gets or sets the value for $fieldName$.
 						// <summary>
 						$listOfType^ property $fieldName
 						{
@@ -652,7 +656,7 @@ namespace UtnEmall::Utils
 						int $internalFieldNameId;
 					public:
 						// <summary>
-						// Obtiene o establece el valor para $fieldName$.
+						// Gets or sets the value for $fieldName$.
 						// <summary>
 						$dataMemberExpression;
 						$entityTypeRelation^ property $fieldName
@@ -664,7 +668,7 @@ namespace UtnEmall::Utils
 							set 
 							{
 								$internalFieldName = value;
-								// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+								// If provided value is null set id to 0, else to provided object id
 								if($internalFieldName != null)
 									$fieldNameId = $internalFieldName.Id;
 								else
@@ -674,9 +678,9 @@ namespace UtnEmall::Utils
 						}
 
 						// <summary>
-						// Obtiene o establece el Id del $fieldName$.
-						// Si $fieldName$ esta establecido devuelve el id del objeto,
-						// sino devuelve el id almacenado manualmente.
+						// Gets or sets the Id of the $fieldName$.
+						// If $fieldName$ is set return the Id of the object,
+						// else returns manually stored Id
 						// <summary>
 						$dataMemberExpression;
 						int property $fieldNameId
@@ -716,7 +720,7 @@ namespace UtnEmall::Utils
 						int $internalFieldNameId;
 					public:
 						// <summary>
-						// Establece u obtiene el valor para $fieldName$.
+						// Gets or sets the value for $fieldName$.
 						// <summary>
 						$dataMemberExpression;
 						$entityTypeRelation^ property $fieldName
@@ -728,7 +732,7 @@ namespace UtnEmall::Utils
 							set 
 							{
 								$internalFieldName = value;
-								// Si el valor proporcionado es null, modifica el id a 0, sino el id del objeto indicado.
+								//If provided value is null set id to 0, else to provided object id
 								if($internalFieldName != null)
 									$fieldNameId = $internalFieldName.Id;
 								else
@@ -738,9 +742,9 @@ namespace UtnEmall::Utils
 						}
 
 						// <summary>
-						// Obtiene o establece el Id del $fieldName$.
-						// Si $fieldName$ esta establecido devuelve el id del objeto,
-						// sino devuelve el id almacenado manualmente.
+						// Gets or sets the Id of the $fieldName$.
+						// If $fieldName$ is set return the Id of the object,
+						// else returns manually stored Id
 						// <summary>
 						$dataMemberExpression;
 						int property $fieldNameId
@@ -784,7 +788,7 @@ namespace UtnEmall::Utils
 								bool recursiveLoad, bool recursiveSave, bool deleteCascade, bool generateRelation, block rulesBlock){
 			return Relations(fieldName, referencedType, null, relationType, recursiveLoad, recursiveSave, deleteCascade, generateRelation, true, rulesBlock);
 		}
-		// Define las Funciónes para el dataAccessEntity. Las inserta dentro de esta clase.
+		// Define las funciones para el dataAccessEntity. Las inserta dentro de esta clase.
 		static exp void ProcessModel(iname void modelName, iname void tableName){
 			dataAccessType = new XplType();
 			dataAccessType.set_typename(modelName.Identifier+"DataAccess");
@@ -837,19 +841,19 @@ namespace UtnEmall::Utils
 		// Genera la función para controlar las relaciones al eliminar
 		static void GenerateCheckDeleteFunctions(iname void modelName, iname void tableName){
 
-			// Si no hay restricciones, salir
+			// If there is not restrictions exit
 			if(listaRestricciones.Count == 0) return;
 			
 			XplFunctionBody^ funcBody = new XplFunctionBody();
 			XplIName^ mainEntityName = new XplIName(modelName.Identifier + "Entity");
 
-			// Primero se crean las variables del dataaccess
+			// First create dataaccess variables
 			Hashtable^ added = new Hashtable();
 						
 			for(DeleteRestriction^ restriction in listaRestricciones){
-				// Nombre del tipo de dataaccess
+				// Name of data access type
 				XplIName^ dataAccessName = new XplIName(restriction.referencedType.Identifier + "DataAccess");
-				// Nombre de la variable del dataaccess
+				// Name of data access variable
 				XplIName^ dataAccessVarName = new XplIName( "var" + restriction.referencedType.Identifier + "DataAccess");
 				
 				if(added[restriction.referencedType.Identifier]==null){
@@ -865,9 +869,9 @@ namespace UtnEmall::Utils
 			for(DeleteRestriction^ restriction in listaRestricciones){
 				// Name of entity type
 				XplIName^ entityName = new XplIName(restriction.referencedType.Identifier + "Entity");
-				// Nombre del tipo de dataaccess
+				// Name of data access type
 				XplIName^ dataAccessName = new XplIName(restriction.referencedType.Identifier + "DataAccess");
-				// Nombre de la variable del dataaccess
+				// Name of data access variable
 				XplIName^ dataAccessVarName = new XplIName( "var" + restriction.referencedType.Identifier + "DataAccess");
 				// Name of related field constant identifier on entity
 				XplIName^ relatedFieldConstant = new XplIName(restriction.referencedType.Identifier + "Entity::DBId" + restriction.fieldName.Identifier);
@@ -892,7 +896,7 @@ namespace UtnEmall::Utils
 					%}.Children()
 				);
 		}
-		// Genera la Función Load para la cargar una entity particular		
+		// Genera la funcion Load para la cargar una entity particular		
 		static void GenerateLoad(iname void modelName, iname void tableName){
 			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
 			string^ entityStringName = modelName.Identifier;
@@ -927,6 +931,7 @@ namespace UtnEmall::Utils
 				bool datetime= false;
 				bool isString = false;
 				
+				// Console::WriteLine("$$$ VALOR DEL TIPO : "+propertyName.Identifier+" "+propertyType.get_typename());
 				switch(propertyType.get_typename())
 				{
 					case NativeTypes::Boolean:
@@ -1005,23 +1010,23 @@ namespace UtnEmall::Utils
 			XplClassMembersList^ loadFunction = writecode{%
 				public:
 				// <summary>
-				// Función para cargar un $entityType$ desde la base de datos. 
+				// Function to load a $entityType$ from database. 
 				// </summary>
-				// <param name="id">El id del registro a cargar</param>
-				// <param name="loadRelation">Si es true carga las relaciones</param>
-				// <param name="scope">Estructura interna usada para evitar la referencia circular, debe ser proveida si es llamada desde otro data access</param>
-				// <returns>La instancia de la entidad</returns>
+				// <param name="id">The ID of the record to load</param>
+				// <param name="loadRelation">if is true load the relation</param>
+				// <param name="scope">Internal structure used to avoid circular reference locks, must be provided if calling from other data access object</param>
+				// <returns>The entity instance</returns>
 				// <exception cref="UtnEmallDataAccessException">
-				// Si una DbException ocurre mientras se accede a la base de datos
+				// If a DbException occurs while accessing the database.
 				// </exception>
 				$entityType^ Load(int id, bool loadRelation, DictionaryOfStringIEntity^ scope)
 				{
-					// Crea una clave para el objeto de scope interno
+					// Build a key for internal scope object
 					string^ scopeKey = id.ToString(DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) + $entityStringName;
 					if (scope != null)
 					{
-						// Si el scope contiene el objeto, este ya fue cargado
-						// retorna el objeto situado en el scope para evitar referencias circulares
+						// If scope contains the object it was already loaded, 
+						// return it to avoid circular references
 						if (scope.ContainsKey(scopeKey))
 						{
 							return ($entityType^)scope[scopeKey];
@@ -1029,17 +1034,17 @@ namespace UtnEmall::Utils
 					}
 					else
 					{
-						// Si no existe un scope, crear uno
+						// If there isn't a current scope create one
 						scope = new DictionaryOfStringIEntity();
 					}
 
 					$entityType^ $entity = null;
-					// Chequear si la entidad fue ya cargada por el data access actual
-					// y retornar si fue ya cargada
+					// Check if the entity was already loaded by current data access object
+					// and return it if that is the case
 					if(inMemoryEntities.ContainsKey(id))
 					{
 						$entity = inMemoryEntities[id];
-						// Agregar el objeto actual al scope
+						// Add current object to current load scope
 						scope.Add(scopeKey, $entity);
 					}
 					else
@@ -1047,7 +1052,7 @@ namespace UtnEmall::Utils
 						bool closeConnection = false;
 						try
 						{						
-							// Abrir una nueva conexión si no es una transaccion
+							// Open a new connection if it isn't on a transaction
 							if(dbConnection == null || dbConnection.State.CompareTo(DotNET::System::Data::ConnectionState::Closed) == 0)
 							{
 								closeConnection = true;
@@ -1056,35 +1061,35 @@ namespace UtnEmall::Utils
 							}
 							
 							string^ cmdText = $sql;
-							// Crea el command
+							// Create the command
 							$commandType^ sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-							// Crear el parametro id para la consulta
+							// Create the Id parameter for the query
 							$parameterType^ parameter = dataAccess.GetNewDataParameter($nameIdParameter, DbType::Int32);
 							parameter.Value = id;
 							sqlCommand.Parameters.Add(parameter);
 
-							// Usar el datareader para cargar desde la base de datos
+							// Use a DataReader to get data from db
 							IDataReader reader = sqlCommand.ExecuteReader();
 							$entity = new $entityType();
 
 							if (reader.Read())
 							{
-								// Cargar las filas de la entidad
+								// Load fields of entity
 								$fieldsBlock;
 
-								// Agregar el objeto actual al scope
+								// Add current object to the scope
 								scope.Add(scopeKey, $entity);
-								// Agregar el objeto a la cahce de entidades cargadas
+								// Add current object to cache of loaded entities
 								inMemoryEntities.Add($entity.Id, $entity);
 								
-								// Lee el timestamp y establece las propiedades nuevo y cambiado
+								// Read the timestamp and set new and changed properties
 								$entity.Timestamp = reader.GetDateTime($timestamp);
 								$entity.IsNew = false;
 								$entity.Changed = false;
 
-								// Cerrar el Reader
+								// Close the reader
 								reader.Close();
-								// Carga los objetos relacionadoss if required
+								// Load related objects if required
 								if(loadRelation)
 								$fieldsBlockRelations;
 							}
@@ -1095,19 +1100,19 @@ namespace UtnEmall::Utils
 						}
 						catch(DbException^ dbException)
 						{
-							// Relanza la excepcion como una excepcion personalizada
+							// Catch DBException and rethrow as custom exception
 							throw new UtnEmallDataAccessException(dbException.Message, dbException);
 						}
 						finally
 						{
-							// Cierra la conexión si fue creada dentro de la Función
+							// Close connection if it was opened by ourself
 							if(closeConnection)
 							{
 								dbConnection.Close();
 							}
 						}
 					}
-					// Retorna la entidad cargada
+					// Return the loaded entity
 					return $entity;
 				}
 				
@@ -1123,12 +1128,12 @@ namespace UtnEmall::Utils
 				XplClassMembersList^ loadFunctionOneParameter = writecode{%
 				public:
 					// <summary>
-					// Función para cargar un $entityType$ desde la base de datos 
+					// Function to load a $entityType$ from database. 
 					// </summary>
-					// <param name="id">El id del registro a cargar</param>
-					// <returns>La instancia de la entidad</returns>
+					// <param name="id">The ID of the record to load</param>
+					// <returns>the entity instance</returns>
 					// <exception cref="UtnEmallDataAccessException">
-					// Si una DbException ocurre mientras se accede a la base de datos
+					// If a DbException occurs while accessing the database.
 					// </exception>
 					$entityType^ Load(int id)
 					{
@@ -1136,13 +1141,13 @@ namespace UtnEmall::Utils
 					}
 
 					// <summary>
-					// Función para cargar un $entityType$ desde la base de datos 
+					// Function to load a $entityType$ from database. 
 					// </summary>
-					// <param name="id">El id del registro a cargar</param>
-					// <param name="loadRelation">Si es true carga la relacion</param>
-					// <returns>La instancia de la entidad</returns>
+					// <param name="id">The ID of the record to load</param>
+					// <param name="loadRelation">if is true load the relation</param>
+					// <returns>the entity instance</returns>
 					// <exception cref="UtnEmallDataAccessException">
-					// Si una DbException ocurre mientras se accede a la base de datos
+					// If a DbException occurs while accessing the database.
 					// </exception>
 					$entityType^ Load(int id, bool loadRelations)
 					{
@@ -1150,13 +1155,13 @@ namespace UtnEmall::Utils
 					}
 
 					// <summary>
-					// Función para cargar un $entityType$ desde la base de datos 
+					// Function to load a $entityType$ from database. 
 					// </summary>
-					// <param name="id">El id del registro a cargar</param>
-					// <param name="scope">Estructura interna usada para evitar la referencia circular, debe ser proveida si es llamada desde otro data access</param>
-					// <returns>La instancia de la entidad</returns>
+					// <param name="id">The ID of the record to load</param>
+					// <param name="scope">Internal structure used to avoid circular reference locks, must be provided if calling from other data access object</param>
+					// <returns>the entity instance</returns>
 					// <exception cref="UtnEmallDataAccessException">
-					// Si una DbException ocurre mientras se accede a la base de datos
+					// If a DbException occurs while accessing the database.
 					// </exception>
 					$entityType^ Load(int id, DictionaryOfStringIEntity^ scope)
 					{
@@ -1170,7 +1175,7 @@ namespace UtnEmall::Utils
 				}
 
 		}
-		// Genera la Función LoadWhere para cargar todas las entitys correspondientes
+		// Genera la funcion LoadWhere para cargar todas las entitys correspondientes
 		static void GenerateLoadWhere(iname void modelName, iname void tableName){
 			XplIName^ entityList = new XplIName(ToLowerCamelCase(modelName.Identifier)+"List");
 			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
@@ -1270,19 +1275,21 @@ namespace UtnEmall::Utils
 					UtnEmall::Utils::List::New( ListInt, gettype(int) );
 
 					// <summary>
-					// Función para cargar un $entityType$ desde la base de datos 
+					// Function to Load a $entityType$ from database. 
 					// </summary>
-					// <param name="propertyName">Un string con el nombre del campo o una constante de la clase que representa ese campo</param>
-					// <param name="expValue">El valor que será insertado en la clausula where</param>
-					// <param name="loadRelation">Si es true carga la relacion</param>
-					// <returns>Una lista que contiene todas las entidades que concuerdan con la clausula where</returns>
+					// <param name="propertyName">A string with the name of the field or a
+					//	constant from the class that represent that field</param>
+					// <param name="expValue">The value that will be inserted on the where
+					// clause of the sql query</param>
+					// <param name="loadRelation">If is true load the relations</param>
+					// <returns>A list containing all the entities that match the where clause</returns>
 					// <exception cref="ArgumentNullException">
-					// Si <paramref name="propertyName"/> es null or vacio.
-					// Si <paramref name="propertyName"/> no es una propiedad de la clase $entityType$.
-					// Si <paramref name="expValue"/> es null.
+					// If <paramref name="propertyName"/> is null or empty.
+					// If <paramref name="propertyName"/> is not a property of $entityType$ class.
+					// If <paramref name="expValue"/> is null.
 					// </exception>
 					// <exception cref="UtnEmallDataAccessException">
-					// Si una DbException ocurre cuando se accede a la base de datos
+					// If an DbException occurs in the try block while accessing the database.
 					// </exception>
 					$listOfType^ LoadWhere(string^ propertyName, object^ expValue, bool loadRelation, OperatorType operatorType)
 					{
@@ -1300,7 +1307,7 @@ namespace UtnEmall::Utils
 						bool closeConnection = false;
 						try
 						{
-							// Abrir una nueva conexión con la base de datos si es necesario
+							// Open a new connection with a database if necessary
 							if(dbConnection == null || dbConnection.State.CompareTo(DotNET::System::Data::ConnectionState::Closed) == 0)
 							{
 								closeConnection = true;
@@ -1310,12 +1317,12 @@ namespace UtnEmall::Utils
 		
 							string^ op = DataAccessConnection::GetOperatorString(operatorType);
 
-							// Construir la consulta
+							// Build the query string
 							string^ cmdText = $sql + " WHERE " + propertyName + " " + op + " @expValue";
-							// Crea el command
+							// Create the command
 							$commandType^ sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 							
-							// Agrega los parametros al command
+							// Add parameters values to the command
 							$parameterType^ parameter = dataAccess.GetNewDataParameter();
 							parameter.ParameterName = "@expValue";
 							DotNET::System::Type^ parameterType = properties[propertyName];
@@ -1324,22 +1331,22 @@ namespace UtnEmall::Utils
 							parameter.Value = expValue;
 							sqlCommand.Parameters.Add(parameter);
 
-							// Crea un datareader
+							// Create a DataReader
 							IDataReader^ reader = sqlCommand.ExecuteReader();
 							$entityList = new $listOfType();
 							$entityType^ $entity;
 							ListInt listId = new ListInt();
 
-							// Agrega los id a una lista de ids
+							// Add list of Ids to a list
 							while (reader.Read())
 							{
 								listId.Add(reader.GetInt32(0));
 							}
 
-							// Cerrar el Reader
+							// Close the reader
 							reader.Close();
 
-							// Carga las entidades
+							// Load the entities
 							foreach(int id in listId)
 							{
 								$entity = Load( id, loadRelation, null);
@@ -1348,12 +1355,12 @@ namespace UtnEmall::Utils
 						}
 						catch(DbException^ dbException)
 						{
-							// Relanza la excepcion como una excepcion personalizada
+							// Catch DbException and rethrow as custom exception
 							throw new UtnEmallDataAccessException(dbException.Message, dbException);
 						}
 						finally
 						{
-							// Cierra la conexión si fue abierta dentro de la Función
+							// Close connection if it was opened by myself
 							if(closeConnection)
 							{
 								dbConnection.Close();
@@ -1370,7 +1377,7 @@ namespace UtnEmall::Utils
 					XplNodeList::CopyNodesAtEnd(loadWhereFunction.Children(), target.Children());
 				}
 		}
-		// Genera la Función LoadAll para cargar todas las entitys correspondientes
+		// Genera la funcion LoadAll para cargar todas las entitys correspondientes
 		static void GenerateLoadAll(iname void modelName, iname void tableName){
 			XplIName^ entityList = new XplIName(ToLowerCamelCase(modelName.Identifier)+"List");
 			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
@@ -1473,12 +1480,12 @@ namespace UtnEmall::Utils
 					UtnEmall::Utils::List::NewCollection( $listOfTypeName, gettype($entityType^) );
 
 					// <summary>
-					// Función que carga todos los $entityType$ desde la base de datos 
+					// Function to Load all the $entityType$ from database. 
 					// </summary>
-					// <param name="loadRelation">Si es true carga la relacion</param>
-					// <returns>Una lista con todas las entidades</returns>
+					// <param name="loadRelation">If is true load the relation</param>
+					// <returns>A list of all the entities</returns>
 					// <exception cref="UtnEmallDataAccessException">
-					// Si una DbException ocurre mientras se accede a la base de datos
+					// If a DbException occurs in the try block while accessing the database.
 					// </exception>
 					$listOfType^ LoadAll(bool loadRelation)
 					{
@@ -1487,7 +1494,7 @@ namespace UtnEmall::Utils
 						bool closeConnection = false;
 						try
 						{
-							// Abrir una nueva conexión de ser necesario
+							// Open a new connection if necessary
 							if(dbConnection == null || dbConnection.State.CompareTo(DotNET::System::Data::ConnectionState::Closed) == 0)
 							{
 								closeConnection = true;
@@ -1495,28 +1502,28 @@ namespace UtnEmall::Utils
 								dbConnection.Open();
 							}
 						
-							// Construir la consulta
+							// Build the query string
 							string^ cmdText = $sql;
 							$commandType^ sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 							
-							// Crea un datareader
+							// Create a DataReader
 							IDataReader^ reader = sqlCommand.ExecuteReader();
 							
 							$entityType^ $entity;
 							
-							// Lee los ids y los inserta en una lista
+							// Read the Ids and insert on a list
 							ListInt listId = new ListInt();
 							while (reader.Read())
 							{
 								listId.Add(reader.GetInt32(0));
 							}
-							// Cierra el DataReader
+							// Close the DataReader
 							reader.Close();
 							
-							// Crea un scope
+							// Create a scope
 							DictionaryOfStringIEntity^ scope = new DictionaryOfStringIEntity();
 							
-							// Carga las entidades y las agrega a la lista a retornar
+							// Load entities and add to return list
 							foreach(int id in listId)
 							{
 								$entity = Load( id, loadRelation, scope);
@@ -1525,18 +1532,18 @@ namespace UtnEmall::Utils
 						}
 						catch(DbException^ dbException)
 						{
-							// Relanza la excepcion como una excepcion personalizada
+							// Catch DbException and rethrow as custom exception
 							throw new UtnEmallDataAccessException(dbException.Message, dbException);
 						}
 						finally
 						{
-							// Cierra la conexión
+							// Close the connection
 							if(closeConnection)
 							{
 								dbConnection.Close();
 							}
 						}
-						// Retorna la entidad cargada
+						// Return the loaded
 						return $entityList;
 					}
 				
@@ -1547,7 +1554,7 @@ namespace UtnEmall::Utils
 					XplNodeList::CopyNodesAtEnd(loadAllFunction.Children(), target.Children());
 				}
 		}
-		// Genera la Función SaveEntity para guardar una entity
+		// Genera la funcion SaveEntity para guardar una entity
 		static void GenerateSave(iname void modelName, iname void tableName){
 			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
 			string^ entityStringName = modelName.Identifier;
@@ -1659,6 +1666,10 @@ namespace UtnEmall::Utils
 				}
 				else
 				{
+					//executeBlock = writecode{
+					//	$parameterType^ parameterIdOutput = dataAccess.GetNewDataParameter($nameIdParameter, DbType::Int32);
+					//	sqlCommand.ExecuteNonQuery();
+					//};
 					executeBlock.Children().InsertAtEnd(
 						writecode( sqlCommand.ExecuteNonQuery() )
 					);
@@ -1822,28 +1833,28 @@ namespace UtnEmall::Utils
 				
 				public:
 				// <summary>
-				// Función que guarda un $entityType$ en la base de datos. 
+				// Function to Save a $entityType$ in the database. 
 				// </summary>
-				// <param name="$entity$">$entityType$ a guardar</param>
+				// <param name="$entity$">$entityType$ to save</param>
 				// <exception cref="ArgumentNullException">
-				// Si <paramref name="$entity$"/> no es un <c>$entityType$</c>.
+				// if <paramref name="$entity$"/> is not a <c>$entityType$</c>.
 				// </exception>
 				// <exception cref="UtnEmallDataAccessException">
-				// Si una DbException ocurre cuando se accede a la base de datos
+				// If an DbException occurs in the try block while accessing the database.
 				// </exception>
 				void Save($entityType^ $entity){
 					Save($entity, null);
 				}
 				// <summary>
-				// Función que guarda un $entityType$ en la base de datos. 
+				// Function to Save a $entityType$ in the database. 
 				// </summary>
-				// <param name="$entity$">$entityType$ a guardar</param>
-				// <param name="scope">Estructura interna para evitar problemas con referencias circulares</param>
+				// <param name="$entity$">$entityType$ to save</param>
+				// <param name="scope">Interna structure to avoid circular reference locks. Provide an instance when calling from other data access object.</param>
 				// <exception cref="ArgumentNullException">
-				// Si <paramref name="$entity$"/> no es un <c>$entityType$</c>.
+				// If <paramref name="$entity$"/> is not a <c>$entityType$</c>.
 				// </exception>
 				// <exception cref="UtnEmallDataAccessException">
-				// Si una DbException ocurre cuando se accede a la base de datos
+				// If an DbException occurs in the try block while accessing the database.
 				// </exception>
 				void Save($entityType^ $entity, DictionaryOfStringIEntity^ scope)
 				{
@@ -1852,11 +1863,11 @@ namespace UtnEmall::Utils
 						throw new ArgumentException("The argument can't be null");
 					}
 					
-					// Crear una clave unica para identificar el objeto dentro del scope interno
+					// Create a unique key to identify the object in the internal scope
 					string^ scopeKey = $entity.Id.ToString(DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) + $entityStringName;
 					if (scope != null)
 					{
-						// Si se encuentra dentro del scope lo retornamos
+						// If it's on the scope return it, don't save again
 						if (scope.ContainsKey(scopeKey))
 						{
 							return;
@@ -1864,13 +1875,13 @@ namespace UtnEmall::Utils
 					}
 					else
 					{
-						// Crea un nuevo scope si este no fue enviado
+						// Create a new scope if it's not provided
 						scope = new DictionaryOfStringIEntity();
 					}
 										
 					try
 					{
-						// Crea una nueva conexion y una nueva transaccion si no hay una a nivel superior
+						// Open a DbConnection and a new transaction if it isn't on a higher level one
 						if (!(isGlobalTransaction))
 						{
 							dbConnection = dataAccess.GetNewConnection();
@@ -1880,7 +1891,7 @@ namespace UtnEmall::Utils
 
 						string^ commandName = "";
 						bool isUpdate = false;
-						// Verifica si se debe hacer una actualización o una inserción
+						// Check if it is an insert or update command
 						if($entity.IsNew || !DataAccessConnection::ExistsEntity($entity.Id, $tableNameString, $nameId, dbConnection, dbTransaction) ) 
 						{
 							commandName = $sqlSave;
@@ -1893,55 +1904,55 @@ namespace UtnEmall::Utils
 							$fieldsBlockRelationsToDelete;
 						}
 
-						// Se crea un command
+						// Create a db command
 						$commandType^ sqlCommand = dataAccess.GetNewCommand(commandName, dbConnection, dbTransaction);
 						$fieldsBlockCommandType;
 						
-						// Agregar los parametros del command .
+						// Add parameters values to current command
 						$parameterType^ parameter;
 						
 						$parameterIdentityBlock;
 
 						FillSaveParameters($entity, sqlCommand);
 						
-						// Ejecutar el command
+						// Execute the command
 						$executeBlock;
 
 						scopeKey = $entity.Id.ToString(DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) + $entityStringName;
-						// Agregar la entidad al scope actual
+						// Add entity to current internal scope
 						scope.Add(scopeKey, $entity);
 
-						// Guarda las colecciones de objetos relacionados.
+						// Save collections of related objects to current entity
 						$fieldsBlockRelationsCollections;
 
-						// Guardar objetos relacionados con la entidad actual 
+						// Save objects related to current entity
 						$fieldsBlockRelations;
 						
-						// Actualizar
+						// Update
 						$fieldsBlockUpdate;
 						
-						// Cierra la conexión si fue abierta en la función
+						// Close transaction if initiated by me
 						if (!isGlobalTransaction)
 		                {
 				            dbTransaction.Commit();
 						}
-						// Actualizar los campos new y changed
+						// Update new and changed flags
 						$entity.IsNew = false;
 						$entity.Changed = false;					
 					}
 					catch(DbException^ dbException)
 					{
-						// Anula la transaccion
+						// Rollback transaction
 						if (!isGlobalTransaction)
 						{
 							dbTransaction.Rollback();
 						}
-						// Relanza una excepcion personalizada
+						// Rethrow as custom exception
 						throw new UtnEmallDataAccessException(dbException.Message, dbException);
 					}
 					finally
 					{
-						// Cierra la conexión si fue inicializada
+						// Close connection if initiated by me
 						if (!isGlobalTransaction)
 						{
 							dbConnection.Close();
@@ -1993,77 +2004,21 @@ namespace UtnEmall::Utils
 			
 			XplFunctionBody^ fieldsBlock = new XplFunctionBody();
 			
-			for(int i = 0; i<listaCampos.Count; i++)
-			{
-				XplType^ propertyType = (XplType^)listaTipos[i];
-				XplIName^ propertyTypeCall = null;
-				bool isString = false;
-		
-				switch(propertyType.get_typename())
-				{
-					case NativeTypes::Boolean:
-						propertyTypeCall = new XplIName("DbType::Boolean");
-						break;
-					case NativeTypes::Float:
-						propertyTypeCall = new XplIName("DbType::Decimal");
-						break;
-					case NativeTypes::Double:
-						propertyTypeCall = new XplIName("DbType::Decimal");
-						break;
-					case NativeTypes::Integer:
-						propertyTypeCall = new XplIName("DbType::Int32");
-						break;
-					case NativeTypes::String:
-						propertyTypeCall = new XplIName("DbType::String");
-						isString = true;
-						break;
-					case "UtnEmall.Utils.Image":
-						propertyTypeCall = new XplIName("DbType::Object");
-						break;
-					default:
-						propertyTypeCall = new XplIName("DbType::DateTime");
-						break;
-				}
-
-				XplIName^ propertyName = (XplIName^)listaCampos[i];
-				//XplIName^ propertyNameRelation = new XplIName(propertyName.Identifier.Substring(2));
-				string^ propertyStringName = "@" + ToLowerCamelCase(propertyName.Identifier);
-				
-				XplNodeList::CopyNodesAtEnd( writecode{
-						parameter = dataAccess.GetNewDataParameter($propertyStringName, $propertyTypeCall);
-				}.Children(), fieldsBlock.Children());
-								
-				if(isString)
-				{
-					XplNodeList::CopyNodesAtEnd( writecode{
-						parameter.Value = $entity.$propertyName;
-						if(DotNET::System::String::IsNullOrEmpty($entity.$propertyName)){
-							parameter.Value = DotNET::System::DBNull::Value;
-						}
-						sqlCommand.Parameters.Add(parameter);
-					}.Children(), fieldsBlock.Children());
-
-				}
-				else
-				{
-					XplNodeList::CopyNodesAtEnd( writecode{
-					parameter.Value = $entity.$propertyName;
-					sqlCommand.Parameters.Add(parameter);
-					}.Children(), fieldsBlock.Children());
-				}
-			}
+			fieldsBlock.Children().InsertAtEnd(
+				writecode( FillSaveParameters($entity, sqlCommand) )
+			);
 
 			string^ parameterName = entity.Identifier;
 			XplClassMembersList^ updateFunction = writecode{%
 				// <summary>
-				// Función que actualiza un $entityType$ en la base de datos. 
+				// Function to Update a $entityType$ from database. 
 				// </summary>
-				// <param name="$entity$">$entityType$ a actualizar</param>
+				// <param name="$entity$">$entityType$ to update</param>
 				// <exception cref="ArgumentNullException">
-				// Si <paramref name="$entity$"/> no es un <c>$entityType$</c>.
+				// if <paramref name="$entity$"/> is not a <c>$entityType$</c>.
 				// </exception>
 				// <exception cref="UtnEmallDataAccessException">
-				// Si una DbException ocurre cuando se accede a la base de datos
+				// If an DbException occurs in the try block while accessing the database.
 				// </exception>
 				void Update($entityType^ $entity)
 				{
@@ -2072,22 +2027,22 @@ namespace UtnEmall::Utils
 						throw new ArgumentException("The argument can't be null", $parameterName);
 					}
 
-					// Construir un comando para actualizar
+					// Build update command
 					string^ commandName = $sqlUpdate;
 					$commandType^ sqlCommand = dataAccess.GetNewCommand(commandName, dbConnection, dbTransaction);
 					$fieldsBlockCommandType;
 					
-					// Establece los parametros de actualización
+					// Set update parameters values
 					$parameterType^ parameter = dataAccess.GetNewDataParameter($nameIdParameter, DbType::Int32);
 					parameter.Value = $entity.Id;
 					sqlCommand.Parameters.Add(parameter);
 
 					$fieldsBlock;
 					
-					// Ejecuta la actualización
+					// Execute the update
 					sqlCommand.ExecuteNonQuery();
 
-					// Actualizar los campos new y changed
+					// Update new and changed flags
 					$entity.IsNew = false;
 					$entity.Changed = false;
 				}
@@ -2099,7 +2054,7 @@ namespace UtnEmall::Utils
 					XplNodeList::CopyNodesAtEnd(updateFunction.Children(), target.Children());
 				}
 		}
-		// Genera la Función DeleteEntity para borrar una entity
+		// Genera la funcion DeleteEntity para borrar una entity
 		static void GenerateDelete(iname void modelName, iname void tableName){
 			string^ entityStringName = modelName.Identifier;
 
@@ -2173,29 +2128,29 @@ namespace UtnEmall::Utils
 			XplClassMembersList^ deleteFunction = writecode{%
 			public:
 				// <summary>
-				// Función que elimina un $entityType$ de la base de datos. 
+				// Function to Delete a $entityType$ from database. 
 				// </summary>
-				// <param name="$entity$">$entityType$ a eliminar</param>
+				// <param name="$entity$">$entityType$ to delete</param>
 				// <exception cref="ArgumentNullException">
-				// Si <paramref name="$entity$"/> no es un <c>$entityType$</c>.
+				// If <paramref name="$entity$"/> is not a <c>$entityType$</c>.
 				// </exception>
 				// <exception cref="UtnEmallDataAccessException">
-				// Si una DbException ocurre cuando se accede a la base de datos
+				// If an DbException occurs in the try block while accessing the database.
 				// </exception>
 				void Delete($entityType^ $entity){
 					Delete($entity, null);
 				}
 
 				// <summary>
-				// Función que elimina un $entityType$ de la base de datos. 
+				// Function to Delete a $entityType$ from database. 
 				// </summary>
-				// <param name="$entity$">$entityType$ a eliminar</param>
-				// <param name="scope">Estructura interna para evitar problemas de referencia circular.</param>
+				// <param name="$entity$">$entityType$ to delete</param>
+				// <param name="scope">Internal structure to avoid circular reference locks. Must provide an instance while calling from other data access object.</param>
 				// <exception cref="ArgumentNullException">
-				// Si <paramref name="$entity$"/> no es un <c>$entityType$</c>.
+				// If <paramref name="$entity$"/> is not a <c>$entityType$</c>.
 				// </exception>
 				// <exception cref="UtnEmallDataAccessException">
-				// Si una DbException ocurre cuando se accede a la base de datos
+				// If an DbException occurs in the try block while accessing the database.
 				// </exception>
 				void Delete($entityType^ $entity, DictionaryOfStringIEntity^ scope)
 				{
@@ -2206,45 +2161,45 @@ namespace UtnEmall::Utils
 
 					try
 					{
-						// Abrir una nueva conexión e inicializar una transacción si es necesario
+						// Open connection and initialize a transaction if needed
 						if (!isGlobalTransaction)
 						{
 							dbConnection = dataAccess.GetNewConnection();
 							dbConnection.Open();
 							dbTransaction = dbConnection.BeginTransaction();
 						}
-						// Carga la entidad para garantizar eliminar todos los datos antiguos.
+						// Reload the entity to ensure deletion of older data
 						$entity = this.Load($entity.Id, true);
 						if ($entity == null)
 						{
-							throw new UtnEmallDataAccessException("Error al recuperar datos al intentar eliminar.");
+							throw new UtnEmallDataAccessException("Error retrieving data while trying to delete.");
 						}
 
 						$blockCheckForDelete;
 						
-						// Crea un nuevo command para eliminar
+						// Create a command for delete
 						string^ cmdText = $sqlCommand;
 						$commandType^ sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 						$fieldsBlockCommandType;
-						// Agrega los valores de los parametros
+						// Add values to parameters
 						$parameterType^ parameterID = dataAccess.GetNewDataParameter($nameIdParameter, DbType::Int32);
 						parameterID.Value = $entity.Id;
 						sqlCommand.Parameters.Add(parameterID);
 
-						// Ejecuta el comando
+						// Execute the command
 						sqlCommand.ExecuteNonQuery();
 
-						// Elimina los objetos relacionados
+						// Delete related objects
 						$fieldsBlockRelations;
 
-						// Confirma la transacción si se inicio dentro de la función
+						// Commit transaction if is mine
 						if (!isGlobalTransaction)
 						{
 							dbTransaction.Commit();
 						}
-						// Eliminamos la entidad de la lista de entidades cargadas en memoria
+						// Remove entity from loaded objects
 						inMemoryEntities.Remove($entity.Id);
-						// Eliminamos la entidad del scope
+						// Remove entity from current internal scope
 						if(scope!=null)
 						{
 							string^ scopeKey = $entity.Id.ToString(DotNET::System::Globalization::NumberFormatInfo::InvariantInfo) + $entityStringName;
@@ -2253,17 +2208,17 @@ namespace UtnEmall::Utils
 					}
 					catch(DbException^ dbException)
 					{
-						// Anula la transaccion
+						// Rollback transaction
 						if (!isGlobalTransaction)
 						{
 							dbTransaction.Rollback();
 						}
-						// Relanza una excepcion personalizada
+						// Rethrow as custom exception
 						throw new UtnEmallDataAccessException(dbException.Message, dbException);
 					}
 					finally
 					{
-						// Cierra la conexión si fue abierta dentro de la Función
+						// Close connection if it was initiated by this instance
 						if (!isGlobalTransaction)
 						{
 							dbConnection.Close();
@@ -2298,22 +2253,22 @@ namespace UtnEmall::Utils
 
 			XplClassMembersList^ saveCollectionFunction = writecode{%
 				// <summary>
-				// Función para eliminar una lista de entidades relacionadas desde la base de datos
+				// Function to Delete a list of related entities from database. 
 				// </summary>
-				// <param name="collectionDataAccess">IDataAccess de la relacion</param>
-				// <param name="collection">La colección de entidades a eliminar</param>
-				// <param name="scope">Estructura interna para evitar problemas de referencia circular</param>
-				// <returns>True si la colección no es nula</returns>
+				// <param name="collectionDataAccess">IDataAccess of the relation</param>
+				// <param name="collection">The collection of entities to delete</param>
+				// <param name="scope">Internal structure to keep safe circular referencies</param>
+				// <returns>True if collection not null</returns>
 				bool $functionName($dataAccessTypeRelation^ collectionDataAccess, $listOfType^ collection, DictionaryOfStringIEntity^ scope)
 				{
 					if(collection == null)
 					{
 						return false;
 					}
-					// Establece los objetos de conexión al data access de la relación.
+					// Set connection objects of related data access object
 					collectionDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
 
-					// Elimina los objetos relacionados
+					// Delete related objects
 					for (int i = 0; i < collection.Count; i++)
 					{
 						collectionDataAccess.Delete( collection[i], scope);
@@ -2330,7 +2285,7 @@ namespace UtnEmall::Utils
 					XplNodeList::CopyNodesAtEnd(saveCollectionFunction.Children(), target.Children());
 				}
 		}
-		// Genera la Función DBChecked para chequear si existen los procedures y la tabla en la base de datos
+		// Genera la funcion DBChecked para chequear si existen los procedures y la tabla en la base de datos
 		static void GenerateDBChecked(iname void modelName, iname void tableName){
 			string^ nameTable = tableName.Identifier;
 			string^ nameProcedureDelete = "Delete" + tableName.Identifier;
@@ -2454,7 +2409,7 @@ namespace UtnEmall::Utils
 					
 			XplClassMembersList^ dbChequedFunction = writecode{%
 				// <summary>
-				// Función que controla y crea la tabla y los procedimientos almacenados para esta clase. 
+				// Function to check and create table and stored procedures for this class. 
 				// </summary>
 				static void DbChecked()
 				{
@@ -2493,12 +2448,13 @@ namespace UtnEmall::Utils
 			XplClassMembersList^ SetConnectionObjectsFunction = writecode{%
 			public:
 				// <summary>
-				// Establece la conexión y la transacción en el caso de que una transacción global se este ejecutando
+				// set the connection and the transaction to the object, in the case
+				// that a global transaction is running.
 				// </summary>
-				// <param name="connection">La conexión $connectionType$</param>
-				// <param name="transaction">La transacción global $transactionType$</param>
+				// <param name="connection">The $connectionType$ connection to the database</param>
+				// <param name="transaction">The global $transactionType$ transaction</param>
 				// <exception cref="UtnEmallDataAccessException">
-				// Si una DbException ocurre cuando se accede a la base de datos
+				// If an DbException occurs in the try block while accessing the database.
 				// </exception>
 				void SetConnectionObjects($connectionType^ connection, $transactionType^ transaction)
 				{
@@ -2509,6 +2465,7 @@ namespace UtnEmall::Utils
 
 					this.dbConnection = connection;
 					this.dbTransaction = transaction;
+					// FIXME : The name of this flag is not always apropiated
 					this.isGlobalTransaction = true;
 				}
 			%};
@@ -2562,7 +2519,8 @@ namespace UtnEmall::Utils
 
 			XplClassMembersList^ SetPropertiesFunction = writecode{%
 				// <summary>
-				// Agrega al diccionario las propiedades que pueden ser usadas como primer parametro de los metodos LoadWhere
+				// Add to the dictionary the properties that can
+				// be used as first parameter on the LoadWhere method.
 				// </summary>
 				static void SetProperties()
 				{
@@ -2578,8 +2536,8 @@ namespace UtnEmall::Utils
 				XplNodeList::CopyNodesAtEnd(SetPropertiesFunction.Children(), target.Children());
 			}
 		}
-		// Crea la Funciónes correspondientes para cada uno de los campos relacionados.
-		// Se basa en la cardinalidad de la relacion para decidir que Funciónes crear.
+		// Crea la funciones correspondientes para cada uno de los campos relacionados.
+		// Se basa en la cardinalidad de la relacion para decidir que funciones crear.
 		static void GenerateFunctionRelations(iname void modelName, iname void tableName){
 			bool update = false;
 
@@ -2650,7 +2608,7 @@ namespace UtnEmall::Utils
 			string^ resultado = primeraLetra + ultimasLetras;
 			return resultado;
 		}
-		// Genera la Función Save para cada una de las colecciones
+		// Genera la funcion Save para cada una de las colecciones
 		static void GenerateSaveCollection(iname void modelName, Relation^ relation){
 			XplType^ entityType = new XplType();
 			entityType.set_typename(modelName.Identifier+"Entity");
@@ -2689,15 +2647,15 @@ namespace UtnEmall::Utils
 
 			XplClassMembersList^ saveCollectionFunction = writecode{%
 				// <summary>
-				// Actualiza la base de datos para reflejar el estado actual de la lista.
+				// Updates the database to reflect the current state of the list.
 				// </summary>
-				// <param name="collectionDataAccess">El IDataAccess de la relación</param>
-				// <param name="parent">El objeto padre</param>
-				// <param name="collection">una colección de items</param>
-				// <param name="isNewParent">Si el padre es un objeto nuevo</param>
-				// <param name="scope">Estructura de datos interna para evitar problemas de referencia circular</param>
+				// <param name="collectionDataAccess">the IDataAccess of the relation</param>
+				// <param name="parent">the parent of the object</param>
+				// <param name="collection">a collection of items</param>
+				// <param name="isNewParent">if the parent is a new object</param>
+				// <param name="scope">internal data structure to aviod problems with circular referencies on entities</param>
 				// <exception cref="UtnEmallDataAccessException">
-				// Si una DbException ocurre cuando se accede a la base de datos
+				// If an DbException occurs in the try block while accessing the database.
 				// </exception>
 				void $functionName($dataAccessTypeRelation^ collectionDataAccess, $entityType^ parent, $listOfType^ collection, bool isNewParent, DictionaryOfStringIEntity^ scope)
 				{
@@ -2705,10 +2663,10 @@ namespace UtnEmall::Utils
 					{
 						return;
 					}
-					// Establece los objetos de conexión
+					// Set connection objects on collection data access
 					collectionDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
 
-					// Establece la relación padre/hijo
+					// Set the child/parent relation
 					for (int i = 0; i < collection.Count; i++)
 					{
 						bool changed = collection[i].Changed;
@@ -2716,7 +2674,7 @@ namespace UtnEmall::Utils
 						collection[i].Changed = changed;
 					}
 
-					// Si el padre es nuevo guarda todos los hijos, sino controla las diferencias con la base de datos.
+					// If the parent is new save all childs, else check diferencies with db
 					if (isNewParent)
 					{
 						for (int i = 0; i < collection.Count; i++)
@@ -2726,7 +2684,7 @@ namespace UtnEmall::Utils
 					}
 					else
 					{
-						// Controla los hijos que ya no son parte de la relación
+						// Check the childs that are not part of the parent any more
 						string^ idList = "0";
 						if(collection.Count > 0)
 						{	
@@ -2738,7 +2696,7 @@ namespace UtnEmall::Utils
 							idList += ", " + (collection[i]).Id;
 						}
 
-						// Retorna los ids que ya no existe en la colección actual
+						// Returns the ids that doesn't exists in the current collection
 						string^ command = "SELECT "+ $namecolumnRelated +" FROM ["+ $nameTableRelated + "] " +
 											"WHERE "+ $nameId +" = "+ $nameIdParameter +" AND "+ $namecolumnRelated +" NOT IN ("+idList+")";
 
@@ -2751,7 +2709,7 @@ namespace UtnEmall::Utils
 						IDataReader^ reader = sqlCommand.ExecuteReader();
 						$listOfType^ objectsToDelete = new $listOfType();
 
-						// Inserta los id en una lista
+						// Insert Ids on a list
 						ListInt listId = new ListInt();
 						while (reader.Read())
 						{
@@ -2759,31 +2717,32 @@ namespace UtnEmall::Utils
 						}
 						reader.Close();
 
-						// Carga los items a ser eliminados
+						// Load items to be removed
 						foreach(int id in listId)
 						{
 							$entityTypeRelation^ entityToDelete = collectionDataAccess.Load(id, scope);
 							objectsToDelete.Add( entityToDelete );
 						}
 
-						// Esto se realiza porque el reader debe ser cerrado despues de eliminar las entidades
+						// Have to do this because the reader must be closed before
+						// deletion of entities
 						for (int i = 0; i < objectsToDelete.Count; i++)
 						{
 							collectionDataAccess.Delete(objectsToDelete[i], scope);
 						}
 
 						zoe::lang::DateTime timestamp;						
-						// Controla todas las propiedades de los items de la colección
-						// para verificar si alguno cambio
+						// Check all the properties of the collection items 
+						// to see if they have changed (timestamp)
 						for (int i = 0; i < collection.Count; i++)
 						{   
 							$entityTypeRelation^ item = collection[i];							
 							if (!item.Changed && !item.IsNew)
 							{
-								// Crea el command
+								// Create the command
 								string^ sql = "SELECT timestamp FROM ["+$nameTableRelated+"] WHERE "+ $namecolumnRelated +" = "+ $namecolumnRelatedParameter;						
 								$commandType^ sqlCommandTimestamp = dataAccess.GetNewCommand(sql, dbConnection, dbTransaction);
-								// Establece los datos a los parametros del command
+								// Set the command's parameters values	
 								$parameterType^ sqlParameterIdPreference = dataAccess.GetNewDataParameter($namecolumnRelatedParameter, DbType::Int32);
 								sqlParameterIdPreference.Value = item.Id;
 								sqlCommandTimestamp.Parameters.Add(sqlParameterIdPreference);
@@ -2794,7 +2753,7 @@ namespace UtnEmall::Utils
 									item.Changed = true;
 								}
 							}
-							// Guarda el item si cambio o es nuevo
+							// Save the item if it changed or is new
 							if(item.Changed || item.IsNew)
 							{
 								collectionDataAccess.Save(item);
@@ -2811,7 +2770,7 @@ namespace UtnEmall::Utils
 					XplNodeList::CopyNodesAtEnd(saveCollectionFunction.Children(), target.Children());
 				}
 		}
-		// Genera la Función LoadRelations para cardinalidad uno a muchos
+		// Genera la funcion LoadRelations para cardinalidad uno a muchos
 		static void GenerateLoadRelationsUnoMuchos(iname void modelName, iname void sqlTableName, Relation^ relation){
 			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
 			XplIName^ relationDataAccess = new XplIName(ToLowerCamelCase(relation.referencedType.Identifier)+"DataAccess");
@@ -2840,12 +2799,12 @@ namespace UtnEmall::Utils
 			XplClassMembersList^ loadRelationsFunction = writecode{%
 				public:
 				// <summary>
-				// Función que carga la relacion $propertyName$ desde la base de datos 
+				// Function to Load the relation $propertyName$ from database. 
 				// </summary>
-				// <param name="$entity$">Entidad padre $entityType$</param>
-				// <param name="scope">Estructura de datos interna para evitar los problemas de referencia circular</param>
+				// <param name="$entity$">$entityType$ parent</param>
+				// <param name="scope">Internal structure to avoid problems with circular referencies</param>
 	    		// <exception cref="ArgumentNullException">
-				// Si <paramref name="$entity$"/> no es un <c>$entityType$</c>.
+				// if <paramref name="$entity$"/> is not a <c>$entityType$</c>.
 				// </exception>
 				void $functionName($entityType^ $entity, DictionaryOfStringIEntity^ scope)
 				{
@@ -2853,11 +2812,11 @@ namespace UtnEmall::Utils
 					{
 						throw new ArgumentException("The argument can't be null");
 					}
-					// Crea un objeto data access para los objetos relacionados
+					// Create data access object for related object
 					$dataAccessTypeRelation^ $relationDataAccess = new $dataAccessTypeRelation();
-					// Establece los objetos de la conexión al data access de la relacion
+					// Set connection objects to the data access
 					$relationDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-					// Carga los objetos relacionadoss
+					// Load related objects
 					$entity.$propertyName = $relationDataAccess.$functionLoadByName($entity.Id, scope);
 				}
 				
@@ -2869,7 +2828,7 @@ namespace UtnEmall::Utils
 					XplNodeList::CopyNodesAtEnd(loadRelationsFunction.Children(), target.Children());
 				}
 		}
-		// Genera la Función LoadRelations para cardinalidad muchos a uno y uno a uno.
+		// Genera la funcion LoadRelations para cardinalidad muchos a uno y uno a uno.
 		static void GenerateLoadRelations(iname void modelName, iname void sqlTableName, Relation^ relation){
 			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
 			XplIName^ relationDataAccess = new XplIName(ToLowerCamelCase(relation.referencedType.Identifier)+"DataAccess");
@@ -2896,11 +2855,11 @@ namespace UtnEmall::Utils
 			XplClassMembersList^ loadRelationsFunction = writecode{%
 				public:
 				// <summary>
-				// Función que carga la relacion $propertyName$ desde la base de datos 
+				// Function to Load the relation $propertyName$ from database. 
 				// </summary>
-				// <param name="$entity$">Padre: $entityType$</param>
+				// <param name="$entity$">$entityType$ parent</param>
 	    		// <exception cref="ArgumentNullException">
-				// Si <paramref name="$entity$"/> no es un <c>$entityType$</c>.
+				// if <paramref name="$entity$"/> is not a <c>$entityType$</c>.
 				// </exception>		
 				void $className($entityType^ $entity, DictionaryOfStringIEntity^ scope)
 				{
@@ -2911,18 +2870,18 @@ namespace UtnEmall::Utils
 					bool closeConnection = false;
 					try
 					{
-						// Crea una nueva conexión si es necesario
+						// Create a new connection if needed
 						if(dbConnection == null || dbConnection.State.CompareTo(DotNET::System::Data::ConnectionState::Closed) == 0)
 						{
 							closeConnection = true;
 							dbConnection = dataAccess.GetNewConnection();
 							dbConnection.Open();
 						}
-						// Crea un nuevo command
+						// Create a command
 						string^ cmdText = "SELECT " + $namecolumnRelated +" FROM ["+ $nameTable +"] WHERE "+ $nameId +" = "+ $nameIdParameter;
 						$commandType^ sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
 						$parameterType^ parameter = dataAccess.GetNewDataParameter($nameIdParameter, DbType::Int32);
-						// Establece los valores a los parametros del command
+						// Set command parameters values
 						parameter.Value = $entity.Id;
 						sqlCommand.Parameters.Add(parameter);
 						// Execute commands
@@ -2932,18 +2891,18 @@ namespace UtnEmall::Utils
 							// Create data access objects and set connection objects
 							$dataAccessTypeRelation^ $relationDataAccess = new $dataAccessTypeRelation();
 							$relationDataAccess.SetConnectionObjects(dbConnection, dbTransaction);
-							// Carga los objetos relacionados
+							// Load related object
 							$entity.$propertyName = $relationDataAccess.Load((int)idRelation, $loadSubRelations, scope);
 						}
 					}
 					catch (DbException^ dbException)
 					{
-						// Relanza una excepcion personalizada
+						// Catch and rethrow as custom exception
 						throw new UtnEmallDataAccessException(dbException.Message, dbException);
 					}
 					finally
 					{
-						// Cierra la conexión si fue inicializada
+						// Close connection if initiated by me
 						if(closeConnection)
 						{
 							dbConnection.Close();
@@ -2958,7 +2917,7 @@ namespace UtnEmall::Utils
 					XplNodeList::CopyNodesAtEnd(loadRelationsFunction.Children(), target.Children());
 				}
 		}
-		// Genera la Función LoadBy para cardinalidad uno a muchos.
+		// Genera la funcion LoadBy para cardinalidad uno a muchos.
 		static void GenerateLoadByUnoMuchos(iname void modelName, Relation^ relation){
 			XplIName^ entity = new XplIName(ToLowerCamelCase(modelName.Identifier));
 			string^ nameId = "id" + modelName.Identifier;
@@ -2982,7 +2941,7 @@ namespace UtnEmall::Utils
 			XplClassMembersList^ loadByFunction = writecode{%
 				public:
 				// <summary>
-				// Función para cargar un $entityType$ por un $propertyName$ desde la base de datos. 
+				// Function to Load a $entityType$ by a $propertyName$ from database. 
 				// </summary>
 				// <param name="$nameColumnRelatedInt$">$propertyName$ Id</param>
 				$entityType^ $className(int $nameColumnRelatedInt, DictionaryOfStringIEntity^ scope)
@@ -2991,22 +2950,22 @@ namespace UtnEmall::Utils
 					bool closeConnection = false;
 					try
 					{
-						// Crea una conexión si es necesario
+						// Create a connection if necessary
 						if(dbConnection == null || dbConnection.State.CompareTo(DotNET::System::Data::ConnectionState::Closed) == 0)
 						{
 							closeConnection = true;
 							dbConnection = dataAccess.GetNewConnection();
 							dbConnection.Open();
 						}
-						// Crea un command
+						// Create a command
 						string^ cmdText = "SELECT "+ $nameId +" FROM ["+ $nameTableRelated +"] WHERE "+ $namecolumnRelated +" = "+ $namecolumnRelatedParameter;
 						$commandType sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-						// Establece los valores de los parametros del command
+						// Set command parameters values
 						$parameterType^ parameter = dataAccess.GetNewDataParameter($namecolumnRelatedParameter, DbType::Int32);
 						parameter.Value = $nameColumnRelatedInt;
 						sqlCommand.Parameters.Add(parameter);
 
-						// Crea un data reader y carga los objetos relacionado
+						// Create a Data Reader and load the related object
 						IDataReader^ reader = sqlCommand.ExecuteReader();
 						$entity = new $entityType();
 
@@ -3023,13 +2982,13 @@ namespace UtnEmall::Utils
 					}
 					finally
 					{
-						// Cierra la conexión si fue inicializada
+						// Close connection if initiated by me
 						if(closeConnection)
 						{
 							dbConnection.Close();
 						}
 					}
-					// retorna el objeto relacionado
+					// Return the related object
 					return $entity;
 				}
 				
@@ -3040,7 +2999,7 @@ namespace UtnEmall::Utils
 					XplNodeList::CopyNodesAtEnd(loadByFunction.Children(), target.Children());
 				}
 		}
-		// Genera la Función LoadBy para cardinalidad muchos a uno y uno a uno.
+		// Genera la funcion LoadBy para cardinalidad muchos a uno y uno a uno.
 		static void GenerateLoadBy(iname void modelName, Relation^ relation){
 			XplIName^ entityList = new XplIName(ToLowerCamelCase(modelName.Identifier)+ "List");
 			string^ nameId = "id" + modelName.Identifier;
@@ -3073,10 +3032,10 @@ namespace UtnEmall::Utils
 				UtnEmall::Utils::List::NewCollection( $listOfTypeName, gettype($entityType^) );
 				public:
 				// <summary>
-				// Función que carga una lista de $entityType$ desde la base de datos por $nameColumnRelatedInt$. 
+				// Function to Load a list of $entityType$ from database by $nameColumnRelatedInt$. 
 				// </summary>
-				// <param name="$nameColumnRelatedInt$">Foreing key</param>
-				// <param name="scope">Estructura de datos interna para evitar referencias circulares</param>
+				// <param name="$nameColumnRelatedInt$">Foreing key column</param>
+				// <param name="scope">Internal data structure to avoid circular reference problems</param>
 				// <returns>List of $entityType$</returns>
 				$listOfType^ $className(int $nameColumnRelatedInt, DictionaryOfStringIEntity^ scope)
 				{
@@ -3084,25 +3043,25 @@ namespace UtnEmall::Utils
 					bool closeConnection = false;
 					try
 					{
-						// Crea una nueva conexión
+						// Create a new connection
 						if(dbConnection == null || dbConnection.State.CompareTo(DotNET::System::Data::ConnectionState::Closed) == 0)
 						{
 							closeConnection = true;
 							dbConnection = dataAccess.GetNewConnection();
 							dbConnection.Open();
 						}
-						// Crea un command
+						// Create a command
 						string^ cmdText = "SELECT "+ $nameId +" FROM ["+ $nameTable +"] WHERE "+ $namecolumnRelated +" = "+ $namecolumnRelatedParameter;
 						$commandType sqlCommand = dataAccess.GetNewCommand(cmdText, dbConnection, dbTransaction);
-						// Establece los parametros del command
+						// Set command parameters values
 						$parameterType^ parameter = dataAccess.GetNewDataParameter($namecolumnRelatedParameter, DbType::Int32);
 						parameter.Value = $nameColumnRelatedInt;
 						sqlCommand.Parameters.Add(parameter);
 
-						// Crea un DataReader
+						// Create a DataReader
 						IDataReader^ reader = sqlCommand.ExecuteReader();
 						$entityList = new $listOfType();
-						// Carga los ids de los objetos relacionados en una lista de int.
+						// Load Ids of related objects into a list of int
 						ListInt listId = new ListInt();
 						while (reader.Read())
 						{
@@ -3110,7 +3069,7 @@ namespace UtnEmall::Utils
 						}
 						reader.Close();
 
-						// Carga los objetos relacionados y los agrega a la coleccion
+						// Load related objects and add to collection
 						foreach(int id in listId)
 						{
 							$entityList.Add(Load( id, scope));
@@ -3118,18 +3077,18 @@ namespace UtnEmall::Utils
 					}
 					catch(DbException^ dbException)
 					{
-						// Relanzamos una excepcion personalizada
+						// Rethrow as custom exception
 						throw new UtnEmallDataAccessException(dbException.Message, dbException);
 					}
 					finally
 					{
-						// Cerrar la conexión si fue inicializada
+						// Close connection if initiated be me
 						if(closeConnection)
 						{
 							dbConnection.Close();
 						}
 					}
-					// retornamos la lista de objetos relacionados
+					// Return related objects list
 					return $entityList;
 				}
 				
@@ -3144,10 +3103,10 @@ namespace UtnEmall::Utils
 					UtnEmall::Utils::List::NewCollection( $listOfTypeName, gettype($entityType^) );
 					public:
 					// <summary>
-					// Función para cargar una lista de $entityType$ desde la base de datos por $nameColumnRelatedInt$. 
+					// Function to Load a list of $entityType$ from database by $nameColumnRelatedInt$. 
 					// </summary>
-					// <param name="$nameColumnRelatedInt$">columna Foreing key</param>
-					// <returns>IList de $entityType$</returns>
+					// <param name="$nameColumnRelatedInt$">Foreing key column</param>
+					// <returns>IList of $entityType$</returns>
 					$listOfType^ $className(int $nameColumnRelatedInt)
 					{
 						return $className($nameColumnRelatedInt, null);

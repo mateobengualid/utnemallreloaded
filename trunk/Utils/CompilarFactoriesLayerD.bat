@@ -1,7 +1,7 @@
 @echo off
 
-set PATH_UTILS=.\MainTemplate
-set PATH_UTILS_2=..\..\..\..\Utils\MainTemplate
+set PATH_UTILS=.\MainTemplate.es
+set PATH_UTILS_2=..\..\..\..\Utils\MainTemplate.es
 set PATH_COMPILADOR=..\Main\Server\WPFCore\compiler
 set LOGFILE=%PATH_UTILS%\compilarfactories.log
 
