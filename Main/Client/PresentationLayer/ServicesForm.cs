@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define TransferPdbFiles
+
+using System;
 using System.Collections;
 using System.Windows.Forms;
 using UtnEmall.Client.BusinessLogic;

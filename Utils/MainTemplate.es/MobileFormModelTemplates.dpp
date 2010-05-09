@@ -110,6 +110,8 @@ namespace UtnEmall::Utils
 						zoe::lang::DateTime formStart;
 						PictureBox^ header;
 						Label^ title;
+						int _idTable;
+						int _idRegister;
 
 						void backMenu_Click(object^ sender, EventArgs^ e)
 						{
@@ -139,6 +141,8 @@ namespace UtnEmall::Utils
 							userAction.Stop = stop;
 							userAction.IdComponent = $idComponent;
 							userAction.IdService = $serviceID;
+							userAction.IdRegister = this._idRegister;
+							userAction.IdTable = this._idTable;
 
 							// Guardar las estadísticas actuales
 							userActionDataAccess.Save(userAction);
@@ -448,6 +452,7 @@ namespace UtnEmall::Utils
 			XplClassMembersList^ declarations = null;
 			XplIName^ serviceName = new XplIName( service.ServiceName.Identifier + "Smart" );
 			int storeID = service.StoreID;
+			int idTable = form.IdInputTable;
 
 			// En el caso de ser un Form de Lista o Menu
 			if(form.Type == "List"){
@@ -636,8 +641,17 @@ namespace UtnEmall::Utils
 					{
 						try{
 							$sourceCondition;
-						}catch(Exception error){
-							ShowErrorMessage(error.Message, "Error de ejecución");
+							this._idTable = $idTable;
+							int entityId = 0;
+							if(localDataEntity.IsList){
+								entityId = ((DotNET::UtnEmall::Client::EntityModel::IEntity^)localDataEntity.IEntityList[0]).Id;
+							}else{
+								entityId = localDataEntity.Entity.Id;
+							}							
+							this._idRegister = entityId;
+						}
+						catch(Exception^ error){
+							ShowErrorMessage(error.Message, DotNET::UtnEmall::Client::PresentationLayer::MessageForm::GetMessage(2));
 						}
 					}
 				%};
