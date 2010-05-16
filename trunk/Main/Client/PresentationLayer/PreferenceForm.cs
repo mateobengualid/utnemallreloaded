@@ -84,6 +84,7 @@ namespace UtnEmall.Client.PresentationLayer
 
                     // Establecer el nombre del checkbox como el nombre de la categoria
                     checkBoxPreference.Text = preference.Category.Name;
+                    checkBoxPreference.Width = this.Width - 15;
                     // Si la preferencia es activa marcar el checkbox
                     if (preference.Active)
                     {

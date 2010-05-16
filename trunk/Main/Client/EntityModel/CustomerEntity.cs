@@ -8,9 +8,10 @@ namespace UtnEmall.Client.EntityModel
 
 	[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://schemas.datacontract.org/2004/07/UtnEmall.Server.EntityModel")]
 	/// <summary>
-	/// El <c>CustomerEntity</c> en una clase de entidad
-	/// que contiene todos los campos que son insertados y cargados en la base de datos
-	/// Esta clase es utilizada por todas las capas superiores.
+	/// The <c>CustomerEntity</c> is a entity class
+	/// that contains all the fields that are inserted and
+	/// loaded from the database.
+	/// This class is used by the upper layers.
 	/// </summary>
 	public class CustomerEntity: IEntity
 	{
@@ -20,7 +21,8 @@ namespace UtnEmall.Client.EntityModel
 		private System.DateTime timestamp; 
 		private Collection<Error> errors; 
 		/// <summary>
-		/// Inicializa una nueva instancia de un <c>CustomerEntity</c>.
+		/// Initializes a new instance of a
+		/// <c>CustomerEntity</c> type.
 		/// </summary>
 		public  CustomerEntity()
 		{
@@ -29,7 +31,7 @@ namespace UtnEmall.Client.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece el id de la entidad.
+		/// Gets or sets the Id of the entity.
 		/// <summary>
 		[System.Xml.Serialization.XmlElementAttribute( Order = 0 )]
 		public int Id
@@ -45,7 +47,7 @@ namespace UtnEmall.Client.EntityModel
 		} 
 
 		/// <summary>
-		/// Obtiene o establece si la entidad fue modificada.
+		/// Gets or sets if the entity has changed.
 		/// <summary>
 		[System.Xml.Serialization.XmlElementAttribute( Order = 1 )]
 		public bool Changed
@@ -61,7 +63,7 @@ namespace UtnEmall.Client.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene si la entidad es nueva.
+		/// Gets or sets if the entity is new.
 		/// <summary>
 		[System.Xml.Serialization.XmlElementAttribute( Order = 2 )]
 		public bool IsNew
@@ -77,7 +79,7 @@ namespace UtnEmall.Client.EntityModel
 		} 
 
 		/// <summary>
-		/// Establece o obtiene el timestamp del ultimo acceso.
+		/// Gets or sets the timestamp of the last access.
 		/// <summary>
 		[System.Xml.Serialization.XmlElementAttribute( Order = 3 )]
 		public System.DateTime Timestamp
@@ -94,7 +96,7 @@ namespace UtnEmall.Client.EntityModel
 
 		public const string DBTimestamp = "timestamp"; 
 		/// <summary>
-		/// Coleccion de errores de la entidad.
+		/// The collection of entity's errors.
 		/// <summary>
 		[System.Xml.Serialization.XmlArrayAttribute( IsNullable = true, Order = 4 )]
 		public Collection<Error> Errors
@@ -112,7 +114,7 @@ namespace UtnEmall.Client.EntityModel
 		private string _Name; 
 		[System.Xml.Serialization.XmlElementAttribute( Order = 5 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Name.
+		/// Gets or sets the value for Name.
 		/// <summary>
 		public string Name
 		{
@@ -130,7 +132,7 @@ namespace UtnEmall.Client.EntityModel
 		private string _Surname; 
 		[System.Xml.Serialization.XmlElementAttribute( Order = 6 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Surname.
+		/// Gets or sets the value for Surname.
 		/// <summary>
 		public string Surname
 		{
@@ -148,7 +150,7 @@ namespace UtnEmall.Client.EntityModel
 		private string _Address; 
 		[System.Xml.Serialization.XmlElementAttribute( Order = 7 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Address.
+		/// Gets or sets the value for Address.
 		/// <summary>
 		public string Address
 		{
@@ -166,7 +168,7 @@ namespace UtnEmall.Client.EntityModel
 		private string _PhoneNumber; 
 		[System.Xml.Serialization.XmlElementAttribute( Order = 8 )]
 		/// <summary>
-		/// Obtiene o establece el valor para PhoneNumber.
+		/// Gets or sets the value for PhoneNumber.
 		/// <summary>
 		public string PhoneNumber
 		{
@@ -184,7 +186,7 @@ namespace UtnEmall.Client.EntityModel
 		private string _UserName; 
 		[System.Xml.Serialization.XmlElementAttribute( Order = 9 )]
 		/// <summary>
-		/// Obtiene o establece el valor para UserName.
+		/// Gets or sets the value for UserName.
 		/// <summary>
 		public string UserName
 		{
@@ -202,7 +204,7 @@ namespace UtnEmall.Client.EntityModel
 		private string _Password; 
 		[System.Xml.Serialization.XmlElementAttribute( Order = 10 )]
 		/// <summary>
-		/// Obtiene o establece el valor para Password.
+		/// Gets or sets the value for Password.
 		/// <summary>
 		public string Password
 		{
@@ -217,12 +219,84 @@ namespace UtnEmall.Client.EntityModel
 			}
 		} 
 
+		private System.DateTime _Birthday; 
+		[System.Xml.Serialization.XmlElementAttribute( Order = 11 )]
+		/// <summary>
+		/// Gets or sets the value for Birthday.
+		/// <summary>
+		public System.DateTime Birthday
+		{
+			get 
+			{
+				return _Birthday;
+			}
+			set 
+			{
+				_Birthday = value;
+				changed = true;
+			}
+		} 
+
+		private int _HowManyChildren; 
+		[System.Xml.Serialization.XmlElementAttribute( Order = 12 )]
+		/// <summary>
+		/// Gets or sets the value for HowManyChildren.
+		/// <summary>
+		public int HowManyChildren
+		{
+			get 
+			{
+				return _HowManyChildren;
+			}
+			set 
+			{
+				_HowManyChildren = value;
+				changed = true;
+			}
+		} 
+
+		private int _Gender; 
+		[System.Xml.Serialization.XmlElementAttribute( Order = 13 )]
+		/// <summary>
+		/// Gets or sets the value for Gender.
+		/// <summary>
+		public int Gender
+		{
+			get 
+			{
+				return _Gender;
+			}
+			set 
+			{
+				_Gender = value;
+				changed = true;
+			}
+		} 
+
+		private int _CivilState; 
+		[System.Xml.Serialization.XmlElementAttribute( Order = 14 )]
+		/// <summary>
+		/// Gets or sets the value for CivilState.
+		/// <summary>
+		public int CivilState
+		{
+			get 
+			{
+				return _CivilState;
+			}
+			set 
+			{
+				_CivilState = value;
+				changed = true;
+			}
+		} 
+
 		private Collection<PreferenceEntity> _Preferences; 
-		[System.Xml.Serialization.XmlArrayAttribute( IsNullable = true, Order = 11 )]
+		[System.Xml.Serialization.XmlArrayAttribute( IsNullable = true, Order = 15 )]
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "We need set for serialization and deserialization web service interfaces.")]
 		/// <summary>
-		/// Obtiene o establece el valor para Preferences.
+		/// Gets or sets the value for Preferences.
 		/// <summary>
 		public Collection<PreferenceEntity> Preferences
 		{
@@ -241,11 +315,11 @@ namespace UtnEmall.Client.EntityModel
 		} 
 
 		private Collection<DeviceProfileEntity> _DeviceProfile; 
-		[System.Xml.Serialization.XmlArrayAttribute( IsNullable = true, Order = 12 )]
+		[System.Xml.Serialization.XmlArrayAttribute( IsNullable = true, Order = 16 )]
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "We need set for serialization and deserialization web service interfaces.")]
 		/// <summary>
-		/// Obtiene o establece el valor para DeviceProfile.
+		/// Gets or sets the value for DeviceProfile.
 		/// <summary>
 		public Collection<DeviceProfileEntity> DeviceProfile
 		{
@@ -270,6 +344,10 @@ namespace UtnEmall.Client.EntityModel
 		public const string DBPhoneNumber = "phoneNumber"; 
 		public const string DBUserName = "userName"; 
 		public const string DBPassword = "password"; 
+		public const string DBBirthday = "birthday"; 
+		public const string DBHowManyChildren = "howManyChildren"; 
+		public const string DBGender = "gender"; 
+		public const string DBCivilState = "civilState"; 
 	} 
 
 }
