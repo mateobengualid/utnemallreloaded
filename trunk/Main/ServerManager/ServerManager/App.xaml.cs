@@ -15,7 +15,8 @@ namespace UtnEmall.ServerManager
     {
         public App()
         {
-
+            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("ES-es");
+            Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("ES-es");
         }
     }
 }
