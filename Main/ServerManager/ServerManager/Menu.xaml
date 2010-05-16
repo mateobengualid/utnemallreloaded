@@ -74,7 +74,10 @@
 		<UtnEmall.ServerManager:Button Margin="8,188,8,0" VerticalAlignment="Top" Height="40" x:Name="Stores" MouseLeftButtonUp="OnManageStoresClicked"/>
 		<UtnEmall.ServerManager:Button Margin="8,231,8,0" VerticalAlignment="Top" Height="40" x:Name="Groups" MouseLeftButtonUp="OnManageGroupsClicked"/>
 		<UtnEmall.ServerManager:Button Margin="8,274,8,0" VerticalAlignment="Top" Height="40" x:Name="DataModel" MouseLeftButtonUp="OnManageDataModelClicked"/>
+        <UtnEmall.ServerManager:Button Margin="8,317,8,0" VerticalAlignment="Top" Height="40" x:Name="Statistics" MouseLeftButtonUp="OnViewStatisticsClicked"/>
+        <!--
 		<UtnEmall.ServerManager:Button Margin="8,317,8,0" VerticalAlignment="Top" Height="40" x:Name="Campaigns" MouseLeftButtonUp="OnManageCampaignsClicked"/>
         <UtnEmall.ServerManager:Button Margin="8,360,8,8" VerticalAlignment="Top" Height="40" x:Name="Statistics" MouseLeftButtonUp="OnViewStatisticsClicked"/>
+        -->
 	</Grid>
 </UserControl>

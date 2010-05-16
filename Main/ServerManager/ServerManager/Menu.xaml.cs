@@ -32,8 +32,8 @@ namespace UtnEmall.ServerManager
             Services.Text = UtnEmall.ServerManager.Properties.Resources.Services;
             Services.Image = "../imgs/services.png";
 
-            Campaigns.Text = UtnEmall.ServerManager.Properties.Resources.Campaigns;
-            Campaigns.Image = "../imgs/campaigns.png";
+            //Campaigns.Text = UtnEmall.ServerManager.Properties.Resources.Campaigns;
+            //Campaigns.Image = "../imgs/campaigns.png";
 
             Categories.Text = UtnEmall.ServerManager.Properties.Resources.Categories;
             Categories.Image = "../imgs/categories.png";
