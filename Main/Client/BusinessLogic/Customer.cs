@@ -313,6 +313,11 @@ namespace UtnEmall.Client.BusinessLogic
 				customer.Errors.Add(new Error("Password", "Password", "La contraseña no puede estar vacía"));
 				result = false;
 			}
+			if (customer.Birthday == null)
+			{
+				customer.Errors.Add(new Error("Birthday", "Birthday", "La fecha de cumpleaños no puede estar vacía."));
+				result = false;
+			}
 
 			if (customer.Preferences == null)
 			{

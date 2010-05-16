@@ -8,6 +8,7 @@ using UtnEmall.Server.EntityModel;
 using UtnEmall.Server.Base;
 using UtnEmall.Server.BusinessLogic;
 using UtnEmall.Server.WpfCore;
+using System.Security.Cryptography;
 
 namespace WpfCore
 {
@@ -75,7 +76,9 @@ namespace WpfCore
         {
             Trace.WriteLine("Inserting sample data into database.");
 
-            sessionId = SessionManager.CreateUserSession("admin", Utilities.CalculateHashString("admin"));
+            SHA1 sha = new SHA1CryptoServiceProvider();
+            byte[] hashByteArray = sha.ComputeHash(Encoding.ASCII.GetBytes("admin"));
+            sessionId = SessionManager.Instance.ValidateLogin("admin", hashByteArray, false);
 
             // Categories
             CreateCategories();
