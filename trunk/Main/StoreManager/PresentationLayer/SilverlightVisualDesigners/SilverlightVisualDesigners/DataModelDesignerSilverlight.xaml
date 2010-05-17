@@ -16,8 +16,14 @@
             <ImageBrush ImageSource="imgs/background.jpg"/>
         </Grid.Background>
         
-		<ScrollViewer Margin="197,63.013,0,0" Height="Auto" Width="Auto">
-            <vd:DragAndDropCanvas x:Name="canvasDraw" MouseMove="canvasDraw_MouseMove" Height="Auto" Width="Auto" Background="Transparent"/>
+		<ScrollViewer Margin="197,65,0,0" Height="Auto" Width="Auto">
+            <vd:DragAndDropCanvas x:Name="canvasDraw" MouseMove="canvasDraw_MouseMove" Height="Auto" Width="Auto" >
+                <!--<Canvas.RenderTransform>
+                    <TransformGroup x:Uid="TransformGroup_1">
+                        <TranslateTransform x:Uid="TranslateTransform_1" X="149" Y="47"/>
+                    </TransformGroup>
+                </Canvas.RenderTransform>-->
+            </vd:DragAndDropCanvas>
         </ScrollViewer>
 		<StackPanel HorizontalAlignment="Left" Margin="3,63.013,0,0" Width="194" d:LayoutOverrides="GridBox">
             <vd:CustomButton x:Name="ButtonNewTable" Text="New Table" Clicked="ButtonNewTable_Clicked" Margin="0,0,0,0" Image="imgs/model_newtable.png"/>

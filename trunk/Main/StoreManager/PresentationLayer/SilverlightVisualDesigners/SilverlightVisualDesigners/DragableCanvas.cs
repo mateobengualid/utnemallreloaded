@@ -68,12 +68,15 @@ namespace SilverlightVisualDesigners
         private void ClipCanvas()
         {
             RectangleGeometry rectangleGeometry = new RectangleGeometry();
-            rectangleGeometry.Rect = new Rect(0, 0, this.ActualWidth, this.ActualHeight);
+            rectangleGeometry.Rect = new Rect(-149, -47, this.ActualWidth, this.ActualHeight);
             this.Clip = rectangleGeometry;
         }
 
         public void Add(UIElement uiElement)
         {
+            Canvas.SetLeft(uiElement, Canvas.GetLeft(uiElement) + 149);
+            Canvas.SetTop(uiElement, Canvas.GetTop(uiElement) + 47);
+
             AtachMoveEvents(uiElement);
             this.Children.Add(uiElement);
         }
