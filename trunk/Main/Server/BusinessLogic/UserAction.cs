@@ -306,20 +306,9 @@ namespace UtnEmall.Server.BusinessLogic
 				userAction.Errors.Add(new Error("ActionType", "ActionType", "El tipo de acción no puede ser negativo"));
 				result = false;
 			}
-			if (userAction.Start > System.DateTime.Now)
-			{
-				userAction.Errors.Add(new Error("Start", "Start", "La fecha de inicio no puede ser mayor a la fecha actual"));
-				result = false;
-			}
 			if (userAction.Start == null)
 			{
 				userAction.Errors.Add(new Error("Start", "Start", "El inicio no puede ser nulo"));
-				result = false;
-			}
-
-			if (userAction.Stop > System.DateTime.Now)
-			{
-				userAction.Errors.Add(new Error("Stop", "Stop", "La fecha de finalización no puede ser mayor a la fecha actual"));
 				result = false;
 			}
 

@@ -57,8 +57,8 @@
             // 
             // panel1
             // 
-            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Controls.Add(this.helpText);
+            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
             // helpText
@@ -76,8 +76,8 @@
             // 
             // title
             // 
-            resources.ApplyResources(this.title, "title");
             this.title.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(137)))), ((int)(((byte)(145)))));
+            resources.ApplyResources(this.title, "title");
             this.title.ForeColor = System.Drawing.Color.White;
             this.title.Name = "title";
             // 
