@@ -9,7 +9,7 @@
             <RowDefinition x:Uid="RowDefinition_1" Height="434*" />
         </Grid.RowDefinitions>
         <Image x:Uid="Image_1" Margin="200,0,0,100" Source="imgs\statistics_mono.png" Stretch="Fill"/>
-        <Label x:Uid="Label_1" HorizontalAlignment="Left" Margin="8,8,0,0" Width="292" Content="{x:Static UtnEmall.ServerManager:UIResources.GlobalStatisticsAnalyzer}" FontSize="20" Height="40" VerticalAlignment="Top"/>
+        <Label x:Uid="Label_1" HorizontalAlignment="Left" Margin="8,8,0,0"  Content="{x:Static UtnEmall.ServerManager:UIResources.GlobalStatisticsAnalyzer}" FontSize="20" Height="40" VerticalAlignment="Top"/>
         <ComboBox x:Uid="comboBoxStore" Height="23" HorizontalAlignment="Left" Margin="61,54,0,0" x:Name="comboBoxStore" VerticalAlignment="Top" Width="160" SelectionChanged="comboBoxStore_SelectionChanged"/>
         <ComboBox x:Uid="comboBoxDataModality" Height="23" Margin="326,54,0,0" x:Name="comboBoxDataModality" VerticalAlignment="Top" SelectionChanged="comboBoxStore_SelectionChanged" HorizontalAlignment="Left" Width="160">
             <ComboBoxItem x:Uid="ComboBoxItem_1" Content="{x:Static UtnEmall.ServerManager:UIResources.Time}"/>

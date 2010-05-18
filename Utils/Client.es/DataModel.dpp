@@ -800,13 +800,13 @@ namespace DotNET::UtnEmall::Server::DataModel
 		// The Start time of the action
 		Model::Field(Start, gettype(DateTime))
 		{
-			Rules::PropertyDateTimeInTheFuture(Start, "La fecha de inicio no puede ser mayor a la fecha actual");
+			// Rules::PropertyDateTimeInTheFuture(Start, "La fecha de inicio no puede ser mayor a la fecha actual");
 			Rules::PropertyNotNull(Start, "El inicio no puede ser nulo");
 		};
 		// The End time of the action
 		Model::Field(Stop, gettype(DateTime))
 		{
-			Rules::PropertyDateTimeInTheFuture(Stop, "La fecha de finalización no puede ser mayor a la fecha actual");
+			// Rules::PropertyDateTimeInTheFuture(Stop, "La fecha de finalización no puede ser mayor a la fecha actual");
 			Rules::PropertyDateTimeLowerThan(Stop, Start, "La fecha de finalización no puede ser menor a la fecha de inicio");
 			Rules::PropertyNotNull(Stop, "La fecha de finalización no puede ser nula");
 		};
