@@ -42,6 +42,9 @@ namespace SampleDatabaseFiller
         private void FillFunciones()
         {
             var da = new Funciones_00933784564DataAccess();
+            var funcs = da.LoadAll(false);
+            if (funcs.Count > 0) return;
+            
             foreach (string pelicula in _peliculas.Keys)
             {
                 var funciones = new Funciones_00933784564Entity[]{
