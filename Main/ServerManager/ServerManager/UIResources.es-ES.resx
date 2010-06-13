@@ -202,10 +202,10 @@
     <value>Nombre</value>
   </data>
   <data name="GlobalStatistics" xml:space="preserve">
-    <value>Estadísticas Globales</value>
+    <value>Informes Globales</value>
   </data>
   <data name="GlobalStatisticsAnalyzer" xml:space="preserve">
-    <value>Analizador de Estadìsticas Globales</value>
+    <value>Informes Globales</value>
   </data>
   <data name="Host" xml:space="preserve">
     <value>Equipo</value>
@@ -229,7 +229,7 @@
     <value>Administrar categorías</value>
   </data>
   <data name="ManageCustomers" xml:space="preserve">
-    <value>Administrar clientes</value>
+    <value>Administrar datos de clientes</value>
   </data>
   <data name="ManageDataModel" xml:space="preserve">
     <value>Administrar modelo de datos</value>
@@ -244,7 +244,7 @@
     <value>Administrar servicios</value>
   </data>
   <data name="ManageStores" xml:space="preserve">
-    <value>Administrar tiendas</value>
+    <value>Administrar datos de tiendas</value>
   </data>
   <data name="ManageUsers" xml:space="preserve">
     <value>Adminstrar usuarios</value>
@@ -289,10 +289,10 @@
     <value>Categorías seleccionadas</value>
   </data>
   <data name="SelectGlobalStatisticsMessage" xml:space="preserve">
-    <value>Seleccione "Estadísticas globales" si desea ver información resumida del uso de todos los servicios.</value>
+    <value>Seleccione "Informes globales" si desea ver información resumida del uso de todos los servicios.</value>
   </data>
   <data name="SelectServiceStatisticsMessage" xml:space="preserve">
-    <value>Seleccione un servicio y luego haga click en "Ver" si desea ver estadísticas para un servicio.</value>
+    <value>Seleccione un servicio y luego haga click en "Ver" si desea ver estadísticas de uso para un servicio.</value>
   </data>
   <data name="ServerManagerTitle" xml:space="preserve">
     <value>Server Manager</value>
@@ -331,7 +331,7 @@
     <value>Ver</value>
   </data>
   <data name="ViewStatistics" xml:space="preserve">
-    <value>Ver Estadísticas</value>
+    <value>Ver Informes</value>
   </data>
   <data name="Website" xml:space="preserve">
     <value>Sitio web</value>
