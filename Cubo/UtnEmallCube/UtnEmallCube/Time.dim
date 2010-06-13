@@ -1,0 +1,476 @@
+﻿<Dimension xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" dwd:design-time-name="cc1be0e4-115d-4ade-b0a8-726b833f457d" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <ID>Time</ID>
+  <Name>Time</Name>
+  <CreatedTimestamp>0001-01-01T00:00:00Z</CreatedTimestamp>
+  <LastSchemaUpdate>0001-01-01T00:00:00Z</LastSchemaUpdate>
+  <Annotations>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramLayout</Name>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ShowFriendlyNames</Name>
+      <Value>true</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ShowRelationshipNames</Name>
+      <Value>false</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:UseDiagramDefaultLayout</Name>
+      <Value>true</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramViewPortLeft</Name>
+      <Value>0</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramViewPortTop</Name>
+      <Value>0</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramBoundingLeft</Name>
+      <Value>0</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramBoundingTop</Name>
+      <Value>0</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramZoom</Name>
+      <Value>100</Value>
+    </Annotation>
+  </Annotations>
+  <LastProcessed>0001-01-01T00:00:00Z</LastProcessed>
+  <State>Unprocessed</State>
+  <Source xsi:type="TimeBinding" dwd:design-time-name="f0e0100a-4560-4088-8082-f1879def616a">
+    <CalendarStartDate>2007-01-01T03:00:00Z</CalendarStartDate>
+    <CalendarEndDate>2015-12-31T00:00:00Z</CalendarEndDate>
+  </Source>
+  <Type>Time</Type>
+  <CurrentStorageMode>Molap</CurrentStorageMode>
+  <Attributes>
+    <Attribute dwd:design-time-name="93c1cdab-eccb-46d2-894d-3d6e2505e332">
+      <ID>Date</ID>
+      <Name>Date</Name>
+      <Type>Days</Type>
+      <Usage>Key</Usage>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="f1d7b076-471c-4fbd-9f45-076866ef2f24">
+          <DataType>Date</DataType>
+          <Source xsi:type="TimeAttributeBinding" dwd:design-time-name="1f4a1350-c3c7-44c2-9f0d-06c13c2bf994" />
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="60e3f975-0cfd-4e12-9f7b-866d7c01572a">
+        <DataType>WChar</DataType>
+      </NameColumn>
+      <Translations>
+        <Translation dwd:design-time-name="d2ecf698-8143-4342-a78f-7f7c02a03f50">
+          <Language>11274</Language>
+          <Caption>Fecha</Caption>
+        </Translation>
+      </Translations>
+      <AttributeRelationships>
+        <AttributeRelationship dwd:design-time-name="08d6bd50-85ac-433d-9883-c1a0ed549d4c">
+          <AttributeID>Month</AttributeID>
+          <RelationshipType>Rigid</RelationshipType>
+          <Name>Month</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="3382db17-0cd4-425d-944c-5ca7a01baad8">
+          <AttributeID>Month Of Year</AttributeID>
+          <RelationshipType>Rigid</RelationshipType>
+          <Name>Month Of Year</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="b4874ccd-3bbd-4272-abbf-6f0cadd941fe">
+          <AttributeID>Month Of Trimester</AttributeID>
+          <RelationshipType>Rigid</RelationshipType>
+          <Name>Month Of Trimester</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="f5e23931-664b-44d3-a410-c5613ca5c7ef">
+          <AttributeID>Day Of Year</AttributeID>
+          <Name>Day Of Year</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="9a6614fc-1bc5-4038-956d-313e0d3349ac">
+          <AttributeID>Day Of Trimester</AttributeID>
+          <Name>Day Of Trimester</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="ab868e6e-f6d1-4831-b9b0-f9df86f214f6">
+          <AttributeID>Day Of Month</AttributeID>
+          <Name>Day Of Month</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="ab01c595-45cb-43ad-8951-c95a5cf8d4bf">
+          <AttributeID>ISO 8601 Day</AttributeID>
+          <Name>ISO 8601 Day</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="dce1820e-c51d-4a6c-844a-f3bef3a59e00">
+          <AttributeID>ISO 8601 Day Of Year</AttributeID>
+          <Name>ISO 8601 Day Of Year</Name>
+        </AttributeRelationship>
+      </AttributeRelationships>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="895cceb6-e83d-4d9d-a3a4-bbd17455ad7d">
+      <ID>Year</ID>
+      <Name>Year</Name>
+      <Type>Years</Type>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="51459cf2-f6d0-4e5d-9019-cec74e0a4f5e">
+          <DataType>Date</DataType>
+          <Source xsi:type="TimeAttributeBinding" dwd:design-time-name="280ebd94-b787-4349-94a5-2c5da152e625" />
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="0287d6d7-e5df-4a45-994e-ddfbc964c564">
+        <DataType>WChar</DataType>
+      </NameColumn>
+      <Translations>
+        <Translation dwd:design-time-name="766927e9-0f00-4fe7-9dde-c0739623de2d">
+          <Language>11274</Language>
+          <Caption>Año</Caption>
+        </Translation>
+      </Translations>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="2863e76c-efbb-4c98-a257-4730c4acb918">
+      <ID>Trimester</ID>
+      <Name>Trimester</Name>
+      <Type>Trimesters</Type>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="a36852cf-4809-4e43-bf40-9500fa5aae57">
+          <DataType>Date</DataType>
+          <Source xsi:type="TimeAttributeBinding" dwd:design-time-name="3b0f2273-ab9f-4e86-af29-a31b16577683" />
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="b41c2c3b-cf27-491f-af43-b91facb76fbc">
+        <DataType>WChar</DataType>
+      </NameColumn>
+      <Translations>
+        <Translation dwd:design-time-name="4bed1209-96f3-4c79-b8be-b7fe3943594d">
+          <Language>11274</Language>
+          <Caption>Trimestre</Caption>
+        </Translation>
+      </Translations>
+      <AttributeRelationships>
+        <AttributeRelationship dwd:design-time-name="cbc2a7b8-5136-4a8a-b98f-e5cdbe858894">
+          <AttributeID>Year</AttributeID>
+          <RelationshipType>Rigid</RelationshipType>
+          <Name>Year</Name>
+        </AttributeRelationship>
+      </AttributeRelationships>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="8d804e10-ecfc-4b52-9f95-caedc75b29d5">
+      <ID>Month</ID>
+      <Name>Month</Name>
+      <Type>Months</Type>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="b21c60d2-7005-4c80-acf0-80c3aa1e7a4e">
+          <DataType>Date</DataType>
+          <Source xsi:type="TimeAttributeBinding" dwd:design-time-name="24bbfcca-70cb-4e84-9971-5829f83c9af6" />
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="9fbd07b6-2c4b-4e9f-91f8-f475a3d3c213">
+        <DataType>WChar</DataType>
+      </NameColumn>
+      <Translations>
+        <Translation dwd:design-time-name="dc907094-ff96-443f-8165-76a3e05468ba">
+          <Language>11274</Language>
+          <Caption>Mes</Caption>
+        </Translation>
+      </Translations>
+      <AttributeRelationships>
+        <AttributeRelationship dwd:design-time-name="bea1684c-22f8-4a47-b457-d6f76db89506">
+          <AttributeID>Trimester</AttributeID>
+          <RelationshipType>Rigid</RelationshipType>
+          <Name>Trimester</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="810fad30-4510-4478-9a40-caa708c9be06">
+          <AttributeID>Trimester Of Year</AttributeID>
+          <RelationshipType>Rigid</RelationshipType>
+          <Name>Trimester Of Year</Name>
+        </AttributeRelationship>
+      </AttributeRelationships>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="8c793e8b-1c99-40cb-911d-ad9d559041c5">
+      <ID>Day Of Year</ID>
+      <Name>Day Of Year</Name>
+      <Type>DayOfYear</Type>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="934523b8-c20f-4745-ba9f-44c18661647f">
+          <DataType>Integer</DataType>
+          <Source xsi:type="TimeAttributeBinding" dwd:design-time-name="8a99f81e-ad1e-4573-b480-8d81a3f41ab8" />
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="5db80251-5d51-4b3c-b449-0fc7e2190037">
+        <DataType>WChar</DataType>
+      </NameColumn>
+      <Translations>
+        <Translation dwd:design-time-name="69159db2-6daa-4446-bfc7-41635e16bae7">
+          <Language>11274</Language>
+          <Caption>Día del Año</Caption>
+        </Translation>
+      </Translations>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="a2938d06-d6ed-4ea8-b66e-0bdc8dc271d7">
+      <ID>Day Of Trimester</ID>
+      <Name>Day Of Trimester</Name>
+      <Type>DayOfTrimester</Type>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="0e5ae737-f31a-4631-a738-411585375130">
+          <DataType>Integer</DataType>
+          <Source xsi:type="TimeAttributeBinding" dwd:design-time-name="2b31ea49-cebe-4122-ba08-66a508135fbb" />
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="99fbe4e1-9be2-4a25-b7ba-c3e535151398">
+        <DataType>WChar</DataType>
+      </NameColumn>
+      <Translations>
+        <Translation dwd:design-time-name="e0e1e675-b180-4601-960d-52083fe86fd1">
+          <Language>11274</Language>
+          <Caption>Día del Trimestre</Caption>
+        </Translation>
+      </Translations>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="f34bf265-f9fb-4669-a79b-47c50c874ce3">
+      <ID>Day Of Month</ID>
+      <Name>Day Of Month</Name>
+      <Type>DayOfMonth</Type>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="d7774465-9603-4d33-b14b-654b3cf0da27">
+          <DataType>Integer</DataType>
+          <Source xsi:type="TimeAttributeBinding" dwd:design-time-name="e51cb469-549c-40d3-9be2-19850a96a794" />
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="ba446fd8-4c4a-4a67-af11-269658201f18">
+        <DataType>WChar</DataType>
+      </NameColumn>
+      <Translations>
+        <Translation dwd:design-time-name="a913dd63-08f7-4a36-b3b7-1a116a4eecec">
+          <Language>11274</Language>
+          <Caption>Día del Mes</Caption>
+        </Translation>
+      </Translations>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="76a7ecd6-b5de-426e-ad2a-79d5e3a7cf69">
+      <ID>Month Of Year</ID>
+      <Name>Month Of Year</Name>
+      <Type>MonthOfYear</Type>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="7d2b10f6-c4d5-4f46-b748-9d7795ccbf88">
+          <DataType>Integer</DataType>
+          <Source xsi:type="TimeAttributeBinding" dwd:design-time-name="a0f6fcea-3179-4b43-97ad-d4fe1bc2230c" />
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="a8e08bb2-2979-4039-9bab-a58264653fd7">
+        <DataType>WChar</DataType>
+      </NameColumn>
+      <Translations>
+        <Translation dwd:design-time-name="10a84792-42e2-4e9b-9bb9-df40f53d183e">
+          <Language>11274</Language>
+          <Caption>Mes del Año</Caption>
+        </Translation>
+      </Translations>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="1ac65e78-e836-4fca-b088-535dd1dfa203">
+      <ID>Month Of Trimester</ID>
+      <Name>Month Of Trimester</Name>
+      <Type>MonthOfTrimester</Type>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="148f672e-df13-4b5b-a615-a595b76bc682">
+          <DataType>Integer</DataType>
+          <Source xsi:type="TimeAttributeBinding" dwd:design-time-name="2a246d9e-2483-49c7-a56b-3960aeeb20ed" />
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="94ecd555-0a38-4ead-badd-5e5b5c196c42">
+        <DataType>WChar</DataType>
+      </NameColumn>
+      <Translations>
+        <Translation dwd:design-time-name="6007860b-455a-42b4-a119-c47afce086b3">
+          <Language>11274</Language>
+          <Caption>Mes del Trimestre</Caption>
+        </Translation>
+      </Translations>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="b2dbd52a-4e14-42e2-bfae-e042b90a6ceb">
+      <ID>Trimester Of Year</ID>
+      <Name>Trimester Of Year</Name>
+      <Type>TrimesterOfYear</Type>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="6d7ee9cc-d4dd-4d97-a5f7-2b8f2c8b9c4b">
+          <DataType>Integer</DataType>
+          <Source xsi:type="TimeAttributeBinding" dwd:design-time-name="d50a9191-ba09-4f5b-bff5-2aaec4720485" />
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="fb12df18-7161-419f-bc9d-75072b80a5f7">
+        <DataType>WChar</DataType>
+      </NameColumn>
+      <Translations>
+        <Translation dwd:design-time-name="d56d7d67-ef9b-4525-bc90-a642dd1141a5">
+          <Language>11274</Language>
+          <Caption>Timestre del Año</Caption>
+        </Translation>
+      </Translations>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="c7222f77-72af-4ac6-86d5-bbc5f22011cf">
+      <ID>ISO 8601 Year</ID>
+      <Name>ISO 8601 Year</Name>
+      <Type>Iso8601Years</Type>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="1c3c26ec-6d43-4937-80c0-0689f5f02d02">
+          <DataType>Date</DataType>
+          <Source xsi:type="TimeAttributeBinding" dwd:design-time-name="953b4f20-e8f5-4165-ac23-9e4aab7cac10" />
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="c2d697b3-c9c9-4529-b7f1-12a692a413b7">
+        <DataType>WChar</DataType>
+      </NameColumn>
+      <Translations>
+        <Translation dwd:design-time-name="c0c69556-43f0-4015-ad69-a9735fe14f56">
+          <Language>11274</Language>
+          <Caption>Año ISO 8601</Caption>
+        </Translation>
+      </Translations>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="512bff83-2c3e-4187-904d-11c5446b91f1">
+      <ID>ISO 8601 Day</ID>
+      <Name>ISO 8601 Day</Name>
+      <Type>Iso8601Date</Type>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="13f03c27-aa4f-4f1a-9aad-47bee84a507d">
+          <DataType>Date</DataType>
+          <Source xsi:type="TimeAttributeBinding" dwd:design-time-name="c1bdffd8-95bc-403f-9d94-66350874df9c" />
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="09c5bf5d-fbbd-4c9d-874a-e3a7a25b189e">
+        <DataType>WChar</DataType>
+      </NameColumn>
+      <Translations>
+        <Translation dwd:design-time-name="9e57b618-1004-411c-b423-7b06a0bb5793">
+          <Language>11274</Language>
+          <Caption>Día ISO 8601</Caption>
+        </Translation>
+      </Translations>
+      <AttributeRelationships>
+        <AttributeRelationship dwd:design-time-name="a3659fab-2c0a-4c01-a8ec-bdead876a2e2">
+          <AttributeID>ISO 8601 Year</AttributeID>
+          <RelationshipType>Rigid</RelationshipType>
+          <Name>ISO 8601 Year</Name>
+        </AttributeRelationship>
+      </AttributeRelationships>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="362a519a-f532-4612-98c5-aa0e2afd4aa8">
+      <ID>ISO 8601 Day Of Year</ID>
+      <Name>ISO 8601 Day Of Year</Name>
+      <Type>Iso8601DayOfYear</Type>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="c29f172c-308c-4bbe-89e2-3e8f91be803c">
+          <DataType>Integer</DataType>
+          <Source xsi:type="TimeAttributeBinding" dwd:design-time-name="dfabb69b-0537-4772-ac99-577d9e877cb7" />
+        </KeyColumn>
+      </KeyColumns>
+      <NameColumn dwd:design-time-name="e9525240-ad8f-4486-948c-2c876f3b9eb6">
+        <DataType>WChar</DataType>
+      </NameColumn>
+      <Translations>
+        <Translation dwd:design-time-name="a7830752-6418-4f88-a6e7-bc2d97eda1bd">
+          <Language>11274</Language>
+          <Caption>Día del Año ISO 8601</Caption>
+        </Translation>
+      </Translations>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+  </Attributes>
+  <Hierarchies>
+    <Hierarchy dwd:design-time-name="e13053b7-ab6e-433f-ba43-00a0f2a653df">
+      <ID>Year -  Trimester -  Month -  Date</ID>
+      <Name>Year -  Trimester -  Month -  Date</Name>
+      <Translations>
+        <Translation dwd:design-time-name="1fb2ed6f-f581-4a13-8afb-e5a9b0ea0671">
+          <Language>11274</Language>
+          <Caption>Año - Trimestre - Mes - Fecha</Caption>
+        </Translation>
+      </Translations>
+      <Levels>
+        <Level dwd:design-time-name="24b8ec34-b588-470f-b4a3-cba95844fc76">
+          <ID>Year</ID>
+          <Name>Year</Name>
+          <SourceAttributeID>Year</SourceAttributeID>
+          <Translations>
+            <Translation dwd:design-time-name="7d7a8b7c-05f9-435e-bc5c-24f04ab490f6">
+              <Language>11274</Language>
+              <Caption>Año</Caption>
+            </Translation>
+          </Translations>
+        </Level>
+        <Level dwd:design-time-name="d963f8a1-23c3-41f8-af25-005f4b2d86c1">
+          <ID>Trimester</ID>
+          <Name>Trimester</Name>
+          <SourceAttributeID>Trimester</SourceAttributeID>
+          <Translations>
+            <Translation dwd:design-time-name="26b85bba-2aff-4182-bd52-27ebf9561d5e">
+              <Language>11274</Language>
+              <Caption>Trimestre</Caption>
+            </Translation>
+          </Translations>
+        </Level>
+        <Level dwd:design-time-name="8c4a47e5-e9a8-4fe8-ad13-ec0d03e85b9d">
+          <ID>Month</ID>
+          <Name>Month</Name>
+          <SourceAttributeID>Month</SourceAttributeID>
+          <Translations>
+            <Translation dwd:design-time-name="1b31fb8f-a5ca-4b35-8ded-29e8eb744010">
+              <Language>11274</Language>
+              <Caption>Mes</Caption>
+            </Translation>
+          </Translations>
+        </Level>
+        <Level dwd:design-time-name="6a45b216-d08a-4dae-adab-59d585a03606">
+          <ID>Date</ID>
+          <Name>Date</Name>
+          <SourceAttributeID>Date</SourceAttributeID>
+          <Translations>
+            <Translation dwd:design-time-name="6e07802e-37f7-4dda-adfb-aeffa0d883bf">
+              <Language>11274</Language>
+              <Caption>Fecha</Caption>
+            </Translation>
+          </Translations>
+        </Level>
+      </Levels>
+    </Hierarchy>
+    <Hierarchy dwd:design-time-name="c6badb81-9cc1-4c07-96f5-3e0934a6f7b8">
+      <ID>ISO 8601 Year -  ISO 8601 Day</ID>
+      <Name>ISO 8601 Year -  ISO 8601 Day</Name>
+      <Levels>
+        <Level dwd:design-time-name="0306db7c-7364-420b-9b31-4d1d05b1dc03">
+          <ID>ISO 8601 Year</ID>
+          <Name>ISO 8601 Year</Name>
+          <SourceAttributeID>ISO 8601 Year</SourceAttributeID>
+          <Translations>
+            <Translation dwd:design-time-name="d5337296-f52f-49c5-b1fd-97473ea6205c">
+              <Language>11274</Language>
+              <Caption>Año ISO 8601</Caption>
+            </Translation>
+          </Translations>
+        </Level>
+        <Level dwd:design-time-name="9fe1df94-02ca-40cc-ace7-482ddb9512bc">
+          <ID>ISO 8601 Day</ID>
+          <Name>ISO 8601 Day</Name>
+          <SourceAttributeID>ISO 8601 Day</SourceAttributeID>
+          <Translations>
+            <Translation dwd:design-time-name="129ce0ac-85a5-4a9d-a3f1-6e2cfecafd18">
+              <Language>11274</Language>
+              <Caption>Día ISO 8601</Caption>
+            </Translation>
+          </Translations>
+        </Level>
+      </Levels>
+    </Hierarchy>
+  </Hierarchies>
+</Dimension>

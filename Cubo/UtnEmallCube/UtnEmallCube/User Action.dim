@@ -1,0 +1,228 @@
+﻿<Dimension xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" dwd:design-time-name="a0288e5c-d0fb-4108-8d2e-04510dd749f1" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <ID>User Action</ID>
+  <Name>User Action</Name>
+  <CreatedTimestamp>0001-01-01T03:00:00Z</CreatedTimestamp>
+  <LastSchemaUpdate>0001-01-01T03:00:00Z</LastSchemaUpdate>
+  <Annotations>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramLayout</Name>
+      <Value>
+        <dds xmlns="">
+          <diagram fontclsid="{0BE35203-8F91-11CE-9DE3-00AA004BB851}" mouseiconclsid="{0BE35204-8F91-11CE-9DE3-00AA004BB851}" defaultlayout="MSDDS.Rectilinear" defaultlineroute="MSDDS.Rectilinear" version="7" nextobject="3" scale="100" pagebreakanchorx="0" pagebreakanchory="0" pagebreaksizex="0" pagebreaksizey="0" scrollleft="-2078" scrolltop="-4537" gridx="150" gridy="150" marginx="5000" marginy="5000" zoom="100" x="9790" y="20532" backcolor="15334399" defaultpersistence="2" PrintPageNumbersMode="3" PrintMarginTop="0" PrintMarginBottom="635" PrintMarginLeft="0" PrintMarginRight="0" marqueeselectionmode="0" mousepointer="0" snaptogrid="0" autotypeannotation="1" showscrollbars="0" viewpagebreaks="0" donotforceconnectorsbehindshapes="1" backpictureclsid="{00000000-0000-0000-0000-000000000000}">
+            <font>
+              <ddsxmlobjectstreamwrapper binary="01000000900144420100065461686f6d61" />
+            </font>
+            <mouseicon>
+              <ddsxmlobjectstreamwrapper binary="6c74000000000000" />
+            </mouseicon>
+          </diagram>
+          <layoutmanager>
+            <ddsxmlobj />
+          </layoutmanager>
+          <ddscontrol controlprogid="DdsShapes.DdsObjectManagedBridge.2" tooltip="UserAction" left="20" top="0" logicalid="2" controlid="1" masterid="0" hint1="0" hint2="0" width="3000" height="4842" noresize="0" nomove="0" nodefaultattachpoints="0" autodrag="1" usedefaultiddshape="1" selectable="1" showselectionhandles="1" allownudging="1" isannotation="0" dontautolayout="0" groupcollapsed="0" tabstop="1" visible="1" snaptogrid="0">
+            <control>
+              <ddsxmlobjectstreaminitwrapper binary="00080000b80b0000ea120000" />
+            </control>
+            <layoutobject>
+              <ddsxmlobj>
+                <property name="LogicalObject" value="dbo_UserAction" vartype="8" />
+              </ddsxmlobj>
+            </layoutobject>
+            <shape groupshapeid="0" groupnode="0" />
+          </ddscontrol>
+        </dds>
+      </Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ShowFriendlyNames</Name>
+      <Value>true</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ShowRelationshipNames</Name>
+      <Value>false</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:UseDiagramDefaultLayout</Name>
+      <Value>true</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramViewPortLeft</Name>
+      <Value>-2078</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramViewPortTop</Name>
+      <Value>-4537</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramBoundingLeft</Name>
+      <Value>20</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramBoundingTop</Name>
+      <Value>0</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramZoom</Name>
+      <Value>100</Value>
+    </Annotation>
+  </Annotations>
+  <LastProcessed>0001-01-01T03:00:00Z</LastProcessed>
+  <State>Unprocessed</State>
+  <Source xsi:type="DataSourceViewBinding" dwd:design-time-name="b3a43482-3b22-4a01-a114-46b0c5ee9761">
+    <DataSourceViewID>Utnemall Ds</DataSourceViewID>
+  </Source>
+  <ErrorConfiguration dwd:design-time-name="ab0e1d6d-827d-4506-8b5b-e8d3fbba64a0">
+    <KeyNotFound>ReportAndStop</KeyNotFound>
+    <KeyDuplicate>ReportAndStop</KeyDuplicate>
+    <NullKeyNotAllowed>ReportAndStop</NullKeyNotAllowed>
+  </ErrorConfiguration>
+  <CurrentStorageMode>Molap</CurrentStorageMode>
+  <Translations>
+    <Translation dwd:design-time-name="d03f680c-aea2-4d22-af0b-e8eebe26a606">
+      <Language>11274</Language>
+      <Caption>Acción</Caption>
+    </Translation>
+  </Translations>
+  <Attributes>
+    <Attribute dwd:design-time-name="599aec88-9036-4bba-8093-f334cb0f7a18">
+      <ID>Iduseraction</ID>
+      <Name>Código Accion</Name>
+      <Usage>Key</Usage>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="b3e99e7d-f5c6-4a11-8293-51a3e0e667ea">
+          <DataType>Integer</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="5d28eaea-53c6-4e52-9d28-7a8330cb165a">
+            <TableID>dbo_UserAction</TableID>
+            <ColumnID>iduseraction</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <Translations>
+        <Translation dwd:design-time-name="2b1e930e-fd72-4710-a684-9eed05fc0d3e">
+          <Language>11274</Language>
+          <Caption>Código Acción</Caption>
+        </Translation>
+      </Translations>
+      <AttributeRelationships>
+        <AttributeRelationship dwd:design-time-name="11a0ef33-06bb-4b80-87b0-59a3913674fe">
+          <AttributeID>Hour</AttributeID>
+          <Name>Hora</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="b4e9af03-4dc5-486e-8a29-12e83c5e35f1">
+          <AttributeID>Action</AttributeID>
+          <Name>Tipo de Acción</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="b3f47181-6748-471e-a216-3c821949953e">
+          <AttributeID>Month</AttributeID>
+          <Name>Month</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="fd5791eb-bbf7-4bd2-845a-b322376d6f82">
+          <AttributeID>Year</AttributeID>
+          <Name>Year</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="d8fac6b8-9c9e-448c-8f16-5d1e686b3ee6">
+          <AttributeID>Month Year</AttributeID>
+          <Name>Month Year</Name>
+        </AttributeRelationship>
+      </AttributeRelationships>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="f44e8c30-cd5c-4375-ae4a-c887da3789e9">
+      <ID>Hour</ID>
+      <Name>Hora</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="7aead6d4-ea50-440d-ab81-9ee1cb78f9e1">
+          <DataType>Integer</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="12fdde6b-11f0-4090-8534-da63ed46b643">
+            <TableID>dbo_UserAction</TableID>
+            <ColumnID>hour</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <Translations>
+        <Translation dwd:design-time-name="5e0e8657-aa4c-496f-bd3e-9aa2771e6429">
+          <Language>11274</Language>
+          <Caption>Hora</Caption>
+        </Translation>
+      </Translations>
+    </Attribute>
+    <Attribute dwd:design-time-name="f8ff5d7b-b696-469e-995e-e8ae8bcd4877">
+      <ID>Action</ID>
+      <Name>Tipo de Acción</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="dd506580-984b-41a8-a9a8-d06198a4431d">
+          <DataType>WChar</DataType>
+          <DataSize>25</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="dfb6ed7f-5739-46be-b633-f0e1624d73ba">
+            <TableID>dbo_UserAction</TableID>
+            <ColumnID>action</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <Translations>
+        <Translation dwd:design-time-name="d2d1b247-6b84-498c-9214-bd5139c9b5da">
+          <Language>11274</Language>
+          <Caption>Tipo de Acción</Caption>
+        </Translation>
+      </Translations>
+    </Attribute>
+    <Attribute dwd:design-time-name="8f712a52-d1ee-44dd-917b-19604a3a50ed">
+      <ID>Month</ID>
+      <Name>Month</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="52644eac-080f-42f2-a6ac-4cf51076f8a1">
+          <DataType>Integer</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="961568ca-4201-4b33-bbaa-2a88293a34b8">
+            <TableID>dbo_UserAction</TableID>
+            <ColumnID>month</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <Translations>
+        <Translation dwd:design-time-name="990fe894-41b8-494a-b942-77a731aed85e">
+          <Language>11274</Language>
+          <Caption>Mes</Caption>
+        </Translation>
+      </Translations>
+    </Attribute>
+    <Attribute dwd:design-time-name="15b0609f-5384-4c2e-b3bf-e9548a5e6556">
+      <ID>Year</ID>
+      <Name>Year</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="c1173d23-680b-478a-a62d-aec544a2f9c4">
+          <DataType>Integer</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="2964ba4c-eada-4772-8040-b6ca4528690b">
+            <TableID>dbo_UserAction</TableID>
+            <ColumnID>year</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <Translations>
+        <Translation dwd:design-time-name="16611047-8435-458b-bd4d-0d6bfa159343">
+          <Language>11274</Language>
+          <Caption>Año</Caption>
+        </Translation>
+      </Translations>
+    </Attribute>
+    <Attribute dwd:design-time-name="e8b08a23-9328-40d0-9db5-edfd8edca092">
+      <ID>Month Year</ID>
+      <Name>Month Year</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="de6bde9a-d4c3-4ceb-b435-5be56c9558f9">
+          <DataType>WChar</DataType>
+          <DataSize>10</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="61b30b3e-62d8-4751-b9c3-ddd8f8b1d674">
+            <TableID>dbo_UserAction</TableID>
+            <ColumnID>month_year</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <Translations>
+        <Translation dwd:design-time-name="03509ab4-f49f-4c8d-9176-f2b9715bd2fe">
+          <Language>11274</Language>
+          <Caption>Mes-Año</Caption>
+        </Translation>
+      </Translations>
+    </Attribute>
+  </Attributes>
+</Dimension>
