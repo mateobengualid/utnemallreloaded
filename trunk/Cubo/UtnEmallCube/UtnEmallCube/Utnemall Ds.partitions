@@ -1,0 +1,25 @@
+﻿<Cube xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" dwd:design-time-name="0c8d7d9d-7bd0-4f19-9170-27333ed6e767" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <ID>Utnemall Ds</ID>
+  <MeasureGroups>
+    <MeasureGroup>
+      <ID>User Action</ID>
+      <Partitions>
+        <Partition dwd:design-time-name="3f087f95-4fc4-4480-a224-48c8e614a6ff">
+          <ID>User Action</ID>
+          <Name>User Action</Name>
+          <CreatedTimestamp>0001-01-01T00:00:00Z</CreatedTimestamp>
+          <LastSchemaUpdate>0001-01-01T00:00:00Z</LastSchemaUpdate>
+          <LastProcessed>0001-01-01T00:00:00Z</LastProcessed>
+          <State>Unprocessed</State>
+          <Source xsi:type="DsvTableBinding" dwd:design-time-name="316a7f05-9e60-4d54-a217-9de3717cf4fb">
+            <DataSourceViewID>Utnemall Ds</DataSourceViewID>
+            <TableID>dbo_UserAction</TableID>
+          </Source>
+          <StorageMode>Molap</StorageMode>
+          <CurrentStorageMode>Molap</CurrentStorageMode>
+          <ProcessingMode>Regular</ProcessingMode>
+        </Partition>
+      </Partitions>
+    </MeasureGroup>
+  </MeasureGroups>
+</Cube>

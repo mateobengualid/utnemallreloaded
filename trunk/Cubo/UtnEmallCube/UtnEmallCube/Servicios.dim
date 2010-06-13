@@ -1,0 +1,169 @@
+﻿<Dimension xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" dwd:design-time-name="ae30d286-f666-424c-ab02-836578f8264d" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <ID>Servicios</ID>
+  <Name>Servicios</Name>
+  <CreatedTimestamp>0001-01-01T00:00:00Z</CreatedTimestamp>
+  <LastSchemaUpdate>0001-01-01T00:00:00Z</LastSchemaUpdate>
+  <Annotations>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramLayout</Name>
+      <Value>
+        <dds xmlns="">
+          <diagram fontclsid="{0BE35203-8F91-11CE-9DE3-00AA004BB851}" mouseiconclsid="{0BE35204-8F91-11CE-9DE3-00AA004BB851}" defaultlayout="MSDDS.Rectilinear" defaultlineroute="MSDDS.Rectilinear" version="7" nextobject="3" scale="100" pagebreakanchorx="0" pagebreakanchory="0" pagebreaksizex="0" pagebreaksizey="0" scrollleft="-2078" scrolltop="-5384" gridx="150" gridy="150" marginx="5000" marginy="5000" zoom="100" x="7197" y="13917" backcolor="15334399" defaultpersistence="2" PrintPageNumbersMode="3" PrintMarginTop="0" PrintMarginBottom="635" PrintMarginLeft="0" PrintMarginRight="0" marqueeselectionmode="0" mousepointer="0" snaptogrid="0" autotypeannotation="1" showscrollbars="0" viewpagebreaks="0" donotforceconnectorsbehindshapes="1" backpictureclsid="{00000000-0000-0000-0000-000000000000}">
+            <font>
+              <ddsxmlobjectstreamwrapper binary="01000000900144420100065461686f6d61" />
+            </font>
+            <mouseicon>
+              <ddsxmlobjectstreamwrapper binary="6c74000000000000" />
+            </mouseicon>
+          </diagram>
+          <layoutmanager>
+            <ddsxmlobj />
+          </layoutmanager>
+          <ddscontrol controlprogid="DdsShapes.DdsObjectManagedBridge.2" tooltip="Servicios" left="20" top="0" logicalid="2" controlid="1" masterid="0" hint1="0" hint2="0" width="3000" height="3149" noresize="0" nomove="0" nodefaultattachpoints="0" autodrag="1" usedefaultiddshape="1" selectable="1" showselectionhandles="1" allownudging="1" isannotation="0" dontautolayout="0" groupcollapsed="0" tabstop="1" visible="1" snaptogrid="0">
+            <control>
+              <ddsxmlobjectstreaminitwrapper binary="00080000b80b00004d0c0000" />
+            </control>
+            <layoutobject>
+              <ddsxmlobj>
+                <property name="LogicalObject" value="dbo_Servicios" vartype="8" />
+              </ddsxmlobj>
+            </layoutobject>
+            <shape groupshapeid="0" groupnode="0" />
+          </ddscontrol>
+        </dds>
+      </Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ShowFriendlyNames</Name>
+      <Value>true</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ShowRelationshipNames</Name>
+      <Value>false</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:UseDiagramDefaultLayout</Name>
+      <Value>true</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramViewPortLeft</Name>
+      <Value>-2078</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramViewPortTop</Name>
+      <Value>-5384</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramBoundingLeft</Name>
+      <Value>20</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramBoundingTop</Name>
+      <Value>0</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramZoom</Name>
+      <Value>100</Value>
+    </Annotation>
+  </Annotations>
+  <LastProcessed>0001-01-01T00:00:00Z</LastProcessed>
+  <State>Unprocessed</State>
+  <Source xsi:type="DataSourceViewBinding" dwd:design-time-name="c870cbbc-c3e6-463d-9e64-79899e394438">
+    <DataSourceViewID>Utnemall Ds</DataSourceViewID>
+  </Source>
+  <ErrorConfiguration dwd:design-time-name="e323b8ef-c35c-49e0-9852-378008659d9d">
+    <KeyNotFound>ReportAndStop</KeyNotFound>
+    <KeyDuplicate>ReportAndStop</KeyDuplicate>
+    <NullKeyNotAllowed>ReportAndStop</NullKeyNotAllowed>
+  </ErrorConfiguration>
+  <CurrentStorageMode>Molap</CurrentStorageMode>
+  <Attributes>
+    <Attribute dwd:design-time-name="804ecd2a-e3db-41a6-8700-a63c3b26981e">
+      <ID>Idservicio</ID>
+      <Name>Código Servicio</Name>
+      <Usage>Key</Usage>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="ac6a0124-5749-4bba-8eb6-de2af348538a">
+          <DataType>Integer</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="9787eee7-1ada-4219-ad87-0f6f26eb3385">
+            <TableID>dbo_Servicios</TableID>
+            <ColumnID>idservicio</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <AttributeRelationships>
+        <AttributeRelationship dwd:design-time-name="8e5a9359-2b3c-45c4-82b4-3a85f806f63c">
+          <AttributeID>Nombre</AttributeID>
+          <Name>Servicio</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="b77ef4b1-ae31-48ae-bb98-3dd60ad53895">
+          <AttributeID>Negocio</AttributeID>
+          <Name>Negocio</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="444af90b-52f8-46f7-ac71-14982ed76080">
+          <AttributeID>Fecha Inicio</AttributeID>
+          <Name>Fecha Inicio</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="4df7fa44-d0d5-4fe5-8bc0-81381dfdcfdf">
+          <AttributeID>Fecha Fin</AttributeID>
+          <Name>Fecha Fin</Name>
+        </AttributeRelationship>
+      </AttributeRelationships>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="4ff3b480-946a-43f5-bb51-ed470489c6d4">
+      <ID>Nombre</ID>
+      <Name>Servicio</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="8fac3644-42f4-46da-89ec-22925c9f61f4">
+          <DataType>WChar</DataType>
+          <DataSize>50</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="c38504c0-b265-4fe1-9ca7-294e196f3f4e">
+            <TableID>dbo_Servicios</TableID>
+            <ColumnID>Nombre</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+    </Attribute>
+    <Attribute dwd:design-time-name="d33cfa88-0f91-4013-88dc-4e58d1604b26">
+      <ID>Negocio</ID>
+      <Name>Negocio</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="ced975bc-c396-425b-b973-382a3a19ccad">
+          <DataType>WChar</DataType>
+          <DataSize>50</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="072f8164-81b9-4a83-8fb7-5e9f5021aa56">
+            <TableID>dbo_Servicios</TableID>
+            <ColumnID>Negocio</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+    </Attribute>
+    <Attribute dwd:design-time-name="f7368c26-cdfb-404f-af10-fab8be3ce914">
+      <ID>Fecha Inicio</ID>
+      <Name>Fecha Inicio</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="73534ad2-d76b-4699-8b4d-bb38519aa82f">
+          <DataType>Date</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="2e1db477-0ef9-425c-b6c9-8f496ea4e87c">
+            <TableID>dbo_Servicios</TableID>
+            <ColumnID>Fecha_x0020_Inicio</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+    </Attribute>
+    <Attribute dwd:design-time-name="ffd56007-dbbb-4b3c-a62c-a1f14acb6259">
+      <ID>Fecha Fin</ID>
+      <Name>Fecha Fin</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="cd92eee3-496f-4a7f-b83f-22eaf25595dc">
+          <DataType>Date</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="3b13bf69-0039-4fb8-a645-19a8a448ebe6">
+            <TableID>dbo_Servicios</TableID>
+            <ColumnID>Fecha_x0020_Fin</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+    </Attribute>
+  </Attributes>
+</Dimension>

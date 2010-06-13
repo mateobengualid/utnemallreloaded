@@ -1,0 +1,205 @@
+﻿<Dimension xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0" dwd:design-time-name="117697a0-81cf-4281-a4b4-d4aa14ca8ceb" xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
+  <ID>Clientes</ID>
+  <Name>Clientes</Name>
+  <CreatedTimestamp>0001-01-01T00:00:00Z</CreatedTimestamp>
+  <LastSchemaUpdate>0001-01-01T00:00:00Z</LastSchemaUpdate>
+  <Annotations>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramLayout</Name>
+      <Value>
+        <dds xmlns="">
+          <diagram fontclsid="{0BE35203-8F91-11CE-9DE3-00AA004BB851}" mouseiconclsid="{0BE35204-8F91-11CE-9DE3-00AA004BB851}" defaultlayout="MSDDS.Rectilinear" defaultlineroute="MSDDS.Rectilinear" version="7" nextobject="3" scale="100" pagebreakanchorx="0" pagebreakanchory="0" pagebreaksizex="0" pagebreaksizey="0" scrollleft="-2078" scrolltop="-4961" gridx="150" gridy="150" marginx="5000" marginy="5000" zoom="100" x="7197" y="13917" backcolor="15334399" defaultpersistence="2" PrintPageNumbersMode="3" PrintMarginTop="0" PrintMarginBottom="635" PrintMarginLeft="0" PrintMarginRight="0" marqueeselectionmode="0" mousepointer="0" snaptogrid="0" autotypeannotation="1" showscrollbars="0" viewpagebreaks="0" donotforceconnectorsbehindshapes="1" backpictureclsid="{00000000-0000-0000-0000-000000000000}">
+            <font>
+              <ddsxmlobjectstreamwrapper binary="01000000900144420100065461686f6d61" />
+            </font>
+            <mouseicon>
+              <ddsxmlobjectstreamwrapper binary="6c74000000000000" />
+            </mouseicon>
+          </diagram>
+          <layoutmanager>
+            <ddsxmlobj />
+          </layoutmanager>
+          <ddscontrol controlprogid="DdsShapes.DdsObjectManagedBridge.2" tooltip="Clientes" left="20" top="0" logicalid="2" controlid="1" masterid="0" hint1="0" hint2="0" width="3000" height="3995" noresize="0" nomove="0" nodefaultattachpoints="0" autodrag="1" usedefaultiddshape="1" selectable="1" showselectionhandles="1" allownudging="1" isannotation="0" dontautolayout="0" groupcollapsed="0" tabstop="1" visible="1" snaptogrid="0">
+            <control>
+              <ddsxmlobjectstreaminitwrapper binary="00080000b80b00009b0f0000" />
+            </control>
+            <layoutobject>
+              <ddsxmlobj>
+                <property name="LogicalObject" value="dbo_Clientes" vartype="8" />
+              </ddsxmlobj>
+            </layoutobject>
+            <shape groupshapeid="0" groupnode="0" />
+          </ddscontrol>
+        </dds>
+      </Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ShowFriendlyNames</Name>
+      <Value>true</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:ShowRelationshipNames</Name>
+      <Value>false</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:UseDiagramDefaultLayout</Name>
+      <Value>true</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramViewPortLeft</Name>
+      <Value>-2078</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramViewPortTop</Name>
+      <Value>-4961</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramBoundingLeft</Name>
+      <Value>20</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramBoundingTop</Name>
+      <Value>0</Value>
+    </Annotation>
+    <Annotation>
+      <Name>http://schemas.microsoft.com/DataWarehouse/Designer/1.0:DiagramZoom</Name>
+      <Value>100</Value>
+    </Annotation>
+  </Annotations>
+  <LastProcessed>0001-01-01T00:00:00Z</LastProcessed>
+  <State>Unprocessed</State>
+  <Source xsi:type="DataSourceViewBinding" dwd:design-time-name="a20e6cd4-e8d1-4c14-8421-5f822fd09f2f">
+    <DataSourceViewID>Utnemall Ds</DataSourceViewID>
+  </Source>
+  <ErrorConfiguration dwd:design-time-name="82db4cb0-4dc8-4fa0-a6a3-ea32c94949cf">
+    <KeyNotFound>ReportAndStop</KeyNotFound>
+    <KeyDuplicate>ReportAndStop</KeyDuplicate>
+    <NullKeyNotAllowed>ReportAndStop</NullKeyNotAllowed>
+  </ErrorConfiguration>
+  <CurrentStorageMode>Molap</CurrentStorageMode>
+  <Attributes>
+    <Attribute dwd:design-time-name="564d4ea8-6b3e-424a-8abc-9e92e1a1ce8f">
+      <ID>Idcliente</ID>
+      <Name>Código Cliente</Name>
+      <Usage>Key</Usage>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="70031a1b-b57b-465e-beb5-5f9ec4406ea8">
+          <DataType>Integer</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="c2f2ccd0-63ce-4a5b-8948-4de788aaaf84">
+            <TableID>dbo_Clientes</TableID>
+            <ColumnID>idcliente</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+      <AttributeRelationships>
+        <AttributeRelationship dwd:design-time-name="a49f9343-6894-4012-b454-4ede9c92e809">
+          <AttributeID>Nombres</AttributeID>
+          <Name>Nombres Cliente</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="5d055924-7b86-4bcc-8d6e-b27ac0ae6d9a">
+          <AttributeID>Apellido</AttributeID>
+          <Name>Apellido Cliente</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="3c8ec980-f052-42d2-b68f-00bd5abcc844">
+          <AttributeID>Edad</AttributeID>
+          <Name>Edad</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="6b4d799c-926c-4704-bf3a-ca6f95b6caab">
+          <AttributeID>Genero</AttributeID>
+          <Name>Sexo</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="f806533e-4b86-4936-8b4b-862b34e3a4fe">
+          <AttributeID>Estado Civil</AttributeID>
+          <Name>Estado Civil</Name>
+        </AttributeRelationship>
+        <AttributeRelationship dwd:design-time-name="8e36499e-7dbe-4ce4-bef5-c1cd0a7c0ce4">
+          <AttributeID>Hijos</AttributeID>
+          <Name>Hijos</Name>
+        </AttributeRelationship>
+      </AttributeRelationships>
+      <OrderBy>Key</OrderBy>
+    </Attribute>
+    <Attribute dwd:design-time-name="76e2a45a-7387-4102-8ad8-c36e0512ea00">
+      <ID>Nombres</ID>
+      <Name>Nombres Cliente</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="3d7bb8f8-89b8-41f2-8539-d9b0228e4894">
+          <DataType>WChar</DataType>
+          <DataSize>100</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="9acc4922-1688-4696-9059-11bc1d4aa210">
+            <TableID>dbo_Clientes</TableID>
+            <ColumnID>Nombres</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+    </Attribute>
+    <Attribute dwd:design-time-name="713aa7a1-d9b5-4d55-babf-8ca8070f033a">
+      <ID>Apellido</ID>
+      <Name>Apellido Cliente</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="bc5aa56c-b9c5-4267-9f2b-b0fe6e10639b">
+          <DataType>WChar</DataType>
+          <DataSize>100</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="b768c683-9390-4606-b5f5-27f972c8d07a">
+            <TableID>dbo_Clientes</TableID>
+            <ColumnID>Apellido</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+    </Attribute>
+    <Attribute dwd:design-time-name="cb7ea6e3-f247-4e46-8f3e-127dd07ce94d">
+      <ID>Edad</ID>
+      <Name>Edad</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="7ddb5eb7-4ad8-49c6-8a11-59dcd9b9ba04">
+          <DataType>Integer</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="e0469e88-924d-4040-9fc4-768c7176bce0">
+            <TableID>dbo_Clientes</TableID>
+            <ColumnID>Edad</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+    </Attribute>
+    <Attribute dwd:design-time-name="a1c655f7-6aec-4b70-a05c-da9e26fa8258">
+      <ID>Genero</ID>
+      <Name>Sexo</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="a7738bb0-5e63-4e7a-a39e-e3a5669e0494">
+          <DataType>WChar</DataType>
+          <DataSize>1</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="332c21e0-2b00-4a0e-8733-5f85cb51eee7">
+            <TableID>dbo_Clientes</TableID>
+            <ColumnID>Genero</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+    </Attribute>
+    <Attribute dwd:design-time-name="c3acdd93-1fc5-4ace-b18e-4aa5aaf50890">
+      <ID>Estado Civil</ID>
+      <Name>Estado Civil</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="6e70e5b4-45e4-43f5-a3ff-d475e356b0f8">
+          <DataType>WChar</DataType>
+          <DataSize>10</DataSize>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="f5dc1d04-d5aa-4ce4-82b6-5377fbb766c3">
+            <TableID>dbo_Clientes</TableID>
+            <ColumnID>Estado_x0020_Civil</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+    </Attribute>
+    <Attribute dwd:design-time-name="45cd4d87-e1ff-40bc-bcce-cc591f921d89">
+      <ID>Hijos</ID>
+      <Name>Hijos</Name>
+      <KeyColumns>
+        <KeyColumn dwd:design-time-name="d84c0c3c-3c2b-4de9-a278-a8fa2a776aef">
+          <DataType>Integer</DataType>
+          <Source xsi:type="ColumnBinding" dwd:design-time-name="14cb74f2-1277-40bf-b2ba-11877252674e">
+            <TableID>dbo_Clientes</TableID>
+            <ColumnID>Hijos</ColumnID>
+          </Source>
+        </KeyColumn>
+      </KeyColumns>
+    </Attribute>
+  </Attributes>
+</Dimension>
