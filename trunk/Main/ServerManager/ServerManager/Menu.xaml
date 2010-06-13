@@ -67,14 +67,14 @@
     </UserControl.Resources>
 
 	<Grid x:Uid="Grid_1">
-		<UtnEmall.ServerManager:Button Margin="8,16,8,0" VerticalAlignment="Top" Height="40" x:Name="Users" MouseLeftButtonUp="OnManageUsersClicked"/>		
-		<UtnEmall.ServerManager:Button Margin="8,59,8,0" VerticalAlignment="Top" Height="40" x:Name="Customers" MouseLeftButtonUp="OnManageCustomersClicked"/>
-		<UtnEmall.ServerManager:Button Margin="8,102,8,0" VerticalAlignment="Top" Height="40" x:Name="Categories" MouseLeftButtonUp="OnManageCategoriesClicked"/>
-		<UtnEmall.ServerManager:Button Margin="8,145,8,0" VerticalAlignment="Top" Height="40" x:Name="Services" MouseLeftButtonUp="OnManageServicesClicked"/>
-		<UtnEmall.ServerManager:Button Margin="8,188,8,0" VerticalAlignment="Top" Height="40" x:Name="Stores" MouseLeftButtonUp="OnManageStoresClicked"/>
-		<UtnEmall.ServerManager:Button Margin="8,231,8,0" VerticalAlignment="Top" Height="40" x:Name="Groups" MouseLeftButtonUp="OnManageGroupsClicked"/>
-		<UtnEmall.ServerManager:Button Margin="8,274,8,0" VerticalAlignment="Top" Height="40" x:Name="DataModel" MouseLeftButtonUp="OnManageDataModelClicked"/>
-        <UtnEmall.ServerManager:Button Margin="8,317,8,0" VerticalAlignment="Top" Height="40" x:Name="Statistics" MouseLeftButtonUp="OnViewStatisticsClicked"/>
+		<UtnEmall.ServerManager:Button Cursor="Hand" Margin="8,16,8,0" VerticalAlignment="Top" Height="40" x:Name="Users" MouseLeftButtonUp="OnManageUsersClicked"/>		
+		<UtnEmall.ServerManager:Button Cursor="Hand" Margin="8,59,8,0" VerticalAlignment="Top" Height="40" x:Name="Customers" MouseLeftButtonUp="OnManageCustomersClicked"/>
+		<UtnEmall.ServerManager:Button Cursor="Hand" Margin="8,102,8,0" VerticalAlignment="Top" Height="40" x:Name="Categories" MouseLeftButtonUp="OnManageCategoriesClicked"/>
+		<UtnEmall.ServerManager:Button Cursor="Hand" Margin="8,145,8,0" VerticalAlignment="Top" Height="40" x:Name="Services" MouseLeftButtonUp="OnManageServicesClicked"/>
+		<UtnEmall.ServerManager:Button Cursor="Hand" Margin="8,188,8,0" VerticalAlignment="Top" Height="40" x:Name="Stores" MouseLeftButtonUp="OnManageStoresClicked"/>
+		<UtnEmall.ServerManager:Button Cursor="Hand" Margin="8,231,8,0" VerticalAlignment="Top" Height="40" x:Name="Groups" MouseLeftButtonUp="OnManageGroupsClicked"/>
+		<UtnEmall.ServerManager:Button Cursor="Hand" Margin="8,274,8,0" VerticalAlignment="Top" Height="40" x:Name="DataModel" MouseLeftButtonUp="OnManageDataModelClicked"/>
+        <UtnEmall.ServerManager:Button Cursor="Hand" Margin="8,317,8,0" VerticalAlignment="Top" Height="40" x:Name="Statistics" MouseLeftButtonUp="OnViewStatisticsClicked"/>
         <!--
 		<UtnEmall.ServerManager:Button Margin="8,317,8,0" VerticalAlignment="Top" Height="40" x:Name="Campaigns" MouseLeftButtonUp="OnManageCampaignsClicked"/>
         <UtnEmall.ServerManager:Button Margin="8,360,8,8" VerticalAlignment="Top" Height="40" x:Name="Statistics" MouseLeftButtonUp="OnViewStatisticsClicked"/>
