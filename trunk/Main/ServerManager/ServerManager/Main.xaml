@@ -43,28 +43,28 @@
 	<Grid x:Uid="Grid_1" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
 		<Image x:Uid="Image_1" Margin="161,0,0,0" Source="imgs\background.jpg" Stretch="Fill"/>
 		<UtnEmall.ServerManager:Menu x:Uid="menu" HorizontalAlignment="Left" Width="196" x:Name="menu"/>
-		<UtnEmall.ServerManager:CategoryManager x:Uid="categoryManager" Margin="0,8,8,8" Visibility="Hidden" x:Name="categoryManager" HorizontalAlignment="Right" Width="512" VerticalAlignment="Top" Height="391"/>
-		<UtnEmall.ServerManager:CustomerManager x:Uid="customerManager" Margin="0,8,8,8" Visibility="Hidden" x:Name="customerManager" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391"/>
-		<UtnEmall.ServerManager:PermissionManager x:Uid="permissionManager" Margin="0,8,8,8" Visibility="Hidden" x:Name="permissionManager" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
-		<UtnEmall.ServerManager:ServiceManager x:Uid="serviceManager" Margin="0,8,8,8" Visibility="Hidden" x:Name="serviceManager" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
-		<UtnEmall.ServerManager:StoreManager x:Uid="storeManager" Margin="0,8,8,8" Visibility="Hidden" x:Name="storeManager" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
-		<UtnEmall.ServerManager:UserManager x:Uid="userManager" Margin="0,8,8,8" Visibility="Hidden" x:Name="userManager" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
-		<UtnEmall.ServerManager:UserEditor x:Uid="addUser" Margin="0,8,8,8" Visibility="Hidden" x:Name="addUser" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
-		<UtnEmall.ServerManager:CustomerEditor x:Uid="addCustomer" Margin="0,8,8,8" Visibility="Hidden" x:Name="addCustomer" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
-		<UtnEmall.ServerManager:StoreEditor x:Uid="addStore" Margin="0,8,8,8" Visibility="Hidden" x:Name="addStore" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
-		<UtnEmall.ServerManager:ServiceEditor x:Uid="addService" Margin="0,8,8,8" Visibility="Hidden" x:Name="addService" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391"/>
-		<UtnEmall.ServerManager:CategoryEditor x:Uid="addCategory" Margin="0,8,8,8" Visibility="Hidden" x:Name="addCategory" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
-		<UtnEmall.ServerManager:GroupEditor x:Uid="addGroup" Margin="0,8,8,8" Visibility="Hidden" x:Name="addGroup" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
-		<UtnEmall.ServerManager:AuthorizationEditor x:Uid="addPermission" Margin="0,8,8,8" Visibility="Hidden" x:Name="addPermission" Width="512" HorizontalAlignment="Right" VerticalAlignment="Top" Height="391"/>
-		<UtnEmall.ServerManager:Welcome x:Uid="welcome" Margin="0,8,8,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391" x:Name="welcome"/>
-		<UtnEmall.ServerManager:GroupManager x:Uid="groupManager" Margin="0,8,8,0" Visibility="Hidden" x:Name="groupManager" Width="512" Height="391" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-		<UtnEmall.ServerManager:CampaignManager x:Uid="campaignManager" Margin="0,8,8,0" x:Name="campaignManager" Width="512" Height="391" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="0,0,0,0"/>
-		<UtnEmall.ServerManager:CampaignEditor x:Uid="addCampaign" Margin="0,8,8,0" x:Name="addCampaign" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391" Visibility="Hidden"/>
-		<UtnEmall.ServerManager:EditServices x:Uid="editServices" Margin="257,8,8,8" x:Name="editServices" Visibility="Hidden" Width="512" Height="391"/>
-        <UtnEmall.ServerManager:DataModelManager x:Uid="dataModelManager" Margin="0,8,8,0" x:Name="dataModelManager" Width="512" Height="391" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="0,0,0,0"/>
-        <UtnEmall.ServerManager:DataModelEditor x:Uid="addDataModel" Margin="0,8,8,0" x:Name="addDataModel" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391" Visibility="Hidden"/>
-        <UtnEmall.ServerManager:EditGroups x:Uid="editGroups" Margin="257,8,8,8" x:Name="editGroups" Visibility="Hidden" Width="512" Height="391"/>
-        <UtnEmall.ServerManager:StatisticsViewer x:Uid="statisticsViewer" Margin="0,8,8,0" x:Name="statisticsViewer" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391" Visibility="Hidden"/>
-        <UtnEmall.ServerManager:GlobalStatisticsAnalyzer x:Uid="globalStatisticsAnalyzer" Margin="0,8,8,0" x:Name="globalStatisticsAnalyzer" HorizontalAlignment="Right" VerticalAlignment="Top" Width="512" Height="391" Visibility="Hidden"/>
+		<UtnEmall.ServerManager:CategoryManager x:Uid="categoryManager" Margin="196,8,8,8" Visibility="Hidden" x:Name="categoryManager" HorizontalAlignment="Center" Width="512" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:CustomerManager x:Uid="customerManager" Margin="196,8,8,8" Visibility="Hidden" x:Name="customerManager" HorizontalAlignment="Center" VerticalAlignment="Top" Width="512" Height="391"/>
+		<UtnEmall.ServerManager:PermissionManager x:Uid="permissionManager" Margin="196,8,8,8" Visibility="Hidden" x:Name="permissionManager" Width="512" HorizontalAlignment="Center" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:ServiceManager x:Uid="serviceManager" Margin="196,8,8,8" Visibility="Hidden" x:Name="serviceManager" Width="512" HorizontalAlignment="Center" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:StoreManager x:Uid="storeManager" Margin="196,8,8,8" Visibility="Hidden" x:Name="storeManager" Width="512" HorizontalAlignment="Center" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:UserManager x:Uid="userManager" Margin="196,8,8,8" Visibility="Hidden" x:Name="userManager" Width="512" HorizontalAlignment="Center" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:UserEditor x:Uid="addUser" Margin="196,8,8,8" Visibility="Hidden" x:Name="addUser" Width="512" HorizontalAlignment="Center" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:CustomerEditor x:Uid="addCustomer" Margin="196,8,8,8" Visibility="Hidden" x:Name="addCustomer" Width="512" HorizontalAlignment="Center" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:StoreEditor x:Uid="addStore" Margin="196,8,8,8" Visibility="Hidden" x:Name="addStore" Width="512" HorizontalAlignment="Center" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:ServiceEditor x:Uid="addService" Margin="196,8,8,8" Visibility="Hidden" x:Name="addService" HorizontalAlignment="Center" VerticalAlignment="Top" Width="512" Height="391"/>
+		<UtnEmall.ServerManager:CategoryEditor x:Uid="addCategory" Margin="196,8,8,8" Visibility="Hidden" x:Name="addCategory" Width="512" HorizontalAlignment="Center" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:GroupEditor x:Uid="addGroup" Margin="196,8,8,8" Visibility="Hidden" x:Name="addGroup" Width="512" HorizontalAlignment="Center" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:AuthorizationEditor x:Uid="addPermission" Margin="196,8,8,8" Visibility="Hidden" x:Name="addPermission" Width="512" HorizontalAlignment="Center" VerticalAlignment="Top" Height="391"/>
+		<UtnEmall.ServerManager:Welcome x:Uid="welcome" Margin="226,8,8,0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="512" Height="391" x:Name="welcome"/>
+		<UtnEmall.ServerManager:GroupManager x:Uid="groupManager" Margin="196,8,8,0" Visibility="Hidden" x:Name="groupManager" Width="512" Height="391" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+		<UtnEmall.ServerManager:CampaignManager x:Uid="campaignManager" Margin="196,8,8,0" x:Name="campaignManager" Width="512" Height="391" Visibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Top" BorderThickness="0,0,0,0"/>
+		<UtnEmall.ServerManager:CampaignEditor x:Uid="addCampaign" Margin="196,8,8,0" x:Name="addCampaign" HorizontalAlignment="Center" VerticalAlignment="Top" Width="512" Height="391" Visibility="Hidden"/>
+		<UtnEmall.ServerManager:EditServices x:Uid="editServices" Margin="196,8,8,8" x:Name="editServices" HorizontalAlignment="Center"  Visibility="Hidden" Width="512" Height="391"/>
+        <UtnEmall.ServerManager:DataModelManager x:Uid="dataModelManager" Margin="196,8,8,0" x:Name="dataModelManager" Width="512" Height="391" Visibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Top" BorderThickness="0,0,0,0"/>
+        <UtnEmall.ServerManager:DataModelEditor x:Uid="addDataModel" Margin="196,8,8,0" x:Name="addDataModel" HorizontalAlignment="Center" VerticalAlignment="Top" Width="512" Height="391" Visibility="Hidden"/>
+        <UtnEmall.ServerManager:EditGroups x:Uid="editGroups" Margin="196,8,8,8" x:Name="editGroups" HorizontalAlignment="Center"  Visibility="Hidden" Width="512" Height="391"/>
+        <UtnEmall.ServerManager:StatisticsViewer x:Uid="statisticsViewer" Margin="206,18,8,0" x:Name="statisticsViewer" HorizontalAlignment="Center" VerticalAlignment="Top" Width="512" Height="391" Visibility="Hidden"/>
+        <UtnEmall.ServerManager:GlobalStatisticsAnalyzer x:Uid="globalStatisticsAnalyzer" Margin="206,18,8,0" x:Name="globalStatisticsAnalyzer" HorizontalAlignment="Center" VerticalAlignment="Top" Width="512" Height="391" Visibility="Hidden"/>
 	</Grid>
 </UserControl>
