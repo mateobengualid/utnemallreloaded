@@ -12,6 +12,7 @@ using System.Reflection;
 using System.ServiceModel;
 using System.Collections.ObjectModel;
 using UtnEmall.ServerManager;
+using System.Diagnostics;
 
 namespace UtnEmall.ServerManager
 {
@@ -20,6 +21,10 @@ namespace UtnEmall.ServerManager
     /// </summary>
     public partial class StatisticsViewer
     {
+        const string UTNEMALLREPORTS_EXE = "utnemallreports.exe";
+        static readonly string[] REPORTS = new string[] { "informepersonalizado", "" };
+        const int INFORME_PERSONALIZADO = 0;
+
         #region Constructors
 
         /// <summary>
@@ -109,5 +114,33 @@ namespace UtnEmall.ServerManager
         public event EventHandler OnViewServiceStatisticsSelected;
 
         #endregion
+
+        private void buttonEditReport_Click(object sender, RoutedEventArgs e)
+        {
+            RunUTNEmallReport(REPORTS[INFORME_PERSONALIZADO]);
+        }
+
+        private void RunUTNEmallReport(string arg)
+        {
+            try
+            {
+                Process.Start(UTNEMALLREPORTS_EXE, arg);
+            }
+            catch (Exception error)
+            {
+                Util.ShowErrorDialog("Error al intentar mostrar el reporte. ");
+                Debug.WriteLine(error);
+            }
+        }
+
+        private void buttonViewReport_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.comboBoxInforme.SelectedIndex < 0)
+            {
+                Util.ShowInformationDialog("Seleccione un informe de la lista", "Información");
+                return;
+            }
+            RunUTNEmallReport((string)((ComboBoxItem)this.comboBoxInforme.SelectedItem).Tag);
+        }
     }
 }

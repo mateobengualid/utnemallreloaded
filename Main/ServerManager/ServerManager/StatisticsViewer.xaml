@@ -39,27 +39,18 @@
             <TextBlock HorizontalAlignment="Left" Text="Informe predefinido: " FontSize="16" Foreground="#FF5D5D5D" />
             <ComboBox x:Uid="comboBoxInforme" VerticalAlignment="Center" Padding="4" Margin="10,0,10,0" HorizontalAlignment="Left" x:Name="comboBoxInforme" Width="200" >
                 <ComboBox.Items>
-                    <ComboBoxItem Content="Uso de servicios por Sexo" />
-                    <ComboBoxItem Content="Uso de servicios por Estado Civil" />
-                    <ComboBoxItem Content="Visitas a registros" />
-                    <ComboBoxItem Content="Historial de uso de servicios" />
+                    <ComboBoxItem Tag="usodeserviciosporsexo" Content="Uso de servicios por Sexo" />
+                    <ComboBoxItem Tag="serviciosporestadocivil" Content="Uso de servicios por Estado Civil" />
+                    <ComboBoxItem Tag="registrosmasvistos" Content="Visitas a registros" />
+                    <ComboBoxItem Tag="historialusodeservicios" Content="Historial de uso de servicios" />
                 </ComboBox.Items>
             </ComboBox>
-            <Button x:Uid="buttonViewReport" x:Name="buttonViewReport" VerticalAlignment="Center"  Content="Ver" HorizontalAlignment="Left" Padding="15,2,15,2" />
+            <Button x:Uid="buttonViewReport" x:Name="buttonViewReport" Click="buttonViewReport_Click" VerticalAlignment="Center"  Content="Ver" HorizontalAlignment="Left" Padding="15,2,15,2" />
         </StackPanel>
         
         <TextBlock Grid.Row="6" FontSize="20" Margin="0,0,0,0" Text="Informe Personalizado" />
         <TextBlock Grid.Row="7" FontSize="16" Foreground="#FF5D5D5D" Margin="5,0,0,0" Text="Confeccione su propio informe personalizado usando toda la información disponible. Presione 'Crear Informe Personalizado' para lanzar el editor de tabla dinámica." TextWrapping="Wrap" />
-        <Button Grid.Row="8" Margin="10,10,10,10" x:Uid="buttonEditReport" x:Name="buttonEditReport" Content="Crear Informe Personalizado" HorizontalAlignment="Center" Padding="15,5,15,5" />
+        <Button Grid.Row="8" Margin="10,10,10,10" x:Uid="buttonEditReport" x:Name="buttonEditReport" Content="Crear Informe Personalizado" HorizontalAlignment="Center" Click="buttonEditReport_Click" Padding="15,5,15,5" />
 
-        <!--
-        <Button x:Uid="buttonViewGlobalStatisticsAnalysis" Margin="0,0,8,8" x:Name="buttonViewGlobalStatisticsAnalysis" Content="{x:Static UtnEmall.ServerManager:UIResources.GlobalStatistics}" Click="OnGlobalStatisticsAnalyzerClicked" Width="150" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
-        <TextBlock x:Uid="TextBlock_1" Margin="8,50,8,0" VerticalAlignment="Top" Height="143" TextWrapping="Wrap" TextAlignment="Justify">
-            <Run x:Uid="Run_1" FontSize="16" Foreground="#FF5D5D5D" Text="{x:Static UtnEmall.ServerManager:UIResources.SelectGlobalStatisticsMessage}"/>
-            <Run x:Uid="Run_2" FontSize="16" Foreground="#FF5D5D5D" Language="es-es" Text="."/>
-            <LineBreak x:Uid="LineBreak_1"/>
-            <Run x:Uid="Run_3" FontSize="16" Foreground="#FF5D5D5D" Text="{x:Static UtnEmall.ServerManager:UIResources.SelectServiceStatisticsMessage}"/>
-        </TextBlock>
-        -->
     </Grid>
 </UserControl>
