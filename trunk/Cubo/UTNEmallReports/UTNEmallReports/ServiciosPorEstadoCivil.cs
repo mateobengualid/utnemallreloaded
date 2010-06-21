@@ -15,5 +15,17 @@ namespace UTNEmallReports
         {
             InitializeComponent();
         }
+
+        private void imprimir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.axChartSpace1.ExportPicture("servicioporestadocivil.png", "png", 1024, 768);
+                new PrintReport("servicioporestadocivil.png");
+            }
+            catch (Exception error)
+            {
+            }
+        }
     }
 }

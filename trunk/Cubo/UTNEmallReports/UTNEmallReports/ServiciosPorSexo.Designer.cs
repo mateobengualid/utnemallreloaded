@@ -42,9 +42,10 @@
             this.axChartSpace1.DataSource = null;
             this.axChartSpace1.Enabled = true;
             this.axChartSpace1.Location = new System.Drawing.Point(12, 12);
+            this.axChartSpace1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 30);
             this.axChartSpace1.Name = "axChartSpace1";
             this.axChartSpace1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axChartSpace1.OcxState")));
-            this.axChartSpace1.Size = new System.Drawing.Size(743, 440);
+            this.axChartSpace1.Size = new System.Drawing.Size(743, 441);
             this.axChartSpace1.TabIndex = 0;
             // 
             // imprimir
