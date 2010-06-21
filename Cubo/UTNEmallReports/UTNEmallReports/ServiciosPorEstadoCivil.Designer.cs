@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServiciosPorEstadoCivil));
             this.axChartSpace1 = new AxMicrosoft.Office.Interop.Owc11.AxChartSpace();
+            this.imprimir = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.axChartSpace1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -40,17 +41,30 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.axChartSpace1.DataSource = null;
             this.axChartSpace1.Enabled = true;
-            this.axChartSpace1.Location = new System.Drawing.Point(12, 12);
+            this.axChartSpace1.Location = new System.Drawing.Point(10, 10);
+            this.axChartSpace1.Margin = new System.Windows.Forms.Padding(0);
             this.axChartSpace1.Name = "axChartSpace1";
             this.axChartSpace1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axChartSpace1.OcxState")));
-            this.axChartSpace1.Size = new System.Drawing.Size(869, 543);
+            this.axChartSpace1.Size = new System.Drawing.Size(880, 523);
             this.axChartSpace1.TabIndex = 0;
+            // 
+            // imprimir
+            // 
+            this.imprimir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.imprimir.Location = new System.Drawing.Point(783, 544);
+            this.imprimir.Name = "imprimir";
+            this.imprimir.Size = new System.Drawing.Size(108, 25);
+            this.imprimir.TabIndex = 2;
+            this.imprimir.Text = "Imprimir";
+            this.imprimir.UseVisualStyleBackColor = true;
+            this.imprimir.Click += new System.EventHandler(this.imprimir_Click);
             // 
             // ServiciosPorEstadoCivil
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(893, 567);
+            this.ClientSize = new System.Drawing.Size(899, 578);
+            this.Controls.Add(this.imprimir);
             this.Controls.Add(this.axChartSpace1);
             this.Name = "ServiciosPorEstadoCivil";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -63,6 +77,7 @@
         #endregion
 
         private AxMicrosoft.Office.Interop.Owc11.AxChartSpace axChartSpace1;
+        private System.Windows.Forms.Button imprimir;
     }
 }
 

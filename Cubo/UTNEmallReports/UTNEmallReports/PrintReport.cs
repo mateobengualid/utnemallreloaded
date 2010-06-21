@@ -44,21 +44,15 @@ namespace UTNEmallReports
         void _doc_PrintPage(object sender, PrintPageEventArgs e)
         {
             var image = Image.FromFile(_imageFileName);
-            var rect = e.PageSettings.PrintableArea;
-            if (!e.PageSettings.Landscape)
-            {
-                image.RotateFlip(RotateFlipType.Rotate90FlipNone);
-            }
-            else
-            {
-                var back = rect.Height;
-                rect.Height = rect.Width;
-                rect.Width = back;
-            }
+            var rect = e.MarginBounds;
+
             var pageUnit = e.Graphics.PageUnit;
             e.Graphics.DrawImage(image,
                 rect,
                 image.GetBounds(ref pageUnit), pageUnit);
+            e.Graphics.DrawString(
+                "UTN Mobile Mall", new Font("Arial", 14, FontStyle.Bold), Brushes.Black,
+                new PointF(e.MarginBounds.Left, e.MarginBounds.Top != 0 ? e.MarginBounds.Top / 2 : 1));
         }
 
     }
