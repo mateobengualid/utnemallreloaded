@@ -49,6 +49,7 @@
             // 
             // imprimir
             // 
+            this.imprimir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.imprimir.Location = new System.Drawing.Point(750, 518);
             this.imprimir.Name = "imprimir";
             this.imprimir.Size = new System.Drawing.Size(108, 27);
