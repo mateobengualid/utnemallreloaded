@@ -60,6 +60,7 @@
     <Compile Include="InformePersonalizado.Designer.cs">
       <DependentUpon>InformePersonalizado.cs</DependentUpon>
     </Compile>
+    <Compile Include="PrintReport.cs" />
     <Compile Include="ServiciosPorEstadoCivil.cs">
       <SubType>Form</SubType>
     </Compile>
