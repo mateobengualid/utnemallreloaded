@@ -181,7 +181,7 @@
     <value />
   </data>
   <data name="LabelMessageResource1.Text" xml:space="preserve">
-    <value>Mensajes de estadísticas de servicios</value>
+    <value>Mensajes de informe de servicios</value>
   </data>
   <data name="LabelMessageResource1.ToolTip" xml:space="preserve">
     <value />
@@ -193,7 +193,7 @@
     <value />
   </data>
   <data name="LabelTitleResource1.Text" xml:space="preserve">
-    <value>ESTADíSTICAS GLOBALES</value>
+    <value>INFORMES DE SERVICIOS</value>
   </data>
   <data name="LabelTitleResource1.ToolTip" xml:space="preserve">
     <value />
