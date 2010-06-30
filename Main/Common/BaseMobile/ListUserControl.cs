@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Windows.Forms;
 using System.Drawing;
+using System;
 
 namespace UtnEmall.Client.UserControls
 {
@@ -85,7 +86,7 @@ namespace UtnEmall.Client.UserControls
             }
             set
             {
-                this.selectedItemColor = value;
+                //this.selectedItemColor = value;
             }
         }
 
@@ -110,7 +111,7 @@ namespace UtnEmall.Client.UserControls
         {
             InitializeComponent();
             itemsUserControl = new ArrayList();
-            selectedItemColor = Color.FromArgb(148, 201, 201);
+            selectedItemColor = Color.FromArgb(160, 192, 222);
             unselectedItemColor = Color.FromArgb(227, 234, 235);
             alternateRowColor = Color.White;
             
@@ -145,6 +146,8 @@ namespace UtnEmall.Client.UserControls
         public void AddItem(UserControl item)
         {
             itemsUserControl.Add(item);
+            item.Tag = itemsUserControl.Count - 1;
+            item.Click += new System.EventHandler(item_Click);
 
             // Establece el ancho al mismo tamaño que el formulario
             item.Width = this.Width;
@@ -170,6 +173,17 @@ namespace UtnEmall.Client.UserControls
             }
 
             Controls.Add(item);
+        }
+
+        void item_Click(object sender, System.EventArgs e)
+        {
+            try
+            {
+                selectItemAt((int)((UserControl)sender).Tag);
+            }
+            catch (Exception)
+            {
+            }
         }
         #endregion
 

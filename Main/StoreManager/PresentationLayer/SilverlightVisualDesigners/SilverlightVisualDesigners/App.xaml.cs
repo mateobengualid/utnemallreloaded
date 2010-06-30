@@ -12,6 +12,7 @@ using LogicalLibrary.ServerDesignerClasses;
 using UtnEmall.Proxies;
 using System.Windows.Browser;
 using System.Globalization;
+using System.Threading;
 
 namespace SilverlightVisualDesigners
 {
@@ -40,6 +41,9 @@ namespace SilverlightVisualDesigners
 
 		public App() 
 		{
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("ES-es");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ES-es");
+
 			this.Startup += this.OnStartup;
 			this.Exit += this.OnExit;
 			InitializeComponent();

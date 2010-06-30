@@ -59,9 +59,9 @@
             // 
             // menuItemOptions
             // 
-            resources.ApplyResources(this.menuItemOptions, "menuItemOptions");
             this.menuItemOptions.MenuItems.Add(this.menuItemPreferences);
             this.menuItemOptions.MenuItems.Add(this.menuItemCancel);
+            resources.ApplyResources(this.menuItemOptions, "menuItemOptions");
             // 
             // menuItemPreferences
             // 
@@ -75,15 +75,15 @@
             // 
             // label1
             // 
-            resources.ApplyResources(this.label1, "label1");
             this.label1.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.label1, "label1");
             this.label1.ForeColor = System.Drawing.Color.DimGray;
             this.label1.Name = "label1";
             // 
             // txtName
             // 
-            resources.ApplyResources(this.txtName, "txtName");
             this.txtName.BackColor = System.Drawing.Color.Gainsboro;
+            resources.ApplyResources(this.txtName, "txtName");
             this.txtName.ForeColor = System.Drawing.Color.Black;
             this.txtName.Name = "txtName";
             this.txtName.GotFocus += new System.EventHandler(this.txtName_GotFocus);
@@ -97,39 +97,39 @@
             // 
             // txtSurname
             // 
-            resources.ApplyResources(this.txtSurname, "txtSurname");
             this.txtSurname.BackColor = System.Drawing.Color.Gainsboro;
+            resources.ApplyResources(this.txtSurname, "txtSurname");
             this.txtSurname.Name = "txtSurname";
             this.txtSurname.GotFocus += new System.EventHandler(this.txtSurname_GotFocus);
             this.txtSurname.LostFocus += new System.EventHandler(this.txtSurname_LostFocus);
             // 
             // txtAddress
             // 
-            resources.ApplyResources(this.txtAddress, "txtAddress");
             this.txtAddress.BackColor = System.Drawing.Color.Gainsboro;
+            resources.ApplyResources(this.txtAddress, "txtAddress");
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.GotFocus += new System.EventHandler(this.txtAddress_GotFocus);
             this.txtAddress.LostFocus += new System.EventHandler(this.txtAddress_LostFocus);
             // 
             // label3
             // 
-            resources.ApplyResources(this.label3, "label3");
             this.label3.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.label3, "label3");
             this.label3.ForeColor = System.Drawing.Color.DimGray;
             this.label3.Name = "label3";
             // 
             // txtPhoneNumber
             // 
-            resources.ApplyResources(this.txtPhoneNumber, "txtPhoneNumber");
             this.txtPhoneNumber.BackColor = System.Drawing.Color.Gainsboro;
+            resources.ApplyResources(this.txtPhoneNumber, "txtPhoneNumber");
             this.txtPhoneNumber.Name = "txtPhoneNumber";
             this.txtPhoneNumber.GotFocus += new System.EventHandler(this.txtPhoneNumber_GotFocus);
             this.txtPhoneNumber.LostFocus += new System.EventHandler(this.txtPhoneNumber_LostFocus);
             // 
             // label4
             // 
-            resources.ApplyResources(this.label4, "label4");
             this.label4.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.label4, "label4");
             this.label4.ForeColor = System.Drawing.Color.DimGray;
             this.label4.Name = "label4";
             // 
@@ -140,8 +140,8 @@
             // 
             // title
             // 
-            resources.ApplyResources(this.title, "title");
             this.title.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(137)))), ((int)(((byte)(145)))));
+            resources.ApplyResources(this.title, "title");
             this.title.ForeColor = System.Drawing.Color.White;
             this.title.Name = "title";
             // 

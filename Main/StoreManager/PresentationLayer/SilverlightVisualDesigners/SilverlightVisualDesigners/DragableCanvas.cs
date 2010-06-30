@@ -68,7 +68,7 @@ namespace SilverlightVisualDesigners
         private void ClipCanvas()
         {
             RectangleGeometry rectangleGeometry = new RectangleGeometry();
-            rectangleGeometry.Rect = new Rect(-149, -47, this.ActualWidth, this.ActualHeight);
+            rectangleGeometry.Rect = new Rect(-149, -47, this.ActualWidth + 149, this.ActualHeight + 47);
             this.Clip = rectangleGeometry;
         }
 

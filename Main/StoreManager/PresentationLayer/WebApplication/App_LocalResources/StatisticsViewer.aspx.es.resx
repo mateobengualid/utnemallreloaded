@@ -118,25 +118,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ButtonGlobalStatisticsResource1.Text" xml:space="preserve">
-    <value>Estadísticas Globales</value>
+    <value>Informes Globales</value>
   </data>
   <data name="ButtonGlobalStatisticsResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="ButtonServiceStatisticsResource1.Text" xml:space="preserve">
-    <value>Estadísticas de Servicios</value>
+    <value>Informes de Servicios</value>
   </data>
   <data name="ButtonServiceStatisticsResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="ButtonServiceStatisticsResource2.Text" xml:space="preserve">
-    <value>Estadísticas de Servicios</value>
+    <value>Informes de Servicios</value>
   </data>
   <data name="ButtonServiceStatisticsResource2.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="ButtonStoreStatisticsResource1.Text" xml:space="preserve">
-    <value>Estadísticas de la Tienda</value>
+    <value>Informes de la Tienda</value>
   </data>
   <data name="ButtonStoreStatisticsResource1.ToolTip" xml:space="preserve">
     <value />
@@ -151,13 +151,13 @@
     <value />
   </data>
   <data name="LabelGlobalStatisticsResource1.Text" xml:space="preserve">
-    <value>Seleccione &lt;b&gt;Estadísticas Globales&lt;/b&gt; si desea ver información resumida de la utilización de todos los servicios.</value>
+    <value>Seleccione &lt;b&gt;Informes Globales&lt;/b&gt; si desea ver información resumida de la utilización de todos los servicios.</value>
   </data>
   <data name="LabelGlobalStatisticsResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="LabelMessageResource1.Text" xml:space="preserve">
-    <value>Mensajes de Estadística</value>
+    <value>Mensajes de Informes</value>
   </data>
   <data name="LabelMessageResource1.ToolTip" xml:space="preserve">
     <value />
@@ -169,13 +169,13 @@
     <value />
   </data>
   <data name="LabelServiceStatisticsResource1.Text" xml:space="preserve">
-    <value>Seleccione &lt;b&gt;Estadísticas de Servicios&lt;/b&gt;  si quiere ver las estadísticas de un servicio determinado y de sus componentes.</value>
+    <value>Seleccione &lt;b&gt;Informes de Servicios&lt;/b&gt;  si quiere ver las estadísticas de un servicio determinado y de sus componentes.</value>
   </data>
   <data name="LabelServiceStatisticsResource1.ToolTip" xml:space="preserve">
     <value />
   </data>
   <data name="LabelTitleResource1.Text" xml:space="preserve">
-    <value>ESTADÍSTICAS</value>
+    <value>INFORMES</value>
   </data>
   <data name="LabelTitleResource1.ToolTip" xml:space="preserve">
     <value />
